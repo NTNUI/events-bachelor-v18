@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     # temporary route, just to have something at index
-    url(r'^$', include('groups.urls')),
+    url(r'^', include('groups.urls')),
     url(r'^groups/', include('groups.urls'))
 
 ]
