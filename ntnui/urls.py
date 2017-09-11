@@ -25,5 +25,4 @@ urlpatterns = [
     url(r'^groups/', include('groups.urls')),
     url(r'^logout/', auth_views.logout, name='logout'),
     url(r'^login/', auth_views.login, name='login'),
-    url(r'^login/', auth_views.login, name='login'),
 ]
