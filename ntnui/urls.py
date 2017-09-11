@@ -21,6 +21,6 @@ urlpatterns = [
 
     # temporary route, just to have something at index
     url(r'^', include('groups.urls')),
-    url(r'^groups/', include('groups.urls'))
-
+    url(r'^groups/', include('groups.urls')),
+    url(r'^accounts/', include('django.contrib.auth.urls'))
 ]
