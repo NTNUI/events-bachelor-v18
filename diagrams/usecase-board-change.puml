@@ -1,0 +1,26 @@
+@startuml
+left to right direction
+:Leader: as Leader
+:Vice President: as VP
+:Cashier: as Cashier
+:Member: as Member
+
+Member <|-- Leader
+Member <|-- VP
+Member <|-- Cashier
+
+rectangle GroupChangeForm {
+
+    (Accept form) as (Accept)
+    (Reject form) as (Reject)
+    (Create form) as (Create)
+
+    Member ---> (Accept)
+    Member ---> (Reject)
+
+    Leader ---> (Create)
+
+
+}
+
+@enduml
