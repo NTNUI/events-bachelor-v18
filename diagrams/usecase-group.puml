@@ -1,30 +1,43 @@
 @startuml
+
 left to right direction
-:Leader: as Leader
-:Vice President: as VP
-:Cashier: as Cashier
+:HS Member: as HS
+:Group Leader: as Leader
+:Treasurer: as Treasurer
+:Board Member: as BoardMember
 :Member: as Member
+:User: as User
+:Developer: as Developer
 
-Member <|-- Leader
-Member <|-- VP
-Member <|-- Cashier
+Leader <|-- HS
+BoardMember <|-- Leader
+BoardMember <|-- Treasurer
+Member <|-- BoardMember
+User <|-- Member
+
+    HS -> (See number of users in system)
+    HS -> (See all users and roles)
+
+    Leader -> (Set group open / closed)
+    Leader -> (Invite / kick member)
+    Leader -> (Initialize and sign board change)
+
+    Treasurer -> (Access accounting forms)
+
+    BoardMember -> (Access wiki)
+    BoardMember -> (See group members)
+    BoardMember -> (Edit wiki)
+
+    Member -> (See what groups you belong to)
+    Member -> (See group events)
 
 
-rectangle group {
+    User -> (See open groups)
+    User -> (Get notifications)
 
-    (See members) as (SeeMembers)
-    (Join) as (JoinGroup)
-    (Exit) as (ExitGroup)
-    (Kick member) as (Kick)
+    Developer -> (Import SIT data)
 
 
-    Member ---> (SeeMembers)
-    Member ---> (ExitGroup)
-    Member ---> (JoinGroup)
 
-    Leader ---> (Kick)
-
-
-}
 
 @enduml
