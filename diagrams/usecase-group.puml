@@ -15,29 +15,30 @@ BoardMember <|-- Treasurer
 Member <|-- BoardMember
 User <|-- Member
 
-    HS -> (See number of users in system)
-    HS -> (See all users and roles)
+rectangle core {
+    HS --> (See number of users in system)
+    HS --> (See all users and roles)
+    User --> (Get notifications)
+    Developer --> (Import SIT data)
+}
 
-    Leader -> (Set group open / closed)
-    Leader -> (Invite / kick member)
-    Leader -> (Initialize and sign board change)
-
-    Treasurer -> (Access accounting forms)
-
-    BoardMember -> (Access wiki)
+rectangle groups {
+    Leader --> (Set group open / closed)
+    Leader --> (Invite / kick member)
     BoardMember -> (See group members)
-    BoardMember -> (Edit wiki)
+    Member --> (See what groups you belong to)
+    Member --> (See group events)
+    User --> (See open groups)
+}
 
-    Member -> (See what groups you belong to)
-    Member -> (See group events)
+rectangle forms {
+    Leader --> (Initialize and sign board change)
+    Treasurer --> (Access accounting forms)
+}
 
-
-    User -> (See open groups)
-    User -> (Get notifications)
-
-    Developer -> (Import SIT data)
-
-
-
+rectangle wiki {
+    BoardMember --> (Access wiki)
+    BoardMember --> (Edit wiki)
+}
 
 @enduml
