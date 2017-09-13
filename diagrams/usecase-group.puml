@@ -1,0 +1,30 @@
+@startuml
+left to right direction
+:Leader: as Leader
+:Vice President: as VP
+:Cashier: as Cashier
+:Member: as Member
+
+Member <|-- Leader
+Member <|-- VP
+Member <|-- Cashier
+
+
+rectangle group {
+
+    (See members) as (SeeMembers)
+    (Join) as (JoinGroup)
+    (Exit) as (ExitGroup)
+    (Kick member) as (Kick)
+
+
+    Member ---> (SeeMembers)
+    Member ---> (ExitGroup)
+    Member ---> (JoinGroup)
+
+    Leader ---> (Kick)
+
+
+}
+
+@enduml
