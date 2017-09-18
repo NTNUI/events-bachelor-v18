@@ -10,5 +10,6 @@ before_install:
   - docker-compose --version
   - docker-compose pull
   - docker-compose build
+  - docker-compose create
   - docker-compose start
   - docker ps
