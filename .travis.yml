@@ -10,6 +10,6 @@ before_install:
   - docker-compose --version
   - docker-compose pull
   - docker-compose build
-  - docker-compose up
+  - docker-compose up -d
   - docker-compose down
   - docker ps
