@@ -5,11 +5,14 @@ language: python
 services:
   - docker
 
-
-before_install:
+install:
   - docker-compose --version
-  - docker-compose pull
-  - docker-compose build
-  - docker-compose up -d
+
+before_script:
+  - docker-compose up --build -d
+
+script:
+  - docker-compose run web python3 ./manage.py test
+
+after_script:
   - docker-compose down
-  - docker ps
