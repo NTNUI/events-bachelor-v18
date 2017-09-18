@@ -9,7 +9,6 @@ class SportsGroup(models.Model):
     def __str__(self):
         return self.name
 
-
 class Board(models.Model):
     president = models.ForeignKey(User, related_name='board_president')
     vice_president = models.ForeignKey(User,  related_name='board_vp')
@@ -24,3 +23,4 @@ class Membership(models.Model):
     person = models.ForeignKey(User, on_delete=models.CASCADE)
     group = models.ForeignKey(SportsGroup, on_delete=models.CASCADE)
     date_joined = models.DateField()
+

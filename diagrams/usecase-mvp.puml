@@ -3,7 +3,6 @@
 left to right direction
 :HS Member: as HS
 :Group Leader: as Leader
-:Treasurer: as Treasurer
 :Board Member: as BoardMember
 :Member: as Member
 :User: as User
@@ -11,15 +10,12 @@ left to right direction
 
 Leader <|-- HS
 BoardMember <|-- Leader
-BoardMember <|-- Treasurer
 Member <|-- BoardMember
 User <|-- Member
 
 rectangle core {
     HS --> (See number of users in system)
     HS --> (See all users and roles)
-    User --> (Get notifications)
-    Developer --> (Import SIT data)
 }
 
 rectangle groups {
@@ -27,24 +23,10 @@ rectangle groups {
     BoardMember --> (Invite / kick member)
     BoardMember -> (See group members)
     Member --> (See what groups you belong to)
-    Member --> (See group events)
     User --> (See open groups)
     Developer --> (Create group)
     Developer --> (Delete group)
-    BoardMember --> (Add/remove extra info attributes)
-    BoardMember --> (See membership development)
-    BoardMember --> (See estimate on leaving members each year)
 }
 
-rectangle forms {
-    Leader --> (Initialize and sign board change)
-    Treasurer --> (Access accounting forms)
-    Leader --> (Access accounting forms)
-}
-
-rectangle wiki {
-    BoardMember --> (Access wiki)
-    BoardMember --> (Edit wiki)
-}
 
 @enduml
