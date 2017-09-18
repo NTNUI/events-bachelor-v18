@@ -1,3 +1,10 @@
 from django.test import TestCase
+from groups.models import SportsGroup
 
-# Create your tests here.
+class SportsGroupTestCase(TestCase):
+    def setUp(self):
+        SportsGroup.objects.create(name="NTNUI Roing")
+
+    def test_have_name(self):
+        group = SportsGroup.objects.get(name="NTNUI Roing")
+        self.assertEqual(group.name, 'NTNUI Roing')
