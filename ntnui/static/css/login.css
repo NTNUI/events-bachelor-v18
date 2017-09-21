@@ -1,0 +1,9 @@
+.panel {
+  border-radius: 6px;
+  border: 1px solid grey;
+  padding: 16px;
+}
+
+.panel-head {
+  background-color: darkred;
+}
