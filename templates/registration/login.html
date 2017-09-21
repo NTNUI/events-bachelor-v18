@@ -1,10 +1,13 @@
 {% extends 'registration/base.html' %}
+{% load static %}
 
 
 {% load widget_tweaks %}
 
 
 {% block content %}
+
+<img src="{% static 'img/ntnui.svg' %}" alt="NTNUI" class="logo" />
 
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
@@ -21,34 +24,26 @@
     {% endif %}
 {% endif %}
 
+
+<form method="post" action="{% url 'login' %}">
 <div class="panel">
     <div class="panel-title">Logg inn</div>
     <div class="panel-content">
 
-      <form method="post" action="{% url 'login' %}">
       {% csrf_token %}
 
-
-
-        <label>
-          {{ form.username.label_tag }}
+        <div class="form-group">
           {% render_field form.username class+="form-control" placeholder="E-post" %}
-        </label>
-        <label>
-          {{ form.password.label_tag }}
+        </div>
+        <div class="form-group">
           {% render_field form.password class+="form-control" placeholder="Passord" %}
-        </label>
+        </div>
 
-      <div>
         <input type="submit" value="login" class="btn btn-primary" />
         <input type="hidden" name="next" value="{{ next }}" />
       </div>
-      </form>
-
-
-
 </div>
+</form>
 
-</div>
 
 {% endblock %}
