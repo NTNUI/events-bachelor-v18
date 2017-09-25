@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ntnui',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -91,6 +93,8 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = "ntnui.User"
+
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -129,4 +133,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 LOGIN_REDIRECT_URL = '/'
+
+LOGIN_URL='/login/'

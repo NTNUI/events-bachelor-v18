@@ -1,7 +1,18 @@
+{% extends 'registration/base.html' %}
+{% load static %}
+
+
+{% load widget_tweaks %}
+
+
 {% block content %}
 
+<img src="{% static 'img/ntnui.svg' %}" alt="NTNUI" class="logo" />
+
 {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
+  <div class="alert alert-danger" role="alert">
+    Your username and password didn't match. Please try again.
+  </div>
 {% endif %}
 
 {% if next %}
@@ -9,26 +20,32 @@
     <p>Your account doesn't have access to this page. To proceed,
     please login with an account that has access.</p>
     {% else %}
-    <p>Please login to see this page.</p>
+    <div class="alert alert-danger" role="alert">
+      Please login to see this page.
+    </div>
     {% endif %}
 {% endif %}
 
+
 <form method="post" action="{% url 'login' %}">
-{% csrf_token %}
+<div class="panel">
+    <div class="panel-title">Logg inn</div>
+    <div class="panel-content">
 
-  <label>
-    {{ form.username.label_tag }}
-    {{ form.username }}
-  </label>
-  <label>
-    {{ form.password.label_tag }}
-    {{ form.password }}
-  </label>
+      {% csrf_token %}
 
-<div>
-  <input type="submit" value="login" />
-  <input type="hidden" name="next" value="{{ next }}" />
+        <div class="form-group">
+          {% render_field form.username class+="form-control" placeholder="E-post" %}
+        </div>
+        <div class="form-group">
+          {% render_field form.password class+="form-control" placeholder="Passord" %}
+        </div>
+
+        <input type="submit" value="login" class="btn btn-primary" />
+        <input type="hidden" name="next" value="{{ next }}" />
+      </div>
 </div>
 </form>
+
 
 {% endblock %}

@@ -1,0 +1,17 @@
+{% load static %}
+<html>
+
+<head>
+  <title>NTNUI</title>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+
+</head>
+
+<body>
+  <div class="content container">
+        {% block content %} {% endblock %}
+  </div>
+</body>
+
+</html>
