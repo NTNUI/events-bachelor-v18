@@ -21,3 +21,6 @@ migrate:
 
 superuser:
 	docker-compose run web python manage.py createsuperuser
+
+build:
+	docker-compose build
