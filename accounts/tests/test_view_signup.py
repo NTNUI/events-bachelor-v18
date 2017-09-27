@@ -1,11 +1,11 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.urls import resolve
-from .views import signup
-from .forms import CustomUserCreationForm
 from ntnui.models import User
 
-# Create your tests here.
+from ..views import signup
+from ..forms import CustomUserCreationForm
+
 class SignUpTests(TestCase):
     def setUp(self):
         url = reverse('signup')
