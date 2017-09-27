@@ -4,7 +4,7 @@ from django.urls import resolve
 from ntnui.models import User
 
 from ..views import signup
-from ..forms import CustomUserCreationForm
+from ..forms import SignUpForm
 
 class SignUpTests(TestCase):
     def setUp(self):
@@ -23,7 +23,7 @@ class SignUpTests(TestCase):
 
     def test_contains_form(self):
         form = self.response.context.get('form')
-        self.assertIsInstance(form, CustomUserCreationForm)
+        self.assertIsInstance(form, SignUpForm)
 
     def test_form_inputs(self):
         '''
