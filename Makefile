@@ -1,4 +1,7 @@
-env-run:
+rasmus:
+	python manage.py runserver 0.0.0.0:3000
+
+runenv:
 	python3 manage.py runserver 0.0.0.0:8000
 
 run:
