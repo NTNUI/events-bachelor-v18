@@ -5,3 +5,6 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def index(request):
     return HttpResponse('Hello there, %s. This is the groups page.' % request.user.email)
+
+def list_groups(request):
+    return render(request, 'groups.html')

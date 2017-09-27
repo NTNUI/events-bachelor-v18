@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ntnui',
     'widget_tweaks',
+    'accounts',
 ]
 
 MIDDLEWARE = [
