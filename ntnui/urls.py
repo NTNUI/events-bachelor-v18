@@ -26,5 +26,5 @@ urlpatterns = [
     url(r'^groups/', include('groups.urls')),
     url(r'^signup/$', accounts_views.signup, name='signup'),
     url(r'^logout/', auth_views.logout, name='logout'),
-    url(r'^login/', auth_views.login, name='login'),
+    url(r'^login/$', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
 ]
