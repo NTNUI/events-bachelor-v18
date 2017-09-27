@@ -1,3 +1,7 @@
+body {
+  background-color: #fafafa;
+}
+
 .logo-container {
   height: 100px;
   display: flex;
