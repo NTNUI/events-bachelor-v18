@@ -26,9 +26,7 @@ class SignUpTests(TestCase):
         self.assertIsInstance(form, SignUpForm)
 
     def test_form_inputs(self):
-        '''
-        Check that the form has the right inputs, and nothing more
-        '''
+        """Check that the form has the right inputs, and nothing more."""
         self.assertContains(self.response, '<input', 4)
         self.assertContains(self.response, 'type="email"', 1)
         self.assertContains(self.response, 'type="password"', 2)
@@ -45,9 +43,7 @@ class SuccessfulSignUpTests(TestCase):
         self.home_url = reverse('home')
 
     def test_redirection(self):
-        '''
-        A valid signup submission should redirect the user to the logged in env
-        '''
+        """A valid signup submission should redirect the user to the logged in env."""
         self.assertRedirects(self.response, self.home_url)
 
     def test_user_creation(self):

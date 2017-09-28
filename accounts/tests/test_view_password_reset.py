@@ -30,9 +30,7 @@ class PasswordResetTests(TestCase):
         self.assertIsInstance(form, PasswordResetForm)
 
     def test_form_inputs(self):
-        '''
-        The view must contain two inputs: csrf and email
-        '''
+        """The view must contain two inputs: csrf and email."""
         self.assertContains(self.response, '<input', 2)
         self.assertContains(self.response, 'type="email"', 1)
 
@@ -44,9 +42,7 @@ class SuccessfulPasswordResetTests(TestCase):
         self.response = self.client.post(url, {'email': email})
 
     def test_redirection(self):
-        '''
-        A valid form submission should redirect the user to `password_reset_done` view
-        '''
+        """A valid form submission should redirect the user to `password_reset_done` view."""
         url = reverse('password_reset_done')
         self.assertRedirects(self.response, url)
 
@@ -59,10 +55,9 @@ class InvalidPasswordResetTests(TestCase):
         self.response = self.client.post(url, {'email': 'donotexist@email.com'})
 
     def test_redirection(self):
-        '''
-        Even invalid emails in the database should
-        redirect the user to `password_reset_done` view
-        '''
+        """Even invalid emails in the database should redirect
+        the user to `password_reset_done` view.
+        """
         url = reverse('password_reset_done')
         self.assertRedirects(self.response, url)
 
@@ -85,11 +80,10 @@ class PasswordResetConfirmTests(TestCase):
     def setUp(self):
         user = User.objects.create_user(email='john@doe.com', password='123abcdef')
 
-        '''
-        create a valid password reset token
-        based on how django creates the token internally:
+        """
+        Create a valid password reset token based on how django creates the token internally:
         https://github.com/django/django/blob/1.11.5/django/contrib/auth/forms.py#L280
-        '''
+        """
         self.uid = urlsafe_base64_encode(force_bytes(user.pk)).decode()
         self.token = default_token_generator.make_token(user)
 
@@ -111,9 +105,7 @@ class PasswordResetConfirmTests(TestCase):
         self.assertIsInstance(form, SetPasswordForm)
 
     def test_form_inputs(self):
-        '''
-        The view must contain two inputs: csrf and two password fields
-        '''
+        """The view must contain two inputs: csrf and two password fields."""
         self.assertContains(self.response, '<input', 3)
         self.assertContains(self.response, 'type="password"', 2)
 
