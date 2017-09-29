@@ -13,6 +13,9 @@ run-background:
 stop:
 	docker-compose down
 
+test:
+	docker-compose run web python manage.py test
+
 migrations:
 	docker-compose run web python manage.py makemigrations
 
@@ -21,3 +24,6 @@ migrate:
 
 superuser:
 	docker-compose run web python manage.py createsuperuser
+
+build:
+	docker-compose build
