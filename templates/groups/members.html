@@ -14,7 +14,7 @@
         class="jumbo-background"
         src="{% static 'img/groups/ntnui-volleyball.png' %}"
         alt="NTNUI Volleyball" />
-      <div class="group-name">NTNUI Volleyball</div>
+      <div class="group-name">{{ group.name }}</div>
     </div>
     <div class="top-menu">
       <ul class="top-menu-list">
@@ -41,88 +41,17 @@
         <div class="group-member-phone-header">Phone</div>
         <div class="group-member-email-header">E-mail</div>
         <div class="group-member-paid-header">Betalt</div>
-
-      </div>
-      <div class="group-member">
-        <div class="group-member-name">Raymond Olsen</div>
-        <div class="group-member-phone">94029382</div>
-        <div class="group-member-email">raymond.olsen@online.no</div>
-        <div class="group-member-paid">
-          <input type="checkbox" value="">
-        </div>
-
-      </div>
-      <div class="group-member">
-        <div class="group-member-name">Michael Johansen</div>
-        <div class="group-member-phone">32029382</div>
-        <div class="group-member-email">michael.johansen@gmail.com</div>
-        <div class="group-member-paid">
-          <input type="checkbox" value="">
-        </div>
-      </div>
-      <div class="group-member">
-        <div class="group-member-name">Robert Skardsgaard</div>
-        <div class="group-member-phone">12029382</div>
-        <div class="group-member-email">robert.skardsgaard@online.no</div>
-        <div class="group-member-paid">
-          <input type="checkbox" value="">
-        </div>
       </div>
 
-      <div class="group-member">
-        <div class="group-member-name">Robert Skardsgaard</div>
-        <div class="group-member-phone">12029382</div>
-        <div class="group-member-email">robert.skardsgaard@online.no</div>
-        <div class="group-member-paid">
-          <input type="checkbox" value="">
+      {% for member in group.members %}
+        <div class="group-member">
+          <div class="group-member-name">{{ member.name }}</div>
+          <div class="group-member-phone">{{ member.phone }}</div>
+          <div class="group-member-email">{{ member.email }}</div>
+          <div class="group-member-paid">
+            <input type="checkbox" value="" {% if member.paid %}checked{% endif %}>
+          </div>
         </div>
-      </div>
-
-      <div class="group-member">
-        <div class="group-member-name">Robert Skardsgaard</div>
-        <div class="group-member-phone">12029382</div>
-        <div class="group-member-email">robert.skardsgaard@online.no</div>
-        <div class="group-member-paid">
-          <input type="checkbox" value="">
-        </div>
-      </div>
-
-      <div class="group-member">
-        <div class="group-member-name">Robert Skardsgaard</div>
-        <div class="group-member-phone">12029382</div>
-        <div class="group-member-email">robert.skardsgaard@online.no</div>
-        <div class="group-member-paid">
-          <input type="checkbox" value="">
-        </div>
-      </div>
-
-      <div class="group-member">
-        <div class="group-member-name">Robert Skardsgaard</div>
-        <div class="group-member-phone">12029382</div>
-        <div class="group-member-email">robert.skardsgaard@online.no</div>
-        <div class="group-member-paid">
-          <input type="checkbox" value="">
-        </div>
-      </div>
-
-      <div class="group-member">
-        <div class="group-member-name">Robert Skardsgaard</div>
-        <div class="group-member-phone">12029382</div>
-        <div class="group-member-email">robert.skardsgaard@online.no</div>
-        <div class="group-member-paid">
-          <input type="checkbox" value="">
-        </div>
-      </div>
-
-      <div class="group-member">
-        <div class="group-member-name">Robert Skardsgaard</div>
-        <div class="group-member-phone">12029382</div>
-        <div class="group-member-email">robert.skardsgaard@online.no</div>
-        <div class="group-member-paid">
-          <input type="checkbox" value="">
-        </div>
-      </div>
+      {% endfor %}
     </div>
-
-
 {% endblock %}

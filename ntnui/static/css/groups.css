@@ -151,26 +151,32 @@ a:hover {
   font-weight: bold;
 }
 
-.group-member-name-header,
-.group-member-phone-header {
+.group-member-name-header {
   width: 200px;
 }
 
+.group-member-phone-header {
+  width: 150px;
+}
+
 .group-member-email-header {
-  width: 270px;
+  width: 300px;
 }
 
 .group-member-paid-header {
   width: 40px;
 }
 
-.group-member-name,
-.group-member-phone {
+.group-member-name {
   width: 200px;
 }
 
+.group-member-phone {
+  width: 150px;
+}
+
 .group-member-email {
-  width: 270px;
+  width: 300px;
 }
 
 .group-member-paid {
