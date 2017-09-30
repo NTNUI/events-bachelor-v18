@@ -108,7 +108,7 @@ a:hover {
   justify-content: space-between;
   padding: 0 16px;
   display: flex;
-  height: 52px;
+  height: 60px;
   box-sizing: border-box;
 }
 
@@ -157,7 +157,7 @@ a:hover {
 }
 
 .group-member-email-header {
-  width: 250px;
+  width: 270px;
 }
 
 .group-member-paid-header {
@@ -170,7 +170,7 @@ a:hover {
 }
 
 .group-member-email {
-  width: 250px;
+  width: 270px;
 }
 
 .group-member-paid {
