@@ -43,11 +43,11 @@
         <div class="group-member-paid-header">Betalt</div>
       </div>
 
-      {% for member in group.members %}
+      {% for member in members %}
         <div class="group-member">
-          <div class="group-member-name">{{ member.name }}</div>
-          <div class="group-member-phone">{{ member.phone }}</div>
-          <div class="group-member-email">{{ member.email }}</div>
+          <div class="group-member-name">{{ member.person.first_name }} {{ member.person.last_name }}</div>
+          <div class="group-member-phone">{{ member.person.phone }}</div>
+          <div class="group-member-email">{{ member.person.email }}</div>
           <div class="group-member-paid">
             <input type="checkbox" value="" {% if member.paid %}checked{% endif %}>
           </div>

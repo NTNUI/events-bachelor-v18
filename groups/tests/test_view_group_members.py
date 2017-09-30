@@ -4,6 +4,7 @@ from django.urls import resolve
 from django.test import TestCase
 from ntnui.models import User
 
+
 class GroupMembersLoggedOutTest(TestCase):
     def setUp(self):
         url = reverse('group_members')
@@ -15,12 +16,13 @@ class GroupMembersLoggedOutTest(TestCase):
         """
         self.assertEquals(self.response.status_code, 302)
 
+
 class GroupMembersLoggedInTest(TestCase):
     fixtures = ['users.json']
 
     def setUp(self):
         self.login_response = self.client.login(email='locoman@loco.com',
-            password='locoloco')
+                                                password='locoloco')
         url = reverse('group_members')
         self.response = self.client.get(url)
 
@@ -31,10 +33,10 @@ class GroupMembersLoggedInTest(TestCase):
         view = resolve('/groups/members/')
         self.assertEquals(view.func, group_views.members)
 
-    #def test_csrf(self):
+    # def test_csrf(self):
     #    self.assertContains(self.response, 'csrfmiddlewaretoken')
 
-    #def test_contains_form(self):
+    # def test_contains_form(self):
 #        form = self.response.context.get('form')
 #        self.assertIsInstance(form, PasswordResetForm)
 
@@ -43,7 +45,7 @@ class GroupMembersLoggedInTest(TestCase):
 #        self.assertContains(self.response, '<input', 2)
 #        self.assertContains(self.response, 'type="email"', 1)
 
-    #def test_form_inputs(self):
+    # def test_form_inputs(self):
     #    """The view must contain two inputs: csrf and two password fields."""
     #    self.assertContains(self.response, '<input', 3)
     #    self.assertContains(self.response, 'type="password"', 2)

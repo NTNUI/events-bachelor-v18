@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from .models import SportsGroup, Membership
 
 @login_required
-def members(request):
+def members(request, slug):
     group = {
         'name': 'NTNUI Volleyball',
         'members': [
@@ -99,7 +100,13 @@ def members(request):
             },
         ]
     }
-    return render(request, 'groups/members.html', { 'group': group })
+    print(slug)
+    groups = SportsGroup.objects.filter(slug='ntnui')
+    if (len(groups) != 1):
+        raise Http404("Group does not exist")
+    group = groups[0]
+    members = Membership.objects.filter(group=group.pk)
+    return render(request, 'groups/members.html', { 'group': group, 'members': members })
 
 
 def list_groups(request):
