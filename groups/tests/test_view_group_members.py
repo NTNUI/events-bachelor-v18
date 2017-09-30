@@ -4,6 +4,17 @@ from django.urls import resolve
 from django.test import TestCase
 from ntnui.models import User
 
+class GroupMembersLoggedOutTest(TestCase):
+    def setUp(self):
+        url = reverse('group_members')
+        self.response = self.client.get(url)
+
+    def test_status_code(self):
+        """
+        test that view is login protected
+        """
+        self.assertEquals(self.response.status_code, 302)
+
 class GroupMembersLoggedInTest(TestCase):
     fixtures = ['users.json']
 
