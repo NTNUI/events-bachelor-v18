@@ -8,4 +8,4 @@ def members(request):
 
 
 def list_groups(request):
-    return render(request, 'groups.html')
+    return render(request, 'groups/list_groups.html')
