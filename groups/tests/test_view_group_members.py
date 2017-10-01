@@ -46,8 +46,8 @@ class VolleyballGroupTest(GroupMembersLoggedInTest):
     def test_contains_members(self):
         self.assertContains(self.response, '<div class="group-member"', 15)
 
-    #def test_total_count_members(self):
-    #    self.assertContains(self.response, '15 members')
+    def test_total_count_members(self):
+        self.assertContains(self.response, '15 members')
 
     # def test_csrf(self):
     #    self.assertContains(self.response, 'csrfmiddlewaretoken')
