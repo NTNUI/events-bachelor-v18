@@ -32,6 +32,7 @@
   <div class="members-table">
     <div class="members-list-header">
       <div class="total-members">{{ total_members }} members</div>
+      <div class="total-invitations">{{ 0 }} invitations</div>
       <input class="search-input form-control" type="text" placeholder="Search for group members" disabled />
     </div>
 
@@ -42,6 +43,11 @@
         <div class="group-member-email-header">E-mail</div>
         <div class="group-member-paid-header">Betalt</div>
       </div>
+
+      <a href="#" class="add-new-member">
+        <div class="add-new-button">+</div>
+        <div class="add-new-text">Invite new member</div>
+      </a>
 
       {% for member in members %}
         <div class="group-member">

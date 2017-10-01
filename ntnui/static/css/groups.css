@@ -53,8 +53,8 @@ a {
 }
 
 a:hover {
-  color: #017402;
   text-decoration: none;
+  color: black;
 }
 
 .top-menu-list a {
@@ -73,6 +73,7 @@ a:hover {
 }
 
 .top-menu-list a:hover {
+  color: #017402;
   border-bottom: 4px solid #017402;
   opacity: 0.8;
 }
@@ -115,6 +116,10 @@ a:hover {
 
 .total-members {
   font-weight: bold;
+}
+
+.total-invitations {
+  font-weight: lighter;
 }
 
 .search-input {
@@ -183,4 +188,30 @@ a:hover {
 .group-member-paid {
   text-align: center;
   width: 40px;
+}
+
+.add-new-member {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  height: 48px;
+  box-sizing: border-box;
+  padding: 0 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.add-new-member:hover {
+  background-color: #f0f0f0;
+}
+
+.add-new-button {
+  background-color: #ffffff;
+  border-radius: 4px;
+  text-align: center;
+  color: #d0d0d0;
+  width: 32px;
+  border: 1px solid #d0d0d0;
+  margin-right: 16px;
 }
