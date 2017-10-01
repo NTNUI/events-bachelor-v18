@@ -21,17 +21,30 @@ class GroupMembersLoggedInTest(TestCase):
     fixtures = ['users.json']
 
     def setUp(self):
-        self.login_response = self.client.login(email='locoman@loco.com',
+        self.login_response = self.client.login(email='jameshalpert@gmail.com',
                                                 password='locoloco')
-        url = reverse('group_members')
+        url = reverse('group_members', kwargs={'slug': 'volleyball'})
         self.response = self.client.get(url)
+
+
+class NoGroupTest(GroupMembersLoggedInTest):
+
+    def test_status_code(self):
+        self.assertEquals(self.response.status_code, 404)
+
+    def test_view_function(self):
+        view = resolve('/groups/volleyball/members')
+        self.assertEquals(view.func, group_views.members)
+
+
+class VolleyballGroupTest(GroupMembersLoggedInTest):
+    fixtures = ['users.json', 'groups.json']
 
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 200)
 
-    def test_view_function(self):
-        view = resolve('/groups/members/')
-        self.assertEquals(view.func, group_views.members)
+    def test_contains_members(self):
+        pass
 
     # def test_csrf(self):
     #    self.assertContains(self.response, 'csrfmiddlewaretoken')

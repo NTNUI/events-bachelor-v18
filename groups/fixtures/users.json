@@ -4,13 +4,14 @@
     "pk": 1,
     "fields": {
       "password": "pbkdf2_sha256$36000$qiPRGynUtAH1$7LNTkGEEH4m2jODEihPUsZJm6Q520N1fueY5c8PvD7o=",
-      "last_login": "2017-09-30T07:17:32.443Z",
+      "last_login": "2017-10-01T07:03:33.887Z",
       "is_superuser": true,
       "email": "super@admin.com",
       "first_name": "",
       "last_name": "",
       "date_joined": "2017-09-25T10:42:55.496Z",
       "is_active": true,
+      "phone": "",
       "is_staff": true,
       "groups": [],
       "user_permissions": []
@@ -18,16 +19,17 @@
   },
   {
     "model": "ntnui.user",
-    "pk": 3,
+    "pk": 9,
     "fields": {
-      "password": "pbkdf2_sha256$36000$IBPagsRBPxQT$XHi4LvN4kiuUnygBwWxCuTcrhE+xC6d5ShI0YuHj5Gk=",
-      "last_login": "2017-09-27T07:47:09.688Z",
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-09-30T14:19:57Z",
       "is_superuser": false,
-      "email": "superman@super.com",
-      "first_name": "",
-      "last_name": "",
-      "date_joined": "2017-09-27T07:47:09.647Z",
+      "email": "todd.packer@online.com",
+      "first_name": "Todd",
+      "last_name": "Packer",
+      "date_joined": "2017-09-30T14:20:19.326Z",
       "is_active": true,
+      "phone": "93827492",
       "is_staff": false,
       "groups": [],
       "user_permissions": []
@@ -35,16 +37,251 @@
   },
   {
     "model": "ntnui.user",
-    "pk": 6,
+    "pk": 10,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
-      "last_login": "2017-09-27T12:43:44.357Z",
+      "last_login": "2017-09-30T18:32:53.811Z",
       "is_superuser": false,
-      "email": "locoman@loco.com",
-      "first_name": "",
-      "last_name": "",
-      "date_joined": "2017-09-27T08:05:12.984Z",
+      "email": "jameshalpert@gmail.com",
+      "first_name": "James",
+      "last_name": "Halpert",
+      "date_joined": "2017-09-30T14:20:54.221Z",
       "is_active": true,
+      "phone": "23092340",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 11,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-09-30T14:21:26Z",
+      "is_superuser": false,
+      "email": "frankela@steinberg.org",
+      "first_name": "Angela",
+      "last_name": "Martin",
+      "date_joined": "2017-09-30T14:21:43.074Z",
+      "is_active": true,
+      "phone": "21093801",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 12,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-09-30T14:22:02Z",
+      "is_superuser": false,
+      "email": "michael.scott@dundermifflin.com",
+      "first_name": "Michael",
+      "last_name": "Scott",
+      "date_joined": "2017-09-30T14:22:18.151Z",
+      "is_active": true,
+      "phone": "99883212",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 13,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-09-30T15:06:28Z",
+      "is_superuser": false,
+      "email": "mynameiscreed@bratton.com",
+      "first_name": "Creed",
+      "last_name": "Bratton",
+      "date_joined": "2017-09-30T15:06:42.756Z",
+      "is_active": true,
+      "phone": "49289201",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 14,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-09-30T15:06:52Z",
+      "is_superuser": false,
+      "email": "phyllis@vancerefrigiration.com",
+      "first_name": "Phyllis",
+      "last_name": "Vance",
+      "date_joined": "2017-09-30T15:07:06.940Z",
+      "is_active": true,
+      "phone": "99883212",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 15,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-09-30T15:07:15Z",
+      "is_superuser": false,
+      "email": "stanley.hudson@dundermifflin.com",
+      "first_name": "Stanley",
+      "last_name": "Hudson",
+      "date_joined": "2017-09-30T15:07:44.746Z",
+      "is_active": true,
+      "phone": "49209281",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 16,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-09-30T15:07:55Z",
+      "is_superuser": false,
+      "email": "dwight.k.schrute@schrutefarms.net",
+      "first_name": "Dwight K.",
+      "last_name": "Schrute",
+      "date_joined": "2017-09-30T15:08:22.333Z",
+      "is_active": true,
+      "phone": "49209281",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 17,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-09-30T15:08:28Z",
+      "is_superuser": false,
+      "email": "toby.flenderson@dundermifflin.com",
+      "first_name": "Toby",
+      "last_name": "Flenderson",
+      "date_joined": "2017-09-30T15:08:43.064Z",
+      "is_active": true,
+      "phone": "93282311",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 18,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-09-30T15:08:49Z",
+      "is_superuser": false,
+      "email": "beeslyarts@gmail.com",
+      "first_name": "Pam",
+      "last_name": "Beesly",
+      "date_joined": "2017-09-30T15:09:07.192Z",
+      "is_active": true,
+      "phone": "44920082",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 19,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-09-30T15:09:12Z",
+      "is_superuser": false,
+      "email": "ryan.the.fireguy@hotmail.com",
+      "first_name": "Ryan",
+      "last_name": "Howard",
+      "date_joined": "2017-09-30T15:09:25.753Z",
+      "is_active": true,
+      "phone": "94827328",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 20,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-09-30T15:09:33Z",
+      "is_superuser": false,
+      "email": "andrew.bernard@cornell.edu",
+      "first_name": "Andrew",
+      "last_name": "Bernard",
+      "date_joined": "2017-09-30T15:09:52.416Z",
+      "is_active": true,
+      "phone": "49209281",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 21,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-09-30T15:09:57Z",
+      "is_superuser": false,
+      "email": "givemeonemillion@robertcalifornia.com",
+      "first_name": "Robert",
+      "last_name": "California",
+      "date_joined": "2017-09-30T15:10:23.920Z",
+      "is_active": true,
+      "phone": "99382392",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 22,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-09-30T15:10:28Z",
+      "is_superuser": false,
+      "email": "jan.levinson@dundermifflin.com",
+      "first_name": "Jan",
+      "last_name": "Levinson",
+      "date_joined": "2017-09-30T15:10:44.709Z",
+      "is_active": true,
+      "phone": "11839238",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 23,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-10-01T07:01:45.923Z",
+      "is_superuser": false,
+      "email": "thebestroy@aol.com",
+      "first_name": "Roy",
+      "last_name": "Anderson",
+      "date_joined": "2017-09-30T15:11:05.877Z",
+      "is_active": true,
+      "phone": "88292038",
       "is_staff": false,
       "groups": [],
       "user_permissions": []

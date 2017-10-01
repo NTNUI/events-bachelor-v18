@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 from .models import SportsGroup, Membership
 
@@ -100,8 +100,7 @@ def members(request, slug):
             },
         ]
     }
-    print(slug)
-    groups = SportsGroup.objects.filter(slug='ntnui')
+    groups = SportsGroup.objects.filter(slug=slug)
     if (len(groups) != 1):
         raise Http404("Group does not exist")
     group = groups[0]

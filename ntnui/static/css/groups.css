@@ -99,6 +99,7 @@ a:hover {
   border: 1px solid #dfdfdf;
   display: flex;
   flex-direction: column;
+  margin-bottom: 32px;
 }
 
 .members-list-header {
