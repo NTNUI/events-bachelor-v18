@@ -32,7 +32,7 @@
   <div class="members-table">
     <div class="members-list-header">
       <div class="total-members">{{ total_members }} members</div>
-      <input class="search-input form-control" type="text" placeholder="Search for group members" />
+      <input class="search-input form-control" type="text" placeholder="Search for group members" disabled />
     </div>
 
     <div class="members-list">
@@ -49,7 +49,7 @@
           <div class="group-member-phone">{{ member.person.phone }}</div>
           <div class="group-member-email">{{ member.person.email }}</div>
           <div class="group-member-paid">
-            <input type="checkbox" value="" {% if member.paid %}checked{% endif %}>
+            <input type="checkbox" value="" {% if member.paid %}checked{% endif %} disabled>
           </div>
         </div>
       {% endfor %}
