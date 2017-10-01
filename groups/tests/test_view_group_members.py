@@ -49,15 +49,14 @@ class VolleyballGroupTest(GroupMembersLoggedInTest):
     def test_total_count_members(self):
         self.assertContains(self.response, '15 members')
 
-    # def test_csrf(self):
-    #    self.assertContains(self.response, 'csrfmiddlewaretoken')
+class VolleyballNoMembersTest(GroupMembersLoggedInTest):
+    fixtures = ['users.json', 'groups.json']
 
-#    def test_form_inputs(self):
-#        """The view must contain two inputs: csrf and email."""
-#        self.assertContains(self.response, '<input', 2)
-#        self.assertContains(self.response, 'type="email"', 1)
+    def test_status_code(self):
+        self.assertEquals(self.response.status_code, 200)
 
-    # def test_form_inputs(self):
-    #    """The view must contain two inputs: csrf and two password fields."""
-    #    self.assertContains(self.response, '<input', 3)
-    #    self.assertContains(self.response, 'type="password"', 2)
+    def test_contains_members(self):
+        self.assertContains(self.response, '<div class="group-member"', 0)
+
+    def test_total_count_members(self):
+        self.assertContains(self.response, '0 members')
