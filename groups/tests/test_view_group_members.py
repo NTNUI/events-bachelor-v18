@@ -49,6 +49,9 @@ class VolleyballGroupTest(GroupMembersLoggedInTest):
     def test_total_count_members(self):
         self.assertContains(self.response, '15 members')
 
+    def test_should_link_to_invite(self):
+        self.assertContains(self.response, reverse('group_invite_member', kwargs={'slug': 'volleyball'}))
+
 class VolleyballNoMembersTest(GroupMembersLoggedInTest):
     fixtures = ['users.json', 'groups.json']
 
@@ -60,3 +63,6 @@ class VolleyballNoMembersTest(GroupMembersLoggedInTest):
 
     def test_total_count_members(self):
         self.assertContains(self.response, '0 members')
+
+    def test_should_link_to_invite(self):
+        self.assertContains(self.response, reverse('group_invite_member', kwargs={'slug': 'volleyball'}))

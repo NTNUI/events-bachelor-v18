@@ -93,7 +93,7 @@ a:hover {
  * MEMBERS TABLE
  */
 
-.members-table {
+.content-table {
   width: 790px;
   min-height: 100px;
   background-color: white;
@@ -114,11 +114,11 @@ a:hover {
   box-sizing: border-box;
 }
 
-.total-members {
+.total-tab-active {
   font-weight: bold;
 }
 
-.total-invitations {
+.total-tab {
   font-weight: lighter;
 }
 
@@ -192,6 +192,7 @@ a:hover {
 
 .add-new-member {
   width: 100%;
+  font-weight: lighter;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -214,4 +215,17 @@ a:hover {
   width: 32px;
   border: 1px solid #d0d0d0;
   margin-right: 16px;
+}
+
+/**
+ * INVITE MEMBERS
+ */
+
+.invite-member-form {
+  width: 100%;
+  padding: 16px;
+}
+
+.invite-member-form h2 {
+  padding: 16px 0;
 }
