@@ -1,0 +1,37 @@
+{% extends 'groups/group_base.html' %}
+
+{% block group_content %}
+  <div class="content-table">
+    <div class="members-list-header">
+      <div class="total-tab-active">{{ total_members }} members</div>
+      <div class="total-tab">{{ 0 }} invitations</div>
+      <div class="total-tab">{{ 0 }} requests</div>
+
+      <input class="search-input form-control" type="text" placeholder="Search for group members" disabled />
+    </div>
+
+    <div class="members-list">
+      <div class="members-header">
+        <div class="group-member-name-header">Name</div>
+        <div class="group-member-phone-header">Phone</div>
+        <div class="group-member-email-header">E-mail</div>
+        <div class="group-member-paid-header">Betalt</div>
+      </div>
+
+      <a href="{% url 'group_invite_member' slug=slug %}" class="add-new-member">
+        <div class="add-new-button">+</div>
+        <div class="add-new-text">Invite new member</div>
+      </a>
+
+      {% for member in members %}
+        <div class="group-member">
+          <div class="group-member-name">{{ member.person.first_name }} {{ member.person.last_name }}</div>
+          <div class="group-member-phone">{{ member.person.phone }}</div>
+          <div class="group-member-email">{{ member.person.email }}</div>
+          <div class="group-member-paid">
+            <input type="checkbox" value="" {% if member.paid %}checked{% endif %} disabled>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+{% endblock %}

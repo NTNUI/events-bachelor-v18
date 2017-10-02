@@ -1,4 +1,4 @@
-rasmus
+rasmus:
 	python manage.py runserver 0.0.0.0:3000
 
 runenv:
@@ -27,3 +27,8 @@ superuser:
 
 build:
 	docker-compose build
+
+testenv:
+	rm -f mydatabase
+	make migrate
+	docker-compose run web python manage.py loaddata users.json groups.json memberships.json
