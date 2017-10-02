@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="logo-container">
+      <img src="{% static 'img/ntnui.svg' %}" alt="NTNUI" class="logo" />
+    </div>
+    {% block content %}
+    {% endblock %}
+  </div>
+{% endblock %}

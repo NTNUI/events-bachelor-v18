@@ -1,0 +1,32 @@
+.content {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navbar-logo {
+  width: 64px;
+}
+
+.navbar {
+  border-bottom: 1px solid #d1d1d1;
+}
+
+.link-with-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 16px;
+}
+
+.link-with-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+.link-with-icon p {
+  margin: 0;
+  padding: 0;
+}

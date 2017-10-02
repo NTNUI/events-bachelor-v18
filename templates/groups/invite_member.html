@@ -1,0 +1,17 @@
+{% extends 'groups/group_base.html' %}
+
+{% block group_content %}
+  <div class="content-table">
+    <div class="invite-member-form">
+      <h2>Invite member</h2>
+
+      <form method="POST">
+        <p>Fill in the email of the person you want to invite to your group.</p>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Invite person</button>
+      </form>
+    </div>
+
+  </div>
+{% endblock %}

@@ -1,9 +1,12 @@
-{% extends 'registration/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 
 {% load widget_tweaks %}
 
+{% block stylesheet %}
+  <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+{% endblock %}
 
 {% block content %}
 
