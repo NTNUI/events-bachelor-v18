@@ -78,10 +78,3 @@ class SettingsForm(forms.Form):
             return SportsGroup.objects.get(slug=self.slug)
         except SportsGroup.DoesNotExist:
             self.add_error(None, "Invalid group")
-
-
-
-
-
-
-            self.group = self.get_group()
