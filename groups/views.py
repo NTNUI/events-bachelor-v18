@@ -60,10 +60,8 @@ def settings(request, slug):
 
     if request.method == 'POST':
         form = SettingsForm(request.POST, slug=slug)
-        print('Checking if form is valid')
 
         if form.is_valid():
-            print('Redirecting')
             return redirect('group_settings', slug=slug)
 
     return render(request, 'groups/settings.html', {
