@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-
 from django.conf import settings
 
 
@@ -8,7 +7,9 @@ class SportsGroup(models.Model):
     name = models.CharField(max_length=50)
     slug = models.CharField(max_length=12)
     members = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, through='Membership')
+        settings.AUTH_USER_MODEL, through='Membership', related_name='group_members')
+    invitations = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, through='Invitation', related_name='group_invitations')
 
     def __str__(self):
         return self.name
@@ -33,3 +34,10 @@ class Membership(models.Model):
     group = models.ForeignKey(SportsGroup, on_delete=models.CASCADE)
     date_joined = models.DateField()
     paid = models.BooleanField(default=False)
+
+
+class Invitation(models.Model):
+    person = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    group = models.ForeignKey(SportsGroup, on_delete=models.CASCADE)
+    date_issued = models.DateField(auto_now_add=True)

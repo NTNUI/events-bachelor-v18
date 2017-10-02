@@ -6,11 +6,9 @@
       <h2>Invite member</h2>
 
       <form method="POST">
-        {% csrf_token %}
         <p>Fill in the email of the person you want to invite to your group.</p>
-        <div class="form-group">
-          <input type="email" class="form-control" name="email" placeholder="Email address" />
-        </div>
+        {% csrf_token %}
+        {{ form.as_p }}
         <button type="submit" class="btn btn-primary">Invite person</button>
       </form>
     </div>
