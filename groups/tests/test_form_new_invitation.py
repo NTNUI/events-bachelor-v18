@@ -12,7 +12,6 @@ class InvitationFormTest(TestCase):
         form = NewInvitationForm(slug='volleyball')
         expected = ['email']
         self.assertSequenceEqual(expected, list(form.fields))
-        pass
 
     def test_should_throw_if_no_group_slug(self):
         form = NewInvitationForm(data={}, slug='')
