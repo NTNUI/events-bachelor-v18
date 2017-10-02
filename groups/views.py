@@ -6,6 +6,11 @@ from .forms import NewInvitationForm
 
 
 @login_required
+def group_index(request, slug):
+    return redirect('group_members', slug=slug)
+
+
+@login_required
 def members(request, slug):
     groups = SportsGroup.objects.filter(slug=slug)
     if (len(groups) != 1):
