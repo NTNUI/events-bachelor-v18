@@ -63,3 +63,38 @@ class NewInvitationForm(forms.Form):
 
     def save(self):
         return Invitation.objects.create(person=self.user, group=self.group)
+
+
+class SettingsForm(forms.Form):
+    public = forms.BooleanField(required=False)
+
+    # make sure to get the slug
+    def __init__(self, *args, **kwargs):
+        self.slug = kwargs.pop('slug') if 'slug' in kwargs else ''
+        super(SettingsForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super(SettingsForm, self).clean()
+        self.validate_group()
+
+    def clean_public(self):
+        self.group = self.get_group()
+
+        if self.group is None:
+            return
+
+        # Get the public flag
+        self.group.public = self.cleaned_data.get('public')
+        self.group.save()
+
+    def get_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            return None
+
+    def validate_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            self.add_error(None, "Invalid group")

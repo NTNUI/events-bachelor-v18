@@ -242,3 +242,58 @@ a:hover {
   font-size: 12px;
   padding: 4px 8px;
 }
+
+/**
+ * SETTINGS
+ */
+
+.group-settings {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  box-sizing: border-box;
+  padding: 0 16px 0 16px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+
+.group-settings:active {
+  opacity: 0.6;
+}
+
+.group-settings-right {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  height: 64px;
+  box-sizing: border-box;
+  padding: 32px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.group-settings-header {
+  text-align: center;
+  padding: 8px 8px;
+  border-bottom: 1px solid #f0f0f0;
+  font-weight: bold;
+}
+
+.group-settings-public-name {
+}
+
+.group-settings-public-check {
+  text-align: right;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.group-settings-save-btn {
+  width: 25%;
+  text-align: center;
+  cursor: pointer;
+}

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 from .models import SportsGroup, Membership, Invitation
-from .forms import NewInvitationForm
+from .forms import NewInvitationForm, SettingsForm
 
 
 @login_required
@@ -22,6 +22,7 @@ def members(request, slug):
         'total_invitations': len(invitations),
         'slug': slug,
         'active_tab': 'members',
+        'active': 'members'
 
     })
 
@@ -37,13 +38,14 @@ def invitations(request, slug):
         'total_members': len(members),
         'slug': slug,
         'active_tab': 'invitations',
+        'active': 'members',
     })
 
 
 @login_required
 def invite_member(request, slug):
     groups = SportsGroup.objects.filter(slug=slug)
-    if (len(groups) != 1):
+    if len(groups) != 1:
         raise Http404("Group does not exist")
     group = groups[0]
 
@@ -61,6 +63,27 @@ def invite_member(request, slug):
         'group': group,
         'slug': slug,
         'form': form,
+        'active': 'members',
+    })
+
+
+@login_required
+def settings(request, slug):
+    groups = SportsGroup.objects.filter(slug=slug)
+    if len(groups) != 1:
+        raise Http404("Group does not exist")
+    group = groups[0]
+
+    if request.method == 'POST':
+        form = SettingsForm(request.POST, slug=slug)
+
+        if form.is_valid():
+            return redirect('group_settings', slug=slug)
+
+    return render(request, 'groups/settings.html', {
+        'group': group,
+        'slug': slug,
+        'active': 'settings',
     })
 
 
