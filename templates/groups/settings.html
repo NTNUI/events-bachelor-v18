@@ -1,0 +1,20 @@
+{% extends 'groups/group_base.html' %}
+
+{% block group_content %}
+  <div class="content-table">
+    <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="group-settings-header">Group visibility</div>
+       <label class="group-settings">
+          <div class="group-settings-public-name">Group is public</div>
+          <div class="group-settings-public-check">
+            <input type="checkbox" name="public" {% if group.public %}checked{% endif %}>
+          </div>
+       </label>
+
+    <div class="group-settings-right">
+      <button type="submit" class="group-settings-save-btn btn btn-success">Change password</button>
+    </div>
+    </form>
+  </div>
+{% endblock %}
