@@ -10,20 +10,22 @@ services:
       - .:/code
     ports:
       - "8000:8000"
-    links:
-      - selenium
     expose:
       - "8000"
     #depends_on:
     #  - db
-  #test-machine:
-  #  build: .
-  #  volumes:
-  #    - .:/code
-  #  links:
-  #    - selenium
-  #  ports:
-  #    - "8000:8000"
+
+  tester:
+    build: .
+    #command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    depends_on:
+     - selenium
 
   selenium:
     image: selenium/standalone-chrome
@@ -32,3 +34,5 @@ services:
       - "4444:4444"
     expose:
       - "4444"
+    depends_on:
+      - web

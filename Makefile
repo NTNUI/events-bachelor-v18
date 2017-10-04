@@ -5,10 +5,13 @@ runenv:
 	python3 manage.py runserver 0.0.0.0:8000
 
 run:
-	docker-compose up
+	docker-compose up web
 
 run-background:
-	docker-compose up -d
+	docker-compose up web -d
+
+run-browser:
+	docker-compose up -d selenium
 
 stop:
 	docker-compose down
@@ -33,11 +36,5 @@ testenv:
 	make migrate
 	docker-compose run web python manage.py loaddata users.json groups.json memberships.json
 
-run-selenium:
-	
-
-test-integration:
-	make testenv
-	make run-background
-	make run-selenium
-	make stop
+browser-tests:
+	docker-compose run tester python3 manage.py test ntnui.tests.browser
