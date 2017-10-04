@@ -286,5 +286,23 @@
       "groups": [],
       "user_permissions": []
     }
+  },
+  {
+    "model": "ntnui.user",
+    "pk": 24,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-10-02T12:01:55Z",
+      "is_superuser": false,
+      "email": "meredith.palmer@dundermifflin.com",
+      "first_name": "Meredith",
+      "last_name": "Palmer",
+      "date_joined": "2017-10-02T12:02:44.858Z",
+      "is_active": true,
+      "phone": "93882312",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
   }
 ]

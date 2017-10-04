@@ -132,7 +132,7 @@ a:hover {
   width: 100%;
 }
 
-.group-member {
+.group-table-row {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -231,6 +231,19 @@ a:hover {
 }
 
 /**
+* INVITATION LIST
+*/
+
+.btn-withdraw {
+  border-radius: 4px;
+  background: transparent;
+  border: 1px solid #d0d0d0;
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+/**
  * SETTINGS
  */
 
@@ -280,7 +293,7 @@ a:hover {
 }
 
 .group-settings-save-btn {
-  width : 25%;
+  width: 25%;
   text-align: center;
   cursor: pointer;
 }

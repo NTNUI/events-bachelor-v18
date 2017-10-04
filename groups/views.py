@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
-from .models import SportsGroup, Membership
+from .models import SportsGroup, Membership, Invitation
 from .forms import NewInvitationForm, SettingsForm
 
 
@@ -12,16 +12,32 @@ def group_index(request, slug):
 
 @login_required
 def members(request, slug):
-    groups = SportsGroup.objects.filter(slug=slug)
-    if (len(groups) != 1):
-        raise Http404("Group does not exist")
-    group = groups[0]
+    group = get_object_or_404(SportsGroup, slug=slug)
+    invitations = Invitation.objects.filter(group=group.pk)
     members = Membership.objects.filter(group=group.pk)
     return render(request, 'groups/members.html', {
         'group': group,
         'members': members,
         'total_members': len(members),
+        'total_invitations': len(invitations),
         'slug': slug,
+        'active_tab': 'members',
+        'active': 'members'
+
+    })
+
+@login_required
+def invitations(request, slug):
+    group = get_object_or_404(SportsGroup, slug=slug)
+    invitations = Invitation.objects.filter(group=group.pk)
+    members = Membership.objects.filter(group=group.pk)
+    return render(request, 'groups/invitations.html', {
+        'group': group,
+        'invitations': invitations,
+        'total_invitations': len(invitations),
+        'total_members': len(members),
+        'slug': slug,
+        'active_tab': 'invitations',
         'active': 'members',
     })
 
