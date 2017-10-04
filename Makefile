@@ -32,3 +32,12 @@ testenv:
 	rm -f mydatabase
 	make migrate
 	docker-compose run web python manage.py loaddata users.json groups.json memberships.json
+
+run-selenium:
+	
+
+test-integration:
+	make testenv
+	make run-background
+	make run-selenium
+	make stop

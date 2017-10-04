@@ -10,5 +10,25 @@ services:
       - .:/code
     ports:
       - "8000:8000"
+    links:
+      - selenium
+    expose:
+      - "8000"
     #depends_on:
     #  - db
+  #test-machine:
+  #  build: .
+  #  volumes:
+  #    - .:/code
+  #  links:
+  #    - selenium
+  #  ports:
+  #    - "8000:8000"
+
+  selenium:
+    image: selenium/standalone-chrome
+    container_name: selenium
+    ports:
+      - "4444:4444"
+    expose:
+      - "4444"
