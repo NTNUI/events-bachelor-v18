@@ -31,7 +31,7 @@ class SuccessfulPasswordChangeTests(PasswordChangeTestCase):
     def test_password_changed(self):
         """Refresh the user instance from database to get the new
          password hash updated by the change password view.
-         """
+        """
         self.user.refresh_from_db()
         self.assertTrue(self.user.check_password('new_password'))
 
