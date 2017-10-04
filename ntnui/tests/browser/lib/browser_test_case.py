@@ -6,24 +6,44 @@ from selenium import webdriver
 LOCAL = False
 
 
-class BrowserTestCase(StaticLiveServerTestCase):
+class ChromeTestCase(StaticLiveServerTestCase):
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(self):
         super().setUpClass()
         if LOCAL:
-            cls.browser = webdriver.Chrome()
-            cls.server_url = 'http://localhost:8000'
+            self.chrome = webdriver.Chrome()
+            self.server_url = 'http://localhost:8000'
         else:
-            cls.browser = webdriver.Remote(
+            self.chrome = webdriver.Remote(
                 command_executor='http://selenium:4444/wd/hub',
                 desired_capabilities=DesiredCapabilities.CHROME)
-            cls.server_url = 'http://web:8000'
-        cls.browser.implicitly_wait(10)
-        cls.precondition()
+            self.server_url = 'http://web:8000'
+        self.chrome.implicitly_wait(10)
+        self.precondition()
 
     @classmethod
-    def tearDownClass(cls):
-        cls.browser.quit()
+    def tearDownClass(self):
+        self.chrome.quit()
+        super().tearDownClass()
+
+    @classmethod
+    def precondition(self):
+        pass
+
+class FirefoxTestCase(StaticLiveServerTestCase):
+    @classmethod
+    def setUpClass(self):
+        super().setUpClass()
+        self.firefox = webdriver.Remote(
+            command_executor='http://selenium:4444/wd/hub',
+            desired_capabilities=DesiredCapabilities.FIREFOX)
+        self.server_url = 'http://web:8000'
+        self.firefox.implicitly_wait(10)
+        self.precondition()
+
+    @classmethod
+    def tearDownClass(self):
+        self.firefox.quit()
         super().tearDownClass()
 
     @classmethod
