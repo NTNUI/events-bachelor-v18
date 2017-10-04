@@ -50,4 +50,5 @@ def invite_member(request, slug):
 
 
 def list_groups(request):
+    print(request.user.group_members.name)
     return render(request, 'groups/list_groups.html')

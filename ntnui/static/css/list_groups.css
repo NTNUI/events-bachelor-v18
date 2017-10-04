@@ -1,0 +1,40 @@
+.list-groups {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.group-header {
+    align-self: center;
+}
+
+.outer {
+    display: flex;
+    flex-direction: row;
+    border: solid 1px;
+    border-color: gray;
+    width: 100%;
+    height: 100px;
+    margin-top: 20px;
+}
+
+.card-img {
+    width: 100px;
+    height: 100%;
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+.group-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.group-info h2 {
+    color: #008000;
+}
+
+.group-info p {
+    margin: 0;
+}

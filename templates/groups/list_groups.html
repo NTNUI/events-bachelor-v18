@@ -1,36 +1,17 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/list_groups.css' %}">
+{% endblock %}
+
 {% block content %}
-    <h1>
-        My groups
-    </h1>
-    {#% for group in mygroups %#}
-        <div class="col-lg-6 col-md-9 col-sm-12">
-          <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-1 col-md-2 col-sm-2">
-                            {# temporary photo#}
-                            <img src="/static/img/ntnui2.svg" alt="Avatar" style="width:100%">
-                        </div>
-                        <div class="col-lg-5 col-md-6 col-sm-10">
-                            <h3 class="card-title">NTNUI MYGROUP</h3>
-                            <div class="row">
-                                <div class="col-lg-3 col-md-4 col-sm-5">Your role:</div>
-                                <div>TEMPORARY</div>
-                            </div>
-                            <div> 999 members</div>
-                            <div>
-                                <a href="TEMPORARY">Settings</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-          </div>
-        </div>
-    {#% endfor %#}
-    <h1>
-        All groups
-    </h1>
-    {#% for group in allgroups not in mygroups %#}
+    <div class="list-groups">
+        <h1 class="group-header">
+            My groups
+        </h1>
+            {% include "groups/group_card.html" %}
+    </div>
+
 {% endblock %}
