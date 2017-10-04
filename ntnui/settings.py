@@ -145,3 +145,7 @@ LOGIN_URL= 'login'
 LOGOUT_REDIRECT_URL = 'login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# USER settings
+DUMMY_USER_EMAIL = 'todd.packer@online.com'
+DUMMY_USER_PASSWORD = 'locoloco'
