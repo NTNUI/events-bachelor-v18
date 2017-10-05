@@ -1,10 +1,38 @@
 [
-  {
-    "model": "groups.sportsgroup",
-    "pk": 1,
-    "fields": {
-      "name": "NTNUI Volleyball",
-      "slug": "volleyball"
-    }
-  }
+   {
+      "model":"groups.sportsgroup",
+      "pk":1,
+      "fields":{
+         "name":"NTNUI Volleyball",
+         "slug":"volleyball",
+         "description":"We like to keep our balls in the air!"
+      }
+   },
+   {
+      "model":"groups.sportsgroup",
+      "pk":2,
+      "fields":{
+         "name":"NTNUI Friidrett",
+         "slug":"friidrett",
+         "description":"Vi kaller oss friidrett, men egentlig s\u00e5 driver vi bare med l\u00f8ping ;PPppP"
+      }
+   },
+   {
+      "model":"groups.sportsgroup",
+      "pk":3,
+      "fields":{
+         "name":"NTNUI Koiene",
+         "slug":"koiene",
+         "description":"Try our cabins, they are the best!"
+      }
+   },
+   {
+      "model":"groups.sportsgroup",
+      "pk":4,
+      "fields":{
+         "name":"NTNUI Calisthenics",
+         "slug":"calisthenics",
+         "description":"MUSCLE-UPS!!"
+      }
+   }
 ]

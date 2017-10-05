@@ -44,10 +44,10 @@ class VolleyballGroupTest(GroupMembersLoggedInTest):
         self.assertEquals(self.response.status_code, 200)
 
     def test_contains_members(self):
-        self.assertContains(self.response, '<div class="group-member"', 15)
+        self.assertContains(self.response, '<div class="group-member"', 16)
 
     def test_total_count_members(self):
-        self.assertContains(self.response, '15 members')
+        self.assertContains(self.response, '16 members')
 
     def test_should_link_to_invite(self):
         self.assertContains(self.response, reverse('group_invite_member', kwargs={'slug': 'volleyball'}))

@@ -48,7 +48,7 @@ def invite_member(request, slug):
         'form': form,
     })
 
-
+@login_required
 def list_groups(request):
     myGroups = []
     allGroups = []
