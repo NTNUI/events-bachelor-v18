@@ -54,7 +54,7 @@ def invite_member(request, slug):
         if form.is_valid():
             invitation = form.save()
             # TODO: change to redirect to 'group_invitations'
-            return redirect('group_members', slug=slug)
+            return redirect('group_invitations', slug=slug)
     else:
         form = NewInvitationForm(slug=slug)
 
