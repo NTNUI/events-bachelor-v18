@@ -10,6 +10,7 @@ class SportsGroup(models.Model):
         settings.AUTH_USER_MODEL, through='Membership', related_name='group_members')
     invitations = models.ManyToManyField(
         settings.AUTH_USER_MODEL, through='Invitation', related_name='group_invitations')
+    public = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

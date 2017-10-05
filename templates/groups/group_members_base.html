@@ -1,0 +1,16 @@
+{% extends 'groups/group_base.html' %}
+
+{% block group_content %}
+  <div class="content-table">
+    <div class="members-list-header">
+      <a href="{% url 'group_members' slug=slug %}" class="{% if active_tab == 'members' %}total-tab-active{% else %}total-tab{% endif %}">{{ total_members }} member{{ total_members|pluralize }}</a>
+      <a href="{% url 'group_invitations' slug=slug %}" class="{% if active_tab == 'invitations' %}total-tab-active{% else %}total-tab{% endif %}">{{ total_invitations }} invitation{{ total_invitations|pluralize }}</a>
+      <div class="{% if active_tab == 'requests' %}total-tab-active{% else %}total-tab{% endif %}">{{ 0 }} requests</div>
+      <input class="search-input form-control" type="text" placeholder="Search for group members" disabled />
+    </div>
+
+    <div class="members-list">
+      {% block table_content %}
+      {% endblock %}
+    </div>
+{% endblock %}
