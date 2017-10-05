@@ -40,3 +40,7 @@ browser-tests:
 	docker-compose up -d chrome
 	docker-compose up -d firefox
 	docker-compose run tester python3 manage.py test ntnui.tests.browser
+
+browser-tests-local:
+	docker-compose up -d web
+	BROWSER=local python3 manage.py test ntnui.tests.browser
