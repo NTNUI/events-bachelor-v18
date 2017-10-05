@@ -50,5 +50,14 @@ def invite_member(request, slug):
 
 
 def list_groups(request):
-    print(request.user.group_members.name)
-    return render(request, 'groups/list_groups.html')
+    myGroups = []
+    allGroups = []
+    for membership in list(Membership.objects.filter(person=request.user)):
+        myGroups.append(membership.group)
+
+    allGroups = SportsGroup.objects.exclude(id__in=map(lambda x: x.id, myGroups))
+
+    return render(request, 'groups/list_groups.html', {
+        'myGroups': myGroups,
+        'allGroups': allGroups,
+    })

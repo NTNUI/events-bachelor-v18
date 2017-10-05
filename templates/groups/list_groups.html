@@ -11,7 +11,16 @@
         <h1 class="group-header">
             My groups
         </h1>
-            {% include "groups/group_card.html" %}
+        {% for group in myGroups %}
+            {% include "groups/group_card.html" with name=group.name description=group.description%}
+        {% endfor %}
+        <h1 class="group-header">
+            All groups
+        </h1>
+        {% for group in allGroups %}
+            {% include "groups/group_card.html" with name=group.name description=group.description %}
+        {% endfor %}
+
     </div>
 
 {% endblock %}
