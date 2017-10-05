@@ -4,4 +4,9 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def list(request, slug):
-    return HttpResponse('Hello World')
+    return render(request, 'forms/forms_list.html', {
+        #'group': group,
+        'slug': slug,
+        'active': 'forms_list',
+    })
+    #return HttpResponse('Hello World')
