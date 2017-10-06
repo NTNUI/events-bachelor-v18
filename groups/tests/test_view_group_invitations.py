@@ -11,9 +11,7 @@ class InvitationsLoggedOutTest(TestCase):
         self.response = self.client.get(url)
 
     def test_status_code(self):
-        """
-        test that view is login protected
-        """
+        """Test that view is login protected."""
         self.assertEquals(self.response.status_code, 302)
 
 

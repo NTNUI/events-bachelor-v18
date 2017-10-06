@@ -26,7 +26,7 @@ class Board(models.Model):
     sports_group = models.OneToOneField(SportsGroup, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "Board of NTNUI %s" % self.sports_group.name
+        return "Board of NTNUI {}".format(self.sports_group.name)
 
 
 class Membership(models.Model):
