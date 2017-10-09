@@ -86,6 +86,16 @@ def settings(request, slug):
         'active': 'settings',
     })
 
-
+@login_required
 def list_groups(request):
-    return render(request, 'groups/list_groups.html')
+    myGroups = []
+    allGroups = []
+    for membership in list(Membership.objects.filter(person=request.user)):
+        myGroups.append(membership.group)
+
+    allGroups = SportsGroup.objects.exclude(id__in=map(lambda x: x.id, myGroups))
+
+    return render(request, 'groups/list_groups.html', {
+        'myGroups': myGroups,
+        'allGroups': allGroups,
+    })
