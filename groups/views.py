@@ -6,7 +6,7 @@ from .forms import NewInvitationForm, SettingsForm
 
 
 @login_required
-def group_index(request, slug):
+def group_index(slug):
     return redirect('group_members', slug=slug)
 
 
@@ -25,6 +25,7 @@ def members(request, slug):
         'active': 'members'
 
     })
+
 
 @login_required
 def invitations(request, slug):
@@ -85,6 +86,7 @@ def settings(request, slug):
         'slug': slug,
         'active': 'settings',
     })
+
 
 @login_required
 def list_groups(request):

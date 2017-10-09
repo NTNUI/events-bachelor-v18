@@ -1,8 +1,8 @@
 from django import forms
-from .models import Invitation
 from django.core.validators import validate_email
 from ntnui.models import User
 from .models import SportsGroup, Invitation, Membership
+
 
 class NewInvitationForm(forms.Form):
     email = forms.CharField(max_length=100, validators=[validate_email])
