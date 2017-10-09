@@ -20,7 +20,7 @@
     <ul class="top-menu-list">
       <li><a href="#">Board</a></li>
       <li><div class="vert-divider"></div></li>
-      <li><a href="#">Forms</a></li>
+      <li><a href="{% url 'forms_list' slug=slug %}" class="{%if active == 'forms' %}active-item{% endif %}">Forms</a></li>
       <li><div class="vert-divider"></div></li>
       <li><a href="{% url 'group_members' slug=slug %}" class="{% if active == 'members' %}active-item{% endif %}">Members</a></li>
       <li><div class="vert-divider"></div></li>
