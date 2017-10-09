@@ -49,7 +49,7 @@ class VolleyballGroupTest(InvitationsLoggedInTest):
         self.assertContains(self.response, '1 invitation')
 
     def test_total_count_members(self):
-        self.assertContains(self.response, '15 members')
+        self.assertContains(self.response, '16 members')
 
     def test_should_link_to_members(self):
         self.assertContains(self.response, reverse('group_members', kwargs={'slug': 'volleyball'}))

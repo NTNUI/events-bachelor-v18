@@ -42,7 +42,7 @@ class VolleyballGroupTest(GroupMembersLoggedInTest):
         self.assertEquals(self.response.status_code, 200)
 
     def test_contains_members(self):
-        self.assertContains(self.response, '<div class="group-member"', 16)
+        self.assertContains(self.response, '<div class="group-table-row"', 16)
 
 
     def test_total_count_members(self):
