@@ -25,7 +25,7 @@ SECRET_KEY = 'n0b&@0hxu@r+#z6!w%)(%8q)y7e9i6m19r&htjanialmik6t#3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['tester', 'localhost']
 
 
 # Application definition
@@ -145,3 +145,7 @@ LOGIN_URL= 'login'
 LOGOUT_REDIRECT_URL = 'login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# USER settings
+DUMMY_USER_EMAIL = 'todd.packer@online.com'
+DUMMY_USER_PASSWORD = 'locoloco'

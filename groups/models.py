@@ -11,6 +11,7 @@ class SportsGroup(models.Model):
         settings.AUTH_USER_MODEL, through='Membership', related_name='group_members')
     invitations = models.ManyToManyField(
         settings.AUTH_USER_MODEL, through='Invitation', related_name='group_invitations')
+    public = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -26,7 +27,7 @@ class Board(models.Model):
     sports_group = models.OneToOneField(SportsGroup, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "Board of NTNUI %s" % self.sports_group.name
+        return "Board of NTNUI {}".format(self.sports_group.name)
 
 
 class Membership(models.Model):
