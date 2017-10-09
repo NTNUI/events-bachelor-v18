@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ntnui',
     'widget_tweaks',
     'accounts',
+    'django_nose'
 ]
 
 MIDDLEWARE = [
@@ -149,3 +150,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # USER settings
 DUMMY_USER_EMAIL = 'todd.packer@online.com'
 DUMMY_USER_PASSWORD = 'locoloco'
+
+# Use nose to run all tests
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+# Tell nose to measure coverage on the 'foo' and 'bar' apps
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=groups, forms, accounts',
+]
