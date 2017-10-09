@@ -17,6 +17,7 @@ stop:
 	docker-compose down
 
 test:
+	make style
 	docker-compose run web python manage.py test
 
 migrations:
@@ -43,3 +44,7 @@ browser-tests:
 
 browser-tests-local:
 	BROWSER=local python3 manage.py test ntnui.tests.browser
+
+style:
+	docker-compose run web autopep8 --in-place --recursive .
+	docker-compose run web prospector --uses django

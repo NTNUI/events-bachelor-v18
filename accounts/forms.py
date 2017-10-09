@@ -1,6 +1,7 @@
 from ntnui.models import User
 from django.contrib.auth.forms import UserCreationForm
 
+
 class SignUpForm(UserCreationForm):
     """
     A form that creates a user, with no privileges, from the given email and

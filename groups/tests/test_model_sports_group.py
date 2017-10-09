@@ -1,6 +1,7 @@
 from django.test import TestCase
 from groups.models import SportsGroup
 
+
 class SportsGroupTestCase(TestCase):
     def setUp(self):
         SportsGroup.objects.create(name="NTNUI Roing", description="Vi ror")

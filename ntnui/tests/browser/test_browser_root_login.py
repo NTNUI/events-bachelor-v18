@@ -14,14 +14,18 @@ def login_general(browser, server_url, assertEquals, assertTrue):
     assertTrue(
         'href="/logout/">Log out</a>' in browser.page_source)
 
+
 class LoginChrome(ChromeTestCase):
     fixtures = ['users.json']
 
     def test_login_chrome(self):
-        login_general(self.chrome, self.server_url, self.assertEquals, self.assertTrue)
+        login_general(self.chrome, self.server_url,
+                      self.assertEquals, self.assertTrue)
+
 
 class LoginFirefox(FirefoxTestCase):
     fixtures = ['users.json']
 
     def test_login_chrome(self):
-        login_general(self.firefox, self.server_url, self.assertEquals, self.assertTrue)
+        login_general(self.firefox, self.server_url,
+                      self.assertEquals, self.assertTrue)

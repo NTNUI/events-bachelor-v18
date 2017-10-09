@@ -32,6 +32,7 @@ class ChromeTestCase(StaticLiveServerTestCase):
     def precondition(self):
         pass
 
+
 class FirefoxTestCase(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(self):
