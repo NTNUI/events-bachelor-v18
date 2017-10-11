@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.urls import resolve
 from ..models import Membership
 
+
 class ListGroupLoggedOutTest(TestCase):
     def setUp(self):
         url = reverse('home')
@@ -14,6 +15,7 @@ class ListGroupLoggedOutTest(TestCase):
         test that view is login protected
         """
         self.assertEquals(self.response.status_code, 302)
+
 
 class ListGroupsLoggedInTest(TestCase):
     fixtures = ['users.json']
@@ -28,6 +30,7 @@ class ListGroupsLoggedInTest(TestCase):
         view = resolve('/')
         self.assertEquals(view.func, group_views.list_groups)
 
+
 class NoListTest(ListGroupsLoggedInTest):
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 200)
@@ -35,12 +38,11 @@ class NoListTest(ListGroupsLoggedInTest):
 
 class MyGroupTest(ListGroupsLoggedInTest):
     fixtures = ['users.json', 'groups.json', 'memberships.json']
+
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 200)
 
     def test_group_number(self):
         self.assertContains(self.response, '<div class="group-info">', 4)
 
-    #TODO: write more tests..
-
-
+    # TODO: write more tests..

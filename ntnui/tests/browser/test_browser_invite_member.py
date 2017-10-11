@@ -5,6 +5,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from groups.models import Invitation, SportsGroup
 from ntnui.models import User
 
+
 def invite_success(cls, browser):
     browser.get(cls.server_url + '/groups/volleyball/members/invite')
     email_input = browser.find_element_by_name('email')

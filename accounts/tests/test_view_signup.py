@@ -6,6 +6,7 @@ from ntnui.models import User
 from ..views import signup
 from ..forms import SignUpForm
 
+
 class SignUpTests(TestCase):
     def setUp(self):
         url = reverse('signup')
@@ -31,6 +32,7 @@ class SignUpTests(TestCase):
         self.assertContains(self.response, 'type="email"', 1)
         self.assertContains(self.response, 'type="password"', 2)
 
+
 class SuccessfulSignUpTests(TestCase):
     def setUp(self):
         url = reverse('signup')
@@ -53,6 +55,7 @@ class SuccessfulSignUpTests(TestCase):
         response = self.client.get(self.home_url)
         user = response.context.get('user')
         self.assertTrue(user.is_authenticated)
+
 
 class InvalidSignupTests(TestCase):
     def setUp(self):
