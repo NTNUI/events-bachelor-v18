@@ -18,28 +18,33 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Invitation',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('date_issued', models.DateField()),
             ],
         ),
         migrations.AlterField(
             model_name='sportsgroup',
             name='members',
-            field=models.ManyToManyField(related_name='group_members', through='groups.Membership', to=settings.AUTH_USER_MODEL),
+            field=models.ManyToManyField(
+                related_name='group_members', through='groups.Membership', to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='invitation',
             name='group',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='groups.SportsGroup'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='groups.SportsGroup'),
         ),
         migrations.AddField(
             model_name='invitation',
             name='person',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='sportsgroup',
             name='invitations',
-            field=models.ManyToManyField(related_name='group_invitations', through='groups.Invitation', to=settings.AUTH_USER_MODEL),
+            field=models.ManyToManyField(
+                related_name='group_invitations', through='groups.Invitation', to=settings.AUTH_USER_MODEL),
         ),
     ]

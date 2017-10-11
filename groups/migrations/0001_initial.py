@@ -19,44 +19,54 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Board',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('cashier', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='board_cashier', to=settings.AUTH_USER_MODEL)),
-                ('president', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='board_president', to=settings.AUTH_USER_MODEL)),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
+                ('cashier', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                              related_name='board_cashier', to=settings.AUTH_USER_MODEL)),
+                ('president', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                                related_name='board_president', to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
             name='Membership',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('date_joined', models.DateField()),
             ],
         ),
         migrations.CreateModel(
             name='SportsGroup',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=50)),
-                ('members', models.ManyToManyField(through='groups.Membership', to=settings.AUTH_USER_MODEL)),
+                ('members', models.ManyToManyField(
+                    through='groups.Membership', to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.AddField(
             model_name='membership',
             name='group',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='groups.SportsGroup'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='groups.SportsGroup'),
         ),
         migrations.AddField(
             model_name='membership',
             name='person',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
             model_name='board',
             name='sports_group',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='groups.SportsGroup'),
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE, to='groups.SportsGroup'),
         ),
         migrations.AddField(
             model_name='board',
             name='vice_president',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='board_vp', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='board_vp', to=settings.AUTH_USER_MODEL),
         ),
     ]

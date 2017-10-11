@@ -1,12 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.conf import settings
 
 
 class SportsGroup(models.Model):
     name = models.CharField(max_length=50)
     slug = models.CharField(max_length=12)
-    description = models.TextField(max_length=200);
+    description = models.TextField(max_length=200)
     members = models.ManyToManyField(
         settings.AUTH_USER_MODEL, through='Membership', related_name='group_members')
     invitations = models.ManyToManyField(

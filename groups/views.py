@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from .models import SportsGroup, Membership, Invitation
 from .forms import NewInvitationForm, SettingsForm
-
 
 @login_required
 def group_index(slug):
@@ -95,7 +94,8 @@ def list_groups(request):
     for membership in list(Membership.objects.filter(person=request.user)):
         myGroups.append(membership.group)
 
-    allGroups = SportsGroup.objects.exclude(id__in=map(lambda x: x.id, myGroups))
+    allGroups = SportsGroup.objects.exclude(
+        id__in=map(lambda x: x.id, myGroups))
 
     return render(request, 'groups/list_groups.html', {
         'myGroups': myGroups,
