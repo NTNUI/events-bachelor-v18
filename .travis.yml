@@ -12,6 +12,7 @@ before_script:
   - docker-compose up --build -d
 
 script:
+  - make style
   - make test
   - make browser-tests
 

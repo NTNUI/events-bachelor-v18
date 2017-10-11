@@ -45,5 +45,5 @@ browser-tests-local:
 	BROWSER=local python3 manage.py test ntnui.tests.browser
 
 style:
-	docker-compose run web autopep8 --in-place --recursive .
-	docker-compose run web prospector --uses django
+	docker-compose run web autopep8 --in-place --recursive --max-line-length=100 accounts forms groups ntnui
+	docker-compose run web prospector --uses django --max-line-length=100
