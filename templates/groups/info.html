@@ -1,15 +1,24 @@
 {% extends 'groups/group_base.html' %}
 
 {% block group_content %}
+
+<div class="content-table">
+  <div class="members-list-header">
+    About {{ group.name }}
+  </div>
+
+  <div class="group-table-description">
+    {{ group.description }}
+  </div>
+
+</div>
+
+
 <div class="content-table">
   <div class="members-list-header">
     The Board
   </div>
 
-  <div class="members-list">
-    {% block table_content %}
-    {% endblock %}
-  </div>
   <div class="members-header">
     <div class="group-member-name-header">Name</div>
     <div class="group-member-email-header">E-mail</div>

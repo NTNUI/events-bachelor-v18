@@ -297,3 +297,7 @@ a:hover {
   text-align: center;
   cursor: pointer;
 }
+
+.group-table-description {
+  padding: 32px;
+}
