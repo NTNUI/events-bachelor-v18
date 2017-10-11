@@ -17,7 +17,6 @@ stop:
 	docker-compose down
 
 test:
-	make style
 	docker-compose run web python manage.py test
 
 migrations:

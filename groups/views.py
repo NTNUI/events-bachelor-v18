@@ -5,7 +5,7 @@ from .models import SportsGroup, Membership, Invitation
 from .forms import NewInvitationForm, SettingsForm
 
 @login_required
-def group_index(slug):
+def group_index(request, slug):
     return redirect('group_members', slug=slug)
 
 
