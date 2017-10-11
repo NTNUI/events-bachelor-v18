@@ -1,0 +1,38 @@
+{% extends 'groups/group_base.html' %}
+
+{% block group_content %}
+<div class="content-table">
+  <div class="members-list-header">
+    The Board
+  </div>
+
+  <div class="members-list">
+    {% block table_content %}
+    {% endblock %}
+  </div>
+  <div class="members-header">
+    <div class="group-member-name-header">Name</div>
+    <div class="group-member-email-header">E-mail</div>
+    <div class="group-member-phone-header">Role</div>
+
+  </div>
+
+  <div class="group-table-row">
+    <div class="group-member-name">{{ group.board.president.first_name }} {{ group.board.president.last_name }}</div>
+    <div class="group-member-email">{{ group.board.president.email }}</div>
+    <div class="group-member-phone">President</div>
+  </div>
+
+  <div class="group-table-row">
+    <div class="group-member-name">{{ group.board.vice_president.first_name }} {{ group.board.vice_president.last_name }}</div>
+    <div class="group-member-email">{{ group.board.vice_president.email }}</div>
+    <div class="group-member-phone">Vice President</div>
+  </div>
+
+  <div class="group-table-row">
+    <div class="group-member-name">{{ group.board.cashier.first_name }} {{ group.board.cashier.last_name }}</div>
+    <div class="group-member-email">{{ group.board.cashier.email }}</div>
+    <div class="group-member-phone">Cashier</div>
+  </div>
+</div>
+{% endblock %}

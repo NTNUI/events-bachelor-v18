@@ -18,7 +18,7 @@
   </div>
   <div class="top-menu">
     <ul class="top-menu-list">
-      <li><a href="#">Board</a></li>
+      <li><a href="{% url 'group_index' slug=slug %}" class="{% if active == 'about' %}active-item{% endif %}">About</a></li>
       <li><div class="vert-divider"></div></li>
       <li><a href="#">Forms</a></li>
       <li><div class="vert-divider"></div></li>
