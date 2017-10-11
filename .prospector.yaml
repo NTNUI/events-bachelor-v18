@@ -11,4 +11,3 @@ pyflakes:
 pylint:
   disable:
     - unused-variable
-    - unused-import

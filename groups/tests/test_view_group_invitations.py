@@ -36,7 +36,8 @@ class NoGroupTest(InvitationsLoggedInTest):
 
 
 class VolleyballGroupTest(InvitationsLoggedInTest):
-    fixtures = ['users.json', 'groups.json', 'invitations.json', 'memberships.json']
+    fixtures = ['users.json', 'groups.json',
+                'invitations.json', 'memberships.json']
 
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 200)
@@ -52,13 +53,16 @@ class VolleyballGroupTest(InvitationsLoggedInTest):
         self.assertContains(self.response, '16 members')
 
     def test_should_link_to_members(self):
-        self.assertContains(self.response, reverse('group_members', kwargs={'slug': 'volleyball'}))
+        self.assertContains(self.response, reverse(
+            'group_members', kwargs={'slug': 'volleyball'}))
 
-    #def test_should_link_to_requests(self):
+    # def test_should_link_to_requests(self):
     #    self.assertContains(self.response, reverse('group_requests', kwargs={'slug': 'volleyball'}))
 
     def test_should_link_to_invite(self):
-        self.assertContains(self.response, reverse('group_invite_member', kwargs={'slug': 'volleyball'}))
+        self.assertContains(self.response, reverse(
+            'group_invite_member', kwargs={'slug': 'volleyball'}))
+
 
 class VolleyballNoInvitationsTest(InvitationsLoggedInTest):
     fixtures = ['users.json', 'groups.json']
@@ -73,12 +77,14 @@ class VolleyballNoInvitationsTest(InvitationsLoggedInTest):
         self.assertContains(self.response, '0 invitations')
 
     def test_should_link_to_new_invite(self):
-        self.assertContains(self.response, reverse('group_invite_member', kwargs={'slug': 'volleyball'}))
+        self.assertContains(self.response, reverse(
+            'group_invite_member', kwargs={'slug': 'volleyball'}))
 
     def test_should_link_to_members(self):
-        self.assertContains(self.response, reverse('group_members', kwargs={'slug': 'volleyball'}))
+        self.assertContains(self.response, reverse(
+            'group_members', kwargs={'slug': 'volleyball'}))
 
-    #def test_should_link_to_requests(self):
+    # def test_should_link_to_requests(self):
     #    self.assertContains(self.response, reverse('group_requests', kwargs={'slug': 'volleyball'}))
 
     def test_total_count_members(self):

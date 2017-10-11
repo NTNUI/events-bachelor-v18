@@ -1,12 +1,11 @@
 {% load static %}
 
 {% block card %}
-    <div class="outer">
-        <img class="card-img" src="{% static 'img/ntnui2.svg' %}"/>
-        <div class="group-info">
-            <h2>{{name}}</h2>
-            <p>Role: Supreme leader</p>
-            <p>{{ description }}</p>
+    <a class="group-card" href={% url 'group_index' slug=group.slug %}>
+        <img class="group-card-image" src="{% static 'img/ntnui2.svg' %}"/>
+        <div class="group-card-info">
+            <h2>{{group.name}}</h2>
+            <p>{{ group.description }}</p>
         </div>
-    </div>
+    </a>
 {% endblock %}

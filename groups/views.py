@@ -1,13 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from .models import SportsGroup, Membership, Invitation
 from .forms import NewInvitationForm, SettingsForm
 
 
 @login_required
-def group_index(slug):
-    return redirect('group_members', slug=slug)
+def group_index(request, slug):
+    group = get_object_or_404(SportsGroup, slug=slug)
+    return render(request, 'groups/info.html', {
+        'group': group,
+        'slug': slug,
+        'active': 'about'
+    })
 
 
 @login_required
@@ -23,7 +28,6 @@ def members(request, slug):
         'slug': slug,
         'active_tab': 'members',
         'active': 'members'
-
     })
 
 
@@ -95,7 +99,8 @@ def list_groups(request):
     for membership in list(Membership.objects.filter(person=request.user)):
         myGroups.append(membership.group)
 
-    allGroups = SportsGroup.objects.exclude(id__in=map(lambda x: x.id, myGroups))
+    allGroups = SportsGroup.objects.exclude(
+        id__in=map(lambda x: x.id, myGroups))
 
     return render(request, 'groups/list_groups.html', {
         'myGroups': myGroups,
