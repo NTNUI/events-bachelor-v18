@@ -7,7 +7,7 @@ from ntnui.models import User
 
 class GroupMembersLoggedOutTest(TestCase):
     def setUp(self):
-        url = reverse('group_members')
+        url = reverse('group_members', kwargs={'slug': 'volleyball'})
         self.response = self.client.get(url)
 
     def test_status_code(self):
