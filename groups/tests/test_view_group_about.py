@@ -44,7 +44,8 @@ class VolleyballGroupTest(GroupAboutLoggedInTest):
 
     def test_has_description(self):
         self.assertContains(self.response, 'About NTNUI Volleyball')
-        self.assertContains(self.response, 'NTNUI Volleyball is one of the largest groups within NTNUI')
+        self.assertContains(
+            self.response, 'NTNUI Volleyball is one of the largest groups within NTNUI')
 
     def test_total_count_board_members(self):
         self.assertContains(self.response, '<div class="group-member-name"', 3)

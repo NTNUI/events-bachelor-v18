@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
-from .models import SportsGroup, Membership, Invitation, Board
+from .models import SportsGroup, Membership, Invitation
 from .forms import NewInvitationForm, SettingsForm
+
 
 @login_required
 def group_index(request, slug):
