@@ -1,5 +1,10 @@
 {% extends 'forms/forms_list_base.html' %}
 
+{% block stylesheet %}
+	<link rel="stylesheet" href="{% static css/groups.css}">
+	<link rel="stylesheet" href="{% static css/forms.css}">
+{% endblock %}
+
 {% block table_content %}
 	<div class="forms-header">
 		<div class="forms-header-title">Title</div>
