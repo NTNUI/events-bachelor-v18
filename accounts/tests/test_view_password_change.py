@@ -1,6 +1,6 @@
 from django.urls import reverse
 from django.test import TestCase
-from ntnui.models import User
+from ..models import User
 
 
 class LoginRequiredPasswordChangeTests(TestCase):

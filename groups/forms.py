@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import validate_email
-from ntnui.models import User
+from accounts.models import User
 from .models import SportsGroup, Invitation, Membership
 
 
