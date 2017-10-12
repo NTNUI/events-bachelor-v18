@@ -1,0 +1,18 @@
+{% extends 'forms/forms_base.html' %}
+
+{% block group_content %}
+  <div class="content-table form-table">
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="form-title h1">
+          StyreskifteGreier.no
+      </div>
+
+      {{ form }}
+
+      <div class="form-body">
+        <button type="submit" class="form-save-btn btn btn-success">Submit form</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}
