@@ -23,7 +23,8 @@ class Board(models.Model):
         settings.AUTH_USER_MODEL,  related_name='board_vp')
     cashier = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='board_cashier')
-    sports_group = models.OneToOneField(SportsGroup, on_delete=models.CASCADE)
+    sports_group = models.OneToOneField(
+        SportsGroup, on_delete=models.CASCADE)
 
     def __str__(self):
         return "Board of NTNUI {}".format(self.sports_group.name)
