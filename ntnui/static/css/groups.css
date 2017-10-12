@@ -301,3 +301,7 @@ a:hover {
 .group-table-description {
   padding: 32px;
 }
+
+.form-control{
+  border-radius: 0;
+}

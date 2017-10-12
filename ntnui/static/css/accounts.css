@@ -1,16 +1,27 @@
 body {
-  background-color: #fafafa;
+    background-color: #fafafa;
 }
 
 .logo-container {
-  height: 100px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
-
 .logo {
-  width: 100px;
+    width: 100px;
+}
+
+.card{
+    border-radius: .15rem;
+}
+
+.form-control{
+    border-radius: 0;
+}
+
+.btn{
+    border-radius: .15rem;
 }
