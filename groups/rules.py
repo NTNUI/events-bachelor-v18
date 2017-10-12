@@ -29,7 +29,8 @@ def is_group_vp(user, group):
 def is_user_cashier(user, group):
     return group.board.cashier == user
 
-
+add_perm('groups.can_see_board', is_group_member)
+add_perm('groups.can_see_forms', is_group_member)
 add_perm('groups.can_see_members', is_group_board_member)
 add_perm('groups.can_see_invitations', is_group_board_member)
 add_perm('groups.can_invite_member', is_group_leader | is_group_vp)
