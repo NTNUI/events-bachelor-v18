@@ -14,14 +14,14 @@ body {
     width: 100px;
 }
 
-.card{
-    border-radius: .15rem;
+.card {
+    border-radius: 0.15rem;
 }
 
-.form-control{
+.form-control {
     border-radius: 0;
 }
 
-.btn{
-    border-radius: .15rem;
+.btn {
+    border-radius: 0.15rem;
 }

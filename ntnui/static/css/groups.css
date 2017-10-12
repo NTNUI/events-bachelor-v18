@@ -1,92 +1,92 @@
 body {
-  background-color: #f1f1f1;
+    background-color: #f1f1f1;
 }
 
 .header {
-  width: 790px;
-  margin-top: 32px;
-  margin-bottom: 32px;
+    width: 790px;
+    margin-top: 32px;
+    margin-bottom: 32px;
 }
 
 .header-jumbo {
-  width: 790px;
-  height: 260px;
-  position: relative;
-  color: white;
+    width: 790px;
+    height: 260px;
+    position: relative;
+    color: white;
 }
 
 .group-name {
-  color: white;
-  font-size: 24px;
-  position: absolute;
-  left: 0;
-  bottom: 16px;
-  padding: 8px 24px;
-  background-color: black;
+    color: white;
+    font-size: 24px;
+    position: absolute;
+    left: 0;
+    bottom: 16px;
+    padding: 8px 24px;
+    background-color: black;
 }
 
 .jumbo-background {
-  position: absolute;
-  left: 0;
-  top: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
 .top-menu {
-  background: white;
-  height: 52px;
-  border: 1px solid #dfdfdf;
-  box-sizing: border-box;
+    background: white;
+    height: 52px;
+    border: 1px solid #dfdfdf;
+    box-sizing: border-box;
 }
 
 .top-menu ul {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  list-style-type: none;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    list-style-type: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 a {
-  color: black;
+    color: black;
 }
 
 a:hover {
-  text-decoration: none;
-  color: black;
+    text-decoration: none;
+    color: black;
 }
 
 .top-menu-list a {
-  height: 52px;
-  width: 160px;
-  display: block;
-  padding-top: 14px;
-  box-sizing: border-box;
-  text-align: center;
+    height: 52px;
+    width: 160px;
+    display: block;
+    padding-top: 14px;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .vert-divider {
-  width: 1px;
-  height: 24px;
-  background-color: #979797;
+    width: 1px;
+    height: 24px;
+    background-color: #979797;
 }
 
 .top-menu-list a:hover {
-  color: #017402;
-  border-bottom: 4px solid #017402;
-  opacity: 0.8;
+    color: #017402;
+    border-bottom: 4px solid #017402;
+    opacity: 0.8;
 }
 
 .active-item {
-  border-bottom: 4px solid #017402;
+    border-bottom: 4px solid #017402;
 }
 
 .top-menu-list li:nth-child(2) {
 }
 
 .no-border {
-  border-right: none;
+    border-right: none;
 }
 
 /**
@@ -94,127 +94,127 @@ a:hover {
  */
 
 .content-table {
-  width: 790px;
-  min-height: 100px;
-  background-color: white;
-  border: 1px solid #dfdfdf;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 32px;
+    width: 790px;
+    min-height: 100px;
+    background-color: white;
+    border: 1px solid #dfdfdf;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 32px;
 }
 
 .members-list-header {
-  width: 100%;
-  border-bottom: 1px solid #979797;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  display: flex;
-  height: 60px;
-  box-sizing: border-box;
+    width: 100%;
+    border-bottom: 1px solid #979797;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    display: flex;
+    height: 60px;
+    box-sizing: border-box;
 }
 
 .total-tab-active {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .total-tab {
-  font-weight: lighter;
+    font-weight: lighter;
 }
 
 .search-input {
-  width: 300px;
+    width: 300px;
 }
 
 .members-list {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .group-table-row {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  height: 48px;
-  box-sizing: border-box;
-  padding: 0 16px;
-  border-bottom: 1px solid #f0f0f0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 48px;
+    box-sizing: border-box;
+    padding: 0 16px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .members-header {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  height: 48px;
-  box-sizing: border-box;
-  padding: 0 16px;
-  border-bottom: 1px solid #f0f0f0;
-  font-weight: bold;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 48px;
+    box-sizing: border-box;
+    padding: 0 16px;
+    border-bottom: 1px solid #f0f0f0;
+    font-weight: bold;
 }
 
 .group-member-name-header {
-  width: 200px;
+    width: 200px;
 }
 
 .group-member-phone-header {
-  width: 150px;
+    width: 150px;
 }
 
 .group-member-email-header {
-  width: 300px;
+    width: 300px;
 }
 
 .group-member-paid-header {
-  width: 40px;
+    width: 40px;
 }
 
 .group-member-name {
-  width: 200px;
+    width: 200px;
 }
 
 .group-member-phone {
-  width: 150px;
+    width: 150px;
 }
 
 .group-member-email {
-  width: 300px;
+    width: 300px;
 }
 
 .group-member-paid {
-  text-align: center;
-  width: 40px;
+    text-align: center;
+    width: 40px;
 }
 
 .add-new-member {
-  width: 100%;
-  font-weight: lighter;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  height: 48px;
-  box-sizing: border-box;
-  padding: 0 16px;
-  border-bottom: 1px solid #f0f0f0;
+    width: 100%;
+    font-weight: lighter;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 48px;
+    box-sizing: border-box;
+    padding: 0 16px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .add-new-member:hover {
-  background-color: #f0f0f0;
+    background-color: #f0f0f0;
 }
 
 .add-new-button {
-  background-color: #ffffff;
-  border-radius: 4px;
-  text-align: center;
-  color: #d0d0d0;
-  width: 32px;
-  border: 1px solid #d0d0d0;
-  margin-right: 16px;
+    background-color: #ffffff;
+    border-radius: 4px;
+    text-align: center;
+    color: #d0d0d0;
+    width: 32px;
+    border: 1px solid #d0d0d0;
+    margin-right: 16px;
 }
 
 /**
@@ -222,12 +222,12 @@ a:hover {
  */
 
 .invite-member-form {
-  width: 100%;
-  padding: 16px;
+    width: 100%;
+    padding: 16px;
 }
 
 .invite-member-form h2 {
-  padding: 16px 0;
+    padding: 16px 0;
 }
 
 /**
@@ -235,12 +235,12 @@ a:hover {
 */
 
 .btn-withdraw {
-  border-radius: 4px;
-  background: transparent;
-  border: 1px solid #d0d0d0;
-  text-transform: uppercase;
-  font-size: 12px;
-  padding: 4px 8px;
+    border-radius: 4px;
+    background: transparent;
+    border: 1px solid #d0d0d0;
+    text-transform: uppercase;
+    font-size: 12px;
+    padding: 4px 8px;
 }
 
 /**
@@ -248,60 +248,60 @@ a:hover {
  */
 
 .group-settings {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  height: 48px;
-  box-sizing: border-box;
-  padding: 0 16px 0 16px;
-  border-bottom: 1px solid #f0f0f0;
-  cursor: pointer;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    box-sizing: border-box;
+    padding: 0 16px 0 16px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
 }
 
 .group-settings:active {
-  opacity: 0.6;
+    opacity: 0.6;
 }
 
 .group-settings-right {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  height: 64px;
-  box-sizing: border-box;
-  padding: 32px;
-  border-bottom: 1px solid #f0f0f0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    height: 64px;
+    box-sizing: border-box;
+    padding: 32px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .group-settings-header {
-  text-align: center;
-  padding: 8px 8px;
-  border-bottom: 1px solid #f0f0f0;
-  font-weight: bold;
+    text-align: center;
+    padding: 8px 8px;
+    border-bottom: 1px solid #f0f0f0;
+    font-weight: bold;
 }
 
 .group-settings-public-name {
 }
 
 .group-settings-public-check {
-  text-align: right;
-  padding-left: 1em;
-  padding-right: 1em;
+    text-align: right;
+    padding-left: 1em;
+    padding-right: 1em;
 }
 
 .group-settings-save-btn {
-  width: 25%;
-  text-align: center;
-  cursor: pointer;
+    width: 25%;
+    text-align: center;
+    cursor: pointer;
 }
 
 .group-table-description {
-  padding: 32px;
+    padding: 32px;
 }
 
-.form-control{
-  border-radius: 0;
+.form-control {
+    border-radius: 0;
 }
