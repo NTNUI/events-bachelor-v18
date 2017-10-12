@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'ntnui',
     'widget_tweaks',
     'accounts',
-    'django_nose'
+    'django_nose',
+    'rules.apps.AutodiscoverRulesConfig',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,11 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'rules.permissions.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 WSGI_APPLICATION = 'ntnui.wsgi.application'
 

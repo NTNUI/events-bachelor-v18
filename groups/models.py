@@ -35,6 +35,7 @@ class Membership(models.Model):
     group = models.ForeignKey(SportsGroup, on_delete=models.CASCADE)
     date_joined = models.DateField()
     paid = models.BooleanField(default=False)
+    in_board = models.BooleanField(default=False)
 
 
 class Invitation(models.Model):

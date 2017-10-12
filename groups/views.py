@@ -8,6 +8,7 @@ from .forms import NewInvitationForm, SettingsForm
 @login_required
 def group_index(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
+    print('CAN SEE MEMBERS:', request.user.has_perm('groups.can_see_members', group))
     return render(request, 'groups/info.html', {
         'group': group,
         'slug': slug,
