@@ -1,4 +1,4 @@
-from ntnui.models import User
+from .models import User
 from django.contrib.auth.forms import UserCreationForm
 
 

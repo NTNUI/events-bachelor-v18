@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.urls import resolve
-from ntnui.models import User
+from ..models import User
 
 from ..views import signup
 from ..forms import SignUpForm

@@ -2,7 +2,7 @@ from groups import views as group_views
 from django.core.urlresolvers import reverse
 from django.urls import resolve
 from django.test import TestCase
-from ntnui.models import User
+from accounts.models import User
 
 
 class InvitationsLoggedOutTest(TestCase):
