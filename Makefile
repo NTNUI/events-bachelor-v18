@@ -1,8 +1,12 @@
 rasmus:
 	python manage.py runserver 0.0.0.0:3000
 
-runenv:
+envrun:
 	python3 manage.py runserver 0.0.0.0:8000
+
+envstyle:
+	autopep8 --in-place --recursive --max-line-length=100 accounts forms groups ntnui
+	prospector --uses django --max-line-length=100
 
 start:
 	docker-compose up web
