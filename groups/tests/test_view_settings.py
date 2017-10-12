@@ -33,7 +33,6 @@ class NoGroupTest(SettingsLoggedInTest):
         self.assertEquals(self.response.status_code, 404)
 
 
-
 class VolleyballGroupTest(SettingsLoggedInTest):
     fixtures = ['users.json', 'groups.json']
 

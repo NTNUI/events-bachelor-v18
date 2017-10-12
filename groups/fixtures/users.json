@@ -1,6 +1,6 @@
 [
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 1,
     "fields": {
       "password": "pbkdf2_sha256$36000$qiPRGynUtAH1$7LNTkGEEH4m2jODEihPUsZJm6Q520N1fueY5c8PvD7o=",
@@ -18,7 +18,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 9,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -36,7 +36,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 10,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -54,7 +54,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 11,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -72,7 +72,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 12,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -90,7 +90,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 13,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -108,7 +108,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 14,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -126,7 +126,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 15,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -144,7 +144,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 16,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -162,7 +162,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 17,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -180,7 +180,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 18,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -198,7 +198,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 19,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -216,7 +216,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 20,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -234,7 +234,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 21,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -252,7 +252,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 22,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -270,7 +270,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 23,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -288,7 +288,7 @@
     }
   },
   {
-    "model": "ntnui.user",
+    "model": "accounts.user",
     "pk": 24,
     "fields": {
       "password": "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",

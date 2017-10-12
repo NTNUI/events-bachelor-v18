@@ -12,7 +12,9 @@ before_script:
   - docker-compose up --build -d
 
 script:
-  - docker-compose run web python3 ./manage.py test
+  - make style
+  - make test
+  - make browser-tests
 
 after_script:
   - docker-compose down

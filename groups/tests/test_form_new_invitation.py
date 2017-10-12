@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.utils.timezone import localtime, now
 from ..forms import NewInvitationForm
-from ntnui.models import User
+from accounts.models import User
 from ..models import SportsGroup, Invitation
 
 

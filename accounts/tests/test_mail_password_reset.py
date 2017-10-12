@@ -1,16 +1,19 @@
 from django.core import mail
 from django.urls import reverse
 from django.test import TestCase
-from ntnui.models import User
+from ..models import User
+
 
 class PasswordResetMailTests(TestCase):
     def setUp(self):
         User.objects.create_user(email='john@doe.com', password='123')
-        self.response = self.client.post(reverse('password_reset'), { 'email': 'john@doe.com' })
+        self.response = self.client.post(reverse('password_reset'), {
+                                         'email': 'john@doe.com'})
         self.email = mail.outbox[0]
 
     def test_email_subject(self):
-        self.assertEqual('[NTNUI] Password change requested', self.email.subject)
+        self.assertEqual('[NTNUI] Password change requested',
+                         self.email.subject)
 
     def test_email_body(self):
         context = self.response.context
@@ -25,4 +28,4 @@ class PasswordResetMailTests(TestCase):
         self.assertIn('john@doe.com', self.email.body)
 
     def test_email_to(self):
-        self.assertEqual(['john@doe.com',], self.email.to)
+        self.assertEqual(['john@doe.com', ], self.email.to)

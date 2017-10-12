@@ -1,8 +1,6 @@
 version: '3'
 
 services:
-    #db:
-  #  image: postgres
   web:
     build: .
     command: python3 manage.py runserver 0.0.0.0:8000
@@ -10,5 +8,40 @@ services:
       - .:/code
     ports:
       - "8000:8000"
-    #depends_on:
-    #  - db
+    expose:
+      - "8000"
+
+  tester:
+    build: .
+    volumes:
+      - .:/code
+    ports:
+       - "63000-64000:63000-64000"
+    expose:
+      - "8000"
+    links:
+      - selenium
+
+  selenium:
+    image: selenium/hub
+    container_name: selenium
+    ports:
+      - "4444:4444"
+    expose:
+      - "4444"
+
+  chrome:
+    image: selenium/node-chrome
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=selenium
+      - HUB_PORT_4444_TCP_PORT=4444
+    depends_on:
+      - selenium
+
+  firefox:
+    image: selenium/node-firefox
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=selenium
+      - HUB_PORT_4444_TCP_PORT=4444
+    depends_on:
+      - selenium

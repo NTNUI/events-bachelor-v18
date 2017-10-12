@@ -4,7 +4,35 @@
     "pk": 1,
     "fields": {
       "name": "NTNUI Volleyball",
-      "slug": "volleyball"
+      "slug": "volleyball",
+      "description": "NTNUI Volleyball is one of the largest groups within NTNUI and consists of over 200 members. The club is run for and by students and all work within the club is done on voluntary basis. NTNUI Volleyball consist of 16 teams from the Elite level to the third division and you are welcome whether you have been playing for years, or are completely new to the sport."
+    }
+  },
+  {
+    "model": "groups.sportsgroup",
+    "pk": 2,
+    "fields": {
+      "name": "NTNUI Friidrett",
+      "slug": "friidrett",
+      "description": "Vi kaller oss friidrett, men egentlig s\u00e5 driver vi bare med l\u00f8ping ;PPppP"
+    }
+  },
+  {
+    "model": "groups.sportsgroup",
+    "pk": 3,
+    "fields": {
+      "name": "NTNUI Koiene",
+      "slug": "koiene",
+      "description": "Try our cabins, they are the best!"
+    }
+  },
+  {
+    "model": "groups.sportsgroup",
+    "pk": 4,
+    "fields": {
+      "name": "NTNUI Calisthenics",
+      "slug": "calisthenics",
+      "description": "MUSCLE-UPS!!"
     }
   }
 ]

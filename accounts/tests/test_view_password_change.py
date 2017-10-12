@@ -1,6 +1,7 @@
 from django.urls import reverse
 from django.test import TestCase
-from ntnui.models import User
+from ..models import User
+
 
 class LoginRequiredPasswordChangeTests(TestCase):
     def test_protected_redirection(self):
@@ -9,12 +10,15 @@ class LoginRequiredPasswordChangeTests(TestCase):
         response = self.client.get(url)
         self.assertRedirects(response, f'{login_url}?next={url}')
 
+
 class PasswordChangeTestCase(TestCase):
     def setUp(self, data={}):
-        self.user = User.objects.create_user(email='john@doe.com', password='old_password')
+        self.user = User.objects.create_user(
+            email='john@doe.com', password='old_password')
         self.url = reverse('password_change')
         self.client.login(email='john@doe.com', password='old_password')
         self.response = self.client.post(self.url, data)
+
 
 class SuccessfulPasswordChangeTests(PasswordChangeTestCase):
     def setUp(self):

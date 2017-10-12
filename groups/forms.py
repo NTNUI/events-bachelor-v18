@@ -1,8 +1,8 @@
 from django import forms
-from .models import Invitation
 from django.core.validators import validate_email
-from ntnui.models import User
+from accounts.models import User
 from .models import SportsGroup, Invitation, Membership
+
 
 class NewInvitationForm(forms.Form):
     email = forms.CharField(max_length=100, validators=[validate_email])
@@ -19,18 +19,20 @@ class NewInvitationForm(forms.Form):
     def validate_not_already_invited(self):
         # check if we find the user, and he is a member
         try:
-            invitation = Invitation.objects.get(person=self.user, group=self.group)
+            invitation = Invitation.objects.get(
+                person=self.user, group=self.group)
             raise forms.ValidationError('This user is already invited.')
         except Invitation.DoesNotExist:
             return
 
     def validate_not_already_member(self):
         try:
-            membership = Membership.objects.get(person=self.user, group=self.group)
-            raise forms.ValidationError('This user is already a member of this group.')
+            membership = Membership.objects.get(
+                person=self.user, group=self.group)
+            raise forms.ValidationError(
+                'This user is already a member of this group.')
         except Membership.DoesNotExist:
             return
-
 
     def validate_group(self):
         try:
@@ -59,7 +61,8 @@ class NewInvitationForm(forms.Form):
             self.validate_not_already_member()
         except User.DoesNotExist:
             # Raise exception if email is not in use
-            raise forms.ValidationError('This email address is not connected to a user.')
+            raise forms.ValidationError(
+                'This email address is not connected to a user.')
 
     def save(self):
         return Invitation.objects.create(person=self.user, group=self.group)

@@ -8,7 +8,8 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.forms import SetPasswordForm
-from ntnui.models import User
+from ..models import User
+
 
 class PasswordResetTests(TestCase):
     def setUp(self):
@@ -34,6 +35,7 @@ class PasswordResetTests(TestCase):
         self.assertContains(self.response, '<input', 2)
         self.assertContains(self.response, 'type="email"', 1)
 
+
 class SuccessfulPasswordResetTests(TestCase):
     def setUp(self):
         email = 'john@doe.com'
@@ -49,10 +51,12 @@ class SuccessfulPasswordResetTests(TestCase):
     def test_send_password_reset_email(self):
         self.assertEqual(1, len(mail.outbox))
 
+
 class InvalidPasswordResetTests(TestCase):
     def setUp(self):
         url = reverse('password_reset')
-        self.response = self.client.post(url, {'email': 'donotexist@email.com'})
+        self.response = self.client.post(
+            url, {'email': 'donotexist@email.com'})
 
     def test_redirection(self):
         """Even invalid emails in the database should redirect
@@ -64,6 +68,7 @@ class InvalidPasswordResetTests(TestCase):
     def test_no_reset_email_sent(self):
         self.assertEqual(0, len(mail.outbox))
 
+
 class PasswordResetDoneTests(TestCase):
     def setUp(self):
         url = reverse('password_reset_done')
@@ -74,11 +79,14 @@ class PasswordResetDoneTests(TestCase):
 
     def test_view_function(self):
         view = resolve('/reset/done/')
-        self.assertEquals(view.func.view_class, auth_views.PasswordResetDoneView)
+        self.assertEquals(view.func.view_class,
+                          auth_views.PasswordResetDoneView)
+
 
 class PasswordResetConfirmTests(TestCase):
     def setUp(self):
-        user = User.objects.create_user(email='john@doe.com', password='123abcdef')
+        user = User.objects.create_user(
+            email='john@doe.com', password='123abcdef')
 
         """
         Create a valid password reset token based on how django creates the token internally:
@@ -87,15 +95,18 @@ class PasswordResetConfirmTests(TestCase):
         self.uid = urlsafe_base64_encode(force_bytes(user.pk)).decode()
         self.token = default_token_generator.make_token(user)
 
-        url = reverse('password_reset_confirm', kwargs={'uidb64': self.uid, 'token': self.token})
+        url = reverse('password_reset_confirm', kwargs={
+                      'uidb64': self.uid, 'token': self.token})
         self.response = self.client.get(url, follow=True)
 
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 200)
 
     def test_view_function(self):
-        view = resolve('/reset/{uidb64}/{token}/'.format(uidb64=self.uid, token=self.token))
-        self.assertEquals(view.func.view_class, auth_views.PasswordResetConfirmView)
+        view = resolve(
+            '/reset/{uidb64}/{token}/'.format(uidb64=self.uid, token=self.token))
+        self.assertEquals(view.func.view_class,
+                          auth_views.PasswordResetConfirmView)
 
     def test_csrf(self):
         self.assertContains(self.response, 'csrfmiddlewaretoken')
@@ -120,4 +131,5 @@ class PasswordResetCompleteTests(TestCase):
 
     def test_view_function(self):
         view = resolve('/reset/complete/')
-        self.assertEquals(view.func.view_class, auth_views.PasswordResetCompleteView)
+        self.assertEquals(view.func.view_class,
+                          auth_views.PasswordResetCompleteView)
