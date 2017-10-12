@@ -1,9 +1,4 @@
-<<<<<<< HEAD
 from django.conf.urls import include, url
-=======
-
-from django.conf.urls import url
->>>>>>> 31e71f404e6dc8f9e8bffafed346d4eb310433cd
 from . import views
 
 urlpatterns = [
