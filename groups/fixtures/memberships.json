@@ -183,7 +183,95 @@
             "group": 2,
             "date_joined": "2017-10-05",
             "paid": false,
+            "in_board": true
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 18,
+        "fields": {
+            "person": 15,
+            "group": 2,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "in_board": true
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 19,
+        "fields": {
+            "person": 14,
+            "group": 2,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "in_board": true
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 20,
+        "fields": {
+            "person": 18,
+            "group": 3,
+            "date_joined": "2017-10-12",
+            "paid": false,
             "in_board": false
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 21,
+        "fields": {
+            "person": 19,
+            "group": 3,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "in_board": false
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 22,
+        "fields": {
+            "person": 20,
+            "group": 3,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "in_board": false
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 23,
+        "fields": {
+            "person": 24,
+            "group": 4,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "in_board": true
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 24,
+        "fields": {
+            "person": 23,
+            "group": 4,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "in_board": true
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 25,
+        "fields": {
+            "person": 18,
+            "group": 4,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "in_board": true
         }
     }
 ]

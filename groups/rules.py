@@ -22,7 +22,7 @@ def is_group_leader(user, group):
 
 @predicate
 def is_group_vp(user, group):
-    return group.board.vp == user
+    return group.board.vice_president == user
 
 
 @predicate

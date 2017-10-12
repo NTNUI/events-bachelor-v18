@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from rules.contrib.views import permission_required
 from .models import SportsGroup, Membership, Invitation
 from .forms import NewInvitationForm, SettingsForm
+from .helpers import get_group_role
 
 
 def get_group_by_slug(request, slug):
@@ -13,6 +14,7 @@ def get_group_by_slug(request, slug):
 def get_base_group_info(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
     return {
+        'role': get_group_role(request.user, group),
         'group': group,
         'slug': slug,
         'show_board': request.user.has_perm('groups.can_see_board', group),
