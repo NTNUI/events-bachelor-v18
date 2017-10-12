@@ -1,0 +1,24 @@
+{% extends 'groups/group_members_base.html' %}
+
+{% block table_content %}
+    <div class="members-header">
+      <div class="group-member-name-header">Name</div>
+      <div class="group-member-phone-header">Phone</div>
+      <div class="group-member-email-header">E-mail</div>
+      <div class="group-member-paid-header"></div>
+    </div>
+
+    <a href="{% url 'group_invite_member' slug=slug %}" class="add-new-member">
+      <div class="add-new-button">+</div>
+      <div class="add-new-text">Invite new member</div>
+    </a>
+
+    {% for invitation in invitations %}
+    <div class="group-table-row">
+      <div class="group-member-name">{{ invitation.person.first_name }} {{ invitation.person.last_name }}</div>
+      <div class="group-member-phone">{{ invitation.person.phone }}</div>
+      <div class="group-member-email">{{ invitation.person.email }}</div>
+      <div class="group-member-paid"><input type="submit" value="Withdraw" class="btn-withdraw" /></div>
+    </div>
+    {% endfor %}
+{% endblock %}

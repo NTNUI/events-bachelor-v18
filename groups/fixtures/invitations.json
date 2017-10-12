@@ -1,0 +1,11 @@
+[
+  {
+    "model": "groups.invitation",
+    "pk": 1,
+    "fields": {
+      "person": 19,
+      "group": 1,
+      "date_issued": "2017-10-02"
+    }
+  }
+]

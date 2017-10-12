@@ -1,0 +1,12 @@
+[
+  {
+    "model": "groups.board",
+    "pk": 1,
+    "fields": {
+      "president": 9,
+      "vice_president": 10,
+      "cashier": 11,
+      "sports_group": 1
+    }
+  }
+]

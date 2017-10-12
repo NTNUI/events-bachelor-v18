@@ -1,0 +1,69 @@
+body {
+  background-color: #f1f1f1;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: black;
+  text-decoration: none;
+}
+
+.group-no-groups-info {
+  margin-top: 16px;
+  color: #222;
+}
+
+.list-groups {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+
+.group-header {
+  margin-top: 32px;
+  text-transform: uppercase;
+  color: green;
+  font-size: 24px;
+}
+
+.group-card {
+  padding: 16px 32px;
+  box-sizing: border-box;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(50, 50, 93, .1);
+  display: flex;
+  flex-direction: row;
+  border: solid 1px #dfdfdf;
+  width: 100%;
+  min-height: 132px;
+  margin-top: 16px;
+}
+
+.group-card:hover {
+  opacity: 0.8;
+}
+
+.group-card-image {
+  min-width: 100px;
+  width: 100px;
+  height: 100px;
+}
+
+.group-card-info {
+  color: black;
+  padding-left: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.group-info h2 {
+  color: #008000;
+}
+
+.group-info p {
+  margin: 0;
+}
