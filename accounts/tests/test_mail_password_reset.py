@@ -1,7 +1,7 @@
 from django.core import mail
 from django.urls import reverse
 from django.test import TestCase
-from ntnui.models import User
+from ..models import User
 
 
 class PasswordResetMailTests(TestCase):
