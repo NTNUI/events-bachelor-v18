@@ -3,7 +3,7 @@ from ntnui.tests.browser.lib.browser_test_case import ChromeTestCase, FirefoxTes
 from ntnui.tests.browser.lib.helpers import login_user
 from selenium.webdriver.support.wait import WebDriverWait
 from groups.models import Invitation, SportsGroup
-from ntnui.models import User
+from accounts.models import User
 
 
 def invite_success(cls, browser):
