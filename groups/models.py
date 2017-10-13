@@ -37,6 +37,7 @@ class Membership(models.Model):
     date_joined = models.DateField()
     paid = models.BooleanField(default=False)
     in_board = models.BooleanField(default=False)
+    role = models.CharField(max_length=30)
 
 
 class Invitation(models.Model):

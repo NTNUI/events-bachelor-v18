@@ -40,14 +40,30 @@ def get_base_members_info(request, slug):
 
 @login_required
 def group_index(request, slug):
+    base_info = get_base_group_info(request, slug)
+    group = base_info['group']
+    board_members = []
+    if request.user.has_perm('groups.can_see_board'):
+        board_members = set(group.membership_set.filter(in_board=True))
+        core = [
+            ['President', group.board.president],
+            ['Vice President', group.board.vice_president],
+            ['Cashier', group.board.cashier]
+        ]
+        board_core = []
+        for person in core:
+            membership = group.membership_set.get(person=person[1])
+            board_members.remove(membership)
+            board_core.append({'membership': membership, 'role': person[0]})
     return render(request, 'groups/info.html', {
-        **get_base_group_info(request, slug),
-        'active': 'about'
+        **base_info,
+        'active': 'about',
+        'board_core': board_core,
+        'board_members': board_members,
     })
 
 
 @login_required
-@permission_required('groups.can_see_members', fn=get_group_by_slug)
 def members(request, slug):
     return render(request, 'groups/members.html', {
         **get_base_members_info(request, slug),

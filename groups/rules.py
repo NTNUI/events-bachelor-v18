@@ -17,12 +17,18 @@ def is_group_board_member(user, group):
 
 @predicate
 def is_group_leader(user, group):
-    return group.board.president == user
+    try:
+        return group.board.president == user
+    except:
+        return False
 
 
 @predicate
 def is_group_vp(user, group):
-    return group.board.vice_president == user
+    try:
+        return group.board.vice_president == user
+    except:
+        return False
 
 
 @predicate

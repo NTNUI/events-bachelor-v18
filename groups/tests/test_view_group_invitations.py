@@ -37,7 +37,7 @@ class NoGroupTest(InvitationsLoggedInTest):
 
 class VolleyballGroupTest(InvitationsLoggedInTest):
     fixtures = ['users.json', 'groups.json',
-                'invitations.json', 'memberships.json']
+                'invitations.json', 'memberships.json', 'boards.json']
 
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 200)
