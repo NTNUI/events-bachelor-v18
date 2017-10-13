@@ -1,19 +1,25 @@
 {% extends 'groups/group_base.html' %}
 
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" href="{% static 'css/groups.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/forms.css' %}" />
+{% endblock %}
 
 {% block group_content %}
 
-	<div class="content-table">
-		<div class="forms-list-header">
-			<a href="{% url 'forms_list' slug=slug %}"
-				class="forms-name-header">Forms</a>
-			<input class="search-input form-control" type="text" placeholder="Search forms" disabled />
-		</div>
-
-		<div class="forms-list">
-			{% block table_content %}
-			{% endblock %}
-		</div>
+<div class="content-table">
+	<div class="forms-list-header">
+		<a href="{% url 'forms_list' slug=slug %}"
+			class="forms-name-header">Forms</a>
+		<input class="search-input form-control" type="text" placeholder="Search forms" disabled />
 	</div>
 
-{% endblock %}
+	<div class="forms-list">
+    {% block table_content %}
+    {% endblock %}
+	</div>
+</div>
+
+{% endblock group_content %}

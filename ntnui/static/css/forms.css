@@ -13,6 +13,26 @@
    box-sizing: border-box;
  }
 
+ .forms-list {
+   width: 100%;
+   align-items: center;
+   justify-content: space-between;
+   padding: 0 16px;
+   display: flex;
+   height: 60px;
+   box-sizing: border-box;
+ }
+
+ .form-list-entry {
+   width: 100%;
+   align-items: center;
+   justify-content: space-between;
+   padding: 0 16px;
+   display: flex;
+   height: 60px;
+   box-sizing: border-box;
+ }
+
  .total-tab-active {
    font-weight: bold;
  }
