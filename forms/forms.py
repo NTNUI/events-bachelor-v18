@@ -20,7 +20,17 @@ class BaseForm(forms.Form):
 
 
 class BoardChangeForm(BaseForm):
-    email = forms.CharField(max_length=100, validators=[validate_email])
+    leader_email = forms.CharField(max_length=100, validators=[validate_email])
+    leader_first_name = forms.CharField(max_length=100, disabled=True, required=False)
+    leader_last_name = forms.CharField(max_length=100, disabled=True, required=False)
+
+    second_leader_email = forms.CharField(max_length=100, validators=[validate_email])
+    second_leader_first_name = forms.CharField(max_length=100, disabled=True, required=False)
+    second_leader_last_name = forms.CharField(max_length=100, disabled=True, required=False)
+
+    treasurer_email = forms.CharField(max_length=100, validators=[validate_email])
+    treasurer_first_name = forms.CharField(max_length=100, disabled=True, required=False)
+    treasurer_last_name = forms.CharField(max_length=100, disabled=True, required=False)
 
     def __init__(self, *args, **kwargs):
         super(BoardChangeForm, self).__init__(*args, **kwargs)

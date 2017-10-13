@@ -1,11 +1,18 @@
 {% extends 'forms/forms_base.html' %}
 
+{% load static %}
+
+{%  block extendscript %}
+  <script type="text/javascript">window.slug="{{ slug }}";</script>
+  <script type="text/javascript" src="{% static 'js/forms.js' %}"></script>
+{%  endblock %}
+
 {% block group_content %}
   <div class="content-table form-table">
     <form method="post" novalidate>
       {% csrf_token %}
       <div class="form-title h1">
-          StyreskifteGreier.no
+          Board Change Form
       </div>
 
       {{ form }}
