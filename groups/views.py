@@ -8,10 +8,13 @@ from .forms import NewInvitationForm, SettingsForm
 @login_required
 def group_index(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
+    joined = request.user in group.members.all()
+
     return render(request, 'groups/info.html', {
         'group': group,
         'slug': slug,
-        'active': 'about'
+        'active': 'about',
+        'joined': joined
     })
 
 
@@ -106,3 +109,7 @@ def list_groups(request):
         'myGroups': myGroups,
         'allGroups': allGroups,
     })
+
+@login_required
+def join_open_group(request):
+    pass

@@ -17,11 +17,3 @@ body {
 .card {
     border-radius: 0.15rem;
 }
-
-.form-control {
-    border-radius: 0;
-}
-
-.btn {
-    border-radius: 0.15rem;
-}
