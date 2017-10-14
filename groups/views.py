@@ -35,6 +35,7 @@ def get_base_members_info(request, slug):
         'members': members,
         'total_members': len(members),
         'active': 'members',
+        'show_new_invitation': request.user.has_perm('groups.can_invite_member', base_info['group']),
     }
 
 

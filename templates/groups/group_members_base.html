@@ -1,6 +1,7 @@
 {% extends 'groups/group_base.html' %}
 
 {% block group_content %}
+  {% if show_members %}
   <div class="content-table">
     <div class="members-list-header">
       <a href="{% url 'group_members' slug=slug %}" class="{% if active_tab == 'members' %}total-tab-active{% else %}total-tab{% endif %}">{{ total_members }} member{{ total_members|pluralize }}</a>
@@ -13,4 +14,11 @@
       {% block table_content %}
       {% endblock %}
     </div>
+  {% else %}
+  <div class="content-table">
+    <div class="group-table-description">
+      You do not have permissions to see this.
+    </div>
+  </div>
+  {% endif %}
 {% endblock %}

@@ -1,6 +1,8 @@
 {% extends 'groups/group_members_base.html' %}
 
 {% block table_content %}
+
+{% if show_members %}
   <div class="members-header">
     <div class="group-member-name-header">Name</div>
     <div class="group-member-phone-header">Phone</div>
@@ -8,10 +10,12 @@
     <div class="group-member-paid-header">Betalt</div>
   </div>
 
+  {% if show_new_invitation %}
   <a href="{% url 'group_invite_member' slug=slug %}" class="add-new-member">
     <div class="add-new-button">+</div>
     <div class="add-new-text">Invite new member</div>
   </a>
+  {% endif %}
 
   {% for member in members %}
   <div class="group-table-row">
@@ -23,4 +27,6 @@
     </div>
   </div>
   {% endfor %}
+{% endif %}
+
 {% endblock %}
