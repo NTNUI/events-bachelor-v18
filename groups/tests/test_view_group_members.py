@@ -39,14 +39,17 @@ class GroupMembersLoggedOutTest(TestCase):
 class GroupMembersLoggedInTest(TestCase):
     fixtures = ['users.json']
 
-    def setUp(self):
-        self.login_response = self.client.login(email=TEST_USERS['vp'],
+    def setUp(self, email):
+        self.login_response = self.client.login(email=email,
                                                 password=TEST_PASSWORD)
         url = reverse('group_members', kwargs={'slug': 'volleyball'})
         self.response = self.client.get(url)
 
 
 class NoGroupTest(GroupMembersLoggedInTest):
+
+    def setUp(self):
+        super(NoGroupTest, self).setUp(TEST_USERS['not_member'])
 
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 404)
@@ -59,6 +62,9 @@ class NoGroupTest(GroupMembersLoggedInTest):
 class VolleyballGroupTest(GroupMembersLoggedInTest):
     fixtures = ['users.json', 'groups.json',
                 'memberships.json', 'invitations.json', 'boards.json']
+
+    def setUp(self):
+        super(VolleyballGroupTest, self).setUp(TEST_USERS['president'])
 
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 200)
@@ -76,9 +82,6 @@ class VolleyballGroupTest(GroupMembersLoggedInTest):
         self.assertContains(self.response, reverse(
             'group_invitations', kwargs={'slug': 'volleyball'}))
 
-    # def test_should_link_to_requests(self):
-    #    self.assertContains(self.response, reverse('group_requests', kwargs={'slug': 'volleyball'}))
-
     def test_should_link_to_new_invite(self):
         self.assertContains(self.response, reverse(
             'group_invite_member', kwargs={'slug': 'volleyball'}))
@@ -86,6 +89,9 @@ class VolleyballGroupTest(GroupMembersLoggedInTest):
 
 class VolleyballNoMembersTest(GroupMembersLoggedInTest):
     fixtures = ['users.json', 'groups.json', 'boards.json']
+
+    def setUp(self):
+        super(VolleyballNoMembersTest, self).setUp(TEST_USERS['president'])
 
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 200)
@@ -102,9 +108,6 @@ class VolleyballNoMembersTest(GroupMembersLoggedInTest):
     def test_should_link_to_inviations(self):
         self.assertContains(self.response, reverse(
             'group_invitations', kwargs={'slug': 'volleyball'}))
-
-    # def test_should_link_to_requests(self):
-    #    self.assertContains(self.response, reverse('group_requests', kwargs={'slug': 'volleyball'}))
 
     def test_should_link_to_new_invite(self):
         self.assertContains(self.response, reverse(
