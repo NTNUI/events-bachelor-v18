@@ -22,59 +22,109 @@ package groups.tests.mixins.general <<Rectangle>> {
   }
 }
 
-package groups.tests.mixins.view_members <<Rectangle>> {
-  abstract class VM_CoreBoardMemberMixin {
-    + test_contains_all_members()
-    + test_total_count_members()
-    + test_total_count_invitations()
-    + test_should_link_to_invitations()
-    + test_view_function()
+package Members {
+
+  package groups.tests.mixins.view_members <<Rectangle>> {
+    abstract class VM_CoreBoardMemberMixin {
+      + test_contains_all_members()
+      + test_total_count_members()
+      + test_total_count_invitations()
+      + test_should_link_to_invitations()
+      + test_view_function()
+    }
+    abstract class VM_BoardMemberMixin {
+      + test_should_not_link_to_new_invite()
+    }
+    abstract class VM_GroupLeaderMixin {
+      + test_should_link_to_new_invite()
+    }
   }
-  abstract class VM_BoardMemberMixin {
-    + test_should_not_link_to_new_invite()
+
+
+  package groups.test_view_group_members <<Rectangle>> {
+    class MemberTest {
+      + test_contains_no_members()
+      + test_shoud_contain_members_error_text()
+      + test_should_not_link_to_inviations()
+      + test_should_not_link_to_new_invite()
+    }
+    class CashierTest
+    class VicePresidentTest
+    class PresidentTest
+    class GroupMembersLoggedOutTest {
+      + test_status_code_302()
+    }
+    class NoGroupTest {
+      + test_status_code_404()
+      + test_view_function()
+    }
   }
-  abstract class VM_GroupLeaderMixin {
-    + test_should_link_to_new_invite()
-  }
+
+  LoggedInMixin *-- GroupMixin
+  GroupMixin *-- CoreBoardMemberMixin
+  GroupMixin *-- GeneralMemberMixin
+  CoreBoardMemberMixin *-- GeneralBoardMemberMixin
+  CoreBoardMemberMixin *-- GeneralGroupLeaderMixin
+  VM_CoreBoardMemberMixin *-- VM_BoardMemberMixin
+  GeneralBoardMemberMixin *-- VM_BoardMemberMixin
+  VM_CoreBoardMemberMixin *-- VM_GroupLeaderMixin
+  GeneralGroupLeaderMixin *-- VM_GroupLeaderMixin
+  GeneralMemberMixin *-- MemberTest
+  VM_BoardMemberMixin *-- CashierTest
+  VM_GroupLeaderMixin *-- VicePresidentTest
+  VM_GroupLeaderMixin *-- PresidentTest
+
 }
 
+package AboutGroup {
+  package groups.tests.mixins.view_about <<Rectangle>> {
+    class VA_CoreMemberMixin {
+      - test_view_function()
+      - test_has_description()
+      - test_has_total_count_board_members()
+    }
+  }
 
-package groups.test_view_group_members <<Rectangle>> {
-  class MemberTest {
-    + test_contains_no_members()
-    + test_shoud_contain_members_error_text()
-    + test_should_not_link_to_inviations()
-    + test_should_not_link_to_new_invite()
-  }
-  class CashierTest
-  class VicePresidentTest
-  class PresidentTest
-  class GroupMembersLoggedOutTest {
-    + test_status_code_302()
-  }
-  class NoGroupTest {
-    + test_status_code_404()
-    + test_view_function()
+
+  package groups.tests.test_view_group_about <<Rectangle>> {
+    class GroupAboutLoggedOutTest {
+      + test_status_code()
+    }
+    'class GroupAboutLoggedInTest
+    'class AboutNoGroupTest {
+    ' + test_status_code()
+    '  + test_view_function()
+    '}
+    'class VolleyballGroupTest {
+    '  + test_status_code()
+    '  + test_has_description()
+    '  + test_total_count_board_members()
+    '}
+    together {
+      class ViewAboutMemberTest
+      class ViewAboutCashierTest
+      class ViewAboutVicePresidentTest
+      class ViewAboutPresidentTest
+    }
+
   }
 }
+''
+GeneralMemberMixin *- ViewAboutMemberTest
+VA_CoreMemberMixin *-- ViewAboutMemberTest
 
-package django.test <<Rectangle>> {
-  abstract class TestCase
-}
+GeneralBoardMemberMixin *--- ViewAboutCashierTest
+VA_CoreMemberMixin *- ViewAboutCashierTest
 
-LoggedInMixin *-- GroupMixin
-GroupMixin *-- CoreBoardMemberMixin
-GroupMixin *-- GeneralMemberMixin
-CoreBoardMemberMixin *-- GeneralBoardMemberMixin
-CoreBoardMemberMixin *-- GeneralGroupLeaderMixin
-VM_CoreBoardMemberMixin *-- VM_BoardMemberMixin
-GeneralBoardMemberMixin *-- VM_BoardMemberMixin
-VM_CoreBoardMemberMixin *-- VM_GroupLeaderMixin
-GeneralGroupLeaderMixin *-- VM_GroupLeaderMixin
-GeneralMemberMixin *-- MemberTest
-VM_BoardMemberMixin *-- CashierTest
-VM_GroupLeaderMixin *-- VicePresidentTest
-VM_GroupLeaderMixin *-- PresidentTest
+GeneralGroupLeaderMixin *-- ViewAboutVicePresidentTest
+VA_CoreMemberMixin *-- ViewAboutVicePresidentTest
+
+GeneralGroupLeaderMixin *-- ViewAboutPresidentTest
+VA_CoreMemberMixin *-- ViewAboutPresidentTest
+
+
+'GroupAboutLoggedInTest *-- VolleyballGroupTest
+'GroupAboutLoggedInTest *-- AboutNoGroupTest
 
 
 
