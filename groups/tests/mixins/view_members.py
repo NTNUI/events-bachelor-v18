@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.urls import resolve
+from groups import views as group_views
 from .general import (
     CoreBoardMemberMixin,
     GeneralBoardMemberMixin,
