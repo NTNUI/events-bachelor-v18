@@ -45,6 +45,7 @@ class LoggedInMixin(object):
         url = reverse('group_members', kwargs={'slug': 'volleyball'})
         self.response = self.client.get(url)
 
+
 class GroupMixin(LoggedInMixin):
     fixtures = ['users.json', 'groups.json',
                 'memberships.json', 'invitations.json', 'boards.json']
@@ -59,6 +60,7 @@ class GroupMixin(LoggedInMixin):
         self.assertContains(self.response, reverse(
             'group_index', kwargs={'slug': 'volleyball'}))
 
+
 class NoGroupTest(LoggedInMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['not_member']
@@ -71,16 +73,18 @@ class NoGroupTest(LoggedInMixin, TestCase):
         view = resolve('/groups/volleyball/members')
         self.assertEquals(view.func, group_views.members)
 
-class MemberGroupTest(GroupMixin, TestCase):
+
+class MemberTest(GroupMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['member']
-        super(MemberGroupTest, self).setUp()
+        super(MemberTest, self).setUp()
 
     def test_contains_no_members(self):
         self.assertContains(self.response, '<div class="group-table-row"', 0)
 
     def test_shoud_contain_text_about_why_you_cant_see_members(self):
-        self.assertContains(self.response, 'You do not have permissions to see this.')
+        self.assertContains(
+            self.response, 'You do not have permissions to see this.')
 
     def test_should_not_link_to_inviations(self):
         self.assertNotContains(self.response, reverse(
@@ -109,6 +113,15 @@ class BoardMemberMixin(GroupMixin):
             'group_invitations', kwargs={'slug': 'volleyball'}))
 
 
+class GroupLeaderMixin(BoardMemberMixin):
+    def setUp(self):
+        super(GroupLeaderMixin, self).setUp()
+
+    def test_should_link_to_new_invite(self):
+        self.assertContains(self.response, reverse(
+            'group_invite_member', kwargs={'slug': 'volleyball'}))
+
+
 class CashierTest(BoardMemberMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['cashier']
@@ -119,51 +132,13 @@ class CashierTest(BoardMemberMixin, TestCase):
             'group_invite_member', kwargs={'slug': 'volleyball'}))
 
 
-class VicePresidentTest(BoardMemberMixin, TestCase):
+class VicePresidentTest(GroupLeaderMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['vice_president']
         super(VicePresidentTest, self).setUp()
 
-    def test_should_link_to_new_invite(self):
-        self.assertContains(self.response, reverse(
-            'group_invite_member', kwargs={'slug': 'volleyball'}))
 
-
-class PresidentTest(BoardMemberMixin, TestCase):
+class PresidentTest(GroupLeaderMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['president']
         super(PresidentTest, self).setUp()
-
-    def test_should_link_to_new_invite(self):
-        self.assertContains(self.response, reverse(
-            'group_invite_member', kwargs={'slug': 'volleyball'}))
-
-
-
-"""
-class VolleyballNoMembersTest(GroupMembersLoggedInTest):
-    fixtures = ['users.json', 'groups.json', 'boards.json']
-
-    def setUp(self):
-        super(VolleyballNoMembersTest, self).setUp(TEST_USERS['president'])
-
-    def test_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
-
-    def test_contains_members(self):
-        self.assertContains(self.response, '<div class="group-table-row"', 0)
-
-    def test_total_count_members(self):
-        self.assertContains(self.response, '0 members')
-
-    def test_total_count_invitations(self):
-        self.assertContains(self.response, '0 invitations')
-
-    def test_should_link_to_inviations(self):
-        self.assertContains(self.response, reverse(
-            'group_invitations', kwargs={'slug': 'volleyball'}))
-
-    def test_should_link_to_new_invite(self):
-        self.assertContains(self.response, reverse(
-            'group_invite_member', kwargs={'slug': 'volleyball'}))
-"""
