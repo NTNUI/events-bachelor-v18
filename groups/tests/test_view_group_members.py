@@ -6,13 +6,17 @@ from accounts.models import User
 
 from .mixins.general import (
     LoggedInMixin,
-    GroupMixin,
-    GeneralBoardMemberMixin,
-    GeneralGroupLeaderMixin,
     GeneralMemberMixin,
     CoreBoardMemberMixin,
     TEST_USERS,
 )
+
+from .mixins.view_members import (
+    VM_CoreBoardMemberMixin,
+    VM_BoardMemberMixin,
+    VM_GroupLeaderMixin,
+)
+
 
 
 class GroupMembersLoggedOutTest(TestCase):
@@ -20,7 +24,7 @@ class GroupMembersLoggedOutTest(TestCase):
         url = reverse('group_members', kwargs={'slug': 'volleyball'})
         self.response = self.client.get(url)
 
-    def test_status_code(self):
+    def test_status_code_302(self):
         """Test that view is login protected."""
         self.assertEquals(self.response.status_code, 302)
 
@@ -28,6 +32,7 @@ class GroupMembersLoggedOutTest(TestCase):
 class NoGroupTest(LoggedInMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['not_member']
+        self.url_name = 'group_members'
         super(NoGroupTest, self).setUp()
 
     def test_status_code(self):
@@ -41,6 +46,7 @@ class NoGroupTest(LoggedInMixin, TestCase):
 class MemberTest(GeneralMemberMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['member']
+        self.url_name = 'group_members'
         super(MemberTest, self).setUp()
 
     def test_contains_no_members(self):
@@ -59,55 +65,23 @@ class MemberTest(GeneralMemberMixin, TestCase):
             'group_invite_member', kwargs={'slug': 'volleyball'}))
 
 
-class MP_CoreBoardMemberMixin(object):
-    #def setUp(self):
-    #    super(MP_CoreBoardMemberMixin, self).setUp()
 
-    def test_contains_all_members(self):
-        self.assertContains(self.response, '<div class="group-table-row"', 16)
-
-    def test_total_count_members(self):
-        self.assertContains(self.response, '16 members')
-
-    def test_total_count_invitations(self):
-        self.assertContains(self.response, '1 invitation')
-
-    def test_should_link_to_inviations(self):
-        self.assertContains(self.response, reverse(
-            'group_invitations', kwargs={'slug': 'volleyball'}))
-
-
-class MP_BoardMemberMixin(MP_CoreBoardMemberMixin, GeneralBoardMemberMixin):
-    def setUp(self):
-        super(MP_BoardMemberMixin, self).setUp()
-
-    def test_should_not_link_to_new_invite(self):
-        self.assertNotContains(self.response, reverse(
-            'group_invite_member', kwargs={'slug': 'volleyball'}))
-
-
-class MP_GroupLeaderMixin(MP_CoreBoardMemberMixin, GeneralGroupLeaderMixin):
-    def setUp(self):
-        super(MP_GroupLeaderMixin, self).setUp()
-
-    def test_should_link_to_new_invite(self):
-        self.assertContains(self.response, reverse(
-            'group_invite_member', kwargs={'slug': 'volleyball'}))
-
-
-class CashierTest(MP_BoardMemberMixin, TestCase):
+class CashierTest(VM_BoardMemberMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['cashier']
+        self.url_name = 'group_members'
         super(CashierTest, self).setUp()
 
 
-class VicePresidentTest(MP_GroupLeaderMixin, TestCase):
+class VicePresidentTest(VM_GroupLeaderMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['vice_president']
+        self.url_name = 'group_members'
         super(VicePresidentTest, self).setUp()
 
 
-class PresidentTest(MP_GroupLeaderMixin, TestCase):
+class PresidentTest(VM_GroupLeaderMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['president']
+        self.url_name = 'group_members'
         super(PresidentTest, self).setUp()

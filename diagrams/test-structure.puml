@@ -23,16 +23,17 @@ package groups.tests.mixins.general <<Rectangle>> {
 }
 
 package groups.tests.mixins.view_members <<Rectangle>> {
-  abstract class MP_CoreBoardMemberMixin {
+  abstract class VM_CoreBoardMemberMixin {
     + test_contains_all_members()
     + test_total_count_members()
     + test_total_count_invitations()
     + test_should_link_to_invitations()
+    + test_view_function()
   }
-  abstract class MP_BoardMemberMixin {
+  abstract class VM_BoardMemberMixin {
     + test_should_not_link_to_new_invite()
   }
-  abstract class MP_GroupLeaderMixin {
+  abstract class VM_GroupLeaderMixin {
     + test_should_link_to_new_invite()
   }
 }
@@ -48,24 +49,33 @@ package groups.test_view_group_members <<Rectangle>> {
   class CashierTest
   class VicePresidentTest
   class PresidentTest
+  class GroupMembersLoggedOutTest {
+    + test_status_code_302()
+  }
+  class NoGroupTest {
+    + test_status_code_404()
+    + test_view_function()
+  }
 }
 
+package django.test <<Rectangle>> {
+  abstract class TestCase
+}
 
 LoggedInMixin *-- GroupMixin
 GroupMixin *-- CoreBoardMemberMixin
 GroupMixin *-- GeneralMemberMixin
 CoreBoardMemberMixin *-- GeneralBoardMemberMixin
 CoreBoardMemberMixin *-- GeneralGroupLeaderMixin
-
-'CoreBoardMemberMixin *-- MP_CoreBoardMemberMixin
-MP_CoreBoardMemberMixin *-- MP_BoardMemberMixin
-GeneralBoardMemberMixin *-- MP_BoardMemberMixin
-MP_CoreBoardMemberMixin *-- MP_GroupLeaderMixin
-GeneralGroupLeaderMixin *-- MP_GroupLeaderMixin
+VM_CoreBoardMemberMixin *-- VM_BoardMemberMixin
+GeneralBoardMemberMixin *-- VM_BoardMemberMixin
+VM_CoreBoardMemberMixin *-- VM_GroupLeaderMixin
+GeneralGroupLeaderMixin *-- VM_GroupLeaderMixin
 GeneralMemberMixin *-- MemberTest
-MP_BoardMemberMixin *-- CashierTest
-MP_GroupLeaderMixin *-- VicePresidentTest
-MP_GroupLeaderMixin *-- PresidentTest
+VM_BoardMemberMixin *-- CashierTest
+VM_GroupLeaderMixin *-- VicePresidentTest
+VM_GroupLeaderMixin *-- PresidentTest
+
 
 
 

@@ -27,9 +27,11 @@ class LoggedInMixin(object):
     def setUp(self):
         if not hasattr(self, 'email'):
             raise ValueError('Make sure to specify email in your test class')
+        if not hasattr(self, 'url_name'):
+            raise ValueError('Make sure to include url_name in your test class')
         self.login_response = self.client.login(email=self.email,
                                                 password=TEST_PASSWORD)
-        url = reverse('group_members', kwargs={'slug': 'volleyball'})
+        url = reverse(self.url_name, kwargs={'slug': 'volleyball'})
         self.response = self.client.get(url)
 
 
