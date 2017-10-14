@@ -90,16 +90,6 @@ package AboutGroup {
     class GroupAboutLoggedOutTest {
       + test_status_code()
     }
-    'class GroupAboutLoggedInTest
-    'class AboutNoGroupTest {
-    ' + test_status_code()
-    '  + test_view_function()
-    '}
-    'class VolleyballGroupTest {
-    '  + test_status_code()
-    '  + test_has_description()
-    '  + test_total_count_board_members()
-    '}
     together {
       class ViewAboutMemberTest
       class ViewAboutCashierTest
@@ -108,24 +98,64 @@ package AboutGroup {
     }
 
   }
+
+  GeneralMemberMixin *- ViewAboutMemberTest
+  VA_CoreMemberMixin *-- ViewAboutMemberTest
+
+  GeneralBoardMemberMixin *--- ViewAboutCashierTest
+  VA_CoreMemberMixin *- ViewAboutCashierTest
+
+  GeneralGroupLeaderMixin *-- ViewAboutVicePresidentTest
+  VA_CoreMemberMixin *-- ViewAboutVicePresidentTest
+
+  GeneralGroupLeaderMixin *-- ViewAboutPresidentTest
+  VA_CoreMemberMixin *-- ViewAboutPresidentTest
 }
-''
-GeneralMemberMixin *- ViewAboutMemberTest
-VA_CoreMemberMixin *-- ViewAboutMemberTest
 
-GeneralBoardMemberMixin *--- ViewAboutCashierTest
-VA_CoreMemberMixin *- ViewAboutCashierTest
+package Invitations {
+  package groups.tests.mixins.view_invitations <<Rectangle>> {
+    class VI_CoreBoardMemberMixin {
+      - test_view_function()
+      - test_contains_all_invitations()
+      - test_total_count_invitations()
+      - test_total_count_members()
+      - test_should_link_to_members()
+    }
+    class VI_BoardMemberMixin {
+      - test_should_not_link_to_new_invite()
+    }
+    class VI_GroupLeaderMixin {
+      - test_should_link_to_new_invite()
+    }
 
-GeneralGroupLeaderMixin *-- ViewAboutVicePresidentTest
-VA_CoreMemberMixin *-- ViewAboutVicePresidentTest
+    VI_CoreBoardMemberMixin *-- VI_BoardMemberMixin
+    VI_CoreBoardMemberMixin *-- VI_GroupLeaderMixin
+  }
 
-GeneralGroupLeaderMixin *-- ViewAboutPresidentTest
-VA_CoreMemberMixin *-- ViewAboutPresidentTest
+  package groups.tests.test_view_group_invitations <<Rectangle>> {
+    class GroupAboutLoggedOutTest {
+      + test_status_code()
+    }
 
+    class ViewInvitationMemberTest {
+      - test_view_function()
+      - test_should_contain_error_text()
+      - test_should_not_link_to_inviations()
+      - test_should_not_link_to_new_invite()
+    }
+    class ViewInvitationCashierTest
+    class ViewInvitationVicePresidentTest
+    class ViewInvitationPresidentTest
 
-'GroupAboutLoggedInTest *-- VolleyballGroupTest
-'GroupAboutLoggedInTest *-- AboutNoGroupTest
+    GeneralMemberMixin *-- ViewInvitationMemberTest
+    VI_BoardMemberMixin *-- ViewInvitationCashierTest
+    VI_GroupLeaderMixin *-- ViewInvitationVicePresidentTest
+    VI_GroupLeaderMixin *-- ViewInvitationPresidentTest
+  }
 
+  GeneralBoardMemberMixin *-- VI_CoreBoardMemberMixin
+  GeneralGroupLeaderMixin *-- VI_GroupLeaderMixin
+}
 
 
 

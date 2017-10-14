@@ -18,7 +18,6 @@ from .mixins.view_members import (
 )
 
 
-
 class GroupMembersLoggedOutTest(TestCase):
     def setUp(self):
         url = reverse('group_members', kwargs={'slug': 'volleyball'})
@@ -63,7 +62,6 @@ class MemberTest(GeneralMemberMixin, TestCase):
     def test_should_not_link_to_new_invite(self):
         self.assertNotContains(self.response, reverse(
             'group_invite_member', kwargs={'slug': 'volleyball'}))
-
 
 
 class CashierTest(VM_BoardMemberMixin, TestCase):
