@@ -8,10 +8,12 @@
       <div class="group-member-paid-header"></div>
     </div>
 
+    {% if show_new_invitation %}
     <a href="{% url 'group_invite_member' slug=slug %}" class="add-new-member">
       <div class="add-new-button">+</div>
       <div class="add-new-text">Invite new member</div>
     </a>
+    {% endif %}
 
     {% for invitation in invitations %}
     <div class="group-table-row">
