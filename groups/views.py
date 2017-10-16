@@ -88,7 +88,7 @@ def invite_member(request, slug):
     group = groups[0]
 
     if request.method == 'POST':
-        form = NewInvitationForm(request.POST, slug=slug)
+        form = NewInvitationForm(request.POST, slug=slug, user=request.user)
         if form.is_valid():
             invitation = form.save()
             # TODO: change to redirect to 'group_invitations'
