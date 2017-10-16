@@ -1,7 +1,7 @@
 from django.conf import settings
 
 
-def login_user(cls, browser, username = settings.DUMMY_USER_EMAIL, password = settings.DUMMY_USER_PASSWORD):
+def login_user(cls, browser, username=settings.DUMMY_USER_EMAIL, password=settings.DUMMY_USER_PASSWORD):
     browser.get(cls.server_url + '/login/')
     username_input = browser.find_element_by_name('username')
     username_input.send_keys(username)

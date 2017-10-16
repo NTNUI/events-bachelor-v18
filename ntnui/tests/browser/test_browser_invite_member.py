@@ -22,6 +22,7 @@ def invite_success(cls, browser):
     cls.assertEquals(invitations[0].person, meredith)
     cls.assertEquals(invitations[0].group, volleyball)
 
+
 LEADER_TODD_PACKER = 'todd.packer@online.com'
 DUMMY_PASSWORD = 'locoloco'
 
