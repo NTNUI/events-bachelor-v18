@@ -5,7 +5,6 @@ from accounts.models import User
 from ..models import SportsGroup, Invitation
 
 
-
 class InvitationFormTest(TestCase):
     fixtures = ['users.json', 'groups.json', 'boards.json',
                 'memberships.json', 'invitations.json']
@@ -13,7 +12,6 @@ class InvitationFormTest(TestCase):
     def setUp(self):
         self.USER_WITH_RIGHTS = User.objects.get(email='todd.packer@online.com')
         self.USER_WITHOUT_RIGHTS = User.objects.get(email='frankela@steinberg.org')
-
 
     def test_form_has_right_fields(self):
         form = NewInvitationForm(slug='volleyball', user=self.USER_WITH_RIGHTS)
