@@ -7,7 +7,7 @@
       <form method="POST">
         <p>Fill in the email of the person you want to invite to your group.</p>
         {% csrf_token %}
-        {{ form.as_p }}
+        {% include 'includes/form.html' %}
         <button type="submit" class="btn btn-primary">Invite person</button>
       </form>
     </div>
