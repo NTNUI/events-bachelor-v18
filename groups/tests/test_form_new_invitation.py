@@ -4,21 +4,24 @@ from ..forms import NewInvitationForm
 from accounts.models import User
 from ..models import SportsGroup, Invitation
 
-USER_WITH_RIGHTS = User.objects.get(email='todd.packer@online.com')
-USER_WITHOUT_RIGHTS = User.objects.get(email='frankela@steinberg.org')
 
 
 class InvitationFormTest(TestCase):
     fixtures = ['users.json', 'groups.json', 'boards.json',
                 'memberships.json', 'invitations.json']
 
+    def setUp(self):
+        self.USER_WITH_RIGHTS = User.objects.get(email='todd.packer@online.com')
+        self.USER_WITHOUT_RIGHTS = User.objects.get(email='frankela@steinberg.org')
+
+
     def test_form_has_right_fields(self):
-        form = NewInvitationForm(slug='volleyball', user=USER_WITH_RIGHTS)
+        form = NewInvitationForm(slug='volleyball', user=self.USER_WITH_RIGHTS)
         expected = ['email']
         self.assertSequenceEqual(expected, list(form.fields))
 
     def test_should_throw_if_no_group_slug(self):
-        form = NewInvitationForm(data={}, slug='', user=USER_WITH_RIGHTS)
+        form = NewInvitationForm(data={}, slug='', user=self.USER_WITH_RIGHTS)
         self.assertFalse(form.is_valid())
         self.assertTrue('Invalid group.' in form.non_field_errors())
 
@@ -29,14 +32,14 @@ class InvitationFormTest(TestCase):
 
     def test_should_throw_if_email_not_in_database(self):
         form = NewInvitationForm(
-            data={'email': 'random-email@random.com'}, slug='volleyball', user=USER_WITH_RIGHTS)
+            data={'email': 'random-email@random.com'}, slug='volleyball', user=self.USER_WITH_RIGHTS)
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['email'], [
                          'This email address is not connected to a user.'])
 
     def test_should_throw_if_email_is_already_member(self):
         form = NewInvitationForm(
-            data={'email': 'todd.packer@online.com'}, slug='volleyball', user=USER_WITH_RIGHTS)
+            data={'email': 'todd.packer@online.com'}, slug='volleyball', user=self.USER_WITH_RIGHTS)
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['email'], [
                          'This user is already a member of this group.'])
@@ -44,14 +47,14 @@ class InvitationFormTest(TestCase):
     def test_should_throw_if_email_is_already_invited(self):
         # We know that ryan.the.fireguy@hotmail.com is already invited
         form = NewInvitationForm(
-            data={'email': 'ryan.the.fireguy@hotmail.com'}, slug='volleyball', user=USER_WITH_RIGHTS)
+            data={'email': 'ryan.the.fireguy@hotmail.com'}, slug='volleyball', user=self.USER_WITH_RIGHTS)
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['email'], [
                          'This user is already invited.'])
 
     def test_should_create_a_new_invitation_on_save(self):
         form = NewInvitationForm(
-            data={'email': 'meredith.palmer@dundermifflin.com'}, slug='volleyball', user=USER_WITH_RIGHTS
+            data={'email': 'meredith.palmer@dundermifflin.com'}, slug='volleyball', user=self.USER_WITH_RIGHTS
         )
         self.assertTrue(form.is_valid())
         invitation = form.save()
@@ -63,7 +66,7 @@ class InvitationFormTest(TestCase):
 
     def test_should_throw_if_you_have_no_invite_rights(self):
         form = NewInvitationForm(
-            data={'email': 'meredith.palmer@dundermifflin.com'}, slug='volleyball', user=USER_WITHOUT_RIGHTS
+            data={'email': 'meredith.palmer@dundermifflin.com'}, slug='volleyball', user=self.USER_WITHOUT_RIGHTS
         )
         self.assertFalse(form.is_valid())
         self.assertTrue(form.non_field_errors(), ['You can not invite members.'])

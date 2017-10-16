@@ -1,4 +1,5 @@
 from rules import predicate, add_perm
+from .models import Membership
 
 
 @predicate
@@ -11,7 +12,7 @@ def is_group_board_member(user, group):
     try:
         membership = group.membership_set.get(person=user)
         return membership.in_board
-    except ValueError:
+    except Membership.DoesNotExist:
         return False
 
 
@@ -19,7 +20,7 @@ def is_group_board_member(user, group):
 def is_group_leader(user, group):
     try:
         return group.board.president == user
-    except ValueError:
+    except AttributeError:
         return False
 
 
@@ -27,7 +28,7 @@ def is_group_leader(user, group):
 def is_group_vp(user, group):
     try:
         return group.board.vice_president == user
-    except ValueError:
+    except AttributeError:
         return False
 
 
