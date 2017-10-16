@@ -2,26 +2,27 @@
 
 {% block all_members %}
 <div class="content-table">
-    <div class="members-list-header">
-      <div class="{% if active_tab == 'members' %}total-tab-active{% else %}total-tab{% endif %}">{{ total_members }} member{{ total_members|pluralize }}</div>
-      <input class="search-input form-control" type="text" placeholder="Search for group members" disabled />
-    </div>
-   <div class="members-header">
+  <div class="members-list-header">
+    <div class="{% if active_tab == 'members' %}total-tab-active{% else %}total-tab{% endif %}">{{ total_members }} member{{ total_members|pluralize }}</div>
+    <input class="search-input form-control" type="text" placeholder="Search for group members" disabled />
+  </div>
+  <div class="members-header">
     <div class="group-member-name-header">Name</div>
     <div class="group-member-phone-header">Phone</div>
     <div class="group-member-email-header">E-mail</div>
-    <div class="group-member-paid-header">Betalt</div>
+    <div class="group-member-name-header">Group</div>
+    <div class="group-member-name-header">Role</div>
   </div>
-
-  {% for member in members %}
-  <div class="group-table-row">
-    <div class="group-member-name">{{ member.person.first_name }} {{ member.person.last_name }}</div>
-    <div class="group-member-phone">{{ member.person.phone }}</div>
-    <div class="group-member-email">{{ member.person.email }}</div>
-    <div class="group-member-paid">
-      <input type="checkbox" value="" {% if member.paid %}checked{% endif %} disabled>
-    </div>
-  </div>
+  {% for user in users %}
+    {% if user.first_name %}
+      <div class="group-table-row">
+        <div class="group-member-name">{{ user.first_name }} {{ user.last_name }}</div>
+        <div class="group-member-phone">{{ user.phone }}</div>
+        <div class="group-member-email">{{ user.email }}</div>
+        <div class="group-member-name"></div>
+        <div class="group-member-name"></div>
+      </div>
+    {%  endif %}
   {% endfor %}
 </div>
 {% endblock %}
