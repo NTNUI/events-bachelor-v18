@@ -1,17 +1,20 @@
-{% extends 'groups/group_base.html' %}
+{% extends 'groups/group_members_base.html' %}
 
-{% block group_content %}
-  <div class="content-table">
-  <div class="invite-member-form">
-    <h2>Invite member</h2>
+{% block table_content %}
+  {% if show_new_invitation %}
+    <div class="invite-member-form">
+      <h2>Invite member to group</h2>
+      <form method="POST">
+        <p>Fill in the email of the person you want to invite to your group.</p>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Invite person</button>
+      </form>
+    </div>
+  {% else %}
+    <div class="group-table-description">
+      You do not have permission to view this page.
+    </div>
+  {% endif %}
 
-    <form method="POST">
-      <p>Fill in the email of the person you want to invite to your group.</p>
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">Invite person</button>
-    </form>
-  </div>
-
-  </div>
 {% endblock %}

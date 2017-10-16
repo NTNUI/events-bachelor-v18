@@ -98,8 +98,7 @@ def invite_member(request, slug):
 
     # render group form
     return render(request, 'groups/invite_member.html', {
-        'group': group,
-        'slug': slug,
+        **get_base_members_info(request, slug),
         'form': form,
         'active': 'members',
     })
