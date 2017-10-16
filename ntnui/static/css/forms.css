@@ -14,24 +14,26 @@
  }
 
  .forms-list {
-   width: 100%;
-   align-items: center;
-   justify-content: space-between;
-   padding: 0 16px;
    display: flex;
-   height: 60px;
-   box-sizing: border-box;
+   flex-direction: column;
+   width: 100%;
  }
 
- .form-list-entry {
+ .forms-table-row {
    width: 100%;
-   align-items: center;
-   justify-content: space-between;
-   padding: 0 16px;
    display: flex;
-   height: 60px;
+   flex-direction: row;
+   align-items: center;
+   justify-content: flex-start;
+   height: 48px;
    box-sizing: border-box;
+   padding: 0 16px;
+   border-bottom: 1px solid #f0f0f0;
  }
+
+ /**
+  * Remove these
+  */
 
  .total-tab-active {
    font-weight: bold;

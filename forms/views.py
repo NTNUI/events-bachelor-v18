@@ -8,7 +8,7 @@ from .models import FormDoc
 @login_required
 def list_forms(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
-    forms = FormDoc.objects
+    forms = FormDoc.objects.all()
     return render(request, 'forms/forms_list.html', {
         'group': group,
         'forms' : forms,
