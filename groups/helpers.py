@@ -1,5 +1,6 @@
 from .rules import is_group_leader, is_group_vp, is_group_board_member, is_group_member
 
+
 def get_group_role(user, group):
     if is_group_leader(user, group):
         return "President"

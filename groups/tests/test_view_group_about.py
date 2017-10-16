@@ -30,6 +30,7 @@ class ViewAboutMemberTest(GeneralMemberMixin, VA_CoreMemberMixin, TestCase):
         self.url_name = 'group_index'
         super(ViewAboutMemberTest, self).setUp()
 
+
 class ViewAboutCashierTest(GeneralBoardMemberMixin, VA_CoreMemberMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['cashier']

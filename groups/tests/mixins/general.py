@@ -21,6 +21,7 @@ TEST_USERS = {
 
 TEST_PASSWORD = 'locoloco'
 
+
 class LoggedInMixin(object):
     fixtures = ['users.json']
 

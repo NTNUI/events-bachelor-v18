@@ -19,9 +19,8 @@ class NewInvitationForm(forms.Form):
         # Validate that you can only submit this form as group leader or vp
         self.validate_user_can_invite_members()
 
-
     def validate_user_can_invite_members(self):
-        if self.inviter == None:
+        if self.inviter is None:
             self.add_error(None, "No user supplied.")
         elif not self.inviter.has_perm('groups.can_invite_member', self.get_group()):
             self.add_error(None, 'You can not invite members.')
@@ -43,7 +42,6 @@ class NewInvitationForm(forms.Form):
                 'This user is already a member of this group.')
         except Membership.DoesNotExist:
             return
-
 
     def validate_group(self):
         try:

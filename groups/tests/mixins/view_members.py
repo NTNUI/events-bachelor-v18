@@ -7,6 +7,7 @@ from .general import (
     GeneralGroupLeaderMixin,
 )
 
+
 class VM_CoreBoardMemberMixin(object):
 
     def test_contains_all_members(self):

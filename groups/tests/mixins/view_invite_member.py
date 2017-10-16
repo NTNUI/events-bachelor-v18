@@ -7,11 +7,13 @@ from .general import (
     GeneralGroupLeaderMixin,
 )
 
+
 class VIM_CoreBoardMemberMixin(object):
 
     def test_view_function(self):
         view = resolve('/groups/volleyball/members/invite')
         self.assertEquals(view.func, group_views.invite_member)
+
 
 class VIM_BoardMemberMixin(VIM_CoreBoardMemberMixin, GeneralBoardMemberMixin):
     def setUp(self):

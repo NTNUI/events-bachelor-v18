@@ -1,14 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
-from rules.contrib.views import permission_required
 from .models import SportsGroup, Membership, Invitation
 from .forms import NewInvitationForm, SettingsForm
 from .helpers import get_group_role
-
-
-def get_group_by_slug(request, slug):
-    return get_object_or_404(SportsGroup, slug=slug)
 
 
 def get_base_group_info(request, slug):
@@ -35,7 +30,8 @@ def get_base_members_info(request, slug):
         'members': members,
         'total_members': len(members),
         'active': 'members',
-        'show_new_invitation': request.user.has_perm('groups.can_invite_member', base_info['group']),
+        'show_new_invitation': request.user.has_perm(
+            'groups.can_invite_member', base_info['group']),
     }
 
 

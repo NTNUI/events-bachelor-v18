@@ -7,6 +7,7 @@ from .general import (
     GeneralGroupLeaderMixin,
 )
 
+
 class VI_CoreBoardMemberMixin(object):
 
     def test_view_function(self):
@@ -22,7 +23,6 @@ class VI_CoreBoardMemberMixin(object):
 
     def test_total_count_members(self):
         self.assertContains(self.response, '16 members')
-
 
     def test_should_link_to_members(self):
         self.assertContains(self.response, reverse(

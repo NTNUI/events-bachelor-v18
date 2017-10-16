@@ -7,6 +7,7 @@ from ..models import SportsGroup, Invitation
 USER_WITH_RIGHTS = User.objects.get(email='todd.packer@online.com')
 USER_WITHOUT_RIGHTS = User.objects.get(email='frankela@steinberg.org')
 
+
 class InvitationFormTest(TestCase):
     fixtures = ['users.json', 'groups.json', 'boards.json',
                 'memberships.json', 'invitations.json']
