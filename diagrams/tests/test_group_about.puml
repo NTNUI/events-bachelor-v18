@@ -1,0 +1,40 @@
+@startuml
+!include test_group_general.puml
+
+package AboutGroup {
+  package groups.tests.mixins.view_about <<Rectangle>> {
+    class VA_CoreMemberMixin {
+      - test_view_function()
+      - test_has_description()
+      - test_has_total_count_board_members()
+    }
+  }
+
+
+  package groups.tests.test_view_group_about <<Rectangle>> {
+    class GroupAboutLoggedOutTest {
+      + test_status_code()
+    }
+    together {
+      class ViewAboutMemberTest
+      class ViewAboutCashierTest
+      class ViewAboutVicePresidentTest
+      class ViewAboutPresidentTest
+    }
+
+  }
+
+  GeneralMemberMixin *- ViewAboutMemberTest
+  VA_CoreMemberMixin *-- ViewAboutMemberTest
+
+  GeneralBoardMemberMixin *--- ViewAboutCashierTest
+  VA_CoreMemberMixin *- ViewAboutCashierTest
+
+  GeneralGroupLeaderMixin *-- ViewAboutVicePresidentTest
+  VA_CoreMemberMixin *-- ViewAboutVicePresidentTest
+
+  GeneralGroupLeaderMixin *-- ViewAboutPresidentTest
+  VA_CoreMemberMixin *-- ViewAboutPresidentTest
+}
+
+@enduml

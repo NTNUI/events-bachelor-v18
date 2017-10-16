@@ -1,0 +1,51 @@
+@startuml
+!include test_group_general.puml
+
+
+package NewInvitation {
+  package groups.tests.mixins.view_new_invitation <<Rectangle>> {
+    class VNI_CoreBoardMemberMixin {
+      - test_view_function()
+      - test_should_link_to_invitations()
+    }
+    class VNI_BoardMemberMixin {
+      - test_should_contain_error_text()
+    }
+    class VNI_GroupLeaderMixin {
+      - test_should_contain_form_title()
+      - test_should_contain_form_email_input()
+      - test_should_contain_form_email_submit()
+    }
+
+    VNI_CoreBoardMemberMixin *-- VNI_BoardMemberMixin
+    VNI_CoreBoardMemberMixin *-- VNI_GroupLeaderMixin
+  }
+
+  package groups.tests.test_view_invite_member <<Rectangle>> {
+    class ViewNewInvitationLoggedOutTest {
+      + test_status_code()
+    }
+
+    class ViewNewInvitationMemberTest {
+      - test_view_function()
+      - test_should_contain_error_text()
+      - test_should_not_link_to_invitations()
+      - test_should_not_contain_form_title()
+      - test_should_not_contain_form_email_input()
+      - test_should_not_contain_form_email_submit()
+    }
+    class ViewNewInvitationCashierTest
+    class ViewNewInvitationVicePresidentTest
+    class ViewNewInvitationPresidentTest
+
+    GeneralMemberMixin *-- ViewNewInvitationMemberTest
+    VNI_BoardMemberMixin *-- ViewNewInvitationCashierTest
+    VNI_GroupLeaderMixin *-- ViewNewInvitationVicePresidentTest
+    VNI_GroupLeaderMixin *-- ViewNewInvitationPresidentTest
+  }
+
+  GeneralBoardMemberMixin *-- VNI_CoreBoardMemberMixin
+  GeneralGroupLeaderMixin *-- VNI_GroupLeaderMixin
+}
+
+@enduml
