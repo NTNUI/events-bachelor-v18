@@ -75,5 +75,3 @@ def group_name(request):
             }
 
         return JsonResponse(data)
-
-

@@ -1,6 +1,7 @@
 {% extends 'forms/forms_base.html' %}
 
 {% load static %}
+{% load form_template %}
 
 {%  block extendscript %}
   <script type="text/javascript">window.slug="{{ slug }}";</script>
@@ -11,14 +12,24 @@
   <div class="content-table form-table">
     <form method="post" novalidate>
       {% csrf_token %}
-      <div class="form-title h1">
-          Board Change Form
+      <div class="form-fill-header">
+        <div class="form-fill-title">Board Change Form</div>
+        <div class="group-name-class"></div>
+        <div class="form-fill-description"></div>
       </div>
 
-      {{ form }}
+      <div class="form-fill-body">
+        {% for field in form %}
+          {% if field.name|title %}
+            {{ field.name|title|safe}}
+          {% endif %}
+          <div class="form-fill-row">
+            <div class="form-fill-row-label">{{ field.name|name }}</div>
+            <div class="form-fill-row-input">{{field}}</div>
+          </div>
+        {% endfor %}
 
-      <div class="form-body">
-        <button type="submit" class="form-save-btn btn btn-success">Submit form</button>
+        <button type="submit" class="form-fill-save-btn btn btn-success">Submit form</button>
       </div>
     </form>
   </div>

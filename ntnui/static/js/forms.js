@@ -2,8 +2,16 @@ var isChanged = false;
 
 // Detect input fields changing
 $('input').change(function(e) {
+    isChanged = false;
+
+    $('*[id*=id_]:visible').each(function() {
+            if (this.value) {
+              isChanged = true;
+            }
+    });
+
     if (~e.target.name.indexOf("email")) {
-        var email = e.target.value.trim();
+        var email = e.target.value.trim().toLowerCase();
 
         $.ajax({
             url: '/ajax/validate_email/',
@@ -12,16 +20,14 @@ $('input').change(function(e) {
             },
             dataType: 'json',
             success: function (data) {
-                if (!data.error) {
-                    var id = e.target.id.replace('email', '');
-                    console.log(id + 'email');
-                    document.getElementById(id + 'email').value=email;
-                    document.getElementById(id + 'first_name').value=data.first_name;
-                    document.getElementById(id + 'last_name').value=data.last_name;
-                } else {
-                    document.getElementById(id + 'first_name').value='';
-                    document.getElementById(id + 'last_name').value='';
-                }
+              var id = e.target.id.replace('email', '');
+
+              if (!data.error) {
+                  document.getElementById(id + 'email').value=email;
+                  document.getElementById(id + 'name').value=data.first_name + " " + data.last_name;
+              } else {
+                  document.getElementById(id + 'name').value='';
+              }
             }
         });
     }});
@@ -43,7 +49,8 @@ $(document).ready( function () {
             dataType: 'json',
             success: function (data) {
                 if (!data.error) {
-                    document.getElementById('id_group').value = data.group;
+                    $('div.group-name-class').text("for " + data.group);
+                    //document.getElementById('id_group').value =
                 } else {
                     console.log("An Error Occurred");
                 }
@@ -68,4 +75,3 @@ window.onbeforeunload = function() {
 $('form').submit(function () {
     window.onbeforeunload = null;
 });
-

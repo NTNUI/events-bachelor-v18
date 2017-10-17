@@ -120,14 +120,14 @@
   * FILL FORM STYLE
   */
 
-.form-save-btn {
+.form-fill-save-btn {
   width: 25%;
   text-align: center;
   cursor: pointer;
   align-self: flex-end;
 }
 
-.form-body {
+.form-fill-body {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -137,10 +137,61 @@
   padding: 32px;
 }
 
-.form-title {
+.form-fill-header {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0.2em;
+}
+
+.form-fill-title {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.group-name-class {
+  font-size: 1.2em;
+  color: #666;
+}
+
+.form-fill-body p {
+    color:purple;
+}
+
+.form-fill-row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding-bottom: 0.5em;
+}
+
+.form-fill-row-title {
+  width: 100%;
+  border-top: 1px solid #CFE3DC;
+  padding-top: 0.25em;
+  padding-bottom: 0.5em;
+  text-align: center;
+  font-size: 1.2em;
+  color: #666;
+}
+
+.form-fill-row-label {
+  padding-left: 10px;
+  width: 25%;
+}
+
+.form-fill-row-input {
+  width: 75%;
+}
+
+.form-fill-row-input input {
+  width: 100%;
+  padding-right: 10px;
+}
+
+:disabled {
+  background-color: #EBEBE4;
 }
