@@ -298,5 +298,17 @@
       "in_board": true,
       "role": ""
     }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 26,
+    "fields": {
+      "person": 9,
+      "group": 2,
+      "date_joined": "2017-09-30",
+      "paid": false,
+      "in_board": false,
+      "role": "Member"
+    }
   }
 ]

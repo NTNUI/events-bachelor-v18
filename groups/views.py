@@ -2,16 +2,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from .models import SportsGroup, Membership, Invitation
-from .forms import NewInvitationForm, SettingsForm
+from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm
 from .helpers import get_group_role
 
 
 def get_base_group_info(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
+    joined = request.user in group.members.all()
     return {
         'role': get_group_role(request.user, group),
         'group': group,
         'slug': slug,
+        'active': 'about',
+        'joined': joined,
         'show_board': request.user.has_perm('groups.can_see_board', group),
         'show_members': request.user.has_perm('groups.can_see_members', group),
         'show_settings': request.user.has_perm('groups.can_see_settings', group),
@@ -37,6 +40,13 @@ def get_base_members_info(request, slug):
 
 @login_required
 def group_index(request, slug):
+    if request.method == 'POST':
+        form = JoinOpenGroupForm(slug=slug, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('group_index', slug=slug)
+
     base_info = get_base_group_info(request, slug)
     group = base_info['group']
     board_members = []
@@ -117,15 +127,14 @@ def settings(request, slug):
 
 @login_required
 def list_groups(request):
-    myGroups = []
-    allGroups = []
+    my_groups = []
     for membership in list(Membership.objects.filter(person=request.user)):
-        myGroups.append(membership.group)
+        my_groups.append(membership.group)
 
-    allGroups = SportsGroup.objects.exclude(
-        id__in=map(lambda x: x.id, myGroups))
+    all_groups = SportsGroup.objects.exclude(
+        id__in=map(lambda x: x.id, my_groups))
 
     return render(request, 'groups/list_groups.html', {
-        'myGroups': myGroups,
-        'allGroups': allGroups,
+        'my_groups': my_groups,
+        'all_groups': all_groups,
     })

@@ -41,7 +41,7 @@ class VolleyballGroupTest(SettingsLoggedInTest):
 
     def test_button_exists(self):
         self.assertContains(self.response, '<button type="submit"', 1)
-        self.assertContains(self.response, 'Change settings</button>', 1)
+        self.assertContains(self.response, 'Change settings', 1)
 
     def test_checkbox_exists(self):
         self.assertContains(self.response, '<input type="checkbox"', 1)

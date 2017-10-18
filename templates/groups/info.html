@@ -2,15 +2,22 @@
 
 {% block group_content %}
 
-<div class="content-table">
-  <div class="members-list-header">
-    About {{ group.name }}
-  </div>
+  <div class="content-table">
+    <div class="members-list-header">
+      About {{ group.name }}
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% if group.public %}
+          {% if joined == False %}
+            <button type="submit" class="btn btn-success">Join</button>
+          {% endif %}
+        {% endif %}
+      </form>
+    </div>
 
-  <div class="group-table-description">
-    {{ group.description }}
-  </div>
-
+    <div class="group-table-description">
+      {{ group.description }}
+    </div>
 </div>
 
 {% if show_board %}
@@ -43,5 +50,4 @@
 
 </div>
 {% endif %}
-
 {% endblock %}
