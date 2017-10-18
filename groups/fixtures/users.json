@@ -5,7 +5,7 @@
     "fields": {
       "password":
         "pbkdf2_sha256$36000$qiPRGynUtAH1$7LNTkGEEH4m2jODEihPUsZJm6Q520N1fueY5c8PvD7o=",
-      "last_login": "2017-10-18T08:25:39Z",
+      "last_login": "2017-10-18T08:36:41.588Z",
       "is_superuser": true,
       "email": "super@admin.com",
       "first_name": "Super",
@@ -317,6 +317,25 @@
       "date_joined": "2017-10-02T12:02:44.858Z",
       "is_active": true,
       "phone": "93882312",
+      "is_staff": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 25,
+    "fields": {
+      "password":
+        "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+      "last_login": "2017-10-18T08:36:55Z",
+      "is_superuser": false,
+      "email": "ola.nordmann@gmail.com",
+      "first_name": "Ola",
+      "last_name": "Nordmann",
+      "date_joined": "2017-10-18T08:37:08.471Z",
+      "is_active": true,
+      "phone": "11223344",
       "is_staff": false,
       "groups": [],
       "user_permissions": []
