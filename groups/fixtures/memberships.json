@@ -43,7 +43,7 @@
       "group": 1,
       "date_joined": "2017-09-30",
       "paid": false,
-      "in_board": true,
+      "in_board": false,
       "role": "Chief of Materials"
     }
   },
