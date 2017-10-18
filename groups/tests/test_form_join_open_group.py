@@ -17,7 +17,7 @@ class JoinOpenGroupFormTest(TestCase):
     def test_should_throw_if_no_group_slug(self):
         form = JoinOpenGroupForm(slug='', user=self.USER_IS_NOT_MEMBER)
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, ['Invalid group.', 'Group does not exist'])
+        self.assertEqual(form.errors, ['Invalid group.'])
 
     def test_should_throw_if_user_is_already_member(self):
         form = JoinOpenGroupForm(slug='friidrett', user=self.USER_IS_MEMBER)

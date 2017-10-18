@@ -16,8 +16,6 @@ def group_index(request, slug):
         if form.is_valid():
             form.save()
             return redirect('group_index', slug=slug)
-        else:
-            print('errors', form.errors)
 
     return render(request, 'groups/info.html', {
         'group': group,
@@ -117,9 +115,3 @@ def list_groups(request):
         'my_groups': my_groups,
         'all_groups': all_groups,
     })
-
-
-@login_required
-def join_open_group(request, slug):
-    print("OPENGROUPFORM", request.method)
-

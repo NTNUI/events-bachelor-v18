@@ -108,8 +108,9 @@ class JoinOpenGroupForm(object):
         self.slug = slug
         self.user = user
         self.errors = []
-        self.validate_group()
-        self.validate_group_is_public()
+        if self.validate_group():
+            self.validate_group_is_public()
+
         self.validate_not_already_member()
 
     def is_valid(self):
@@ -128,18 +129,14 @@ class JoinOpenGroupForm(object):
             self.errors.append('Invalid group.')
 
     def validate_group_is_public(self):
-        group = self.get_group()
-        if group == None:
-            self.errors.append('Group does not exist')
-        elif not group.public:
+        if not self.get_group().public:
             self.errors.append('Group is not public')
         else:
             return
 
     def validate_not_already_member(self):
         try:
-            m = Membership.objects.get(person=self.user, group=self.get_group())
-            print(m, m.person)
+            Membership.objects.get(person=self.user, group=self.get_group())
             self.errors.append("This user is already a member of this group.")
         except Membership.DoesNotExist:
             return
@@ -150,6 +147,5 @@ class JoinOpenGroupForm(object):
     def save(self):
         self.delete_invitation_if_exists()
         if self.is_valid():
-            print("JOIN GROUP")
             return Membership.objects.create(person=self.user, group=self.get_group())
 
