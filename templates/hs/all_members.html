@@ -1,5 +1,7 @@
 {% extends 'hs/hs_space.html' %}
 
+{% load hs_template %}
+
 {% block all_members %}
 <div class="content-table">
   <div class="members-list-header">
@@ -19,7 +21,9 @@
         <div class="group-member-name">{{ user.first_name }} {{ user.last_name }}</div>
         <div class="group-member-phone">{{ user.phone }}</div>
         <div class="group-member-email">{{ user.email }}</div>
-        <div class="group-member-name"></div>
+        <div class="group-member-name">
+          {{ groupDict|member:user}}
+        </div>
         <div class="group-member-phone"></div>
       </div>
     {%  endif %}

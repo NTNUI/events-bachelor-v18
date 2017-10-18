@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'ntnui',
     'widget_tweaks',
     'accounts',
-    'django_nose'
+    'django_nose',
+    'hs',
 ]
 
 MIDDLEWARE = [
