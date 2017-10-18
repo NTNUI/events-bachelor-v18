@@ -156,4 +156,3 @@ class JoinOpenGroupForm(object):
         self.delete_invitation_if_exists()
         if self.is_valid():
             return Membership.objects.create(person=self.user, group=self.get_group())
-
