@@ -27,7 +27,13 @@ def fill_form(request, slug):
 
         # check whether it's valid:
         if form.is_valid():
+            # If the form is valid perform the actions
+            form.perform_actions()
+
             return redirect('forms_list', slug=slug)
+        else:
+            print(form.errors)
+
 
     else:
         form = BoardChangeForm()
@@ -38,12 +44,14 @@ def fill_form(request, slug):
         'form': form
     })
 
+#
+# AJAX Spesific Methods
+#
 
 @login_required
 def validate_email(request):
     if request.method == "GET":
         email = request.GET.get('email', None)
-        print(email)
 
         try:
             user = User.objects.get(email=email)
