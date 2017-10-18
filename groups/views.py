@@ -2,13 +2,22 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from .models import SportsGroup, Membership, Invitation
-from .forms import NewInvitationForm, SettingsForm
+from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm
 
 
 @login_required
 def group_index(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
     joined = request.user in group.members.all()
+
+    if request.method == 'POST':
+        form = JoinOpenGroupForm(slug=slug, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('group_index', slug=slug)
+        else:
+            print('errors', form.errors)
 
     return render(request, 'groups/info.html', {
         'group': group,
@@ -97,19 +106,20 @@ def settings(request, slug):
 
 @login_required
 def list_groups(request):
-    myGroups = []
-    allGroups = []
+    my_groups = []
     for membership in list(Membership.objects.filter(person=request.user)):
-        myGroups.append(membership.group)
+        my_groups.append(membership.group)
 
-    allGroups = SportsGroup.objects.exclude(
-        id__in=map(lambda x: x.id, myGroups))
+    all_groups = SportsGroup.objects.exclude(
+        id__in=map(lambda x: x.id, my_groups))
 
     return render(request, 'groups/list_groups.html', {
-        'myGroups': myGroups,
-        'allGroups': allGroups,
+        'my_groups': my_groups,
+        'all_groups': all_groups,
     })
 
+
 @login_required
-def join_open_group(request):
-    pass
+def join_open_group(request, slug):
+    print("OPENGROUPFORM", request.method)
+

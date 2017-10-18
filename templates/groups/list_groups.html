@@ -11,8 +11,8 @@
     <h1 class="group-header">
         My groups
     </h1>
-    {% if myGroups %}
-      {% for group in myGroups %}
+    {% if my_groups %}
+      {% for group in my_groups %}
           {% include "groups/group_card.html" with group=group %}
       {% endfor %}
     {% else %}
@@ -22,7 +22,7 @@
     <h1 class="group-header">
         All groups
     </h1>
-    {% for group in allGroups %}
+    {% for group in all_groups %}
         {% include "groups/group_card.html" with group=group %}
     {% endfor %}
   </div>

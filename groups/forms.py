@@ -19,7 +19,7 @@ class NewInvitationForm(forms.Form):
     def validate_not_already_invited(self):
         # check if we find the user, and he is a member
         try:
-            invitation = Invitation.objects.get(
+            Invitation.objects.get(
                 person=self.user, group=self.group)
             raise forms.ValidationError('This user is already invited.')
         except Invitation.DoesNotExist:
@@ -27,7 +27,7 @@ class NewInvitationForm(forms.Form):
 
     def validate_not_already_member(self):
         try:
-            membership = Membership.objects.get(
+            Membership.objects.get(
                 person=self.user, group=self.group)
             raise forms.ValidationError(
                 'This user is already a member of this group.')
@@ -101,3 +101,55 @@ class SettingsForm(forms.Form):
             return SportsGroup.objects.get(slug=self.slug)
         except SportsGroup.DoesNotExist:
             self.add_error(None, "Invalid group")
+
+
+class JoinOpenGroupForm(object):
+    def __init__(self, slug, user):
+        self.slug = slug
+        self.user = user
+        self.errors = []
+        self.validate_group()
+        self.validate_group_is_public()
+        self.validate_not_already_member()
+
+    def is_valid(self):
+        return len(self.errors) == 0
+
+    def get_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            return None
+
+    def validate_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            self.errors.append('Invalid group.')
+
+    def validate_group_is_public(self):
+        group = self.get_group()
+        if group == None:
+            self.errors.append('Group does not exist')
+        elif not group.public:
+            self.errors.append('Group is not public')
+        else:
+            return
+
+    def validate_not_already_member(self):
+        try:
+            m = Membership.objects.get(person=self.user, group=self.get_group())
+            print(m, m.person)
+            self.errors.append("This user is already a member of this group.")
+        except Membership.DoesNotExist:
+            return
+
+    def delete_invitation_if_exists(self):
+        Invitation.objects.filter(group=self.get_group(), person=self.user).delete()
+
+    def save(self):
+        self.delete_invitation_if_exists()
+        if self.is_valid():
+            print("JOIN GROUP")
+            return Membership.objects.create(person=self.user, group=self.get_group())
+
