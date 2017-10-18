@@ -1,277 +1,302 @@
 [
-    {
-        "model": "groups.membership",
-        "pk": 1,
-        "fields": {
-            "person": 9,
-            "group": 1,
-            "date_joined": "2017-09-30",
-            "paid": true,
-            "in_board": true
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 2,
-        "fields": {
-            "person": 10,
-            "group": 1,
-            "date_joined": "2017-09-30",
-            "paid": false,
-            "in_board": true
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 3,
-        "fields": {
-            "person": 11,
-            "group": 1,
-            "date_joined": "2017-09-30",
-            "paid": true,
-            "in_board": true
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 4,
-        "fields": {
-            "person": 12,
-            "group": 1,
-            "date_joined": "2017-09-30",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 5,
-        "fields": {
-            "person": 13,
-            "group": 1,
-            "date_joined": "2017-10-01",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 6,
-        "fields": {
-            "person": 14,
-            "group": 1,
-            "date_joined": "2017-10-01",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 7,
-        "fields": {
-            "person": 15,
-            "group": 1,
-            "date_joined": "2017-10-01",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 8,
-        "fields": {
-            "person": 16,
-            "group": 1,
-            "date_joined": "2017-10-01",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 9,
-        "fields": {
-            "person": 17,
-            "group": 1,
-            "date_joined": "2017-10-01",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 10,
-        "fields": {
-            "person": 18,
-            "group": 1,
-            "date_joined": "2017-10-01",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 11,
-        "fields": {
-            "person": 19,
-            "group": 1,
-            "date_joined": "2017-10-01",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 12,
-        "fields": {
-            "person": 20,
-            "group": 1,
-            "date_joined": "2017-10-01",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 13,
-        "fields": {
-            "person": 21,
-            "group": 1,
-            "date_joined": "2017-10-01",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 14,
-        "fields": {
-            "person": 22,
-            "group": 1,
-            "date_joined": "2017-10-01",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 15,
-        "fields": {
-            "person": 23,
-            "group": 1,
-            "date_joined": "2017-10-01",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 16,
-        "fields": {
-            "person": 1,
-            "group": 1,
-            "date_joined": "2017-10-05",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 17,
-        "fields": {
-            "person": 1,
-            "group": 2,
-            "date_joined": "2017-10-05",
-            "paid": false,
-            "in_board": true
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 18,
-        "fields": {
-            "person": 15,
-            "group": 2,
-            "date_joined": "2017-10-12",
-            "paid": false,
-            "in_board": true
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 19,
-        "fields": {
-            "person": 14,
-            "group": 2,
-            "date_joined": "2017-10-12",
-            "paid": false,
-            "in_board": true
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 20,
-        "fields": {
-            "person": 18,
-            "group": 3,
-            "date_joined": "2017-10-12",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 21,
-        "fields": {
-            "person": 19,
-            "group": 3,
-            "date_joined": "2017-10-12",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 22,
-        "fields": {
-            "person": 20,
-            "group": 3,
-            "date_joined": "2017-10-12",
-            "paid": false,
-            "in_board": false
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 23,
-        "fields": {
-            "person": 24,
-            "group": 4,
-            "date_joined": "2017-10-12",
-            "paid": false,
-            "in_board": true
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 24,
-        "fields": {
-            "person": 23,
-            "group": 4,
-            "date_joined": "2017-10-12",
-            "paid": false,
-            "in_board": true
-        }
-    },
-    {
-        "model": "groups.membership",
-        "pk": 25,
-        "fields": {
-            "person": 18,
-            "group": 4,
-            "date_joined": "2017-10-12",
-            "paid": false,
-            "in_board": true
-        }
+  {
+    "model": "groups.membership",
+    "pk": 1,
+    "fields": {
+      "person": 9,
+      "group": 1,
+      "date_joined": "2017-09-30",
+      "paid": true,
+      "in_board": true,
+      "role": "President"
     }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 2,
+    "fields": {
+      "person": 10,
+      "group": 1,
+      "date_joined": "2017-09-30",
+      "paid": false,
+      "in_board": true,
+      "role": "VP"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 3,
+    "fields": {
+      "person": 11,
+      "group": 1,
+      "date_joined": "2017-09-30",
+      "paid": true,
+      "in_board": true,
+      "role": "Cashier"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 4,
+    "fields": {
+      "person": 12,
+      "group": 1,
+      "date_joined": "2017-09-30",
+      "paid": false,
+      "in_board": true,
+      "role": "Chief of Materials"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 5,
+    "fields": {
+      "person": 13,
+      "group": 1,
+      "date_joined": "2017-10-01",
+      "paid": false,
+      "in_board": false,
+      "role": "Member"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 6,
+    "fields": {
+      "person": 14,
+      "group": 1,
+      "date_joined": "2017-10-01",
+      "paid": false,
+      "in_board": false,
+      "role": "Member"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 7,
+    "fields": {
+      "person": 15,
+      "group": 1,
+      "date_joined": "2017-10-01",
+      "paid": false,
+      "in_board": false,
+      "role": "Member"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 8,
+    "fields": {
+      "person": 16,
+      "group": 1,
+      "date_joined": "2017-10-01",
+      "paid": false,
+      "in_board": false,
+      "role": "Member"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 9,
+    "fields": {
+      "person": 17,
+      "group": 1,
+      "date_joined": "2017-10-01",
+      "paid": false,
+      "in_board": false,
+      "role": "Member"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 10,
+    "fields": {
+      "person": 18,
+      "group": 1,
+      "date_joined": "2017-10-01",
+      "paid": false,
+      "in_board": false,
+      "role": "Member"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 11,
+    "fields": {
+      "person": 19,
+      "group": 1,
+      "date_joined": "2017-10-01",
+      "paid": false,
+      "in_board": false,
+      "role": "Member"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 12,
+    "fields": {
+      "person": 20,
+      "group": 1,
+      "date_joined": "2017-10-01",
+      "paid": false,
+      "in_board": false,
+      "role": "Member"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 13,
+    "fields": {
+      "person": 21,
+      "group": 1,
+      "date_joined": "2017-10-01",
+      "paid": false,
+      "in_board": false,
+      "role": "Member"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 14,
+    "fields": {
+      "person": 22,
+      "group": 1,
+      "date_joined": "2017-10-01",
+      "paid": false,
+      "in_board": false,
+      "role": "Member"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 15,
+    "fields": {
+      "person": 23,
+      "group": 1,
+      "date_joined": "2017-10-01",
+      "paid": false,
+      "in_board": false,
+      "role": "Member"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 16,
+    "fields": {
+      "person": 1,
+      "group": 1,
+      "date_joined": "2017-10-05",
+      "paid": false,
+      "in_board": false,
+      "role": "Member"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 17,
+    "fields": {
+      "person": 1,
+      "group": 2,
+      "date_joined": "2017-10-05",
+      "paid": false,
+      "in_board": true,
+      "role": ""
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 18,
+    "fields": {
+      "person": 15,
+      "group": 2,
+      "date_joined": "2017-10-12",
+      "paid": false,
+      "in_board": true,
+      "role": ""
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 19,
+    "fields": {
+      "person": 14,
+      "group": 2,
+      "date_joined": "2017-10-12",
+      "paid": false,
+      "in_board": true,
+      "role": ""
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 20,
+    "fields": {
+      "person": 18,
+      "group": 3,
+      "date_joined": "2017-10-12",
+      "paid": false,
+      "in_board": true,
+      "role": "President"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 21,
+    "fields": {
+      "person": 19,
+      "group": 3,
+      "date_joined": "2017-10-12",
+      "paid": false,
+      "in_board": true,
+      "role": "VP"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 22,
+    "fields": {
+      "person": 20,
+      "group": 3,
+      "date_joined": "2017-10-12",
+      "paid": false,
+      "in_board": true,
+      "role": "Cashier"
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 23,
+    "fields": {
+      "person": 24,
+      "group": 4,
+      "date_joined": "2017-10-12",
+      "paid": false,
+      "in_board": true,
+      "role": ""
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 24,
+    "fields": {
+      "person": 23,
+      "group": 4,
+      "date_joined": "2017-10-12",
+      "paid": false,
+      "in_board": true,
+      "role": ""
+    }
+  },
+  {
+    "model": "groups.membership",
+    "pk": 25,
+    "fields": {
+      "person": 18,
+      "group": 4,
+      "date_joined": "2017-10-12",
+      "paid": false,
+      "in_board": true,
+      "role": ""
+    }
+  }
 ]
