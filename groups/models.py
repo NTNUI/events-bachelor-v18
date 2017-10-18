@@ -24,7 +24,8 @@ class Board(models.Model):
         settings.AUTH_USER_MODEL,  related_name='board_vp')
     cashier = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='board_cashier')
-    sports_group = models.OneToOneField(SportsGroup, on_delete=models.CASCADE)
+    sports_group = models.OneToOneField(
+        SportsGroup, on_delete=models.CASCADE)
 
     def __str__(self):
         return "Board of NTNUI {}".format(self.sports_group.name)
@@ -36,6 +37,8 @@ class Membership(models.Model):
     group = models.ForeignKey(SportsGroup, on_delete=models.CASCADE)
     date_joined = models.DateField(default=datetime.date.today)
     paid = models.BooleanField(default=False)
+    in_board = models.BooleanField(default=False)
+    role = models.CharField(max_length=30)
 
 
 class Invitation(models.Model):

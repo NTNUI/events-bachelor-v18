@@ -10,11 +10,20 @@ class NewInvitationForm(forms.Form):
     # make sure to get the slug
     def __init__(self, *args, **kwargs):
         self.slug = kwargs.pop('slug') if 'slug' in kwargs else ''
+        self.inviter = kwargs.pop('user') if 'user' in kwargs else None
         super(NewInvitationForm, self).__init__(*args, **kwargs)
 
     def clean(self):
         cleaned_data = super(NewInvitationForm, self).clean()
         self.validate_group()
+        # Validate that you can only submit this form as group leader or vp
+        self.validate_user_can_invite_members()
+
+    def validate_user_can_invite_members(self):
+        if self.inviter is None:
+            self.add_error(None, "No user supplied.")
+        elif not self.inviter.has_perm('groups.can_invite_member', self.get_group()):
+            self.add_error(None, 'You can not invite members.')
 
     def validate_not_already_invited(self):
         # check if we find the user, and he is a member
@@ -56,7 +65,6 @@ class NewInvitationForm(forms.Form):
         # Check to see if any users already exist with this email as a username.
         try:
             self.user = User.objects.get(email=email)
-            # TODO: Check if match is already in same group
             self.validate_not_already_invited()
             self.validate_not_already_member()
         except User.DoesNotExist:

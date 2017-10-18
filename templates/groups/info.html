@@ -18,41 +18,36 @@
     <div class="group-table-description">
       {{ group.description }}
     </div>
+</div>
 
+{% if show_board %}
+<div class="content-table">
+  <div class="members-list-header">
+    The Board
   </div>
 
-
-  <div class="content-table">
-    <div class="members-list-header">
-      The Board
-    </div>
-
-    <div class="members-header">
-      <div class="group-member-name-header">Name</div>
-      <div class="group-member-email-header">E-mail</div>
-      <div class="group-member-phone-header">Role</div>
-
-    </div>
-
-    <div class="group-table-row">
-      <div
-          class="group-member-name">{{ group.board.president.first_name }} {{ group.board.president.last_name }}</div>
-      <div class="group-member-email">{{ group.board.president.email }}</div>
-      <div class="group-member-phone">President</div>
-    </div>
-
-    <div class="group-table-row">
-      <div
-          class="group-member-name">{{ group.board.vice_president.first_name }} {{ group.board.vice_president.last_name }}</div>
-      <div class="group-member-email">{{ group.board.vice_president.email }}</div>
-      <div class="group-member-phone">Vice President</div>
-    </div>
-
-    <div class="group-table-row">
-      <div
-          class="group-member-name">{{ group.board.cashier.first_name }} {{ group.board.cashier.last_name }}</div>
-      <div class="group-member-email">{{ group.board.cashier.email }}</div>
-      <div class="group-member-phone">Cashier</div>
-    </div>
+  <div class="members-header">
+    <div class="group-member-name-header">Name</div>
+    <div class="group-member-email-header">E-mail</div>
+    <div class="group-member-phone-header">Role</div>
   </div>
+
+  {% for core in board_core %}
+    <div class="group-table-row">
+      <div class="group-member-name">{{ core.membership.person.first_name }} {{ core.membership.person.last_name }}</div>
+      <div class="group-member-email">{{ core.membership.person.email }}</div>
+      <div class="group-member-phone">{{ core.role }}</div>
+    </div>
+  {% endfor %}
+
+  {% for membership in board_members %}
+    <div class="group-table-row">
+      <div class="group-member-name">{{ membership.person.first_name }} {{ membership.person.last_name }}</div>
+      <div class="group-member-email">{{ membership.person.email }}</div>
+      <div class="group-member-phone">{{ membership.role }}</div>
+    </div>
+  {% endfor %}
+
+</div>
+{% endif %}
 {% endblock %}
