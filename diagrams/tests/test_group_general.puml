@@ -1,0 +1,32 @@
+@startuml
+package groups.tests.mixins.general <<Rectangle>> {
+  abstract class LoggedInMixin {
+    email = None
+    url_name = None
+  }
+  abstract class GroupMixin {
+    + test_status_code_200()
+    + test_should_contain_group_name()
+    + test_should_link_to_about()
+  }
+  abstract class GeneralMemberMixin {
+    + test_should_not_link_to_members()
+    + test_should_not_link_to_settings()
+  }
+  abstract class CoreBoardMemberMixin {
+    + test_should_link_to_members()
+  }
+  abstract class GeneralBoardMemberMixin {
+    + test_should_not_link_to_settings()
+  }
+  abstract class GeneralGroupLeaderMixin {
+    + test_should_link_to_settings()
+  }
+
+  LoggedInMixin *-- GroupMixin
+  GroupMixin *-- CoreBoardMemberMixin
+  GroupMixin *-- GeneralMemberMixin
+  CoreBoardMemberMixin *-- GeneralBoardMemberMixin
+  CoreBoardMemberMixin *-- GeneralGroupLeaderMixin
+}
+@enduml

@@ -14,17 +14,21 @@
       class="jumbo-background"
       src="{% static 'img/groups/ntnui-volleyball.png' %}"
       alt="NTNUI Volleyball" />
-    <div class="group-name">{{ group.name }}</div>
+    <div class="group-name">{{ group.name }} ({{ role }})</div>
   </div>
   <div class="top-menu">
     <ul class="top-menu-list">
       <li><a href="{% url 'group_index' slug=slug %}" class="{% if active == 'about' %}active-item{% endif %}">About</a></li>
       <li><div class="vert-divider"></div></li>
       <li><a href="#">Forms</a></li>
-      <li><div class="vert-divider"></div></li>
-      <li><a href="{% url 'group_members' slug=slug %}" class="{% if active == 'members' %}active-item{% endif %}">Members</a></li>
-      <li><div class="vert-divider"></div></li>
-      <li><a href="{% url 'group_settings' slug=slug %}" class="{% if active == 'settings' %}active-item{% endif %}">Settings</a></li>
+      {% if show_members %}
+        <li><div class="vert-divider"></div></li>
+        <li><a href="{% url 'group_members' slug=slug %}" class="{% if active == 'members' %}active-item{% endif %}">Members</a></li>
+      {% endif %}
+      {% if show_settings %}
+        <li><div class="vert-divider"></div></li>
+        <li><a href="{% url 'group_settings' slug=slug %}" class="{% if active == 'settings' %}active-item{% endif %}">Settings</a></li>
+      {% endif %}
     </ul>
   </div>
 </div>
