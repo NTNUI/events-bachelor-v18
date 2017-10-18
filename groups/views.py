@@ -9,14 +9,6 @@ from .helpers import get_group_role
 def get_base_group_info(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
     joined = request.user in group.members.all()
-
-    if request.method == 'POST':
-        form = JoinOpenGroupForm(slug=slug, user=request.user)
-
-        if form.is_valid():
-            form.save()
-            return redirect('group_index', slug=slug)
-
     return {
         'role': get_group_role(request.user, group),
         'group': group,
@@ -48,6 +40,13 @@ def get_base_members_info(request, slug):
 
 @login_required
 def group_index(request, slug):
+    if request.method == 'POST':
+        form = JoinOpenGroupForm(slug=slug, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('group_index', slug=slug)
+
     base_info = get_base_group_info(request, slug)
     group = base_info['group']
     board_members = []
