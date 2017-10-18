@@ -6,7 +6,7 @@
       {% csrf_token %}
       <div class="group-settings-header">Group visibility</div>
       <label class="group-settings">
-        <div class="group-settings-public-name">Group is public</div>
+        <div class="group-settings-public-name">Should group be open for people to join</div>
         <div class="group-settings-public-check">
           <input type="checkbox" name="public" {% if group.public %}checked{% endif %}>
         </div>
