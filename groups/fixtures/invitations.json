@@ -7,5 +7,14 @@
       "group": 1,
       "date_issued": "2017-10-02"
     }
+  },
+  {
+    "model": "groups.invitation",
+    "pk": 2,
+    "fields": {
+      "person": 19,
+      "group": 2,
+      "date_issued": "2017-10-02"
+    }
   }
 ]

@@ -30,3 +30,15 @@
     margin: 0;
     padding: 0;
 }
+
+.form-control {
+    border-radius: 0;
+}
+
+.btn {
+    border-radius: 0.15rem;
+}
+
+.btn:disabled {
+    cursor: not-allowed;
+}

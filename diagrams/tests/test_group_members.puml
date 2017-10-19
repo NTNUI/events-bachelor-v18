@@ -1,0 +1,54 @@
+@startuml
+!include test_group_general.puml
+
+package Members {
+
+  package groups.tests.mixins.view_members <<Rectangle>> {
+    abstract class VM_CoreBoardMemberMixin {
+      + test_contains_all_members()
+      + test_total_count_members()
+      + test_total_count_invitations()
+      + test_should_link_to_invitations()
+      + test_view_function()
+    }
+    abstract class VM_BoardMemberMixin {
+      + test_should_not_link_to_new_invite()
+    }
+    abstract class VM_GroupLeaderMixin {
+      + test_should_link_to_new_invite()
+    }
+  }
+
+
+  package groups.test_view_group_members <<Rectangle>> {
+    class MemberTest {
+      + test_contains_no_members()
+      + test_shoud_contain_members_error_text()
+      + test_should_not_link_to_inviations()
+      + test_should_not_link_to_new_invite()
+    }
+    class CashierTest
+    class VicePresidentTest
+    class PresidentTest
+    class GroupMembersLoggedOutTest {
+      + test_status_code_302()
+    }
+    class NoGroupTest {
+      + test_status_code_404()
+      + test_view_function()
+    }
+  }
+
+  VM_CoreBoardMemberMixin *-- VM_BoardMemberMixin
+  GeneralBoardMemberMixin *-- VM_BoardMemberMixin
+  VM_CoreBoardMemberMixin *-- VM_GroupLeaderMixin
+  GeneralGroupLeaderMixin *-- VM_GroupLeaderMixin
+  GeneralMemberMixin *-- MemberTest
+  VM_BoardMemberMixin *-- CashierTest
+  VM_GroupLeaderMixin *-- VicePresidentTest
+  VM_GroupLeaderMixin *-- PresidentTest
+
+}
+
+
+@enduml

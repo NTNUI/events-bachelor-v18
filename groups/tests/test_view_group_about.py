@@ -5,6 +5,15 @@ from django.test import TestCase
 from accounts.models import User
 
 
+from .mixins.general import (
+    GeneralMemberMixin,
+    GeneralBoardMemberMixin,
+    GeneralGroupLeaderMixin,
+    TEST_USERS,
+)
+from .mixins.view_about import VA_CoreMemberMixin
+
+
 class GroupAboutLoggedOutTest(TestCase):
     def setUp(self):
         url = reverse('group_index', kwargs={'slug': 'volleyball'})
@@ -15,37 +24,29 @@ class GroupAboutLoggedOutTest(TestCase):
         self.assertEquals(self.response.status_code, 302)
 
 
-class GroupAboutLoggedInTest(TestCase):
-    fixtures = ['users.json']
-
+class ViewAboutMemberTest(GeneralMemberMixin, VA_CoreMemberMixin, TestCase):
     def setUp(self):
-        self.login_response = self.client.login(email='jameshalpert@gmail.com',
-                                                password='locoloco')
-        url = reverse('group_index', kwargs={'slug': 'volleyball'})
-        self.response = self.client.get(url)
+        self.email = TEST_USERS['member']
+        self.url_name = 'group_index'
+        super(ViewAboutMemberTest, self).setUp()
 
 
-class NoGroupTest(GroupAboutLoggedInTest):
-
-    def test_status_code(self):
-        self.assertEquals(self.response.status_code, 404)
-
-    def test_view_function(self):
-        view = resolve('/groups/volleyball')
-        self.assertEquals(view.func, group_views.group_index)
+class ViewAboutCashierTest(GeneralBoardMemberMixin, VA_CoreMemberMixin, TestCase):
+    def setUp(self):
+        self.email = TEST_USERS['cashier']
+        self.url_name = 'group_index'
+        super(ViewAboutCashierTest, self).setUp()
 
 
-class VolleyballGroupTest(GroupAboutLoggedInTest):
-    fixtures = ['users.json', 'groups.json',
-                'boards.json']
+class ViewAboutVicePresidentTest(GeneralGroupLeaderMixin, VA_CoreMemberMixin, TestCase):
+    def setUp(self):
+        self.email = TEST_USERS['vice_president']
+        self.url_name = 'group_index'
+        super(ViewAboutVicePresidentTest, self).setUp()
 
-    def test_status_code(self):
-        self.assertEquals(self.response.status_code, 200)
 
-    def test_has_description(self):
-        self.assertContains(self.response, 'About NTNUI Volleyball')
-        self.assertContains(
-            self.response, 'NTNUI Volleyball is one of the largest groups within NTNUI')
-
-    def test_total_count_board_members(self):
-        self.assertContains(self.response, '<div class="group-member-name"', 3)
+class ViewAboutPresidentTest(GeneralGroupLeaderMixin, VA_CoreMemberMixin, TestCase):
+    def setUp(self):
+        self.email = TEST_USERS['president']
+        self.url_name = 'group_index'
+        super(ViewAboutPresidentTest, self).setUp()
