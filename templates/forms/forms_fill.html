@@ -21,7 +21,7 @@
       <div class="form-fill-body">
         {% for field in form %}
           {% if field.name|title %}
-            {{ field.name|title|safe}}
+            {{ field.name|title|safe }}
           {% endif %}
           <div class="form-fill-row">
             <div class="form-fill-row-label">{{ field.name|name }}</div>
