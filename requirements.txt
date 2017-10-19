@@ -2,6 +2,7 @@ Django>=1.11.2,<2.0
 psycopg2
 django-widget-tweaks>=1.4.1
 selenium==3.6.0
+rules==1.2.1
 
 # Test Coverage tools
 coverage >= 4.4.1

@@ -23,17 +23,21 @@ def invite_success(cls, browser):
     cls.assertEquals(invitations[0].group, volleyball)
 
 
+LEADER_TODD_PACKER = 'todd.packer@online.com'
+DUMMY_PASSWORD = 'locoloco'
+
+
 class InviteChrome(ChromeTestCase):
-    fixtures = ['users.json', 'groups.json', 'memberships.json']
+    fixtures = ['users.json', 'groups.json', 'memberships.json', 'boards.json']
 
     def test_success_invite(self):
-        login_user(self, self.chrome)
+        login_user(self, self.chrome, LEADER_TODD_PACKER, DUMMY_PASSWORD)
         invite_success(self, self.chrome)
 
 
 class LoginFirefox(FirefoxTestCase):
-    fixtures = ['users.json', 'groups.json', 'memberships.json']
+    fixtures = ['users.json', 'groups.json', 'memberships.json', 'boards.json']
 
     def test_success_invite(self):
-        login_user(self, self.firefox)
+        login_user(self, self.firefox, LEADER_TODD_PACKER, DUMMY_PASSWORD)
         invite_success(self, self.firefox)

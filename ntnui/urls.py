@@ -18,7 +18,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
-from accounts import views as accounts_views
+#from accounts import views as accounts_views
 from groups import views as groups_views
 
 urlpatterns = [
@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^$', groups_views.list_groups, name='home'),
     url(r'^groups/', include('groups.urls')),
     url(r'^hs/', include('hs.urls')),
-    url(r'^signup/$', accounts_views.signup, name='signup'),
+    # url(r'^signup/$', accounts_views.signup, name='signup'),
     url(r'^logout/', auth_views.logout, name='logout'),
     url(r'^login/$', auth_views.LoginView.as_view(
         template_name='accounts/login.html'), name='login'),
