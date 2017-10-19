@@ -9,4 +9,4 @@ def member(value, arg):
     for group in value.get(arg):
         groups.append(group)
 
-    return ''.join(groups)
+    return ' '.join(groups)
