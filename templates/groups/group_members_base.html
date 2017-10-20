@@ -1,6 +1,7 @@
 {% extends 'groups/group_base.html' %}
 
 {% block group_content %}
+  {% if show_members %}
   <div class="content-table">
     <div class="members-list-header">
       <a href="{% url 'group_members' slug=slug %}"
@@ -19,4 +20,11 @@
       {% endblock %}
     </div>
   </div>
+  {% else %}
+  <div class="content-table">
+    <div class="group-table-description">
+      You do not have permissions to see this.
+    </div>
+  </div>
+  {% endif %}
 {% endblock %}

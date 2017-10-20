@@ -1,16 +1,19 @@
 body {
-  background-color: #fafafa;
+    background-color: #f1f1f1;
 }
 
 .logo-container {
-  height: 100px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
-
 .logo {
-  width: 100px;
+    width: 100px;
+}
+
+.card {
+    border-radius: 0.15rem;
 }

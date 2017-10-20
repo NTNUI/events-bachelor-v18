@@ -10,16 +10,25 @@ class NewInvitationForm(forms.Form):
     # make sure to get the slug
     def __init__(self, *args, **kwargs):
         self.slug = kwargs.pop('slug') if 'slug' in kwargs else ''
+        self.inviter = kwargs.pop('user') if 'user' in kwargs else None
         super(NewInvitationForm, self).__init__(*args, **kwargs)
 
     def clean(self):
         cleaned_data = super(NewInvitationForm, self).clean()
         self.validate_group()
+        # Validate that you can only submit this form as group leader or vp
+        self.validate_user_can_invite_members()
+
+    def validate_user_can_invite_members(self):
+        if self.inviter is None:
+            self.add_error(None, "No user supplied.")
+        elif not self.inviter.has_perm('groups.can_invite_member', self.get_group()):
+            self.add_error(None, 'You can not invite members.')
 
     def validate_not_already_invited(self):
         # check if we find the user, and he is a member
         try:
-            invitation = Invitation.objects.get(
+            Invitation.objects.get(
                 person=self.user, group=self.group)
             raise forms.ValidationError('This user is already invited.')
         except Invitation.DoesNotExist:
@@ -27,7 +36,7 @@ class NewInvitationForm(forms.Form):
 
     def validate_not_already_member(self):
         try:
-            membership = Membership.objects.get(
+            Membership.objects.get(
                 person=self.user, group=self.group)
             raise forms.ValidationError(
                 'This user is already a member of this group.')
@@ -56,7 +65,6 @@ class NewInvitationForm(forms.Form):
         # Check to see if any users already exist with this email as a username.
         try:
             self.user = User.objects.get(email=email)
-            # TODO: Check if match is already in same group
             self.validate_not_already_invited()
             self.validate_not_already_member()
         except User.DoesNotExist:
@@ -101,3 +109,50 @@ class SettingsForm(forms.Form):
             return SportsGroup.objects.get(slug=self.slug)
         except SportsGroup.DoesNotExist:
             self.add_error(None, "Invalid group")
+
+
+class JoinOpenGroupForm(object):
+    def __init__(self, slug, user):
+        self.slug = slug
+        self.user = user
+        self.errors = []
+        if self.validate_group():
+            self.validate_group_is_public()
+
+        self.validate_not_already_member()
+
+    def is_valid(self):
+        return len(self.errors) == 0
+
+    def get_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            return None
+
+    def validate_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            self.errors.append('Invalid group.')
+
+    def validate_group_is_public(self):
+        if not self.get_group().public:
+            self.errors.append('Group is not public')
+        else:
+            return
+
+    def validate_not_already_member(self):
+        try:
+            Membership.objects.get(person=self.user, group=self.get_group())
+            self.errors.append("This user is already a member of this group.")
+        except Membership.DoesNotExist:
+            return
+
+    def delete_invitation_if_exists(self):
+        Invitation.objects.filter(group=self.get_group(), person=self.user).delete()
+
+    def save(self):
+        self.delete_invitation_if_exists()
+        if self.is_valid():
+            return Membership.objects.create(person=self.user, group=self.get_group())

@@ -4,8 +4,12 @@ rasmus:
 ask:
 	docker-compose run web python manage.py dumpdata forms.FormDoc > forms.json
 
-runenv:
+envrun:
 	python3 manage.py runserver 0.0.0.0:8000
+
+envstyle:
+	autopep8 --in-place --recursive --max-line-length=100 accounts forms groups ntnui
+	prospector --uses django --max-line-length=100
 
 start:
 	docker-compose up web
@@ -37,7 +41,7 @@ build:
 testenv:
 	rm -f mydatabase
 	make migrate
-	docker-compose run web python manage.py loaddata users.json groups.json memberships.json
+	docker-compose run web python manage.py loaddata users.json groups.json memberships.json boards.json invitations.json
 
 browser-tests:
 	docker-compose up -d chrome
