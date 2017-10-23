@@ -21,8 +21,6 @@ def list_all_members(request):
 
         group_dict[user] = temp
 
-    print(group_dict)
-
     return render(request, 'hs/all_members.html', {
         'groupDict': group_dict,
         'users': User.objects.all(),

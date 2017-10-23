@@ -3,30 +3,48 @@
 {% load hs_template %}
 
 {% block all_members %}
-<div class="content-table">
-  <div class="members-list-header">
-    <div class="{% if active_tab == 'members' %}total-tab-active{% else %}total-tab{% endif %}">{{ total_members }} member{{ total_members|pluralize }}</div>
-    <input class="search-input form-control" type="text" placeholder="Search for NTNUI members" disabled />
-  </div>
-  <div class="members-header">
-    <div class="group-member-name-header">Name</div>
-    <div class="group-member-phone-header">Phone</div>
-    <div class="group-member-email-header">E-mail</div>
-    <div class="group-member-name-header">Group</div>
-    <div class="group-member-phone-header">Role</div>
-  </div>
-  {% for user in users %}
-    {% if user.first_name %}
-      <div class="group-table-row">
-        <div class="group-member-name">{{ user.first_name }} {{ user.last_name }}</div>
-        <div class="group-member-phone">{{ user.phone }}</div>
-        <div class="group-member-email">{{ user.email }}</div>
-        <div class="group-member-name">
-          {{ groupDict|member:user }}
+
+  {% load static %}
+
+  {% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/hs.css' %}">
+    <link rel="stylesheet" href="{% static 'css/groups.css' %}">
+  {% endblock %}
+
+  <div class="content-table">
+    <div class="members-list-header">
+      <div class="{% if active_tab == 'members' %}total-tab-active{% else %}total-tab{% endif %}">{{ total_members }}
+        member{{ total_members|pluralize }}</div>
+      <input class="search-input form-control" type="text" placeholder="Search for NTNUI members" disabled/>
+    </div>
+    <div class="members-header">
+      <div class="group-member-name-header">Name</div>
+      <div class="group-member-name-header">Group</div>
+      <div class="member-group-role">Role</div>
+    </div>
+    {% for user in users %}
+      {% if user.first_name %}
+        <div class="group-table-row">
+          <div class="group-member-name">
+            {{ user.first_name }} {{ user.last_name }}
+            <a
+                href="#"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+            </a>
+            <div class="dropdown-content">
+              <!--<a class="dropdown-item" href="#">My account</a>-->
+              <div>{{ user.email }}</div>
+              <div class="dropdown-divider"></div>
+              <div>{{ user.phone }}</div>
+            </div>
+          </div>
+          <div class="group-member-name-header">{{ groupDict|member:user }} </div>
+          <div class="member-group-role"> R </div>
         </div>
-        <div class="group-member-phone"></div>
-      </div>
-    {%  endif %}
-  {% endfor %}
-</div>
+      {% endif %}
+    {% endfor %}
+  </div>
 {% endblock %}
+
