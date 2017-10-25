@@ -19,8 +19,9 @@
     </div>
     <div class="members-header">
       <div class="group-member-name-header">Name</div>
-      <div class="group-member-name-header">Group</div>
-      <div class="group-member-name-header">Role</div>
+      <div class="allmembers-group-header">Group</div>
+      <div class="allmembers-role-header">Role</div>
+      <div class="allmembers-contact-header">Contact</div>
     </div>
     {% for user in users %}
       {% if user.first_name %}
@@ -39,11 +40,15 @@
               <div>{{ user.phone }}</div>
             </div>
           </div>
-          <div class="group-member-name">
+          <div class="allmembers-group">
             {{ userDict|member:user|safe }}
           </div>
-          <div class="group-member-name">
+          <div class="allmembers-role">
             {{ userDict|role:user|safe }}
+          </div>
+          <div class="allmembers-contact">
+            <div>{{ user.email }} </div>
+            <div>{{ user.phone }}</div>
           </div>
         </div>
       {% endif %}
