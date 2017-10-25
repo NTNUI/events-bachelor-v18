@@ -18,7 +18,7 @@
       <input class="search-input form-control" type="text" placeholder="Search for NTNUI members" disabled/>
     </div>
     <div class="members-header">
-      <div class="group-member-name-header">Name</div>
+      <div class="allmembers-name-header">Name</div>
       <div class="allmembers-group-header">Group</div>
       <div class="allmembers-role-header">Role</div>
       <div class="allmembers-contact-header">Contact</div>
@@ -26,7 +26,7 @@
     {% for user in users %}
       {% if user.first_name %}
         <div class="group-table-row">
-          <div class="group-member-name">
+          <div class="allmembers-name">
             {{ user.first_name }} {{ user.last_name }}
             <a
                 href="#"
