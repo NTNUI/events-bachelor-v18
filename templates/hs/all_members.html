@@ -28,17 +28,6 @@
         <div class="group-table-row">
           <div class="allmembers-name">
             {{ user.first_name }} {{ user.last_name }}
-            <a
-                href="#"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false">
-            </a>
-            <div class="dropdown-content">
-              <div >{{ user.email }}</div>
-              <div class="dropdown-divider"></div>
-              <div>{{ user.phone }}</div>
-            </div>
           </div>
           <div class="allmembers-group">
             {{ userDict|member:user|safe }}
