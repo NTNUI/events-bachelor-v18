@@ -22,4 +22,5 @@ def list_all_members(request):
         'userDict': user_dict,
         'users': User.objects.all(),
         'active': 'all_members',
+        'total_members': len(User.objects.all()),
     })
