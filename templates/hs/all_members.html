@@ -35,12 +35,14 @@
             </a>
             <div class="dropdown-content">
               <!--<a class="dropdown-item" href="#">My account</a>-->
-              <div>{{ user.email }}</div>
+              <div >{{ user.email }}</div>
               <div class="dropdown-divider"></div>
               <div>{{ user.phone }}</div>
             </div>
           </div>
-          <div class="group-member-name-header">{{ groupDict|member:user }} </div>
+          <div class="group-member-name-header">
+            {{ userDict|member:user|safe }}
+          </div>
           <div class="member-group-role"> R </div>
         </div>
       {% endif %}

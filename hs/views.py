@@ -1,5 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from accounts.models import User
+from django.shortcuts import render, get_object_or_404
 from groups.models import Membership
 from accounts.models import User
 
@@ -9,20 +8,18 @@ def hs_space(request):
 
 
 def list_all_members(request):
-    group_dict = {}
-    count = 0
+    user_dict = {}
 
     for user in list(User.objects.all()):
-        temp = []
+        group_dict = {}
 
         for membership in list(Membership.objects.filter(person=user)):
-            count += 1
-            temp.append(membership.group.name)
+            group_dict[membership.group.name] = membership.role
 
-        group_dict[user] = temp
+        user_dict[user] = group_dict
 
     return render(request, 'hs/all_members.html', {
-        'groupDict': group_dict,
+        'userDict': user_dict,
         'users': User.objects.all(),
         'active': 'all_members',
     })
