@@ -18,14 +18,9 @@ def member(value, arg):
 @register.filter
 def role(value, arg):
     html = ''
-    print("#################")
-    print("#################")
-    print(arg)
-    print("#################")
-    print(value)
 
-    #for group in value.get(arg):
-     #   for role in group:
-      #      html += '<div class="group-member-role">' + role + '</div>'
+    for group in value.get(arg):
+        for role in group:
+            html += '<div class="group-member-role">' + role + '</div>'
 
     return html
