@@ -7,9 +7,7 @@ register = template.Library()
 def member(value, arg):
     html = ''
     groups = []
-    print("############")
-    print(arg)
-    print(value.get(arg))
+
     for group in value.get(arg):
         html += '<div>' + group + '</div>'
         groups.append(group)
