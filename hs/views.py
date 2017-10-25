@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from accounts.models import User
 from groups.models import Membership
-from accounts.models import User
 
 
 def hs_space(request):
