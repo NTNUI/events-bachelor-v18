@@ -11,7 +11,7 @@ def member(value, arg):
     print(arg)
     print(value.get(arg))
     for group in value.get(arg):
-        html += '<div class="group-member-name">' + group + '</div>'
+        html += '<div>' + group + '</div>'
         groups.append(group)
     return html
 
@@ -24,7 +24,7 @@ def role(value, arg):
         role = value.get(arg).get(group)
 
         if role:
-            html += '<div class="group-member-role">' + role + '</div>'
+            html += '<div>' + role + '</div>'
         else:
-            html += '<div class="group-member-role">Member</div>'
+            html += '<div>Member</div>'
     return html
