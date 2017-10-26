@@ -1,5 +1,4 @@
-
-from django.conf.urls import url
+from django.conf.urls import include, url
 from . import views
 
 urlpatterns = [
@@ -11,4 +10,5 @@ urlpatterns = [
         views.invite_member, name='group_invite_member'),
     url(r'^(?P<slug>[\w-]+)$', views.group_index, name='group_index'),
     url(r'^(?P<slug>[\w-]+)/settings$', views.settings, name='group_settings'),
+    url(r'^(?P<slug>[\w-]+)/forms/', include('forms.urls')),
 ]
