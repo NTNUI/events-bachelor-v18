@@ -2,7 +2,7 @@
  * ALL MEMBERS
  */
 
-.allmembers-group{
+.allmembers-name-header{
     width: 170px;
 }
 
@@ -10,16 +10,8 @@
     width: 170px;
 }
 
-.allmembers-role{
-    width: 120px;
-}
-
 .allmembers-role-header{
     width: 120px;
-}
-
-.allmembers-contact{
-    width: 280px;
 }
 
 .allmembers-contact-header{
@@ -30,6 +22,16 @@
     width: 170px;
 }
 
-.allmembers-name-header{
+.allmembers-group{
     width: 170px;
 }
+
+.allmembers-role{
+    width: 120px;
+}
+
+.allmembers-contact{
+    width: 280px;
+}
+
+
