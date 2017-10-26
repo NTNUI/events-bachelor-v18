@@ -9,7 +9,7 @@ from .models import FormDoc
 from groups.views import get_base_group_info
 
 @login_required
-def list_forms(request, slug):
+def list_form(request, slug):
     base_info = get_base_group_info(request, slug)
     group = get_object_or_404(SportsGroup, slug=slug)
     forms = FormDoc.objects.all()
