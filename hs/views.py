@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from accounts.models import User
 from groups.models import Membership
 
