@@ -1,4 +1,3 @@
-from django.shortcuts import render, get_object_or_404
 from accounts.models import User
 from groups.models import Membership
 
