@@ -1,0 +1,19 @@
+{% extends 'groups/group_members_base.html' %}
+
+{% block table_content %}
+    <div class="members-header">
+      <div class="group-member-name-header">Name</div>
+      <div class="group-member-phone-header">Phone</div>
+      <div class="group-member-email-header">E-mail</div>
+      <div class="group-member-paid-header">Can I join?</div>
+    </div>
+
+    {% for request in requests %}
+    <div class="group-table-row">
+      <div class="group-member-name">{{ request.person.first_name }} {{ invitation.person.last_name }}</div>
+      <div class="group-member-phone">{{ request.person.phone }}</div>
+      <div class="group-member-email">{{ request.person.email }}</div>
+      <div class="group-member-paid"><input type="submit" value="Yes" class="btn-success" /><input type="submit" value="No" class="btn-danger" /></div>
+    </div>
+    {% endfor %}
+{% endblock %}
