@@ -4,10 +4,12 @@ from groups.models import Membership
 
 
 def hs_space(request):
+    """Renders for /hs, the main board view"""
     return render(request, 'hs/hs_space.html')
 
 
 def list_all_members(request):
+    """Renders for /hs/allmembers"""
     user_dict = {}
 
     for user in list(User.objects.all()):
