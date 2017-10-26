@@ -1,0 +1,15 @@
+{% extends 'forms/forms_list_base.html' %}
+
+{% load static %}
+
+{% block table_row %}
+<div class="forms-table-row">
+	<div class="row-content">
+		<div class="form-name"> {{ form.name }} </div>
+		<div class="form-description"> {{ form.description }} </div>
+	</div>
+	<div class="button-container">
+      <button type="button" class="form-button btn btn-success">Open</button>
+	</div>
+</div>
+{% endblock %}

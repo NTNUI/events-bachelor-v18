@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'accounts',
     'django_nose',
     'hs',
+    'forms',
     'rules.apps.AutodiscoverRulesConfig',
 ]
 
