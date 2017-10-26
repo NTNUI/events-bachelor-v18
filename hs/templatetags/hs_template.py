@@ -5,7 +5,12 @@ register = template.Library()
 
 @register.filter
 def member(value, arg):
-    """Filter groups on user"""
+    """Returns html div with the given user's groups
+
+    Keyword arguments
+    value -- list of dictionaries, containing users, groups and roles
+    arg -- a user
+    """
     html = ''
     groups = []
 
@@ -17,7 +22,12 @@ def member(value, arg):
 
 @register.filter
 def role(value, arg):
-    """Filter roles on group (on user)"""
+    """Returns html div with the given user's group's role
+
+    Keyword arguments
+    value -- list of dictionaries, containing users, groups and roles
+    arg -- a user
+    """
     html = ''
 
     for group in value.get(arg):
