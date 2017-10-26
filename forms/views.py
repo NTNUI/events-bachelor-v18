@@ -1,5 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from groups.models import SportsGroup
 from .models import FormDoc
@@ -14,7 +13,7 @@ def list_forms(request, slug):
     return render(request, 'forms/forms_list.html', {
         **base_info,
         'group': group,
-        'forms' : forms,
+        'forms': forms,
         'slug': slug,
         'active': 'forms',
     })
