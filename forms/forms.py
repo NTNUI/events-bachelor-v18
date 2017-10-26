@@ -103,6 +103,8 @@ class BoardChangeForm(BaseForm):
 
             # Save the board changes
             change_group.board.save()
+
+            this.save()
         else:
             raise forms.ValidationError(
                 _('Invalid value: %(value)s'),

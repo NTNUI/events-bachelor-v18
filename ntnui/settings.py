@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'accounts',
     'django_nose',
+    'forms',
     'rules.apps.AutodiscoverRulesConfig',
     'forms'
 ]

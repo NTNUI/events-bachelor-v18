@@ -5,13 +5,18 @@ from accounts.models import User
 from groups.models import SportsGroup
 from django.http import JsonResponse
 from .forms import BoardChangeForm
-
+from .models import FormDoc
+from groups.views import get_base_group_info
 
 @login_required
-def list_form(request, slug):
+def list_forms(request, slug):
+    base_info = get_base_group_info(request, slug)
     group = get_object_or_404(SportsGroup, slug=slug)
-    return render(request, 'forms/forms_list_base.html', {
+    forms = FormDoc.objects.all()
+    return render(request, 'forms/forms_list.html', {
+        **base_info,
         'group': group,
+        'forms': forms,
         'slug': slug,
         'active': 'forms',
     })

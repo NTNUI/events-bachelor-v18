@@ -1,0 +1,28 @@
+[
+  {
+    "model": "forms.formdoc",
+    "pk": 1,
+    "fields": {
+      "name": "Reimbursement",
+      "description": "Application for a reimbursement of NTNUI expenses."
+    }
+  },
+  {
+    "model": "forms.formdoc",
+    "pk": 2,
+    "fields": {
+      "name": "Board change form",
+      "description":
+        "Change the board members of your sports group with this form."
+    }
+  },
+  {
+    "model": "forms.formdoc",
+    "pk": 3,
+    "fields": {
+      "name": "Form name",
+      "description":
+        "Form description here lalal alalalal alala ajajajaja ajajaja hehehe ehehhe. adsfa f sd fasdf asdf asdf asdf asdf asdf asdf"
+    }
+  }
+]

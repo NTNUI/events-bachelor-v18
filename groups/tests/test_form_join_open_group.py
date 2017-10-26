@@ -55,3 +55,5 @@ class JoinOpenGroupFormTest(TestCase):
         form = JoinOpenGroupForm(slug='calisthenics', user=self.USER_IS_MEMBER)
         self.assertFalse(form.is_valid())
         self.assertEqual(form.save(), None)
+
+    # TODO: write test that checks if button is present when group is open and user is not member
