@@ -2,9 +2,12 @@
 
 {% block group_content %}
   <div class="content-table">
+
+    <div class="members-list-header">
+      Group Settings
+    </div>
     <form method="post" novalidate>
       {% csrf_token %}
-      <div class="group-settings-header">Group visibility</div>
       <label class="group-settings">
         <div class="group-settings-public-name">Should group be open for people to join</div>
         <div class="group-settings-public-check">
@@ -13,10 +16,22 @@
       </label>
 
       <div class="group-settings-right">
-        <button type="submit" class="group-settings-save-btn btn btn-success">
+        <button type="submit" class="btn group-settings-save-btn btn-success">
           Change settings
         </button>
       </div>
+    </form>
+
+    <div class="members-list-header">
+      Your Settings
+    </div>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <label class="group-settings">
+        Do you want to leave the group?
+        <button type="submit" class="btn group-settings-leave-button btn-outline-danger">Leave Group
+        </button>
+      </label>
     </form>
   </div>
 {% endblock %}
