@@ -79,6 +79,23 @@ def members(request, slug):
 
 
 @login_required
+def member_info(request, slug, member_id):
+    group = get_object_or_404(SportsGroup, slug=slug)
+    can_see_members = request.user.has_perm('groups.can_see_members', group)
+    try:
+        member = Membership.objects.get(pk=member_id)
+    except Membership.DoesNotExist:
+        member = None
+    return render(request, 'groups/ajax/member.html', {
+        'role': get_group_role(request.user, group),
+        'group': group,
+        'slug': slug,
+        'show_members': request.user.has_perm('groups.can_see_members', group),
+        'member': member,
+    })
+
+
+@login_required
 def invitations(request, slug):
     return render(request, 'groups/invitations.html', {
         **get_base_members_info(request, slug),
