@@ -42,6 +42,10 @@
   * FILL FORM STYLE
   */
 
+.field-error > input {
+  background-color: red;
+}
+
 .form-fill-save-btn {
   width: 25%;
   text-align: center;
@@ -75,10 +79,6 @@
 .group-name-class {
   font-size: 1.2em;
   color: #666;
-}
-
-.form-fill-body p {
-    color:purple;
 }
 
 .form-fill-row {

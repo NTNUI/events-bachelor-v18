@@ -33,15 +33,14 @@ def fill_form(request, slug):
         # check whether it's valid:
         if form.is_valid():
             # If the form is valid perform the actions
-            form.perform_actions()
+            form.create_model()
 
             return redirect('forms_list', slug=slug)
         else:
-            print(form.errors)
-
-
+            pass
+            # print(form.errors)
     else:
-        form = BoardChangeForm()
+        form = BoardChangeForm(slug=slug)
 
     return render(request, 'forms/forms_fill.html', {
         'group': group,
@@ -57,16 +56,19 @@ def fill_form(request, slug):
 def validate_email(request):
     if request.method == "GET":
         email = request.GET.get('email', None)
+        id = request.GET.get('id', None)
 
         try:
             user = User.objects.get(email=email)
             data = {
                 'first_name': user.first_name,
-                'last_name': user.last_name
+                'last_name': user.last_name,
+                'id': id
             }
         except User.DoesNotExist:
             data = {
-                'error': True
+                'error': True,
+                'id': id
             }
 
         return JsonResponse(data)

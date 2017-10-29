@@ -9,29 +9,45 @@
 {%  endblock %}
 
 {% block group_content %}
-  <div class="content-table form-table">
-    <form method="post" novalidate>
-      {% csrf_token %}
-      <div class="form-fill-header">
-        <div class="form-fill-title">Board Change Form</div>
-        <div class="group-name-class"></div>
-        <div class="form-fill-description"></div>
-      </div>
+  <div class="content-table">
+      <div class="container-fluid col-xs-10 mb-3">
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-fill-header">
+          <div class="form-fill-title">Board Change Form</div>
+          <div class="group-name-class"></div>
+          <div class="form-fill-description"></div>
+        </div>
 
-      <div class="form-fill-body">
-        {% for field in form %}
-          {% if field.name|title %}
-            {{ field.name|title|safe }}
-          {% endif %}
-          <div class="form-fill-row">
-            <div class="form-fill-row-label">{{ field.name|name }}</div>
-            <div class="form-fill-row-input">{{field}}</div>
+          {% for field in form %}
+              <!-- Add title to each section here
+
+                        {% if field.name|title %}
+                          {{ field.name|title|safe }}
+                        {% endif %}
+
+             -->
+
+             <!-- The has-danger class does not currently exist in the bootstap beta 2 ...
+                  this'll have to be fixed later -->
+            <div class="form-group {% if field.errors %}has-danger{% endif %}">
+              <label for="{{ field.name }}">{{ field.name|filterLabel }}</label>
+              <input id="{{ field.name }}"
+                class="form-control" name="{{ field.name }}"
+                type="{{ field.name|filterType }}" value="{{ field.value }}"
+                {{ field|isDisabled }}/>
+              {% if field.errors %}
+                {% for error in field.errors %}
+                  <small id="{{ field.name|add:'_error' }}"
+                  class="form-text text-muted">{{ error }}</small>
+                {% endfor %}
+              {% endif %}
+            </div>
+          {% endfor %}
+          <div class="col-sm-12 text-center">
+            <button type="submit" class="btn btn-success">Submit form</button>
           </div>
-        {% endfor %}
-
-        {{ form.non_field_errors }}
-        <button type="submit" class="form-fill-save-btn btn btn-success">Submit form</button>
-      </div>
-    </form>
+        </form>
+        <div>
   </div>
 {% endblock %}

@@ -1,112 +1,105 @@
 from django import forms
+from django.utils.translation import gettext as _
 from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from groups.models import SportsGroup, Membership
 from accounts.models import User
+from forms.models import BoardChange
 
 
-class BaseForm(forms.Form):
-    # make sure to get the slug
+class BoardChangeForm(forms.Form):
+    president_email = forms.CharField(max_length=100, validators=[validate_email])
+    president_name = forms.CharField(max_length=100, disabled=True, required=False)
+
+    vice_president_email = forms.CharField(max_length=100, validators=[validate_email])
+    vice_president_name = forms.CharField(max_length=100, disabled=True, required=False)
+
+    cashier_email = forms.CharField(max_length=100, validators=[validate_email])
+    cashier_name = forms.CharField(max_length=100, disabled=True, required=False)
+
     def __init__(self, *args, **kwargs):
         self.slug = kwargs.pop('slug') if 'slug' in kwargs else ''
         self.group = self.slug
 
-        super(BaseForm, self).__init__(*args, **kwargs)
-
-    def clean(self):
-        cleaned_data = super(BaseForm, self).clean()
-
-    def perform_actions(self):
-        raise NotImplementedError("You have not implemented the \' perform actions \' function")
-
-
-class BoardChangeForm(BaseForm):
-    leader_email = forms.CharField(max_length=100, validators=[validate_email])
-    leader_name = forms.CharField(max_length=100, disabled=True, required=False)
-
-    second_leader_email = forms.CharField(max_length=100, validators=[validate_email])
-    second_leader_name = forms.CharField(max_length=100, disabled=True, required=False)
-
-    treasurer_email = forms.CharField(max_length=100, validators=[validate_email])
-    treasurer_name = forms.CharField(max_length=100, disabled=True, required=False)
-
-    #Fields for storing the users
-    form_leader = None
-    form_second_leader = None
-    form_treasurer = None
-
-    def __init__(self, *args, **kwargs):
         super(BoardChangeForm, self).__init__(*args, **kwargs)
 
     def get_group(self):
+        """ Returns the sportsgroup object if it exists, else raise validation error """
+
+        if type(self.group) == 'groups.models.SportsGroup':
+            return
         try:
-            return SportsGroup.objects.get(slug=self.slug)
+            self.group = SportsGroup.objects.get(slug=self.slug)
         except SportsGroup.DoesNotExist:
-            return None
+            raise ValidationError(_('Group does not exist'))
 
     @staticmethod
-    def is_member(user, group):
-        try:
-            Membership.objects.get(person=user, group=group)
-        except Membership.DoesNotExist:
-                raise forms.ValidationError(
-                    _('Invalid value: %(value) not part of group'),
-                            params={'value': email},
-                )
+    def get_user(group, email):
+        """ Returns the user object if it exists and is part of the group,
+            else raise validation error """
 
-    def validate_and_store(self, group, data_field):
-        email = self.cleaned_data.get(data_field)
-
-        # Check to see if any users already exist with this email as a username.
         try:
             user = User.objects.get(email=email)
-            self.is_member(user, group)
-
-            return user
+            try:
+                Membership.objects.get(person=user, group=group)
+            except Membership.DoesNotExist:
+                raise ValidationError(
+                    _('{} does not belong to {}'.format(user.get_full_name, group)))
         except User.DoesNotExist:
-            # Raise exception if email is not in use
-            raise forms.ValidationError(
-                _('Invalid value: %(value)s'),
-                        params={'value': email},
-            )
+            if email:
+                raise ValidationError(_("{} not found".format(email)))
+            else:
+                raise ValidationError(_("This email does not exist in the database"))
 
-        return None
+        return user if user else None
 
-    def clean_leader_email(self):
-        group = self.get_group()
-        self.form_leader = self.validate_and_store(group, "leader_email")
+    def clean(self):
+        cleaned_data = super(BoardChangeForm, self).clean()
 
-    def clean_second_leader_email(self):
-        group = self.get_group()
-        self.form_second_leader = self.validate_and_store(group, "second_leader_email")
+    def clean_president_email(self):
+        ''' Magic django function that is called along with form.is_Valid() in the view-file
+            Atempts to set the president based on the president_email input field
+        '''
+        self.get_group() # Make sure the group exists before continuing
 
-    def clean_treasurer_email(self):
-        group = self.get_group()
-        self.form_treasurer = self.validate_and_store(group, "treasurer_email")
+        try:
+            self.president = self.get_user(self.group, self.cleaned_data["president_email"])
+            print("President set to: {}".format(self.president))
+        except KeyError:
+            raise ValidationError(_("The president email field is empty"))
 
-    def perform_actions(self):
-        change_group = self.get_group()
 
-        # Make sure all the roles are input before performing a board change
-        if (self.form_leader and self.form_second_leader and self.form_treasurer):
-            # Perform board change
-            change_group.board.president = self.form_leader
-            print("New president set: {}".format(
-                self.form_leader.first_name + " " + self.form_leader.last_name))
+    def clean_vice_president_email(self):
+        ''' Magic django function that is called along with form.is_Valid() in the view-file
+            Atempts to set the vice president based on the vice_president_email input field
+        '''
+        self.get_group() # Make sure the group exists before continuing
 
-            change_group.board.vice_president = self.form_second_leader
-            print("New vice president set: {}".format(
-                self.form_second_leader.first_name + " " + self.form_second_leader.last_name))
+        try:
+            self.vice_president = self.get_user(self.group, self.cleaned_data["vice_president_email"])
+            print("VP set to: {}".format(self.vice_president))
+        except KeyError:
+            raise ValidationError(_("The vice president email field is empty"))
 
-            change_group.board.cashier = self.form_treasurer
-            print("New treasuerer set: {}".format(
-                self.form_treasurer.first_name + " " + self.form_treasurer.last_name))
 
-            # Save the board changes
-            change_group.board.save()
 
-            this.save()
-        else:
-            raise forms.ValidationError(
-                _('Invalid value: %(value)s'),
-                    params={'value': 'Missing board members'}
-        )
+    def clean_cashier_email(self):
+        ''' Magic django function that is called along with form.is_Valid() in the view-file
+            Atempts to set the cashier based on the cashier input field
+        '''
+        self.get_group() # Make sure the group exists before continuing
+
+        try:
+            self.cashier = self.get_user(self.group, self.cleaned_data["cashier_email"])
+            print("Cashier set to: {}".format(self.cashier))
+        except KeyError:
+            raise ValidationError(_("The cashier email field is empty"))
+
+    def create_model(self):
+        if (self.president and self.vice_president and self.cashier):
+            model = BoardChange.objects.create()
+            model.president=self.president
+            model.vice_president=self.vice_president
+            model.cashier=self.cashier
+
+            model.save()
