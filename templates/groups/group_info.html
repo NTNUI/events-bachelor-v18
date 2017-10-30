@@ -34,8 +34,7 @@
 
       {% for core in board_core %}
         <div class="group-table-row">
-          <div
-              class="group-member-name">{{ core.membership.person.first_name }} {{ core.membership.person.last_name }}</div>
+          <div class="group-member-name">{{ core.membership.person.first_name }} {{ core.membership.person.last_name }}</div>
           <div class="group-member-email">{{ core.membership.person.email }}</div>
           <div class="group-member-phone">{{ core.role }}</div>
         </div>
@@ -43,8 +42,7 @@
 
       {% for membership in board_members %}
         <div class="group-table-row">
-          <div
-              class="group-member-name">{{ membership.person.first_name }} {{ membership.person.last_name }}</div>
+          <div class="group-member-name">{{ membership.person.first_name }} {{ membership.person.last_name }}</div>
           <div class="group-member-email">{{ membership.person.email }}</div>
           <div class="group-member-phone">{{ membership.role }}</div>
         </div>
