@@ -40,6 +40,7 @@ def is_user_cashier(user, group):
 add_perm('groups.can_see_board', is_group_member)
 add_perm('groups.can_see_forms', is_group_member)
 add_perm('groups.can_see_members', is_group_board_member)
-add_perm('groups.can_see_settings', is_group_leader | is_group_vp)
+add_perm('groups.can_see_settings', is_group_member)
+add_perm('groups.can_see_group_settings', is_group_leader | is_group_vp)
 add_perm('groups.can_see_invitations', is_group_board_member)
 add_perm('groups.can_invite_member', is_group_leader | is_group_vp)

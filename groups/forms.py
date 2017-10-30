@@ -156,3 +156,46 @@ class JoinOpenGroupForm(object):
         self.delete_invitation_if_exists()
         if self.is_valid():
             return Membership.objects.create(person=self.user, group=self.get_group())
+
+class LeaveGroupForm():
+    def __init__(self, slug, user):
+        self.slug = slug
+        self.user = user
+        self.errors = []
+        if self.validate_group():
+            self.validate_user_is_member()
+
+    def is_valid(self):
+        return len(self.errors) == 0
+
+    def get_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            return None
+
+    def validate_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            self.errors.append('Invalid group.')
+
+    # def validate_group_is_public(self):
+    #     if not self.get_group().public:
+    #         self.errors.append('Group is not public')
+    #     else:
+    #         return
+
+    def validate_user_is_member(self):
+        try:
+            Membership.objects.get(person=self.user, group=self.get_group())
+        except Membership.DoesNotExist:
+            self.errors.append("This user is not a member of this group.")
+
+    # def delete_invitation_if_exists(self):
+    #     Invitation.objects.filter(group=self.get_group(), person=self.user).delete()
+
+    def save(self):
+        #self.delete_invitation_if_exists()
+        if self.is_valid():
+            return Membership.objects.filter(person=self.user, group=self.get_group()).delete()
