@@ -5,7 +5,7 @@ from accounts.models import User
 from groups.models import SportsGroup
 from django.http import JsonResponse
 from .forms import BoardChangeForm
-from .models import FormDoc
+from .models import FormDoc, BoardChange
 from groups.views import get_base_group_info
 
 @login_required
@@ -34,7 +34,6 @@ def fill_form(request, slug):
         if form.is_valid():
             # If the form is valid perform the actions
             form.create_model()
-
             return redirect('forms_list', slug=slug)
         else:
             pass

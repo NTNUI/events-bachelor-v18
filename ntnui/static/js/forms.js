@@ -27,6 +27,10 @@ $(document).ready( function () {
     } else {
       document.getElementById(this.id.replace('email', 'name')).value = "";
     }
+
+    if(this.value=="None") {
+      this.value="";
+    }
   });
 });
 

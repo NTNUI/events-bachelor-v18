@@ -30,11 +30,12 @@
 
              <!-- The has-danger class does not currently exist in the bootstap beta 2 ...
                   this'll have to be fixed later -->
-            <div class="form-group {% if field.errors %}has-danger{% endif %}">
+            <div class="form-group">
               <label for="{{ field.name }}">{{ field.name|filterLabel }}</label>
               <input id="{{ field.name }}"
-                class="form-control" name="{{ field.name }}"
+                class="form-control {% if field.errors %}is-invalid{% endif %}" name="{{ field.name }}"
                 type="{{ field.name|filterType }}" value="{{ field.value }}"
+                placeholder="{{ field.name|filterPlaceholder }}"
                 {{ field|isDisabled }}/>
               {% if field.errors %}
                 {% for error in field.errors %}

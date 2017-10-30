@@ -64,7 +64,6 @@ class BoardChangeForm(forms.Form):
 
         try:
             self.president = self.get_user(self.group, self.cleaned_data["president_email"])
-            print("President set to: {}".format(self.president))
         except KeyError:
             raise ValidationError(_("The president email field is empty"))
 
@@ -77,11 +76,8 @@ class BoardChangeForm(forms.Form):
 
         try:
             self.vice_president = self.get_user(self.group, self.cleaned_data["vice_president_email"])
-            print("VP set to: {}".format(self.vice_president))
         except KeyError:
             raise ValidationError(_("The vice president email field is empty"))
-
-
 
     def clean_cashier_email(self):
         ''' Magic django function that is called along with form.is_Valid() in the view-file
@@ -91,15 +87,15 @@ class BoardChangeForm(forms.Form):
 
         try:
             self.cashier = self.get_user(self.group, self.cleaned_data["cashier_email"])
-            print("Cashier set to: {}".format(self.cashier))
         except KeyError:
             raise ValidationError(_("The cashier email field is empty"))
 
     def create_model(self):
         if (self.president and self.vice_president and self.cashier):
-            model = BoardChange.objects.create()
-            model.president=self.president
-            model.vice_president=self.vice_president
-            model.cashier=self.cashier
+            model = BoardChange.create(self.president, self.vice_president, self.cashier)
 
-            model.save()
+            if not model in BoardChange.objects.all():
+                print("Saving model")
+                model.save()
+
+            print("Model already exists")

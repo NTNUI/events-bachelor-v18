@@ -16,19 +16,18 @@ def filterType(fieldname):
 
 @register.filter
 def filterLabel(fieldname):
-    if fieldname.endswith("_email"): return "Email:"
     if fieldname.endswith("_name"): return "Name:"
-    return ""
-
-@register.filter
-def getPlaceholder(fieldname):
-    fieldname = fieldname.replace("id_", '')
 
     return {
-        "president_email" : "President email ",
-        "vice_president_email" : "Vice President email",
-        "cashier_email" : "Cashier email"
+        "president_email" : "President email:",
+        "vice_president_email" : "Vice President email:",
+        "cashier_email" : "Cashier email:",
     }.get(fieldname, '')
+
+@register.filter
+def filterPlaceholder(fieldname):
+    if fieldname.endswith("_email"): return "Email"
+    return ""
 
 @register.filter
 def isDisabled(field):
