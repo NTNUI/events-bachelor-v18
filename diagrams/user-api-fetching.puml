@@ -1,0 +1,23 @@
+@startuml
+
+class UserApi {
+  endpoint: string
+  username: string
+  password: string
+
+  - def get_members_for_gym(gym_id: number)
+  + def get_members_for_all_gyms()
+  - def get_members_for_gym_since(gym_id: number, days: number)
+  + def get_members_for_all_gyms_since(gym_id:number , days:number)
+  + def get_customer_info(customer_no)
+
+}
+
+class NewUserController {
+  + updateAllMembers()
+  + updateAllMembersSince(days: Int)
+}
+
+NewUserController *-- UserApi
+
+@enduml
