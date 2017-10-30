@@ -96,6 +96,19 @@ def invitations(request, slug):
 
 @login_required
 def requests(request, slug):
+    if request.method == 'POST':
+        requestID = request.POST.get("request_id", "")
+        result = request.POST.get("result", "")
+        if result == "Yes":
+            joinRequest = Request.objects.get(pk=requestID)
+            Membership.objects.create(person=joinRequest.person, group=joinRequest.group)
+            joinRequest.delete()
+        elif result == "No":
+            joinRequest = Request.objects.get(pk=requestID)
+            joinRequest.delete()
+        else:
+            raise Http404("Request does not exist")
+
     return render(request, 'groups/requests.html', {
         **get_base_members_info(request, slug),
         'active_tab': 'requests',

@@ -13,7 +13,14 @@
       <div class="group-member-name">{{ request.person.first_name }} {{ invitation.person.last_name }}</div>
       <div class="group-member-phone">{{ request.person.phone }}</div>
       <div class="group-member-email">{{ request.person.email }}</div>
-      <div class="group-member-paid"><input type="submit" value="Yes" class="btn-success" /><input type="submit" value="No" class="btn-danger" /></div>
+      <div>
+          <form class="group-member-paid" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="request_id" value="{{ request.pk }}"/>
+              <input type="submit" name="result" value="Yes" class="btn btn-success" />
+              <input type="submit" name="result" value="No" class="btn btn-danger" />
+          </form>
+      </div>
     </div>
     {% endfor %}
 {% endblock %}

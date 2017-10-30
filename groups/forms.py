@@ -198,6 +198,7 @@ class JoinPrivateGroupForm(object):
     # def delete_request_if_exists(self):
     #     Request.objects.filter(group=self.get_group(), person=self.user).delete()
 
+
     def save(self):
         if self.is_valid():
             return Request.objects.create(person=self.user, group=self.get_group())

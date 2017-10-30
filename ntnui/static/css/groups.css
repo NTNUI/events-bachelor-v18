@@ -248,11 +248,13 @@ REQUEST LIST
 
 .btn-danger {
     width: 100%;
+    background-color: red;
 }
 
 .btn-success {
     width: 100%;
     margin-right: 5px;
+    background-color: #017402;
 }
 
 /**
