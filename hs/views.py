@@ -10,10 +10,10 @@ def hs_space(request):
 
 def list_all_members(request):
     """Return the render for /hs/allmembers"""
-    user_dict = {} # a list of all the user's dicionaries
+    user_dict = {}  # a list of all the user's dictionaries
 
     for user in list(User.objects.all()):
-        group_dict = {} # one user's dictionary and his/her groups and respective roles
+        group_dict = {}  # one user's dictionary and his/her groups and respective roles
 
         for membership in list(Membership.objects.filter(person=user)):
             group_dict[membership.group.name] = membership.role
