@@ -122,6 +122,22 @@ a:hover {
     width: 300px;
 }
 
+.invite-download-field{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+
+}
+
+.invite-button{
+    width:40%;
+}
+
+.download-button{
+    width:60%;
+}
+
 .members-list {
     display: flex;
     flex-direction: column;

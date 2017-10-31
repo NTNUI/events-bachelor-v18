@@ -22,5 +22,6 @@ def some_streaming_csv_view(request):
     writer = csv.writer(pseudo_buffer)
     response = StreamingHttpResponse((writer.writerow(row) for row in rows),
                                      content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+    response['Content-Disposition'] = 'attachment; filename="groupmembers.csv"'
+
     return response

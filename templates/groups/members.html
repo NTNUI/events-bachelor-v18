@@ -2,6 +2,25 @@
 
 {% block table_content %}
 
+
+  <div class="invite-download-field">
+    <div class="invite-button">
+      {% if show_new_invitation %}
+      <a href="{% url 'group_invite_member' slug=slug %}" class="add-new-member">
+        <div class="add-new-button">+</div>
+        <div class="add-new-text">Invite new member</div>
+      </a>
+      {% endif %}
+    </div>
+    <div class="download-button">
+      <a href="{% url 'group_invite_member' slug=slug %}" class="add-new-member">
+        <div class="add-new-button">+</div>
+        <div class="add-new-text">Download members list</div>
+      </a>
+    </div>
+  </div>
+
+
 {% if show_members %}
   <div class="members-header">
     <div class="group-member-name-header">Name</div>
@@ -10,12 +29,6 @@
     <div class="group-member-paid-header">Paid</div>
   </div>
 
-  {% if show_new_invitation %}
-  <a href="{% url 'group_invite_member' slug=slug %}" class="add-new-member">
-    <div class="add-new-button">+</div>
-    <div class="add-new-text">Invite new member</div>
-  </a>
-  {% endif %}
 
   {% for member in members %}
   <div class="group-table-row">
