@@ -1,8 +1,8 @@
 import csv
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.http import StreamingHttpResponse
-
+from .models import Membership, SportsGroup
+from django.shortcuts import get_object_or_404
 
 class Echo(object):
     """An object that implements just the write method of the file-like
@@ -18,11 +18,13 @@ def download_all_members(request,slug):
     # Generate a sequence of rows. The range is based on the maximum number of
     # rows that can be handled by a single sheet in most spreadsheet
     # applications.
-    rows = (["Row {}".format(idx), str(idx)] for idx in range(10))
+    group=get_object_or_404(SportsGroup, slug=slug)
+    members = Membership.objects.filter(group=group.pk)
     pseudo_buffer = Echo()
     writer = csv.writer(pseudo_buffer)
     response = StreamingHttpResponse((
-        writer.writerow(['field1', 'field2', 'field3', 'field4']) for row in rows),
+        writer.writerow([member.person.first_name + " " +member.person.last_name, member.person.email,
+                         member.person.phone]) for member in members),
                                      content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=""' + slug + '"members.csv"'
     return response
