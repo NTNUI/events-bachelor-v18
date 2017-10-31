@@ -4,20 +4,16 @@
 
 
   <div class="invite-download-field">
-    <div class="invite-button">
       {% if show_new_invitation %}
       <a href="{% url 'group_invite_member' slug=slug %}" class="add-new-member">
         <div class="add-new-button">+</div>
         <div class="add-new-text">Invite new member</div>
       </a>
       {% endif %}
-    </div>
-    <div class="download-button">
-      <a href="{% url 'group_invite_member' slug=slug %}" class="add-new-member">
+      <a href="{% url 'group_invite_member' slug=slug %}" class="download-members">
         <div class="add-new-button">+</div>
         <div class="add-new-text">Download members list</div>
       </a>
-    </div>
   </div>
 
 

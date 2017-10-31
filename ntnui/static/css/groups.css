@@ -130,14 +130,6 @@ a:hover {
 
 }
 
-.invite-button{
-    width:40%;
-}
-
-.download-button{
-    width:60%;
-}
-
 .members-list {
     display: flex;
     flex-direction: column;
@@ -203,7 +195,20 @@ a:hover {
 }
 
 .add-new-member {
-    width: 100%;
+    width: 40%;
+    font-weight: lighter;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 48px;
+    box-sizing: border-box;
+    padding: 0 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.download-members {
+    width: 60%;
     font-weight: lighter;
     display: flex;
     flex-direction: row;
@@ -216,6 +221,10 @@ a:hover {
 }
 
 .add-new-member:hover {
+    background-color: #f0f0f0;
+}
+
+.download-members:hover {
     background-color: #f0f0f0;
 }
 
