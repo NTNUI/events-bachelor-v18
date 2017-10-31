@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
 from .models import SportsGroup, Membership, Invitation, Request
 from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm
 from .helpers import get_group_role
