@@ -49,6 +49,7 @@ class Invitation(models.Model):
     group = models.ForeignKey(SportsGroup, on_delete=models.CASCADE)
     date_issued = models.DateField(auto_now_add=True)
 
+
 class Request(models.Model):
     person = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

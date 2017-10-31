@@ -7,11 +7,12 @@ from .mixins.general import (
     GeneralMemberMixin,
     TEST_USERS,
 )
-from .mixins.view_invite_member import (
-    VIM_BoardMemberMixin,
-    VIM_GroupLeaderMixin,
+from .mixins.view_requests import (
+    VR_BoardMemberMixin,
+    VR_GroupLeaderMixin,
 )
-VIEW_NAME = 'group_invite_member'
+
+VIEW_NAME = 'group_requests'
 
 
 class InviteLoggedOutTest(TestCase):
@@ -24,11 +25,11 @@ class InviteLoggedOutTest(TestCase):
         self.assertEquals(self.response.status_code, 302)
 
 
-class ViewInvitationMemberTest(GeneralMemberMixin, TestCase):
+class ViewRequestMemberTest(GeneralMemberMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['member']
         self.url_name = VIEW_NAME
-        super(ViewInvitationMemberTest, self).setUp()
+        super(ViewRequestMemberTest, self).setUp()
 
     def test_view_function(self):
         view = resolve('/groups/volleyball/members/invite')
@@ -38,37 +39,36 @@ class ViewInvitationMemberTest(GeneralMemberMixin, TestCase):
         self.assertContains(
             self.response, 'You do not have permissions to see this.')
 
-    def test_should_not_link_to_invitations(self):
+    def test_should_not_link_to_requests(self):
         self.assertNotContains(self.response, reverse(
-            'group_invitations', kwargs={'slug': 'volleyball'}))
+            'group_requests', kwargs={'slug': 'volleyball'}))
 
-    def test_should_not_contain_form_title(self):
-        self.assertNotContains(self.response, 'Invite member to group')
+    def test_should_not_contain_request_table(self):
+        self.assertNotContains(self.response, 'Can I join?')
 
-    def test_should_not_contain_form_email_input(self):
+    def test_should_not_contain_request_table_content(self):
         self.assertNotContains(
-            self.response, '<input type="text" name="email"')
+            self.response, '<input type="hidden" name="request_id"')
 
-    def test_should_not_contain_form_email_submit(self):
-        self.assertNotContains(self.response, '<button type="submit"')
-        self.assertNotContains(self.response, 'Invite person</button>')
+    def test_should_not_contain_request_table_button(self):
+        self.assertNotContains(self.response, 'input type="submit"')
 
 
-class ViewNewInvitationCashierTest(VIM_BoardMemberMixin, TestCase):
+class ViewNewInvitationCashierTest(VR_BoardMemberMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['cashier']
         self.url_name = VIEW_NAME
         super(ViewNewInvitationCashierTest, self).setUp()
 
 
-class ViewNewInvitationVicePresidentTest(VIM_GroupLeaderMixin, TestCase):
+class ViewNewInvitationVicePresidentTest(VR_GroupLeaderMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['vice_president']
         self.url_name = VIEW_NAME
         super(ViewNewInvitationVicePresidentTest, self).setUp()
 
 
-class ViewNewInvitationPresidentTest(VIM_GroupLeaderMixin, TestCase):
+class ViewNewInvitationPresidentTest(VR_GroupLeaderMixin, TestCase):
     def setUp(self):
         self.email = TEST_USERS['president']
         self.url_name = VIEW_NAME

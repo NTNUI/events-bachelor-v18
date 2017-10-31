@@ -246,15 +246,15 @@ a:hover {
 REQUEST LIST
  */
 
-.btn-danger {
+.btn-outline-danger {
     width: 100%;
-    background-color: red;
+    border-color: red;
 }
 
-.btn-success {
+.btn-outline-success {
     width: 100%;
     margin-right: 5px;
-    background-color: #017402;
+    border-color: #017402;
 }
 
 /**
