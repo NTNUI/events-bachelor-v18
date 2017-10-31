@@ -1,11 +1,12 @@
 from django.test import TestCase
 from django.urls import resolve
+from django.core.urlresolvers import reverse
 from hs import views as hs_views
 
 
 class AllMembersLoggedOutTest(TestCase):
     def setUp(self):
-        url = 'hs/allmembers'
+        url = reverse('all_members')
         self.response = self.client.get(url)
 
     def test_status_code(self):
@@ -19,11 +20,11 @@ class AllMembersLoggedInTest(TestCase):
     def setUp(self):
         self.login_response = self.client.login(email='jameshalpert@gmail.com',
                                                 password='locoloco')
-        url = 'hs/allmembers'
+        url = reverse('all_members')
         self.response = self.client.get(url)
 
     def test_view_function(self):
-        view = resolve('hs/allmembers')
+        view = resolve('/hs/allmembers')
         self.assertEquals(view.func, hs_views.list_all_members)
 
     def test_shows_member(self):
