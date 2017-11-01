@@ -4,6 +4,7 @@ from django.http import StreamingHttpResponse
 from .models import Membership, SportsGroup
 from django.shortcuts import get_object_or_404
 
+
 class Echo(object):
     """An object that implements just the write method of the file-like
     interface.
@@ -12,13 +13,17 @@ class Echo(object):
         """Write the value by returning it, instead of storing in a buffer."""
         return value
 
+
 @login_required
-def download_all_members(slug):
+def download_all_members(request, slug):
     """A view that streams a large CSV file."""
     # Generate a sequence of rows. The range is based on the maximum number of
     # rows that can be handled by a single sheet in most spreadsheet
     # applications.
     # rows = (["Row {}".format(idx), str(idx)] for idx in range(65536))
+    if request:
+        pass
+
     group = get_object_or_404(SportsGroup, slug=slug)
     members = Membership.objects.filter(group=group.pk)
     pseudo_buffer = Echo()
