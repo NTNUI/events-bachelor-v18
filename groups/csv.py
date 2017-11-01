@@ -27,9 +27,7 @@ def download_members(request, slug):
 
     group = get_object_or_404(SportsGroup, slug=slug)
     members = Membership.objects.filter(group=group.pk)
-    pseudo_buffer = Echo()
     header = ['FIRST NAME', 'SECOND NAME', 'EMAIL', 'PHONE', 'PAID']
-    writer = csv.writer(pseudo_buffer, delimiter=';')
 
     formatted_members = []
     for member in members:
@@ -43,11 +41,18 @@ def download_members(request, slug):
         formatted_members.append(new_member)
 
     sorted_formatted_members = sorted(formatted_members, key=lambda e: e[1])
-
     rows = [header] + sorted_formatted_members
     today = date.today().__str__()
-    response = StreamingHttpResponse((
-        writer.writerow(row) for row in rows),
-                                     content_type="text/csv")
+
+    response = list_to_csv_http_response(rows)
     response['Content-Disposition'] = 'attachment; filename=""' + slug + '"members""' + today + '".csv"'
+    return response
+
+
+def list_to_csv_http_response(inputList):
+    pseudo_buffer = Echo()
+    writer = csv.writer(pseudo_buffer, delimiter=';')
+    response = StreamingHttpResponse((
+        writer.writerow(row) for row in inputList),
+                                     content_type="text/csv")
     return response
