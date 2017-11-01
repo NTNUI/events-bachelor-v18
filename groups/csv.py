@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import StreamingHttpResponse
 from .models import Membership, SportsGroup
 from django.shortcuts import get_object_or_404
+from datetime import date
 
 
 class Echo(object):
@@ -42,8 +43,11 @@ def download_all_members(request, slug):
         formatted_members.append(new_member)
 
     rows = [header] + formatted_members
+    today = date.today().__str__()
+    print("#####")
+    print(type(today))
     response = StreamingHttpResponse((
         writer.writerow(row) for row in rows),
                                      content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename=""' + slug + '"members.csv"'
+    response['Content-Disposition'] = 'attachment; filename=""' + slug + '"members""' + today + '".csv"'
     return response
