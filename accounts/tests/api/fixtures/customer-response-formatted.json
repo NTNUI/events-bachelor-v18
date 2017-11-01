@@ -1,0 +1,39 @@
+{
+    "CustomerNo": "1016801",
+    "GymID": "3",
+    "FirstName": "Michael",
+    "LastName": "Scott",
+    "BirthDate": "1965.06.08",
+    "Mobile": "97597003",
+    "Email": "",
+    "Gender": "MALE",
+    "Role": "MEM",
+    "Active": "YES",
+    "ExpieryDate": "2018.01.10",
+    "CardNumber": "2380987600",
+    "RegisterdDate": "2017.01.05",
+    "LastVisitDate": "2017.09.28",
+    "CurrentOffering": "231",
+    "ContractNumber": "646500",
+    "ContractStartdate": "2017.08.19"
+}
+
+{
+    "customer_no": "1016801",
+    "gym_id": "3",
+    "first_name": "Michael",
+    "last_name": "Scott",
+    "birth_date": "1965.06.08",
+    "mobile": "97597003",
+    "email": "michael.scott@gmail.com",
+    "gender": "MALE",
+    "role": "MEM",
+    "active": true,
+    "expiry_date": "2018.01.10",
+    "card_number": "2380987600",
+    "registered_date": "2017.01.05",
+    "last_visit_date": "2017.09.28",
+    "contract_type": "231",
+    "contract_number": "646500",
+    "contract_start_date": "2017.08.19"
+}
