@@ -174,7 +174,7 @@ a:hover {
 }
 
 .group-member-paid-header {
-    width: 40px;
+    width: 80px;
 }
 
 .group-member-name {
@@ -190,8 +190,11 @@ a:hover {
 }
 
 .group-member-paid {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     text-align: center;
-    width: 40px;
+    width: 50px;
 }
 
 .add-new-member {
@@ -262,6 +265,21 @@ a:hover {
     text-transform: uppercase;
     font-size: 12px;
     padding: 4px 8px;
+}
+
+/**
+REQUEST LIST
+ */
+
+.no-btn {
+    width: 100%;
+    border-color: red;
+}
+
+.yes-btn {
+    width: 100%;
+    margin-right: 5px;
+    border-color: #017402;
 }
 
 /**
