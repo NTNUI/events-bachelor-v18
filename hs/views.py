@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def hs_space(request):
     """Return the render for the main board view, /hs"""
-    return render(request, 'hs/hs_space.html')
+    return render(request, 'hs/hs_base.html')
 
 
 @login_required
