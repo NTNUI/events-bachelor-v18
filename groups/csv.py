@@ -35,7 +35,6 @@ def download_all_members(request,slug):
         ]
         formatted_members.append(new_member)
 
-
     rows = [header] + formatted_members
     response = StreamingHttpResponse((
         writer.writerow(row) for row in rows),
