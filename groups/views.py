@@ -19,6 +19,7 @@ def get_base_group_info(request, slug):
         'show_members': request.user.has_perm('groups.can_see_members', group),
         'show_settings': request.user.has_perm('groups.can_see_settings', group),
         'show_group_settings': request.user.has_perm('groups.can_see_group_settings', group),
+        'show_leave_button': request.user.has_perm('groups.can_leave_group', group),
         'show_forms': request.user.has_perm('groups.can_see_forms', group),
     }
 
@@ -124,7 +125,7 @@ def settings(request, slug):
             form.save()
             return redirect('group_index', slug=slug)
 
-    return render(request, 'groups/settings.html', {
+    return render(request, 'groups/group_settings.html', {
         **base_info,
         'active': 'settings',
         'member': request.user,

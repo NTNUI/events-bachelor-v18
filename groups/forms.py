@@ -185,7 +185,7 @@ class LeaveGroupForm():
         try:
             Membership.objects.get(person=self.user, group=self.get_group())
         except Membership.DoesNotExist:
-            self.errors.append("This user is not a member of this group.")
+            self.errors.append('This user is not a member of this group.')
 
     def save(self):
         if self.is_valid():
