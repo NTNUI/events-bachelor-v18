@@ -17,8 +17,8 @@
           <form class="group-member-paid" method="post">
               {% csrf_token %}
               <input type="hidden" name="request_id" value="{{ request.pk }}"/>
-              <input type="submit" name="result" value="Yes" class="btn btn-outline-success btn-sm" />
-              <input type="submit" name="result" value="No" class="btn btn-outline-danger btn-sm" />
+              <input type="submit" name="result" value="Yes" class="btn btn-outline-success btn-sm yes-btn" />
+              <input type="submit" name="result" value="No" class="btn btn-outline-danger btn-sm no-btn" />
           </form>
       </div>
     </div>
