@@ -30,13 +30,19 @@ def download_all_members(request):
         group_members = Membership.objects.filter(group=group.pk)
         formatted_group_members = []
         for member in group_members:
+            if member.role:
+                role = member.role
+            else:
+                role = 'Member'
+
             new_member = [
                 member.person.first_name,
                 member.person.last_name,
                 member.person.email,
                 member.person.phone,
-                member.paid,
+                role,
                 member.date_joined,
+                member.paid,
                 group,
             ]
             formatted_group_members.append(new_member)
@@ -44,7 +50,7 @@ def download_all_members(request):
 
         all_members.append(sorted_formatted_group_members)
     pseudo_buffer = Echo()
-    header = ['FIRST NAME', 'LAST NAME', 'EMAIL', 'PHONE', 'PAID', 'DATE JOINED', 'GROUP']
+    header = ['FIRST NAME', 'LAST NAME', 'EMAIL', 'PHONE', 'ROLE', 'DATE JOINED', 'PAID', 'GROUP']
     writer = csv.writer(pseudo_buffer, delimiter=';')
 
     rows = [header]
