@@ -24,7 +24,7 @@ def download_all_members(request):
     # rows = (["Row {}".format(idx), str(idx)] for idx in range(65536))
     if request:
         pass
-    groups = SportsGroup.objects.all()
+    groups = SportsGroup.objects.all().order_by('name')
     all_members = []
     for group in groups:
         group_members = Membership.objects.filter(group=group.pk)
@@ -36,18 +36,21 @@ def download_all_members(request):
                 member.person.email,
                 member.person.phone,
                 member.paid,
+                member.date_joined,
                 group,
             ]
             formatted_group_members.append(new_member)
             sorted_formatted_group_members = sorted(formatted_group_members, key=lambda e: e[1])
 
         all_members.append(sorted_formatted_group_members)
-
     pseudo_buffer = Echo()
-    header = ['FIRST NAME', 'LAST NAME', 'EMAIL', 'PHONE', 'PAID', 'GROUP']
+    header = ['FIRST NAME', 'LAST NAME', 'EMAIL', 'PHONE', 'PAID', 'DATE JOINED', 'GROUP']
     writer = csv.writer(pseudo_buffer, delimiter=';')
 
-    rows = [header] + all_members
+    rows = [header]
+    for group_members in all_members:
+        rows = rows + group_members
+
     today = date.today().__str__()
     response = StreamingHttpResponse((
         writer.writerow(row) for row in rows),
