@@ -22,7 +22,7 @@ def download_all_members(request,slug):
     group = get_object_or_404(SportsGroup, slug=slug)
     members = Membership.objects.filter(group=group.pk)
     pseudo_buffer = Echo()
-    header = ['NAME', 'EMAIL', 'PHONE']
+    header = ['NAME', 'EMAIL', 'PHONE', 'PAID']
     writer = csv.writer(pseudo_buffer, delimiter=';')
 
     formatted_members = []
@@ -31,6 +31,7 @@ def download_all_members(request,slug):
             member.person.first_name + " " + member.person.last_name,
             member.person.email,
             member.person.phone,
+            member.paid,
         ]
         formatted_members.append(new_member)
 
