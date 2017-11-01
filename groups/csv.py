@@ -22,11 +22,22 @@ def download_all_members(request,slug):
     group = get_object_or_404(SportsGroup, slug=slug)
     members = Membership.objects.filter(group=group.pk)
     pseudo_buffer = Echo()
-    writer = csv.writer(pseudo_buffer)
+    header = ['NAME', 'EMAIL', 'PHONE']
+    writer = csv.writer(pseudo_buffer, delimiter=';')
+
+    formatted_members = []
+    for member in members:
+        new_member = [
+            member.person.first_name + " " + member.person.last_name,
+            member.person.email,
+            member.person.phone,
+        ]
+        formatted_members.append(new_member)
+
+
+    rows = [header] + formatted_members
     response = StreamingHttpResponse((
-        #  writer.writerow(['Name','Email','Phone','Paid fee']),
-        writer.writerow([member.person.first_name + " " + member.person.last_name, member.person.email,
-                         member.person.phone]) for member in members),
+        writer.writerow(row) for row in rows),
                                      content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename=""' + slug + '"members.csv"'
     return response
