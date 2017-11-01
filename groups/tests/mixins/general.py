@@ -38,7 +38,7 @@ class LoggedInMixin(object):
 
 class GroupMixin(LoggedInMixin):
     fixtures = ['users.json', 'groups.json',
-                'memberships.json', 'invitations.json', 'boards.json']
+                'memberships.json', 'invitations.json', 'boards.json', 'requests.json']
 
     def setUp(self):
         super(GroupMixin, self).setUp()

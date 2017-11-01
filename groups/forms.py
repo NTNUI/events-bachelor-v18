@@ -1,7 +1,7 @@
 from django import forms
 from django.core.validators import validate_email
 from accounts.models import User
-from .models import SportsGroup, Invitation, Membership
+from .models import SportsGroup, Invitation, Membership, Request
 
 
 class NewInvitationForm(forms.Form):
@@ -158,6 +158,51 @@ class JoinOpenGroupForm(object):
             return Membership.objects.create(person=self.user, group=self.get_group())
 
 
+class JoinPrivateGroupForm(object):
+    def __init__(self, slug, user):
+        self.slug = slug
+        self.user = user
+        self.errors = []
+        if self.validate_group():
+            self.validate_group_is_private()
+        self.validate_not_already_member()
+
+    def is_valid(self):
+        return len(self.errors) == 0
+
+    def get_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            return None
+
+    def validate_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            self.errors.append('Invalid group.')
+
+    def validate_group_is_private(self):
+        if self.get_group().public:
+            self.errors.append('Group is not private')
+        else:
+            return
+
+    def validate_not_already_member(self):
+        try:
+            Membership.objects.get(person=self.user, group=self.get_group())
+            self.errors.append("This user is already a member of this group.")
+        except Membership.DoesNotExist:
+            return
+
+    # def delete_request_if_exists(self):
+    #     Request.objects.filter(group=self.get_group(), person=self.user).delete()
+
+
+    def save(self):
+        if self.is_valid():
+            return Request.objects.create(person=self.user, group=self.get_group())
+
 class LeaveGroupForm():
     def __init__(self, slug, user):
         self.slug = slug
@@ -190,3 +235,4 @@ class LeaveGroupForm():
     def save(self):
         if self.is_valid():
             return Membership.objects.filter(person=self.user, group=self.get_group()).delete()
+
