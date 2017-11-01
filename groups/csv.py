@@ -42,7 +42,7 @@ def download_members(request, slug):
         ]
         formatted_members.append(new_member)
 
-        sorted_formatted_members = sorted(formatted_members, key=lambda e: e[1])
+    sorted_formatted_members = sorted(formatted_members, key=lambda e: e[1])
 
     rows = [header] + sorted_formatted_members
     today = date.today().__str__()
