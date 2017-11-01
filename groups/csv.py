@@ -44,8 +44,6 @@ def download_all_members(request, slug):
 
     rows = [header] + formatted_members
     today = date.today().__str__()
-    print("#####")
-    print(type(today))
     response = StreamingHttpResponse((
         writer.writerow(row) for row in rows),
                                      content_type="text/csv")
