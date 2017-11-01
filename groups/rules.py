@@ -23,6 +23,7 @@ def is_group_leader(user, group):
     except AttributeError:
         return False
 
+
 @predicate
 def is_group_vp(user, group):
     try:
@@ -43,4 +44,5 @@ add_perm('groups.can_see_settings', is_group_member)
 add_perm('groups.can_see_group_settings', is_group_leader | is_group_vp)
 add_perm('groups.can_see_invitations', is_group_board_member)
 add_perm('groups.can_invite_member', is_group_leader | is_group_vp)
-add_perm('groups.can_leave_group', ~is_group_leader & is_group_member)
+add_perm('groups.can_leave_group', ~is_group_leader &  # pylint: disable=invalid-unary-operand-type
+         is_group_member)

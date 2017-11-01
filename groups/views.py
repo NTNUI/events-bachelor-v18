@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from .models import SportsGroup, Membership, Invitation, Request
-from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm, LeaveGroupForm
+from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm, \
+    LeaveGroupForm
 from .helpers import get_group_role
 
 
@@ -94,6 +95,7 @@ def invitations(request, slug):
         **get_base_members_info(request, slug),
         'active_tab': 'invitations',
     })
+
 
 @login_required
 def requests(request, slug):

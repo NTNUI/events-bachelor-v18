@@ -67,4 +67,5 @@ class OpenGroupViewTest(TestCase):
         self.response = self.client.get(url)
 
     def test_should_throw_if_no_button_present(self):
-        self.assertContains(self.response, '<input type="submit" class="btn btn-success" name="join-group')
+        self.assertContains(
+            self.response, '<input type="submit" class="btn btn-success" name="join-group')
