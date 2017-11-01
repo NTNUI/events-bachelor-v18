@@ -28,16 +28,22 @@ def download_members(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
     members = Membership.objects.filter(group=group.pk)
     pseudo_buffer = Echo()
-    header = ['FIRST NAME', 'SECOND NAME', 'EMAIL', 'PHONE', 'DATE JOINED', 'PAID']
+    header = ['FIRST NAME', 'SECOND NAME', 'EMAIL', 'PHONE', 'ROLE', 'DATE JOINED', 'PAID']
     writer = csv.writer(pseudo_buffer, delimiter=';')
 
     formatted_members = []
     for member in members:
+        if member.role:
+            role = member.role
+        else:
+            role = 'Member'
+
         new_member = [
             member.person.first_name,
             member.person.last_name,
             member.person.email,
             member.person.phone,
+            role,
             member.date_joined,
             member.paid,
         ]
