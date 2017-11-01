@@ -28,13 +28,13 @@ def download_members(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
     members = Membership.objects.filter(group=group.pk)
     pseudo_buffer = Echo()
-    header = ['NAME', 'EMAIL', 'PHONE', 'PAID']
+    header = ['FIRST NAME', 'SECOND NAME', 'EMAIL', 'PHONE', 'PAID']
     writer = csv.writer(pseudo_buffer, delimiter=';')
 
     formatted_members = []
     for member in members:
         new_member = [
-            member.person.first_name + " " +
+            member.person.first_name,
             member.person.last_name,
             member.person.email,
             member.person.phone,
@@ -42,7 +42,7 @@ def download_members(request, slug):
         ]
         formatted_members.append(new_member)
 
-    sorted_formatted_members = sorted(formatted_members, key=lambda e: e[0].split()[1])
+    sorted_formatted_members = sorted(formatted_members, key=lambda e: e[1])
 
     rows = [header] + sorted_formatted_members
     today = date.today().__str__()
