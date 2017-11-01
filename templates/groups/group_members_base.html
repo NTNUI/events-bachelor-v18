@@ -10,8 +10,9 @@
       <a href="{% url 'group_invitations' slug=slug %}"
         class="{% if active_tab == 'invitations' %}total-tab-active{% else %}total-tab{% endif %}">
           {{ total_invitations }} invitation{{ total_invitations|pluralize }}</a>
-      <div class="{% if active_tab == 'requests' %}total-tab-active{% else %}total-tab{% endif %}">
-        {{ 0 }} requests</div>
+      <a href="{% url 'group_requests' slug=slug %}"
+         class="{% if active_tab == 'requests' %}total-tab-active{% else %}total-tab{% endif %}">
+        {{ total_requests }} request{{ total_requests|pluralize }}</a>
       <input class="search-input form-control" type="text" placeholder="Search for group members" disabled />
     </div>
 

@@ -11,6 +11,8 @@ class SportsGroup(models.Model):
         settings.AUTH_USER_MODEL, through='Membership', related_name='group_members')
     invitations = models.ManyToManyField(
         settings.AUTH_USER_MODEL, through='Invitation', related_name='group_invitations')
+    requests = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, through='Request', related_name='group_requests')
     public = models.BooleanField(default=False)
 
     def __str__(self):
@@ -42,6 +44,13 @@ class Membership(models.Model):
 
 
 class Invitation(models.Model):
+    person = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    group = models.ForeignKey(SportsGroup, on_delete=models.CASCADE)
+    date_issued = models.DateField(auto_now_add=True)
+
+
+class Request(models.Model):
     person = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     group = models.ForeignKey(SportsGroup, on_delete=models.CASCADE)

@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
-from .models import SportsGroup, Membership, Invitation
-from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm
+from .models import SportsGroup, Membership, Invitation, Request
+from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm
 from .helpers import get_group_role
 
 
@@ -26,10 +26,13 @@ def get_base_members_info(request, slug):
     base_info = get_base_group_info(request, slug)
     invitations = Invitation.objects.filter(group=base_info['group'].pk)
     members = Membership.objects.filter(group=base_info['group'].pk)
+    requests = Request.objects.filter(group=base_info['group'].pk)
     return {
         **base_info,
         'invitations': invitations,
         'total_invitations': len(invitations),
+        'requests': requests,
+        'total_requests': len(requests),
         'members': members,
         'total_members': len(members),
         'active': 'members',
@@ -40,15 +43,20 @@ def get_base_members_info(request, slug):
 
 @login_required
 def group_index(request, slug):
-    if request.method == 'POST':
-        form = JoinOpenGroupForm(slug=slug, user=request.user)
-
-        if form.is_valid():
-            form.save()
-            return redirect('group_index', slug=slug)
-
     base_info = get_base_group_info(request, slug)
     group = base_info['group']
+
+    if request.method == 'POST':
+        if group.public:
+            form = JoinOpenGroupForm(slug=slug, user=request.user)
+            if form.is_valid():
+                form.save()
+                return redirect('group_index', slug=slug)
+        else:
+            form = JoinPrivateGroupForm(slug=slug, user=request.user)
+            if form.is_valid():
+                form.save()
+
     board_members = []
     board_core = []
     if request.user.has_perm('groups.can_see_board', group):
@@ -83,6 +91,26 @@ def invitations(request, slug):
     return render(request, 'groups/invitations.html', {
         **get_base_members_info(request, slug),
         'active_tab': 'invitations',
+    })
+
+@login_required
+def requests(request, slug):
+    if request.method == 'POST':
+        requestID = request.POST.get("request_id", "")
+        result = request.POST.get("result", "")
+        if result == "Yes":
+            joinRequest = Request.objects.get(pk=requestID)
+            Membership.objects.create(person=joinRequest.person, group=joinRequest.group)
+            joinRequest.delete()
+        elif result == "No":
+            joinRequest = Request.objects.get(pk=requestID)
+            joinRequest.delete()
+        else:
+            raise Http404("Request does not exist")
+
+    return render(request, 'groups/requests.html', {
+        **get_base_members_info(request, slug),
+        'active_tab': 'requests',
     })
 
 
