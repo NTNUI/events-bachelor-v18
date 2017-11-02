@@ -46,7 +46,25 @@ def download_members(request, slug):
 
     response = list_to_csv_http_response(rows)
     response['Content-Disposition'] = 'attachment; filename=""' + slug + '"members""' + today + '".csv"'
+    # https://stackoverflow.com/questions/739776/django-filters-or
     return response
+
+
+def download_yearly_group_members(request, slug):
+    group = get_object_or_404(SportsGroup, slug=slug)
+    # 10 = whole year, 20 = half year
+    # Entry.objects.filter(pub_date__month=12)
+    # pub_date__gte=datetime.date(2005, 1, 30)
+
+    current_year = datetime.date.today().year
+    start_date = datetime.date(current_year, 8, 1)
+    end_date = datetime.date(current_year+1, 1, 31)
+
+    members = Membership.objects.filter(group=group.pk,
+        expiry_date__date__range=(start_date, end_date))
+
+
+
 
 
 def list_to_csv_http_response(inputList):
