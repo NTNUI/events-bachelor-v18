@@ -7,9 +7,11 @@
       About {{ group.name }}
       <form method="post" novalidate>
         {% csrf_token %}
-        {% if group.public %}
-          {% if joined == False %}
-            <input type="submit" class="btn btn-success" name="join-group" value="Join">
+        {% if joined == False %}
+          {% if group.public %}
+            <input type="submit" class="btn btn-success" name="join-group" value="Join" />
+          {% else %}
+            <input type="submit" class="btn btn-success" name="ask-join-group" value="Ask to join" />
           {% endif %}
         {% endif %}
       </form>
