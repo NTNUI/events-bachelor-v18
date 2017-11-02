@@ -90,6 +90,7 @@ def members(request, slug):
 def member_info(request, slug, member_id):
     group = get_object_or_404(SportsGroup, slug=slug)
     can_see_members = request.user.has_perm('groups.can_see_members', group)
+    #TODO: sjekke om man faktisk har tilgang til å se medlemmer, basert på gruppe. Utrygt endepunkt
     try:
         member = Membership.objects.get(pk=member_id)
     except Membership.DoesNotExist:
