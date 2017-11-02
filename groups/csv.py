@@ -18,11 +18,7 @@ class Echo(object):
 @login_required
 def download_members(request, slug):
     """A view that streams a large CSV file."""
-    # Generate a sequence of rows. The range is based on the maximum number of
-    # rows that can be handled by a single sheet in most spreadsheet
-    # applications.
-    # rows = (["Row {}".format(idx), str(idx)] for idx in range(65536))
-    if request:
+    if request:  # dummy method, to use request, to pass travis tests
         pass
 
     group = get_object_or_404(SportsGroup, slug=slug)
@@ -49,9 +45,7 @@ def download_members(request, slug):
         ]
         formatted_members.append(new_member)
 
-    sorted_formatted_members = sorted(formatted_members, key=lambda e: e[1])
-
-    rows = [header] + sorted_formatted_members
+    rows = [header] + sorted(formatted_members, key=lambda e: e[1])
     today = date.today().__str__()
     response = StreamingHttpResponse((
         writer.writerow(row) for row in rows),
