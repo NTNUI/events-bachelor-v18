@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from .models import SportsGroup, Membership, Invitation, Request
-from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm
+from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm, \
+    LeaveGroupForm
 from .helpers import get_group_role
 
 
@@ -18,6 +19,8 @@ def get_base_group_info(request, slug):
         'show_board': request.user.has_perm('groups.can_see_board', group),
         'show_members': request.user.has_perm('groups.can_see_members', group),
         'show_settings': request.user.has_perm('groups.can_see_settings', group),
+        'show_group_settings': request.user.has_perm('groups.can_see_group_settings', group),
+        'show_leave_button': request.user.has_perm('groups.can_leave_group', group),
         'show_forms': request.user.has_perm('groups.can_see_forms', group),
     }
 
@@ -45,6 +48,8 @@ def get_base_members_info(request, slug):
 def group_index(request, slug):
     base_info = get_base_group_info(request, slug)
     group = base_info['group']
+    board_members = []
+    board_core = []
 
     if request.method == 'POST':
         if group.public:
@@ -57,8 +62,6 @@ def group_index(request, slug):
             if form.is_valid():
                 form.save()
 
-    board_members = []
-    board_core = []
     if request.user.has_perm('groups.can_see_board', group):
         board_members = set(group.membership_set.filter(in_board=True))
         core = [
@@ -70,7 +73,7 @@ def group_index(request, slug):
             membership = group.membership_set.get(person=person[1])
             board_members.remove(membership)
             board_core.append({'membership': membership, 'role': person[0]})
-    return render(request, 'groups/info.html', {
+    return render(request, 'groups/group_info.html', {
         **base_info,
         'active': 'about',
         'board_core': board_core,
@@ -110,6 +113,7 @@ def invitations(request, slug):
         **get_base_members_info(request, slug),
         'active_tab': 'invitations',
     })
+
 
 @login_required
 def requests(request, slug):
@@ -152,22 +156,28 @@ def invite_member(request, slug):
     return render(request, 'groups/invite_member.html', {
         **get_base_members_info(request, slug),
         'form': form,
-        'active': 'members',
     })
 
 
 @login_required
 def settings(request, slug):
     base_info = get_base_group_info(request, slug)
-
-    if request.method == 'POST':
+    print(request.POST.get('save-settings'))
+    if request.method == 'POST' and request.POST.get('save-settings'):
         form = SettingsForm(request.POST, slug=slug)
         if form.is_valid():
             return redirect('group_settings', slug=slug)
 
-    return render(request, 'groups/settings.html', {
+    if request.method == 'POST' and request.POST.get('leave-group'):
+        form = LeaveGroupForm(slug=slug, user=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('group_index', slug=slug)
+
+    return render(request, 'groups/group_settings.html', {
         **base_info,
         'active': 'settings',
+        'member': request.user,
     })
 
 
