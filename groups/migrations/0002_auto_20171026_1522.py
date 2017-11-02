@@ -18,15 +18,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Request',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('date_issued', models.DateField(auto_now_add=True)),
                 ('group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='groups.SportsGroup')),
-                ('person', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('person', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.AddField(
             model_name='sportsgroup',
             name='requests',
-            field=models.ManyToManyField(related_name='group_requests', through='groups.Request', to=settings.AUTH_USER_MODEL),
+            field=models.ManyToManyField(related_name='group_requests',
+                                         through='groups.Request', to=settings.AUTH_USER_MODEL),
         ),
     ]
