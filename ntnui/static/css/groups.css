@@ -323,3 +323,11 @@ REQUEST LIST
 .form-control {
     border-radius: 0;
 }
+
+.open-modal {
+    cursor: pointer;
+}
+
+.open-modal:hover {
+    opacity: 0.7;
+}
