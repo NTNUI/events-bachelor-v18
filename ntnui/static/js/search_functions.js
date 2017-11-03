@@ -20,26 +20,23 @@ function groupSearch() {
     }
 }*/
 
-function groupSearch() {
-    let $rows = $('#all-groups').find('.group-card');
-    $('#group-search').keyup(function () {
-        let val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+let $groupRows = $('#all-groups').find('.group-card');
+$('#group-search').keyup(function () {
+    let val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
 
-        $rows.show().filter(function () {
-            let text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-            return !~text.indexOf(val);
-        }).hide();
-    });
-}
+    $groupRows.show().filter(function () {
+        let text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+        return !~text.indexOf(val);
+    }).hide();
+});
 
-function memberSearch() {
-    let $rows = $('.group-table-row');
-    $('#member-search').keyup(function () {
-        let val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+let $memberRows = $('.group-table-row');
+$('#member-search').keyup(function () {
+    let val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
 
-        $rows.show().filter(function () {
-            let text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
-            return !~text.indexOf(val);
-        }).hide();
-    });
-}
+    $memberRows.show().filter(function () {
+        let text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+        return !~text.indexOf(val);
+    }).hide();
+});
+
