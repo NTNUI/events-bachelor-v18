@@ -2,6 +2,7 @@ import csv
 from django.contrib.auth.decorators import login_required
 from django.http import StreamingHttpResponse
 from groups.models import Membership, SportsGroup
+from accounts.models import User
 from django.shortcuts import get_object_or_404
 from datetime import date
 
@@ -24,6 +25,13 @@ def download_all_members(request):
     # rows = (["Row {}".format(idx), str(idx)] for idx in range(65536))
     if request:
         pass
+    user_groups = {}
+    for user in User.objects.all():
+        user_groups[user] = list(Membership.objects.filter(person=user))
+
+    
+    print(user_groups)
+
     groups = SportsGroup.objects.all().order_by('name')
     all_members = []
     for group in groups:
