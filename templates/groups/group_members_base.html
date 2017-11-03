@@ -1,5 +1,7 @@
 {% extends 'groups/group_base.html' %}
 
+{% load static %}
+
 {% block group_content %}
   {% if show_members %}
     <div class="content-table">
@@ -13,7 +15,8 @@
         <a href="{% url 'group_requests' slug=slug %}"
            class="{% if active_tab == 'requests' %}total-tab-active{% else %}total-tab{% endif %}">
           {{ total_requests }} request{{ total_requests|pluralize }}</a>
-        <input class="search-input form-control" type="text" placeholder="Search for group members" disabled />
+        <input type="text" id="member-search" class="form-control" onkeypress="memberSearch()"
+               placeholder="Search for group member.." aria-label="Search for group member.." />
       </div>
 
       <div class="members-list">

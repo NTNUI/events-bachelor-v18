@@ -1,3 +1,5 @@
+/*
+# This function can be used if only titles are to be searched!
 function groupSearch() {
     let input = document.getElementById("group-search");
     let filter = input.value.toLowerCase();
@@ -16,24 +18,28 @@ function groupSearch() {
             }
         }
     }
+}*/
+
+function groupSearch() {
+    let $rows = $('#all-groups').find('.group-card');
+    $('#group-search').keyup(function () {
+        let val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+        $rows.show().filter(function () {
+            let text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
+    });
 }
 
 function memberSearch() {
-    let input = document.getElementById("group-search");
-    let filter = input.value.toLowerCase();
-    let allGroups = document.getElementById("all-groups");
-    let groupCards = allGroups.getElementsByClassName("group-card");
-    let cardInfos = allGroups.getElementsByClassName("group-card-info");
+    let $rows = $('.group-table-row');
+    $('#member-search').keyup(function () {
+        let val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
 
-    for (let i = 0; i < groupCards.length; i++) {
-        let title = cardInfos[i].getElementsByTagName("h2")[0];
-
-        if (title) {
-            if (title.innerHTML.toLowerCase().indexOf(filter) > -1) {
-                groupCards[i].style.display = "";
-            } else {
-                groupCards[i].style.display = "none";
-            }
-        }
-    }
+        $rows.show().filter(function () {
+            let text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+            return !~text.indexOf(val);
+        }).hide();
+    });
 }
