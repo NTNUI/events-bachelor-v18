@@ -6,7 +6,6 @@ function groupSearch() {
     let cardInfos = allGroups.getElementsByClassName("group-card-info");
 
     for (let i = 0; i < groupCards.length; i++) {
-        console.log("FORLOOP")
         let title = cardInfos[i].getElementsByTagName("h2")[0];
 
         if (title) {
