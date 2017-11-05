@@ -46,3 +46,18 @@ body {
 .btn:disabled {
     cursor: not-allowed;
 }
+
+/*
+ * Responsive design CSS
+*/
+
+.content-pane {
+    width: 60%;
+    max-width: 60%;
+    min-height: 100px;
+    background-color: white;
+    border: 1px solid #dfdfdf;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 32px;
+}
