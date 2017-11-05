@@ -1,9 +1,8 @@
 import csv
 from django.contrib.auth.decorators import login_required
 from django.http import StreamingHttpResponse
-from groups.models import Membership, SportsGroup
+from groups.models import Membership
 from accounts.models import User
-from django.shortcuts import get_object_or_404
 from datetime import date
 
 
@@ -22,8 +21,10 @@ def download_all_members(request):
     if request:  # dummy method, to use request, to pass travis tests
 
         pass
+
     formatted_members = []
     max_group_number = 0
+
     for user in User.objects.all():
         groups = []
         roles = []
@@ -33,13 +34,14 @@ def download_all_members(request):
 
         max_group_number = max(max_group_number, len(list(Membership.objects.filter(person=user))))
 
-        new_member = list()
-        new_member.append(user.first_name)
-        new_member.append(user.last_name)
-        new_member.append(user.email)
-        new_member.append(user.phone)
-        new_member.append(user.date_joined.date())
-        new_member.append(user.is_active)
+        new_member = list([
+            user.first_name,
+            user.last_name,
+            user.email,
+            user.phone,
+            user.date_joined.date(),
+            user.is_active
+        ])
 
         for g in groups:
             new_member.append(g)
@@ -50,7 +52,7 @@ def download_all_members(request):
                 new_member.append("Member")
 
         formatted_members.append(new_member)
-    print(max_group_number)
+
     pseudo_buffer = Echo()
 
     header = ['FIRST NAME', 'LAST NAME', 'EMAIL', 'PHONE', 'DATE JOINED', 'ACTIVE']
