@@ -56,3 +56,15 @@ def add(fieldname, string):
 @register.filter
 def printForm(form):
     print(form)
+
+@register.filter
+def getBoardFields(fieldname):
+    return {
+        "president_name": True,
+        "vice_president_name": True,
+        "cashier_name": True,
+    }.get(fieldname, False)
+
+@register.filter
+def getApprovals(form):
+    return form.needs_approval_from()
