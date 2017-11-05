@@ -19,51 +19,45 @@ class Echo(object):
 @login_required
 def download_all_members(request):
     """A view that streams a large CSV file."""
-    # Generate a sequence of rows. The range is based on the maximum number of
-    # rows that can be handled by a single sheet in most spreadsheet
-    # applications.
-    # rows = (["Row {}".format(idx), str(idx)] for idx in range(65536))
     if request:
         pass
-    user_groups = {}
+    # user_and_groups = {}
+    formatted_members = []
     for user in User.objects.all():
-        user_groups[user] = list(Membership.objects.filter(person=user))
+        groups = []
+        roles = []
+        for group_obj in list(Membership.objects.filter(person=user)):
+            groups.append(group_obj.group.name)
+            roles.append(group_obj.role)
 
-    
-    print(user_groups)
+        new_member = list()
+        new_member.append(user.first_name)
+        new_member.append(user.last_name)
+        new_member.append(user.email)
+        new_member.append(user.phone)
+        new_member.append(user.date_joined.date())
+        new_member.append(user.is_active)
 
-    groups = SportsGroup.objects.all().order_by('name')
-    all_members = []
-    for group in groups:
-        group_members = Membership.objects.filter(group=group.pk)
-        formatted_group_members = []
-        for member in group_members:
-            if member.role:
-                role = member.role
+        for g in groups:
+            new_member.append(g)
+            r = roles.pop(0)
+            if r:
+                new_member.append(r)
             else:
-                role = 'Member'
+                new_member.append("Member")
 
-            new_member = [
-                member.person.first_name,
-                member.person.last_name,
-                member.person.email,
-                member.person.phone,
-                role,
-                member.date_joined,
-                member.paid,
-                group,
-            ]
-            formatted_group_members.append(new_member)
-            sorted_formatted_group_members = sorted(formatted_group_members, key=lambda e: e[1])
+        formatted_members.append(new_member)
 
-        all_members.append(sorted_formatted_group_members)
     pseudo_buffer = Echo()
-    header = ['FIRST NAME', 'LAST NAME', 'EMAIL', 'PHONE', 'ROLE', 'DATE JOINED', 'PAID', 'GROUP']
+    header = ['FIRST NAME', 'LAST NAME', 'EMAIL', 'PHONE', 'DATE JOINED', 'ACTIVE',
+              'GROUP', 'ROLE', 'GROUP', 'ROLE', 'GROUP', 'ROLE']
     writer = csv.writer(pseudo_buffer, delimiter=';')
 
     rows = [header]
-    for group_members in all_members:
-        rows = rows + group_members
+    for members in formatted_members:
+        rows.append(members)
+
+    print(rows)
 
     today = date.today().__str__()
     response = StreamingHttpResponse((
