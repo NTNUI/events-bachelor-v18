@@ -20,16 +20,6 @@
         </div>
 
           {% for field in form %}
-              <!-- Add title to each section here
-
-                        {% if field.name|title %}
-                          {{ field.name|title|safe }}
-                        {% endif %}
-
-             -->
-
-             <!-- The has-danger class does not currently exist in the bootstap beta 2 ...
-                  this'll have to be fixed later -->
             <div class="form-group">
               <label for="{{ field.name }}">{{ field.name|filterLabel }}</label>
               <input id="{{ field.name }}"
