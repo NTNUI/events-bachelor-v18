@@ -1,0 +1,1 @@
+[{"model": "forms.boardchange", "pk": 1, "fields": {"group": 1, "old_president": 9, "old_president_approved": false, "president": 9, "president_approved": false, "vice_president": 17, "vice_president_approved": false, "cashier": 18}}]
