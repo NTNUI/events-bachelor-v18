@@ -23,8 +23,9 @@ from groups import views as groups_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^ajax/', include('forms.urls')),
+    url(r'^ajax/', include('forms.ajax')),
     url(r'^$', groups_views.list_groups, name='home'),
+    url(r'^forms/', include('forms.urls')),
     url(r'^groups/', include('groups.urls')),
     #url(r'^signup/$', accounts_views.signup, name='signup'),
     url(r'^logout/', auth_views.logout, name='logout'),
