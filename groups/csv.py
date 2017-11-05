@@ -4,6 +4,7 @@ from django.http import StreamingHttpResponse
 from .models import Membership, SportsGroup
 from django.shortcuts import get_object_or_404
 from datetime import date
+from django.db.models import Q
 
 
 class Echo(object):
@@ -46,9 +47,9 @@ def download_members(request, slug):
 
     response = list_to_csv_http_response(rows)
     response['Content-Disposition'] = 'attachment; filename=""' + slug + '"members""' + today + '".csv"'
-    # https://stackoverflow.com/questions/739776/django-filters-or
     return response
 
+# https://stackoverflow.com/questions/739776/django-filters-or
 
 def download_yearly_group_members(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
@@ -60,11 +61,10 @@ def download_yearly_group_members(request, slug):
     start_date = datetime.date(current_year, 8, 1)
     end_date = datetime.date(current_year+1, 1, 31)
 
+    
+
     members = Membership.objects.filter(group=group.pk,
         expiry_date__date__range=(start_date, end_date))
-
-
-
 
 
 def list_to_csv_http_response(inputList):

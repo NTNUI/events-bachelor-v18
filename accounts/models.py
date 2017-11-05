@@ -16,8 +16,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     is_active = models.BooleanField(_('active'), default=True)
     phone = models.CharField(_('phone number'), max_length=12, blank=True)
-    expiry_date = models.DateField(_('expiry date'), blank=True)
-    contract_type = models.CharField(_('contract type'), max_length=3, blank=True)
 
     is_staff = models.BooleanField(
         _('staff status'),
