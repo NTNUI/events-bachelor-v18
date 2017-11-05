@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load form_template %}
+
+{% block content %}
+<div class="mb-3"></div>
+<div class="content-pane">
+    <div class="container-fluid col-xs-8 mb-3">
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="form-fill-header col-xs-8 m-3 text-center">
+        <h1>Board Change Form </h1>
+        <h2><small>{{ form.group }}</small></h2>
+      </div>
+      <div class="text-left m-8"><p>Approve the board change below. The board change will only take effect
+      once the leaders have approved the change.</p></div>
+
+      <div class="col-sm-12 column text-center">
+        <hr />
+        <div class="col-sm-12 row text-center">
+          <div class="col-sm-12"><h4><small>President</small></h4></div>
+        </div>
+        <div class="col-sm-12 row text-center h3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-4 text-muted">{{ board.president.first_name }} {{ board.president.last_name }}</div>
+          <div class="col-sm-2">&gt;&gt;</div>
+          <div class="col-sm-4">{{ form.president.first_name }} {{ form.president.last_name }}</div>
+          <div class="col-sm-1"></div>
+        </div>
+        <hr />
+        <div class="col-sm-12 row text-center">
+          <div class="col-sm-12"><h4><small>Vice President</small></h4></div>
+        </div>
+        <div class="col-sm-12 row text-center h3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-4 text-muted">{{ board.vice_president.first_name }} {{ board.vice_president.last_name }}</div>
+          <div class="col-sm-2">&gt;&gt;</div>
+          <div class="col-sm-4">{{ form.vice_president.first_name }} {{ form.vice_president.last_name }}</div>
+          <div class="col-sm-1"></div>
+        </div>
+        <hr />
+        <div class="col-sm-12 row text-center">
+          <div class="col-sm-12"><h4><small>Cashier</small></h4></div>
+        </div>
+        <div class="col-sm-12 row text-center h3">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-4 text-muted">{{ board.cashier.first_name }} {{ board.cashier.last_name }}</div>
+          <div class="col-sm-2">&gt;&gt;</div>
+          <div class="col-sm-4">{{ form.cashier.first_name }} {{ form.cashier.last_name }}</div>
+          <div class="col-sm-1"></div>
+        </div>
+        <hr />
+      </div>
+      {% if user in form|getApprovals %}
+        <div class="col-sm-12 row">
+          <div class="col-sm-3"></div>
+          <div class="col-sm-3 text-center">
+            <button type="submit" class="btn btn-fail" name="button" value="back">Go back</button>
+          </div>
+          <div class="col-sm-3 text-center">
+            <button type="submit" class="btn btn-success" name="button" value="approve">Approve</button>
+          </div>
+          <div class="col-sm-3"></div>
+        </div>
+      {% else %}
+      <div class="col-sm-12 row">
+        <div class="col-sm-12 text-center">
+          <button type="submit" class="btn btn-fail" name="button" value="back">Go back</button>
+        </div>
+      </div>
+      {% endif %}
+    </form>
+  <div>
+</div>
+{% endblock %}

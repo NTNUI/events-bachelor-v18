@@ -1,0 +1,16 @@
+{% load static %}
+{% load form_template %}
+
+{% block card %}
+  <a class="group-card" href="{% url 'forms_read' forms_id=form.id %}">
+    <img class="group-card-image" src="{% static 'img/forms.svg' %}"/>
+    <div class="group-card-info">
+      <h1><small>{{ form.name }} ({{ form.group }})
+      </small></h1>
+
+      {% for user in form|getApprovals %}
+        <p>Waiting for: {{ user.first_name}} {{ user.last_name }}<p>
+      {% endfor %}
+    </div>
+  </a>
+{% endblock %}
