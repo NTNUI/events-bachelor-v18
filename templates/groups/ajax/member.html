@@ -1,0 +1,75 @@
+<style>
+  .modal-group-member {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+  }
+
+  .modal-head {
+    width: 100%;
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 16px;
+    font-size: 20px;
+  }
+
+  .modal-row {
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .modal-row-description {
+    font-weight: 600;
+    width: 35%;
+    text-align: right;
+  }
+
+  .modal-row-content {
+    box-sizing: border-box;
+    margin-left: 24px;
+    width: 65%;
+    text-align: left;
+  }
+
+</style>
+
+{% if show_members and not member == None %}
+  <div class="modal-group-member">
+    <div class="modal-head">
+      {{ member.person.first_name }} {{ member.person.last_name }}
+    </div>
+    <div class="modal-row">
+      <div class="modal-row-description">E-mail</div>
+      <div class="modal-row-content">{{ member.person.email }}</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-row-description">Phone</div>
+      <div class="modal-row-content">{{ member.person.phone }}</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-row-description">Has paid</div>
+      <div class="modal-row-content">{{ member.paid }}</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-row-description">Date joined</div>
+      <div class="modal-row-content">{{ member.date_joined }}</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-row-description">Role</div>
+      <div class="modal-row-content">{{ member.role }}</div>
+    </div>
+    <div class="modal-row">
+      <div class="modal-row-description">Preferred language</div>
+      <div class="modal-row-content">English</div>
+    </div>
+  </div>
+{% elif show_members %}
+  <div>This membership does not exist.</div>
+{% else %}
+  <div>You do not have permission to see this.</div>
+{% endif %}
