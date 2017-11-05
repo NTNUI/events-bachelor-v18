@@ -166,7 +166,8 @@ def settings(request, slug):
     if request.method == 'POST' and request.POST.get('save-settings'):
         form = SettingsForm(request.POST, slug=slug)
         if form.is_valid():
-            return redirect('group_settings', slug=slug)
+            return
+            #return redirect('group_settings', slug=slug)
 
     if request.method == 'POST' and request.POST.get('leave-group'):
         form = LeaveGroupForm(slug=slug, user=request.user)

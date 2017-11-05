@@ -10,13 +10,13 @@
     <form method="post" novalidate>
       {% csrf_token %}
       <label class="group-settings">
-        <div class="group-settings-public-name">Should group be open for people to join</div>
-        <div class="group-settings-public-check">
-          <input type="checkbox" name="public" {% if group.public %}checked{% endif %}/>
-        </div>
+        Should group be open for people to join
+          <input type="checkbox" class="group-settings-public-check" name="public"
+                 {% if group.public %}checked{% endif %}/>
       </label>
 
       <div class="group-settings-right">
+        <div class="alert alert-success settings-alert" role="alert">Settings saved</div>
         <input type="submit" name="save-settings" class="btn group-settings-save-btn btn-success"
                value="Change settings"/>
       </div>
