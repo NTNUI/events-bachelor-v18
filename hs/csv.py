@@ -21,15 +21,15 @@ def download_all_members(request):
     """A view that streams a large CSV file."""
     if request:
         pass
-    # user_and_groups = {}
     formatted_members = []
+    max_group_number = 0
     for user in User.objects.all():
         groups = []
         roles = []
         for group_obj in list(Membership.objects.filter(person=user)):
             groups.append(group_obj.group.name)
             roles.append(group_obj.role)
-
+        max_group_number = max(max_group_number, len(list(Membership.objects.filter(person=user))))
         new_member = list()
         new_member.append(user.first_name)
         new_member.append(user.last_name)
@@ -47,17 +47,20 @@ def download_all_members(request):
                 new_member.append("Member")
 
         formatted_members.append(new_member)
-
+    print(max_group_number)
     pseudo_buffer = Echo()
-    header = ['FIRST NAME', 'LAST NAME', 'EMAIL', 'PHONE', 'DATE JOINED', 'ACTIVE',
-              'GROUP', 'ROLE', 'GROUP', 'ROLE', 'GROUP', 'ROLE']
+
+    header = ['FIRST NAME', 'LAST NAME', 'EMAIL', 'PHONE', 'DATE JOINED', 'ACTIVE']
+
+    for i in range(0, max_group_number):
+        header.append('GROUP')
+        header.append('ROLE')
+
     writer = csv.writer(pseudo_buffer, delimiter=';')
 
     rows = [header]
     for members in formatted_members:
         rows.append(members)
-
-    print(rows)
 
     today = date.today().__str__()
     response = StreamingHttpResponse((
