@@ -40,7 +40,7 @@ class ViewInvitationMemberTest(GeneralMemberMixin, TestCase):
         self.assertEquals(view.func, group_views.invitations)
 
     def test_contains_no_invitations(self):
-        self.assertContains(self.response, '<div class="group-table-row"', 0)
+        self.assertContains(self.response, '<div class="group-table-row', 0)
 
     def test_shoud_contain_error_text(self):
         self.assertContains(

@@ -49,7 +49,7 @@ class MemberTest(GeneralMemberMixin, TestCase):
         super(MemberTest, self).setUp()
 
     def test_contains_no_members(self):
-        self.assertContains(self.response, '<div class="group-table-row"', 0)
+        self.assertContains(self.response, '<div class="group-table-row', 0)
 
     def test_shoud_contain_members_error_text(self):
         self.assertContains(

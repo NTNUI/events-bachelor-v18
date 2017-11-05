@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.utils.timezone import localtime, now
+from django.core.urlresolvers import reverse
 from ..forms import JoinOpenGroupForm
 from accounts.models import User
 from ..models import SportsGroup, Invitation
@@ -23,7 +23,7 @@ class JoinOpenGroupFormTest(TestCase):
         form = JoinOpenGroupForm(slug='friidrett', user=self.USER_IS_MEMBER)
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors, [
-                         'This user is already a member of this group.'])
+            'This user is already a member of this group.'])
 
     def test_invitation_should_be_gone_after_joining(self):
         # We know that ryan.the.fireguy@hotmail.com is already invited
@@ -56,4 +56,16 @@ class JoinOpenGroupFormTest(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(form.save(), None)
 
-    # TODO: write test that checks if button is present when group is open and user is not member
+
+class OpenGroupViewTest(TestCase):
+    fixtures = ['users.json', 'groups.json']
+
+    def setUp(self):
+        self.login_response = self.client.login(email='meredith.palmer@dundermifflin.com',
+                                                password='locoloco')
+        url = reverse('group_index', kwargs={'slug': 'koiene'})
+        self.response = self.client.get(url)
+
+    def test_should_throw_if_no_button_present(self):
+        self.assertContains(
+            self.response, '<input type="submit" class="btn btn-success" name="join-group')
