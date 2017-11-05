@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import gettext as _
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from groups.models import SportsGroup, Membership
+from groups.models import SportsGroup, Membership, Board
 from accounts.models import User
 from forms.models import BoardChange
 
@@ -92,10 +92,17 @@ class BoardChangeForm(forms.Form):
 
     def create_model(self):
         if (self.president and self.vice_president and self.cashier):
-            model = BoardChange.create(self.president, self.vice_president, self.cashier)
+            old_president = Board.objects.get(sports_group=self.group).president
+
+            model = BoardChange.create(self.group, old_president, self.president, self.vice_president, self.cashier)
+
+            ''' If the old president is going to sit for another period
+                then have the VP sign the form as well '''
+            if old_president == self.president:
+                model.vice_president_approved = False
 
             if not model in BoardChange.objects.all():
                 print("Saving model")
                 model.save()
-
-            print("Model already exists")
+            else:
+                print("Model already exists")
