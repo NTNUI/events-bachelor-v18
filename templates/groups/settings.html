@@ -2,14 +2,27 @@
 
 {% block group_content %}
   <div class="content-table">
-    <form method="post" novalidate>
+    <form method="post" enctype="multipart/form-data" novalidate>
       {% csrf_token %}
       <div class="group-settings-header">Group visibility</div>
       <label class="group-settings">
         <div class="group-settings-public-name">Should group be open for people to join</div>
         <div class="group-settings-public-check">
-          <input type="checkbox" name="public" {% if group.public %}checked{% endif %}>
+          <input id="id_public" type="checkbox" name="public" {% if group.public %}checked{% endif %}/>
         </div>
+      </label>
+      <div class="group-settings-header">Group images</div>
+      <label class="group-settings">
+          <div class="group-settings-public-name">Thumbnail (100x100)</div>
+          <div class="group-settings-public-check">
+              <input id="id_image" type="file" name="thumbnail" accept="image/*"/>
+          </div>
+      </label>
+      <label class="group-settings">
+          <div class="group-settings-public-name">Cover photo (790x260)</div>
+          <div class="group-settings-public-check">
+              <input id="id_image" type="file" name="cover_photo" accept="image/*"/>
+          </div>
       </label>
 
       <div class="group-settings-right">

@@ -78,6 +78,8 @@ class NewInvitationForm(forms.Form):
 
 class SettingsForm(forms.Form):
     public = forms.BooleanField(required=False)
+    thumbnail = forms.ImageField(required=False)
+    cover_photo = forms.ImageField(required=False)
 
     # make sure to get the slug
     def __init__(self, *args, **kwargs):
@@ -109,6 +111,16 @@ class SettingsForm(forms.Form):
             return SportsGroup.objects.get(slug=self.slug)
         except SportsGroup.DoesNotExist:
             self.add_error(None, "Invalid group")
+
+    def set_images(self):
+        group = self.get_group()
+        thumbnail = self.cleaned_data.get('thumbnail')
+        cover_photo = self.cleaned_data.get('cover_photo')
+        if thumbnail:
+            group.thumbnail = thumbnail
+        if cover_photo:
+            group.cover_photo = cover_photo
+        group.save()
 
 
 class JoinOpenGroupForm(object):

@@ -143,8 +143,9 @@ def settings(request, slug):
     base_info = get_base_group_info(request, slug)
 
     if request.method == 'POST':
-        form = SettingsForm(request.POST, slug=slug)
+        form = SettingsForm(request.POST, request.FILES, slug=slug)
         if form.is_valid():
+            form.set_images()
             return redirect('group_settings', slug=slug)
 
     return render(request, 'groups/settings.html', {
