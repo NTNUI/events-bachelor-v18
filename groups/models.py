@@ -12,6 +12,7 @@ class SportsGroup(models.Model):
     invitations = models.ManyToManyField(
         settings.AUTH_USER_MODEL, through='Invitation', related_name='group_invitations')
     public = models.BooleanField(default=False)
+    active_board = models.ForeignKey('Board', related_name='active_board', null=True)
 
     def __str__(self):
         return self.name
@@ -24,11 +25,21 @@ class Board(models.Model):
         settings.AUTH_USER_MODEL,  related_name='board_vp')
     cashier = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='board_cashier')
-    sports_group = models.OneToOneField(
-        SportsGroup, on_delete=models.CASCADE)
+    sports_group = models.ForeignKey(
+        SportsGroup, related_name='sports_group')
 
     def __str__(self):
         return "Board of NTNUI {}".format(self.sports_group.name)
+
+    @classmethod
+    def create(cls, president, vice_president, cashier, sports_group):
+        board = cls(
+            president=president,
+            vice_president=vice_president,
+            cashier=cashier,
+            sports_group=sports_group)
+
+        return board
 
 
 class Membership(models.Model):
