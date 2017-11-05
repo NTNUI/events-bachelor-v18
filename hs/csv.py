@@ -18,8 +18,23 @@ class Echo(object):
 @login_required
 def download_all_members(request):
     """A view that streams a large CSV file."""
-    if request:  # dummy method, to use request, to pass travis tests
 
+    today = date.today().__str__()
+
+    pseudo_buffer = Echo()
+    writer = csv.writer(pseudo_buffer, delimiter=';')
+
+    rows = create_members_list(request)
+
+    response = StreamingHttpResponse((
+        writer.writerow(row) for row in rows),
+        content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename="NTNUImembers""' + today + '".csv"'
+    return response
+
+
+def create_members_list(request):
+    if request:  # dummy method, to use request, to pass travis tests
         pass
 
     formatted_members = []
@@ -53,23 +68,14 @@ def download_all_members(request):
 
         formatted_members.append(new_member)
 
-    pseudo_buffer = Echo()
-
     header = ['FIRST NAME', 'LAST NAME', 'EMAIL', 'PHONE', 'DATE JOINED', 'ACTIVE']
 
     for i in range(0, max_group_number):
         header.append('GROUP')
         header.append('ROLE')
 
-    writer = csv.writer(pseudo_buffer, delimiter=';')
-
-    rows = [header]
+    result = [header]
     for members in formatted_members:
-        rows.append(members)
+        result.append(members)
 
-    today = date.today().__str__()
-    response = StreamingHttpResponse((
-        writer.writerow(row) for row in rows),
-        content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename="NTNUImembers""' + today + '".csv"'
-    return response
+    return result
