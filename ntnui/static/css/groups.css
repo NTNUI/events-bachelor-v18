@@ -109,8 +109,9 @@ a:hover {
     justify-content: space-between;
     padding: 0 16px;
     display: flex;
-    height: 60px;
+    height: 64px;
     box-sizing: border-box;
+    font-weight: bold;
 }
 
 .total-tab-active {
@@ -270,9 +271,10 @@ REQUEST LIST
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    height: 48px;
+    height: 60px;
     box-sizing: border-box;
-    padding: 0 16px 0 16px;
+    padding: 0 0 0 16px;
+    margin-bottom: 0;
     border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
 }
@@ -287,9 +289,9 @@ REQUEST LIST
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    height: 64px;
+    height: 60px;
     box-sizing: border-box;
-    padding: 32px;
+    padding: 0 32px;
     border-bottom: 1px solid #f0f0f0;
 }
 
@@ -300,13 +302,15 @@ REQUEST LIST
     font-weight: bold;
 }
 
-.group-settings-public-name {
+.group-settings-leave-button {
+    margin-right: 32px;
 }
 
 .group-settings-public-check {
     text-align: right;
     padding-left: 1em;
     padding-right: 1em;
+    margin-right: 16px;
 }
 
 .group-settings-save-btn {
@@ -323,4 +327,10 @@ REQUEST LIST
     border-radius: 0;
 }
 
+.open-modal {
+    cursor: pointer;
+}
 
+.open-modal:hover {
+    opacity: 0.7;
+}
