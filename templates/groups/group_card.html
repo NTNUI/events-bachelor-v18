@@ -9,6 +9,9 @@
     </div>
     {% if group.public %}
       <div class="group-card-open">Open</div>
+    {% else %}
+        <div class="group-card-restricted">Restricted</div>
     {% endif %}
+
   </a>
 {% endblock %}

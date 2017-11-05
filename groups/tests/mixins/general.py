@@ -38,7 +38,7 @@ class LoggedInMixin(object):
 
 class GroupMixin(LoggedInMixin):
     fixtures = ['users.json', 'groups.json',
-                'memberships.json', 'invitations.json', 'boards.json']
+                'memberships.json', 'invitations.json', 'boards.json', 'requests.json']
 
     def setUp(self):
         super(GroupMixin, self).setUp()
@@ -52,6 +52,10 @@ class GroupMixin(LoggedInMixin):
     def test_should_link_to_about(self):
         self.assertContains(self.response, reverse(
             'group_index', kwargs={'slug': 'volleyball'}))
+
+    def test_should_link_to_settings(self):
+        self.assertContains(self.response, reverse(
+            'group_settings', kwargs={'slug': 'volleyball'}))
 
     # should link to forms page in the future as well
     # def test_should_link_to_forms(self):
@@ -67,10 +71,6 @@ class GeneralMemberMixin(GroupMixin):
         self.assertNotContains(self.response, reverse(
             'group_members', kwargs={'slug': 'volleyball'}))
 
-    def test_should_not_link_to_settings(self):
-        self.assertNotContains(self.response, reverse(
-            'group_settings', kwargs={'slug': 'volleyball'}))
-
 
 class CoreBoardMemberMixin(GroupMixin):
     def setUp(self):
@@ -85,15 +85,7 @@ class GeneralBoardMemberMixin(CoreBoardMemberMixin):
     def setUp(self):
         super(GeneralBoardMemberMixin, self).setUp()
 
-    def test_should_not_link_to_settings(self):
-        self.assertNotContains(self.response, reverse(
-            'group_settings', kwargs={'slug': 'volleyball'}))
-
 
 class GeneralGroupLeaderMixin(CoreBoardMemberMixin):
     def setUp(self):
         super(GeneralGroupLeaderMixin, self).setUp()
-
-    def test_should_link_to_settings(self):
-        self.assertContains(self.response, reverse(
-            'group_settings', kwargs={'slug': 'volleyball'}))

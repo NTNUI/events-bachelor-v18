@@ -106,8 +106,9 @@ a:hover {
     justify-content: space-between;
     padding: 0 16px;
     display: flex;
-    height: 60px;
+    height: 64px;
     box-sizing: border-box;
+    font-weight: bold;
 }
 
 .total-tab-active {
@@ -129,14 +130,14 @@ a:hover {
 }
 
 .group-table-row {
+    min-height: 48px;
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    height: 48px;
     box-sizing: border-box;
-    padding: 0 16px;
+    padding: 1px 16px;
     border-bottom: 1px solid #f0f0f0;
 }
 
@@ -154,7 +155,7 @@ a:hover {
 }
 
 .group-member-name-header {
-    width: 200px;
+    width: 230px;
 }
 
 .group-member-phone-header {
@@ -166,11 +167,11 @@ a:hover {
 }
 
 .group-member-paid-header {
-    width: 40px;
+    width: 80px;
 }
 
 .group-member-name {
-    width: 200px;
+    width: 230px;
 }
 
 .group-member-phone {
@@ -182,8 +183,11 @@ a:hover {
 }
 
 .group-member-paid {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     text-align: center;
-    width: 40px;
+    width: 50px;
 }
 
 .add-new-member {
@@ -240,6 +244,21 @@ a:hover {
 }
 
 /**
+REQUEST LIST
+ */
+
+.no-btn {
+    width: 100%;
+    border-color: red;
+}
+
+.yes-btn {
+    width: 100%;
+    margin-right: 5px;
+    border-color: #017402;
+}
+
+/**
  * SETTINGS
  */
 
@@ -249,9 +268,10 @@ a:hover {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    height: 48px;
+    height: 60px;
     box-sizing: border-box;
-    padding: 0 16px 0 16px;
+    padding: 0 0 0 16px;
+    margin-bottom: 0;
     border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
 }
@@ -266,9 +286,9 @@ a:hover {
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    height: 64px;
+    height: 60px;
     box-sizing: border-box;
-    padding: 32px;
+    padding: 0 32px;
     border-bottom: 1px solid #f0f0f0;
 }
 
@@ -279,13 +299,15 @@ a:hover {
     font-weight: bold;
 }
 
-.group-settings-public-name {
+.group-settings-leave-button {
+    margin-right: 32px;
 }
 
 .group-settings-public-check {
     text-align: right;
     padding-left: 1em;
     padding-right: 1em;
+    margin-right: 16px;
 }
 
 .group-settings-save-btn {
@@ -300,4 +322,12 @@ a:hover {
 
 .form-control {
     border-radius: 0;
+}
+
+.open-modal {
+    cursor: pointer;
+}
+
+.open-modal:hover {
+    opacity: 0.7;
 }
