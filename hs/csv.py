@@ -19,7 +19,8 @@ class Echo(object):
 @login_required
 def download_all_members(request):
     """A view that streams a large CSV file."""
-    if request:
+    if request:  # dummy method, to use request, to pass travis tests
+
         pass
     formatted_members = []
     max_group_number = 0
@@ -29,7 +30,9 @@ def download_all_members(request):
         for group_obj in list(Membership.objects.filter(person=user)):
             groups.append(group_obj.group.name)
             roles.append(group_obj.role)
+
         max_group_number = max(max_group_number, len(list(Membership.objects.filter(person=user))))
+
         new_member = list()
         new_member.append(user.first_name)
         new_member.append(user.last_name)
