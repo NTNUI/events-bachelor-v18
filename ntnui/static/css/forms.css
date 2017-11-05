@@ -2,6 +2,8 @@
  * FORMS TABLE
  */
 
+ {% load static %}
+
  .forms-list-header {
    width: 100%;
    border-bottom: 1px solid #979797;
@@ -147,4 +149,15 @@
 
 .form-description {
   height: 60px;
+}
+
+/*
+ *
+*/
+
+.card-img-left {
+  color: #fff;
+  height: 20rem;
+  background: url(images/img1.jpg) center no-repeat;
+  background-size: cover;
 }
