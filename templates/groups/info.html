@@ -12,8 +12,10 @@
             <button type="submit" class="btn btn-success">Join</button>
           {% endif %}
             {% else %}
-                {% if joined == False %}
-                <button type="submit" class="btn btn-success">Ask to join</button>
+                {% if sent_request == False %}
+                  <button type="submit" class="btn btn-success">Ask to join</button>
+                {% else %}
+                  <button disabled class="btn btn-disabled btn-pending">Request pending</button>
           {% endif %}
         {% endif %}
       </form>
