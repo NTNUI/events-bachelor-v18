@@ -5,7 +5,7 @@
 {% block group_content %}
   {% if show_members %}
     <div class="content-table">
-      <div class="members-list-header">
+      <div class="list-header">
         <a href="{% url 'group_members' slug=slug %}"
           class="{% if active_tab == 'members' %}total-tab-active{% else %}total-tab{% endif %}">
             {{ total_members }} member{{ total_members|pluralize }}</a>

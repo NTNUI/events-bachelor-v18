@@ -99,7 +99,7 @@ a:hover {
     margin-bottom: 32px;
 }
 
-.members-list-header {
+.list-header {
     width: 100%;
     border-bottom: 1px solid #979797;
     align-items: center;
@@ -121,6 +121,13 @@ a:hover {
 
 #member-search {
     width: 300px;
+}
+
+.invite-download-field {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
 }
 
 .members-list {
@@ -191,7 +198,20 @@ a:hover {
 }
 
 .add-new-member {
-    width: 100%;
+    width: 40%;
+    font-weight: lighter;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 48px;
+    box-sizing: border-box;
+    padding: 0 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.download-members {
+    width: 60%;
     font-weight: lighter;
     display: flex;
     flex-direction: row;
@@ -207,13 +227,27 @@ a:hover {
     background-color: #f0f0f0;
 }
 
+.download-members:hover {
+    background-color: #f0f0f0;
+}
+
 .add-new-button {
     background-color: #ffffff;
     border-radius: 4px;
     text-align: center;
-    color: #d0d0d0;
+    color: #017402;
     width: 32px;
-    border: 1px solid #d0d0d0;
+    border: 1px solid #017402;
+    margin-right: 16px;
+}
+
+.download-button {
+    background-color: #ffffff;
+    border-radius: 4px;
+    text-align: center;
+    color: #017402;
+    width: 32px;
+    border: 1px solid #017402;
     margin-right: 16px;
 }
 
