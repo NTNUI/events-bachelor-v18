@@ -26,15 +26,16 @@ def signup(request):
 def add_users_from_exeline(request):
     def add_or_update_user_to_db(member, nr, total):
         user = None
-        email = member['email'] or None
-        print('(%i/%i) Updating or creating user with email %s' %
-              (nr, total, email))
+        customer_no = member['customer_no'] or None
+        print('(%i/%i) Updating or creating user with email %s (%s)' %
+              (nr, total, member['email'], customer_no))
         obj, created = User.objects.update_or_create(
-            email=email,
+            customer_no=customer_no,
             defaults={
+                'customer_no': member['customer_no'],
+                'email': member['email'],
                 'first_name': member['first_name'],
                 'last_name': member['last_name'],
-                'email': email,
                 'is_active': member['active'],
                 'phone': member['mobile']
             }
