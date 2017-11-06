@@ -44,7 +44,7 @@ class BoardChangeForm(forms.Form):
                 Membership.objects.get(person=user, group=group)
             except Membership.DoesNotExist:
                 raise ValidationError(
-                    _('{} does not belong to {}'.format(user.get_full_name, group)))
+                    _('{} does not belong to {}'.format(user.get_full_name(), group)))
         except User.DoesNotExist:
             if email:
                 raise ValidationError(_("{} not found".format(email)))
@@ -103,4 +103,3 @@ class BoardChangeForm(forms.Form):
 
             if not model in BoardChange.objects.all():
                 model.save()
-                
