@@ -7,12 +7,26 @@
     <div class="list-header">
       Group Settings
     </div>
-    <form method="post" novalidate>
+    <form method="post" enctype="multipart/form-data" novalidate>
       {% csrf_token %}
       <label class="group-settings">
         Should group be open for people to join
           <input type="checkbox" class="group-settings-public-check" name="public"
                  {% if group.public %}checked{% endif %}/>
+      </label>
+
+      <div class="group-settings-header">Group images</div>
+      <label class="group-settings">
+        <div class="group-settings-public-name">Thumbnail (100x100)</div>
+        <div class="group-settings-public-check">
+            <input id="id_image" type="file" name="thumbnail" accept="image/*"/>
+        </div>
+      </label>
+      <label class="group-settings">
+        <div class="group-settings-public-name">Cover photo (790x260)</div>
+        <div class="group-settings-public-check">
+          <input id="id_image" type="file" name="cover_photo" accept="image/*"/>
+        </div>
       </label>
 
       <div class="group-settings-right">
@@ -41,5 +55,7 @@
         </label>
       </form>
     {% endif %}
+
+
   </div>
 {% endblock %}

@@ -45,3 +45,6 @@ class VolleyballGroupTest(SettingsLoggedInTest):
 
     def test_checkbox_exists(self):
         self.assertContains(self.response, '<input type="checkbox"', 1)
+
+    def test_image_input_exists(self):
+        self.assertContains(self.response, '<input id="id_image', 2)
