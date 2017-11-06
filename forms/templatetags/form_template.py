@@ -55,7 +55,8 @@ def add(fieldname, string):
 
 @register.filter
 def printForm(form):
-    print(form)
+    print(form.name)
+    return ''
 
 @register.filter
 def getBoardFields(fieldname):
