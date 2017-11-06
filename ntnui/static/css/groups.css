@@ -77,6 +77,12 @@ a:hover {
     opacity: 0.8;
 }
 
+.group-alert {
+    width: 60%;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
 .active-item {
     border-bottom: 4px solid #017402;
 }
@@ -311,7 +317,7 @@ REQUEST LIST
     justify-content: space-between;
     height: 60px;
     box-sizing: border-box;
-    padding: 0 0 0 16px;
+    padding: 0 2rem;
     margin-bottom: 0;
     border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
@@ -334,8 +340,7 @@ REQUEST LIST
 }
 
 .group-settings-header {
-    text-align: center;
-    padding: 8px 8px;
+    padding: .5rem 2rem;
     border-bottom: 1px solid #f0f0f0;
     font-weight: bold;
 }
@@ -344,10 +349,9 @@ REQUEST LIST
     margin-right: 2rem;
 }
 
-.group-alert {
-    width: 60%;
-    margin-bottom: 2rem;
-    text-align: center;
+.group-settings-input {
+    width: 54.5%;
+    margin-right: 2rem;
 }
 
 .group-settings-save-btn {
