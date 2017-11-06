@@ -64,9 +64,10 @@ a:hover {
     flex-direction: row;
     border: solid 1px #dfdfdf;
     width: 49%;
-    min-height: 132px;
-    margin-top: 16px;
+    min-height: 8rem;
+    margin-top: 1rem;
     position: relative;
+    align-items: center;
 }
 
 .group-card-all-groups {
@@ -78,9 +79,11 @@ a:hover {
     flex-direction: row;
     border: solid 1px #dfdfdf;
     width: 100%;
-    min-height: 8rem;
+    min-height: 6rem;
+    max-height: 6rem;
     margin-top: 1rem;
     position: relative;
+    align-items: center;
 }
 
 .group-card:hover {
@@ -100,14 +103,16 @@ a:hover {
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+    overflow: hidden;
+    width:100%;
 }
 
-.group-info h2 {
-    color: #008000;
-}
-
-.group-info p {
+.group-card-info p {
     margin: 0;
+    width: 95%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .group-card-open {
