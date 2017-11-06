@@ -25,6 +25,9 @@ class BoardChange(models.Model):
 
     cashier = models.ForeignKey(User, related_name='cashier')
 
+    def save(self, *args, **kwargs):
+        super(BoardChange, self).save(*args, **kwargs)
+
     @classmethod
     def create(cls, g, op, p, vp, c):
         board_change = cls(group=g, old_president=op, president=p, vice_president=vp, cashier=c)
@@ -102,5 +105,10 @@ Board change form for: {}\n\
             self.group)
 
         new_board.save()
-        self.group.board = new_board
+
+
+
+        self.group.active_board = new_board
         self.group.save()
+
+        print(self.group.active_board)
