@@ -20,7 +20,7 @@
           <div class="logo-container">
             <img src="{% static 'img/ntnui.svg' %}" alt="NTNUI" class="logo" />
           </div>
-          <h3 class="card-title">Log in</h3>
+          <h3 class="login-title">Log in</h3>
           <form method="post" novalidate>
             {% csrf_token %}
             {% include 'includes/form.html' %}
