@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import SportsGroup, Membership, Invitation, Request
 from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm, \
     LeaveGroupForm
@@ -173,6 +174,7 @@ def settings(request, slug):
     if request.method == 'POST' and request.POST.get('save-settings'):
         form = SettingsForm(request.POST, slug=slug)
         if form.is_valid():
+            messages.success(request, 'Settings saved')
             return redirect('group_settings', slug=slug)
 
     if request.method == 'POST' and request.POST.get('leave-group'):
