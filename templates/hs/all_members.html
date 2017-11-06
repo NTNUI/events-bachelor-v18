@@ -12,11 +12,19 @@
   {% endblock %}
 
   <div class="content-table">
-    <div class="members-list-header">
+    <div class="list-header">
       <div>{{ total_members }}
         member{{ total_members|pluralize }}</div>
       <input class="search-input form-control" type="text" placeholder="Search for NTNUI members" disabled/>
     </div>
+    <div class="invite-download-field">
+      {% if show_new_invitation %}
+      {% endif %}
+      <a href="{% url 'download_all_members' %}" class="download-members">
+        <div class="add-new-button">+</div>
+        <div class="add-new-text">Download NTNUI members list</div>
+      </a>
+  </div>
     <div class="members-header">
       <div class="allmembers-name-header">Name</div>
       <div class="allmembers-group-header">Group</div>

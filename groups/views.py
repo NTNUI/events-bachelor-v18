@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import SportsGroup, Membership, Invitation, Request
 from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm, \
     LeaveGroupForm
@@ -10,12 +11,18 @@ from .helpers import get_group_role
 def get_base_group_info(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
     joined = request.user in group.members.all()
+    try:
+        Request.objects.get(person=request.user, group=group)
+        sent_request = True
+    except (Request.DoesNotExist, Request.MultipleObjectsReturned):
+        sent_request = False
     return {
         'role': get_group_role(request.user, group),
         'group': group,
         'slug': slug,
         'active': 'about',
         'joined': joined,
+        'sent_request': sent_request,
         'show_board': request.user.has_perm('groups.can_see_board', group),
         'show_members': request.user.has_perm('groups.can_see_members', group),
         'show_settings': request.user.has_perm('groups.can_see_settings', group),
@@ -61,6 +68,7 @@ def group_index(request, slug):
             form = JoinPrivateGroupForm(slug=slug, user=request.user)
             if form.is_valid():
                 form.save()
+                return redirect('group_index', slug=slug)
 
     if request.user.has_perm('groups.can_see_board', group):
         board_members = set(group.membership_set.filter(in_board=True))
@@ -167,6 +175,7 @@ def settings(request, slug):
         form = SettingsForm(request.POST, request.FILES, slug=slug)
         if form.is_valid():
             form.set_images()
+            messages.success(request, 'Settings saved')
             return redirect('group_settings', slug=slug)
 
     if request.method == 'POST' and request.POST.get('leave-group'):

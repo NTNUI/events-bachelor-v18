@@ -34,4 +34,21 @@
     width: 280px;
 }
 
+.download-members {
+    width: 100%;
+    font-weight: lighter;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 48px;
+    box-sizing: border-box;
+    padding: 0 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+
+.download-members:hover {
+    background-color: #f0f0f0;
+}
 

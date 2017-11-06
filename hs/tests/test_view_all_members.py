@@ -38,4 +38,4 @@ class AllMembersTest(AllMembersLoggedInTest):
         self.assertEquals(self.response.status_code, 200)
 
     def test_table_exists(self):
-        self.assertContains(self.response, '<div class="members-list-header">', 1)
+        self.assertContains(self.response, '<div class="list-header">', 1)

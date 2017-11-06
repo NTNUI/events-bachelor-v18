@@ -4,16 +4,15 @@
   <div class="content-table">
 
   {% if show_group_settings %}
-    <div class="members-list-header">
+    <div class="list-header">
       Group Settings
     </div>
     <form method="post" enctype="multipart/form-data" novalidate>
       {% csrf_token %}
       <label class="group-settings">
-        <div class="group-settings-public-name">Should group be open for people to join</div>
-        <div class="group-settings-public-check">
-          <input type="checkbox" name="public" {% if group.public %}checked{% endif %}/>
-        </div>
+        Should group be open for people to join
+          <input type="checkbox" class="group-settings-public-check" name="public"
+                 {% if group.public %}checked{% endif %}/>
       </label>
 
       <div class="group-settings-header">Group images</div>
@@ -31,6 +30,11 @@
       </label>
 
       <div class="group-settings-right">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-success settings-alert" role="alert">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
         <input type="submit" name="save-settings" class="btn group-settings-save-btn btn-success"
                value="Change settings"/>
       </div>
@@ -38,7 +42,7 @@
   {% endif %}
 
     {% if joined and show_leave_button %}
-      <div class="members-list-header">
+      <div class="list-header">
         Your Settings
       </div>
       <form method="post" novalidate>
