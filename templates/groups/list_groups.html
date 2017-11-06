@@ -11,13 +11,15 @@
     <h1 class="group-header">
         My groups
     </h1>
-    {% if my_groups %}
-      {% for group in my_groups %}
-          {% include "groups/group_card.html" with group=group %}
-      {% endfor %}
-    {% else %}
-      <div class="group-no-groups-info">You are not a member of any groups. Find a group today!</div>
-    {% endif %}
+    <div class="list-my-groups">
+      {% if my_groups %}
+        {% for group in my_groups %}
+          {% include "groups/group_card.html" with group=group my_groups=my_groups %}
+        {% endfor %}
+      {% else %}
+        <div class="group-no-groups-info">You are not a member of any groups. Find a group today!</div>
+      {% endif %}
+    </div>
 
     <h1 class="group-header">
         All groups

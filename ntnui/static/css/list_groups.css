@@ -18,6 +18,13 @@ a:hover {
     width: 60%;
 }
 
+.list-my-groups {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
 .group-header {
     margin-top: 32px;
     text-transform: uppercase;
@@ -29,7 +36,21 @@ a:hover {
  * GROUP CARD
  */
 
-.group-card {
+.group-card-my-groups {
+    padding: 16px 32px;
+    box-sizing: border-box;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
+    display: flex;
+    flex-direction: row;
+    border: solid 1px #dfdfdf;
+    width: 49%;
+    min-height: 132px;
+    margin-top: 16px;
+    position: relative;
+}
+
+.group-card-all-groups {
     padding: 16px 32px;
     box-sizing: border-box;
     background-color: white;
@@ -59,6 +80,7 @@ a:hover {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: center;
 }
 
 .group-info h2 {
