@@ -140,6 +140,7 @@ a:hover {
 }
 
 .group-table-row {
+    position: relative;
     min-height: 48px;
     width: 100%;
     display: flex;
@@ -272,12 +273,15 @@ a:hover {
 */
 
 .btn-withdraw {
-    border-radius: 4px;
+    position: absolute;
+    right: 1rem;
+    bottom: .55rem;
+    border-radius: 0.15rem;
     background: transparent;
     border: 1px solid #d0d0d0;
     text-transform: uppercase;
-    font-size: 12px;
-    padding: 4px 8px;
+    font-size: .75rem;
+    padding: .25rem .5rem;
 }
 
 /**
@@ -340,11 +344,10 @@ REQUEST LIST
     margin-right: 2rem;
 }
 
-.settings-alert {
-    height: 2rem;
-    padding: .25rem 1rem;
-    margin-bottom: 0;
-    margin-right: 1rem;
+.group-alert {
+    width: 60%;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
 .group-settings-save-btn {
