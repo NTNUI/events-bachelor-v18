@@ -105,10 +105,5 @@ Board change form for: {}\n\
             self.group)
 
         new_board.save()
-
-
-
         self.group.active_board = new_board
         self.group.save()
-
-        print(self.group.active_board)
