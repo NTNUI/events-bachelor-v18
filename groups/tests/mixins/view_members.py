@@ -11,7 +11,7 @@ from .general import (
 class VM_CoreBoardMemberMixin(object):
 
     def test_contains_all_members(self):
-        self.assertContains(self.response, '<div class="group-table-row"', 16)
+        self.assertContains(self.response, '<div class="group-table-row', 16)
 
     def test_total_count_members(self):
         self.assertContains(self.response, '16 members')

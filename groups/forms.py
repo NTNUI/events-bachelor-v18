@@ -157,6 +157,7 @@ class JoinOpenGroupForm(object):
         if self.is_valid():
             return Membership.objects.create(person=self.user, group=self.get_group())
 
+
 class JoinPrivateGroupForm(object):
     def __init__(self, slug, user):
         self.slug = slug
@@ -164,7 +165,6 @@ class JoinPrivateGroupForm(object):
         self.errors = []
         if self.validate_group():
             self.validate_group_is_private()
-
         self.validate_not_already_member()
 
     def is_valid(self):
@@ -205,3 +205,37 @@ class JoinPrivateGroupForm(object):
     def save(self):
         if self.is_valid():
             return Request.objects.create(person=self.user, group=self.get_group())
+
+
+class LeaveGroupForm():
+    def __init__(self, slug, user):
+        self.slug = slug
+        self.user = user
+        self.errors = []
+        if self.validate_group():
+            self.validate_user_is_member()
+
+    def is_valid(self):
+        return len(self.errors) == 0
+
+    def get_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            return None
+
+    def validate_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            self.errors.append('Invalid group.')
+
+    def validate_user_is_member(self):
+        try:
+            Membership.objects.get(person=self.user, group=self.get_group())
+        except Membership.DoesNotExist:
+            self.errors.append('This user is not a member of this group.')
+
+    def save(self):
+        if self.is_valid():
+            return Membership.objects.filter(person=self.user, group=self.get_group()).delete()

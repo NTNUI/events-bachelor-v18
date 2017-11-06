@@ -1,0 +1,41 @@
+{% extends 'groups/group_base.html' %}
+
+{% block group_content %}
+  <div class="content-table">
+
+  {% if show_group_settings %}
+    <div class="list-header">
+      Group Settings
+    </div>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <label class="group-settings">
+        <div class="group-settings-public-name">Should group be open for people to join</div>
+        <div class="group-settings-public-check">
+          <input type="checkbox" name="public" {% if group.public %}checked{% endif %}/>
+        </div>
+      </label>
+
+      <div class="group-settings-right">
+        <input type="submit" name="save-settings" class="btn group-settings-save-btn btn-success"
+               value="Change settings"/>
+      </div>
+    </form>
+  {% endif %}
+
+    {% if joined and show_leave_button %}
+      <div class="list-header">
+        Your Settings
+      </div>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <label class="group-settings">
+          Do you want to leave the group?
+          <input type="submit" name="leave-group" class="btn group-settings-leave-button
+        btn-outline-danger"
+                 value="Leave Group"/>
+        </label>
+      </form>
+    {% endif %}
+  </div>
+{% endblock %}

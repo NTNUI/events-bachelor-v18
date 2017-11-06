@@ -99,15 +99,16 @@ a:hover {
     margin-bottom: 32px;
 }
 
-.members-list-header {
+.list-header {
     width: 100%;
     border-bottom: 1px solid #979797;
     align-items: center;
     justify-content: space-between;
     padding: 0 16px;
     display: flex;
-    height: 60px;
+    height: 64px;
     box-sizing: border-box;
+    font-weight: bold;
 }
 
 .total-tab-active {
@@ -118,8 +119,15 @@ a:hover {
     font-weight: lighter;
 }
 
-.search-input {
+#member-search {
     width: 300px;
+}
+
+.invite-download-field {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
 }
 
 .members-list {
@@ -190,7 +198,20 @@ a:hover {
 }
 
 .add-new-member {
-    width: 100%;
+    width: 40%;
+    font-weight: lighter;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 48px;
+    box-sizing: border-box;
+    padding: 0 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.download-members {
+    width: 60%;
     font-weight: lighter;
     display: flex;
     flex-direction: row;
@@ -206,13 +227,27 @@ a:hover {
     background-color: #f0f0f0;
 }
 
+.download-members:hover {
+    background-color: #f0f0f0;
+}
+
 .add-new-button {
     background-color: #ffffff;
     border-radius: 4px;
     text-align: center;
-    color: #d0d0d0;
+    color: #017402;
     width: 32px;
-    border: 1px solid #d0d0d0;
+    border: 1px solid #017402;
+    margin-right: 16px;
+}
+
+.download-button {
+    background-color: #ffffff;
+    border-radius: 4px;
+    text-align: center;
+    color: #017402;
+    width: 32px;
+    border: 1px solid #017402;
     margin-right: 16px;
 }
 
@@ -267,9 +302,10 @@ REQUEST LIST
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    height: 48px;
+    height: 60px;
     box-sizing: border-box;
-    padding: 0 16px 0 16px;
+    padding: 0 0 0 16px;
+    margin-bottom: 0;
     border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
 }
@@ -284,9 +320,9 @@ REQUEST LIST
     flex-direction: row;
     align-items: center;
     justify-content: flex-end;
-    height: 64px;
+    height: 60px;
     box-sizing: border-box;
-    padding: 32px;
+    padding: 0 32px;
     border-bottom: 1px solid #f0f0f0;
 }
 
@@ -297,13 +333,15 @@ REQUEST LIST
     font-weight: bold;
 }
 
-.group-settings-public-name {
+.group-settings-leave-button {
+    margin-right: 32px;
 }
 
 .group-settings-public-check {
     text-align: right;
     padding-left: 1em;
     padding-right: 1em;
+    margin-right: 16px;
 }
 
 .group-settings-save-btn {
@@ -318,4 +356,12 @@ REQUEST LIST
 
 .form-control {
     border-radius: 0;
+}
+
+.open-modal {
+    cursor: pointer;
+}
+
+.open-modal:hover {
+    opacity: 0.7;
 }
