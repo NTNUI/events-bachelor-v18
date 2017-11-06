@@ -44,7 +44,7 @@ body {
 }
 
 .btn:disabled {
-    cursor: not-allowed;
+    cursor: default;
 }
 
 /*

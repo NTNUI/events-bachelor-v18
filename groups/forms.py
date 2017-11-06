@@ -78,6 +78,8 @@ class NewInvitationForm(forms.Form):
 
 class SettingsForm(forms.Form):
     public = forms.BooleanField(required=False)
+    thumbnail = forms.ImageField(required=False)
+    cover_photo = forms.ImageField(required=False)
 
     # make sure to get the slug
     def __init__(self, *args, **kwargs):
@@ -109,6 +111,16 @@ class SettingsForm(forms.Form):
             return SportsGroup.objects.get(slug=self.slug)
         except SportsGroup.DoesNotExist:
             self.add_error(None, "Invalid group")
+
+    def set_images(self):
+        group = self.get_group()
+        thumbnail = self.cleaned_data.get('thumbnail')
+        cover_photo = self.cleaned_data.get('cover_photo')
+        if thumbnail:
+            group.thumbnail = thumbnail
+        if cover_photo:
+            group.cover_photo = cover_photo
+        group.save()
 
 
 class JoinOpenGroupForm(object):
@@ -195,8 +207,12 @@ class JoinPrivateGroupForm(object):
         except Membership.DoesNotExist:
             return
 
-    # def delete_request_if_exists(self):
-    #     Request.objects.filter(group=self.get_group(), person=self.user).delete()
+    def validate_not_already_request(self):
+        try:
+            Request.objects.get(person=self.user, group=self.get_group())
+            self.errors.append("This user has already sent a group request.")
+        except Request.DoesNotExist:
+            return
 
     def save(self):
         if self.is_valid():

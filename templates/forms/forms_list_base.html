@@ -10,10 +10,8 @@
 {% block group_content %}
 
 <div class="content-table">
-	<div class="forms-list-header">
-		<a href="{% url 'forms_list' slug=slug %}"
-			class="forms-name-header">Forms</a>
-		<input class="search-input form-control" type="text" placeholder="Search forms" disabled />
+	<div class="list-header">
+		<a href="{% url 'forms_list' slug=slug %}" class="forms-name-header">Forms</a>
 	</div>
 
   <form method="post" novalidate>

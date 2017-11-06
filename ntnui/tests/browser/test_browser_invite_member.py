@@ -12,7 +12,7 @@ def invite_success(cls, browser):
     email_input.send_keys('meredith.palmer@dundermifflin.com')
     browser.find_element_by_xpath('//button[text()="Invite person"]').click()
     element = WebDriverWait(browser, 10).until(
-        lambda x: x.find_element_by_xpath('//div[contains(@class, "members-list-header")]'))
+        lambda x: x.find_element_by_xpath('//div[contains(@class, "list-header")]'))
     cls.assertTrue('1 invitation' in browser.page_source)
     cls.assertTrue('Meredith Palmer' in browser.page_source)
     invitations = Invitation.objects.all()
