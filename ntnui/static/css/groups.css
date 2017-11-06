@@ -13,10 +13,20 @@
 
 .group-name {
     color: white;
+    font-size: 18px;
+    position: absolute;
+    left: 0;
+    bottom: 68px;
+    padding: 8px 24px;
+    background-color: black;
+}
+
+.group-role{
+    color: white;
     font-size: 24px;
     position: absolute;
     left: 0;
-    bottom: 16px;
+    bottom: 10px;
     padding: 8px 24px;
     background-color: black;
 }
