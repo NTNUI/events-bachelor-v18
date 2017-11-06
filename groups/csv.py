@@ -50,5 +50,5 @@ def download_members(request, slug):
     response = StreamingHttpResponse((
         writer.writerow(row) for row in rows),
                                      content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename=""' + slug + '"members""' + today + '".csv"'
+    response['Content-Disposition'] = 'attachment; filename="' + slug + '"members"' + today + '".csv"'
     return response
