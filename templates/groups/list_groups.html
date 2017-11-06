@@ -21,11 +21,19 @@
       {% endif %}
     </div>
 
-    <h1 class="group-header">
-        All groups
-    </h1>
-    {% for group in all_groups %}
+    <div class="search-container">
+      <h1 class="group-header">All groups</h1>
+      <input type="text" id="group-search" class="form-control"
+               placeholder="Search for groups.." aria-label="Search for groups..">
+    </div>
+    <div id="all-groups">
+      {% for group in all_groups %}
         {% include "groups/group_card.html" with group=group %}
-    {% endfor %}
+      {% endfor %}
+    </div>
   </div>
-{% endblock %}
+{% endblock content %}
+
+{% block script %}
+  <script type="text/javascript" src="{% static 'js/search_functions.js' %}"></script>
+{% endblock script %}

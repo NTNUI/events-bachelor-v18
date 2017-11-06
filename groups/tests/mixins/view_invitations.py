@@ -15,7 +15,7 @@ class VI_CoreBoardMemberMixin(object):
         self.assertEquals(view.func, group_views.invitations)
 
     def test_contains_all_invitations(self):
-        self.assertContains(self.response, '<div class="group-table-row"', 1)
+        self.assertContains(self.response, '<div class="group-table-row', 1)
         self.assertContains(self.response, 'Ryan Howard')
 
     def test_total_count_invitations(self):
