@@ -70,7 +70,7 @@ def forms_list_submitted(request):
 def forms_read(request, forms_id):
     try:
         form = BoardChange.objects.get(pk=forms_id)
-        board = Board.objects.get(sports_group=form.group)
+        board = form.group.active_board
     except BoardChange.DoesNotExist:
         return redirect('404')
 

@@ -11,7 +11,9 @@ def is_group_member(user, group):
 def is_group_board_member(user, group):
     try:
         membership = group.membership_set.get(person=user)
-        return membership.in_board
+        board_roles = ["president", "vice_president", "cashier"]
+
+        return membership.role in board_roles
     except Membership.DoesNotExist:
         return False
 
