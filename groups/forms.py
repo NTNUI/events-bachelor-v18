@@ -195,8 +195,12 @@ class JoinPrivateGroupForm(object):
         except Membership.DoesNotExist:
             return
 
-    # def delete_request_if_exists(self):
-    #     Request.objects.filter(group=self.get_group(), person=self.user).delete()
+    def validate_not_already_request(self):
+        try:
+            Request.objects.get(person=self.user, group=self.get_group())
+            self.errors.append("This user has already sent a group request.")
+        except Request.DoesNotExist:
+            return
 
     def save(self):
         if self.is_valid():
