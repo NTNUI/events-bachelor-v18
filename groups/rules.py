@@ -21,7 +21,7 @@ def is_group_board_member(user, group):
 @predicate
 def is_group_leader(user, group):
     try:
-        return group.board.president == user
+        return group.active_board.president == user
     except AttributeError:
         return False
 
@@ -29,7 +29,7 @@ def is_group_leader(user, group):
 @predicate
 def is_group_vp(user, group):
     try:
-        return group.board.vice_president == user
+        return group.active_board.vice_president == user
     except AttributeError:
         return False
 
@@ -37,7 +37,7 @@ def is_group_vp(user, group):
 @predicate
 def is_group_cashier(user, group):
     try:
-        return group.board.cashier == user
+        return group.active_board.cashier == user
     except AttributeError:
         return False
 
