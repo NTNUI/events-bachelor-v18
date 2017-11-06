@@ -60,7 +60,7 @@ class NewInvitationForm(forms.Form):
         self.group = self.get_group()
 
         # Get the email
-        email = self.cleaned_data.get('email')
+        email = self.cleaned_data.get('email').lower()
 
         # Check to see if any users already exist with this email as a username.
         try:
