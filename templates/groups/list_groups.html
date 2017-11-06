@@ -20,7 +20,7 @@
 
     <div class="search-container">
       <h1 class="group-header">All groups</h1>
-      <input type="text" id="group-search" class="form-control" onkeyup="groupSearch()"
+      <input type="text" id="group-search" class="form-control"
                placeholder="Search for groups.." aria-label="Search for groups..">
     </div>
     <div id="all-groups">
@@ -32,5 +32,5 @@
 {% endblock content %}
 
 {% block script %}
-  <script type="text/javascript" src="{% static 'js/group-search.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/search_functions.js' %}"></script>
 {% endblock script %}

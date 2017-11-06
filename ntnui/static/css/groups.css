@@ -99,7 +99,7 @@ a:hover {
     margin-bottom: 32px;
 }
 
-.members-list-header {
+.list-header {
     width: 100%;
     border-bottom: 1px solid #979797;
     align-items: center;
@@ -119,7 +119,7 @@ a:hover {
     font-weight: lighter;
 }
 
-.search-input {
+#member-search {
     width: 300px;
 }
 
