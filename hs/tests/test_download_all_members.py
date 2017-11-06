@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 
 
-class AllMembersLoggedInTest(TestCase):
+class DownloadButtonHSTest(TestCase):
     fixtures = ['users.json']
 
     def setUp(self):
