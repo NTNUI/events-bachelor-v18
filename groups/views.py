@@ -63,15 +63,20 @@ def group_index(request, slug):
                 form.save()
 
     if request.user.has_perm('groups.can_see_board', group):
-        board_members = set(group.membership_set.filter(in_board=True))
+        group_members = Membership.objects.filter(group=group)
+        board_members = set(group_members.exclude(role="member"))
+
         core = [
-            ['President', group.board.president],
-            ['Vice President', group.board.vice_president],
-            ['Cashier', group.board.cashier]
+            ['President', group.active_board.president],
+            ['Vice President', group.active_board.vice_president],
+            ['Cashier', group.active_board.cashier]
         ]
+
         for person in core:
             membership = group.membership_set.get(person=person[1])
-            board_members.remove(membership)
+            if membership in board_members:
+                board_members.remove(membership)
+
             board_core.append({'membership': membership, 'role': person[0]})
     return render(request, 'groups/group_info.html', {
         **base_info,
