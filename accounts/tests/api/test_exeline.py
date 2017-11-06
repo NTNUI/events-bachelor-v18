@@ -8,7 +8,11 @@ INVALID_CUSTOMER_NO = 20
 
 def mock_request(filename):
     def get(*args):
-        return get_json_fixture(filename)
+        return {
+            "GetMemberDataResult": {
+                "Members": get_json_fixture(filename)
+            }
+        }
     return get
 
 

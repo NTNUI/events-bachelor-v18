@@ -1,13 +1,17 @@
-import requests
+import requests as req
 
 
 class Exeline(object):
 
-    def __init__(self, username, password, requests=requests):
+    def __init__(self, username, password, requests=None):
+        if requests == None:
+            self.requests = req
+        else:
+            self.requests = requests
+
         self.username = username
         self.password = password
         self.base_url = 'http://exceline.net/NTNUI'
-        self.requests = requests
         self.gyms = {
             '1': {'name': 'SiT Gløshaugen', 'id': '1'},
             '2': {'name': 'SiT Dragvoll', 'id': '2'},
@@ -35,7 +39,8 @@ class Exeline(object):
             raise Exception('Invalid gym id.')
 
         url = self.get_url(func='members_for_gym', gym_id=gym_id)
-        return self.request(url)
+        response =  self.request(url)
+        return response['GetMemberDataResult']['Members']
 
     def get_members_for_all_gyms(self):
         results = {}
@@ -48,7 +53,8 @@ class Exeline(object):
             raise Exception('Invalid gym id.')
         url = self.get_url(func='members_for_gym_since_days',
                            gym_id=gym_id, days=days)
-        return self.request(url)
+        response =  self.request(url)
+        return response['GetMemberDataResult']['Members']
 
     def get_members_for_all_gyms_since(self, days):
         results = {}
@@ -59,4 +65,5 @@ class Exeline(object):
     def get_customer_info(self, gym_id, customer_no):
         url = self.get_url(func='customer_in_gym',
                            gym_id=gym_id, customer_no=customer_no)
-        return self.request(url)
+        response =  self.request(url)
+        return response['GetMemberDataResult']['Members']
