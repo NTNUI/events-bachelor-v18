@@ -51,42 +51,19 @@ def download_members(request, slug):
     response['Content-Disposition'] = 'attachment; filename=""' + slug + '"members""' + today + '".csv"'
     return response
 
-# https://stackoverflow.com/questions/739776/django-filters-or
-
+@login_required
 def download_yearly_group_members(request, slug):
+
+    if request:
+        pass
+
     group = get_object_or_404(SportsGroup, slug=slug)
-    # 10 = whole year, 20 = half year
-    # Entry.objects.filter(pub_date__month=12)
-    # pub_date__gte=datetime.date(2005, 1, 30)
 
     current_year = date.today().year
     year = 2017          # Temporary, should choose year
     start_date = date(year, 8, 1)
     end_date = date(year+1, 1, 31)
 
-    # Check next year for yearly membership
-    """
-    members = Membership.objects.filter(
-        group=group.pk,
-        expiry_date__year=year+1,
-        expiry_date__month=8,
-        contract_type=YEAR_MEMBERSHIP
-        ) | Membership.objects.filter(
-        group=group.pk,
-        expiry_date__range=(start_date, end_date)
-        )
-    """
-
-    """
-    members = Membership.objects.filter(group=group.pk, contract__#########)
-    contracts = members.contract.filter(
-        expiry_date__year=year+1,
-        expiry_date__month=8,
-        contract_type=YEAR_MEMBERSHIP) | members.filter(
-        group=group.pk,
-        expiry_date__range=(start_date, end_date)
-        )
-    """
     contracts = Contract.objects.filter(
         member__group=group.pk,
         expiry_date__year=year+1,
@@ -96,10 +73,10 @@ def download_yearly_group_members(request, slug):
             expiry_date__range=(start_date, end_date)
             )
 
-
     formatted_members = []
     header = ['FIRST NAME', 'SECOND NAME', 'EMAIL', 'PHONE', 'PAID', 'EXP DATE',
         'CONTRACT TYPE']
+
     for contract in contracts:
         formatted_members.append([
             contract.member.person.first_name,
@@ -110,7 +87,13 @@ def download_yearly_group_members(request, slug):
             contract.expiry_date,
             contract.contract_type
             ])
+
     sorted_formatted_members = sorted(formatted_members, key=lambda e: e[1])
+
+    for i in range(1, len(sorted_formatted_members)):
+        if sorted_formatted_members[i][2] == sorted_formatted_members[i-1][2]:
+            sorted_formatted_members.remove(sorted_formatted_members[i])
+
     rows = [header] + sorted_formatted_members
     response = list_to_csv_http_response(rows)
     response['Content-Disposition'] = 'attachment; filename=""' + slug + '"members""' + str(year) + '".csv"'
