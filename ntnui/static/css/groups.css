@@ -123,12 +123,11 @@ a:hover {
     width: 300px;
 }
 
-.invite-download-field{
+.invite-download-field {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
-
 }
 
 .members-list {
@@ -236,9 +235,19 @@ a:hover {
     background-color: #ffffff;
     border-radius: 4px;
     text-align: center;
-    color: #d0d0d0;
+    color: #017402;
     width: 32px;
-    border: 1px solid #d0d0d0;
+    border: 1px solid #017402;
+    margin-right: 16px;
+}
+
+.download-button {
+    background-color: #ffffff;
+    border-radius: 4px;
+    text-align: center;
+    color: #017402;
+    width: 32px;
+    border: 1px solid #017402;
     margin-right: 16px;
 }
 
