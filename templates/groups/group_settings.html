@@ -30,11 +30,6 @@
       </label>
 
       <div class="group-settings-right">
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert alert-success settings-alert" role="alert">{{ message }}</div>
-          {% endfor %}
-        {% endif %}
         <input type="submit" name="save-settings" class="btn group-settings-save-btn btn-success"
                value="Change settings"/>
       </div>
