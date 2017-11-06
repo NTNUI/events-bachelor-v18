@@ -3,7 +3,7 @@
 {% block group_content %}
 
   <div class="content-table">
-    <div class="members-list-header">
+    <div class="list-header">
       About {{ group.name }}
       <form method="post" novalidate>
         {% csrf_token %}
@@ -24,7 +24,7 @@
 
   {% if show_board %}
     <div class="content-table">
-      <div class="members-list-header">
+      <div class="list-header">
         The Board
       </div>
 
