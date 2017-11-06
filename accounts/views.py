@@ -24,37 +24,32 @@ def signup(request):
 
 
 def add_users_from_exeline(request):
-    def add_or_update_user_to_db(member):
+    def add_or_update_user_to_db(member, nr, total):
         user = None
         email = member['email'] or None
-        print('Saving user with email %s' % email)
-        if email is None:
-            return
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            user = User.objects.create(email=email)
-        except accounts.models.DoesNotExist:
-            user = User.objects.create(email=email)
-
-        user.first_name = member['first_name']
-        user.last_name = member['last_name']
-        user.is_active = member['active']
-        user.phone = member['mobile']
-        #user.date_joined = member['registered_date']
-        user.save()
+        print('(%i/%i) Updating or creating user with email %s' %
+              (nr, total, email))
+        obj, created = User.objects.update_or_create(
+            email=email,
+            defaults={
+                'first_name': member['first_name'],
+                'last_name': member['last_name'],
+                'email': email,
+                'is_active': member['active'],
+                'phone': member['mobile']
+            }
+        )
 
     exeline = Exeline(settings.EXELINE_USER, settings.EXELINE_PASSWORD)
     print('Starting!')
     gyms = exeline.get_members_for_all_gyms()
     all_members = gyms['1'] + gyms['2'] + gyms['3']
     print('Got response from API.')
-    #all_members = exeline.get_members_for_gym('3')
     members = ApiFormatter().format_response_list(all_members)
     ntnui_members = ApiFilterer().filter_only_ntnui_members(members)
 
-    for member in ntnui_members:
-        add_or_update_user_to_db(member)
+    for i, member in enumerate(ntnui_members):
+        add_or_update_user_to_db(member, i, len(ntnui_members))
 
     return JsonResponse({
         'message': 'Skipped users from exeline!',
