@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import SportsGroup, Board, Membership, Invitation
+from .models import SportsGroup, Board, Membership, Invitation, Contract
 
 
 class BoardInline(admin.StackedInline):
@@ -22,3 +22,4 @@ class GroupAdmin(admin.ModelAdmin):
 
 admin.site.register(SportsGroup, GroupAdmin)
 admin.site.register(Membership)
+admin.site.register(Contract)

@@ -43,7 +43,7 @@ class Membership(models.Model):
     role = models.CharField(max_length=30)
 
 class Contract(models.Model):
-    member = models.ForeignKey(groups.Membership)
+    member = models.ForeignKey(Membership, on_delete=models.CASCADE)
     contract_type = models.CharField(max_length=3, blank=True)
     expiry_date = models.DateField(default=datetime.date.today, blank=True)
 

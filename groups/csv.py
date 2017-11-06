@@ -1,7 +1,7 @@
 import csv
 from django.contrib.auth.decorators import login_required
 from django.http import StreamingHttpResponse
-from .models import Membership, SportsGroup
+from .models import Membership, SportsGroup, Contract
 from django.shortcuts import get_object_or_404
 from datetime import date, datetime
 
@@ -60,11 +60,12 @@ def download_yearly_group_members(request, slug):
     # pub_date__gte=datetime.date(2005, 1, 30)
 
     current_year = date.today().year
-    year = current_year            # Temporary, should choose year
+    year = 2017          # Temporary, should choose year
     start_date = date(year, 8, 1)
     end_date = date(year+1, 1, 31)
 
     # Check next year for yearly membership
+    """
     members = Membership.objects.filter(
         group=group.pk,
         expiry_date__year=year+1,
@@ -74,19 +75,40 @@ def download_yearly_group_members(request, slug):
         group=group.pk,
         expiry_date__range=(start_date, end_date)
         )
+    """
+
+    """
+    members = Membership.objects.filter(group=group.pk, contract__#########)
+    contracts = members.contract.filter(
+        expiry_date__year=year+1,
+        expiry_date__month=8,
+        contract_type=YEAR_MEMBERSHIP) | members.filter(
+        group=group.pk,
+        expiry_date__range=(start_date, end_date)
+        )
+    """
+    contracts = Contract.objects.filter(
+        member__group=group.pk,
+        expiry_date__year=year+1,
+        expiry_date__month=8,
+        contract_type=YEAR_MEMBERSHIP) | Contract.objects.filter(
+            member__group=group.pk,
+            expiry_date__range=(start_date, end_date)
+            )
+
 
     formatted_members = []
     header = ['FIRST NAME', 'SECOND NAME', 'EMAIL', 'PHONE', 'PAID', 'EXP DATE',
         'CONTRACT TYPE']
-    for member in members:
+    for contract in contracts:
         formatted_members.append([
-            member.person.first_name,
-            member.person.last_name,
-            member.person.email,
-            member.person.phone,
-            member.paid,
-            member.expiry_date,
-            member.contract_type
+            contract.member.person.first_name,
+            contract.member.person.last_name,
+            contract.member.person.email,
+            contract.member.person.phone,
+            contract.member.paid,
+            contract.expiry_date,
+            contract.contract_type
             ])
     sorted_formatted_members = sorted(formatted_members, key=lambda e: e[1])
     rows = [header] + sorted_formatted_members
