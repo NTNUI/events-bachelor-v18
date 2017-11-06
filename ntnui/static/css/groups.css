@@ -126,7 +126,7 @@ a:hover {
     width: 300px;
 }
 
-.invite-download-field {
+.download-field {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
