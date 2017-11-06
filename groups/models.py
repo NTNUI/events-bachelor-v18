@@ -41,8 +41,11 @@ class Membership(models.Model):
     paid = models.BooleanField(default=False)
     in_board = models.BooleanField(default=False)
     role = models.CharField(max_length=30)
-    expiry_date = models.DateField(default=datetime.date.today, blank=True)
+
+class Contract(models.Model):
+    member = models.ForeignKey(groups.Membership)
     contract_type = models.CharField(max_length=3, blank=True)
+    expiry_date = models.DateField(default=datetime.date.today, blank=True)
 
 
 class Invitation(models.Model):

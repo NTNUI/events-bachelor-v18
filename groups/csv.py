@@ -4,7 +4,6 @@ from django.http import StreamingHttpResponse
 from .models import Membership, SportsGroup
 from django.shortcuts import get_object_or_404
 from datetime import date, datetime
-from django.db.models import Q
 
 YEAR_MEMBERSHIP = 10
 HALF_YEAR_MEMBERSHIP = 20
@@ -62,8 +61,8 @@ def download_yearly_group_members(request, slug):
 
     current_year = date.today().year
     year = current_year            # Temporary, should choose year
-    start_date = date(current_year, 8, 1)
-    end_date = date(current_year+1, 1, 31)
+    start_date = date(year, 8, 1)
+    end_date = date(year+1, 1, 31)
 
     # Check next year for yearly membership
     members = Membership.objects.filter(
@@ -102,6 +101,5 @@ def list_to_csv_http_response(inputList):
     pseudo_buffer = Echo()
     writer = csv.writer(pseudo_buffer, delimiter=';')
     response = StreamingHttpResponse((
-        writer.writerow(row) for row in inputList),
-                                     content_type="text/csv")
+        writer.writerow(row) for row in inputList), content_type="text/csv")
     return response
