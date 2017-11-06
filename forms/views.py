@@ -12,7 +12,21 @@ from groups.views import get_base_group_info
 def list_form(request, slug):
     base_info = get_base_group_info(request, slug)
     group = get_object_or_404(SportsGroup, slug=slug)
-    forms = FormDoc.objects.all()
+
+    if request.method == 'POST':
+        print(request.POST.get("openForm"))
+        if request.POST.get("openForm") == "Board Change Form":
+            return redirect('forms_board_change', slug=slug)
+
+    forms = []
+    bcf = {
+        'name':'Board Change Form',
+        'description': 'Change the board members of your sports group with this form'
+
+    }
+
+    forms.append(bcf) # Add the forms you want the view to see
+
     return render(request, 'forms/forms_list.html', {
         **base_info,
         'group': group,
@@ -23,12 +37,12 @@ def list_form(request, slug):
 
 
 @login_required
-def fill_form(request, slug):
+def board_change(request, slug):
+    base_info = get_base_group_info(request, slug)
     group = get_object_or_404(SportsGroup, slug=slug)
 
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        print(request.POST)
         form = BoardChangeForm(request.POST, slug=slug)
 
         # check whether it's valid:
@@ -43,9 +57,11 @@ def fill_form(request, slug):
         form = BoardChangeForm(slug=slug)
 
     return render(request, 'forms/forms_fill.html', {
+        **base_info,
         'group': group,
         'slug': slug,
-        'form': form
+        'form': form,
+        'active': 'forms',
     })
 
 @login_required
