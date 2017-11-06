@@ -1,6 +1,17 @@
 from django.db import models
 from django.conf import settings
 import datetime
+import os
+
+
+def get_thumbnail_upload_to(instance, filename):
+    return os.path.join(
+        "thumbnail/%s" % instance.slug, filename)
+
+
+def get_cover_upload_to(instance, filename):
+    return os.path.join(
+        "cover_photo/%s" % instance.slug, filename)
 
 
 class SportsGroup(models.Model):
@@ -14,6 +25,8 @@ class SportsGroup(models.Model):
     requests = models.ManyToManyField(
         settings.AUTH_USER_MODEL, through='Request', related_name='group_requests')
     public = models.BooleanField(default=False)
+    thumbnail = models.ImageField(upload_to=get_thumbnail_upload_to, default='thumbnail/ntnui2.svg')
+    cover_photo = models.ImageField(upload_to=get_cover_upload_to, default='cover_photo/ntnui-volleyball.png')
 
     def __str__(self):
         return self.name

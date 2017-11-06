@@ -170,10 +170,11 @@ def invite_member(request, slug):
 @login_required
 def settings(request, slug):
     base_info = get_base_group_info(request, slug)
-    print(request.POST.get('save-settings'))
+
     if request.method == 'POST' and request.POST.get('save-settings'):
-        form = SettingsForm(request.POST, slug=slug)
+        form = SettingsForm(request.POST, request.FILES, slug=slug)
         if form.is_valid():
+            form.set_images()
             messages.success(request, 'Settings saved')
             return redirect('group_settings', slug=slug)
 
