@@ -21,3 +21,4 @@ class GroupAdmin(admin.ModelAdmin):
 
 
 admin.site.register(SportsGroup, GroupAdmin)
+admin.site.register(Membership)
