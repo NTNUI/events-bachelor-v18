@@ -102,7 +102,5 @@ class BoardChangeForm(forms.Form):
                 model.vice_president_approved = False
 
             if not model in BoardChange.objects.all():
-                print("Saving model")
                 model.save()
-            else:
-                print("Model already exists")
+                
