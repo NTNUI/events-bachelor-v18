@@ -24,11 +24,11 @@
           <form method="post" novalidate>
             {% csrf_token %}
             {% include 'includes/form.html' %}
-            <button type="submit" class="btn btn-primary btn-block">Log in</button>
+            <button type="submit" class="button-ntnu btn btn-block">Log in</button>
           </form>
         </div>
         <div class="card-footer text-muted text-center">
-          <a href="{% url 'password_reset' %}">Forgot your password?</a>
+          <a class="reset-password" href="{% url 'password_reset' %}">Forgot your password?</a>
         </div>
       </div>
     </div>
