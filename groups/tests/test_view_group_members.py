@@ -55,6 +55,9 @@ class MemberTest(GeneralMemberMixin, TestCase):
         self.assertContains(
             self.response, 'You do not have permissions to see this.')
 
+    def test_download_button_exists(self):
+        self.assertContains(self.response, '<div class="download-button">', 0)
+
     def test_should_not_link_to_inviations(self):
         self.assertNotContains(self.response, reverse(
             'group_invitations', kwargs={'slug': 'volleyball'}))
@@ -83,3 +86,6 @@ class PresidentTest(VM_GroupLeaderMixin, TestCase):
         self.email = TEST_USERS['president']
         self.url_name = 'group_members'
         super(PresidentTest, self).setUp()
+
+    def test_download_button_exists(self):
+        self.assertContains(self.response, '<div class="download-button">', 1)
