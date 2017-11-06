@@ -63,6 +63,7 @@ def group_index(request, slug):
             form = JoinOpenGroupForm(slug=slug, user=request.user)
             if form.is_valid():
                 form.save()
+                messages.success(request, 'You joined the group. Welcome!')
                 return redirect('group_index', slug=slug)
         else:
             form = JoinPrivateGroupForm(slug=slug, user=request.user)
