@@ -46,3 +46,9 @@ class ApiFormatter(object):
             'contract_start_date': unformatted['ContractStartdate']
 
         }
+
+    def format_response_list(self, unformatted_list):
+        formatted = []
+        for resp in unformatted_list:
+            formatted.append(self.format_customer_response(resp))
+        return formatted

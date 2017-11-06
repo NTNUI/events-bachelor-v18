@@ -14,6 +14,6 @@ class ApiFormatterTest(TestCase):
     def test_should_format_every_customer_in_list(self):
         unfiltered_response = get_json_fixture('gym-response.json')
         formatter = ApiFormatter()
-        formatted = formatter.format_responses(unfiltered_response)
-        expected = get_json_fixture('customer-response-formatted.json')
+        formatted = formatter.format_response_list(unfiltered_response)
+        expected = get_json_fixture('gym-response-formatted.json')
         self.assertEqual(formatted, expected)
