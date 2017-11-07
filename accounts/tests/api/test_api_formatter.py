@@ -17,3 +17,18 @@ class ApiFormatterTest(TestCase):
         formatted = formatter.format_response_list(unfiltered_response)
         expected = get_json_fixture('gym-response-formatted.json')
         self.assertEqual(formatted, expected)
+
+    def test_should_format_all_caps_name(self):
+        name = 'RANVEIG OLSEN'
+        formatted = ApiFormatter().capital_first_letter(name)
+        self.assertEqual(formatted, 'Ranveig Olsen')
+
+    def test_should_format_all_lower_name(self):
+        name = 'kari knutsen'
+        formatted = ApiFormatter().capital_first_letter(name)
+        self.assertEqual(formatted, 'Kari Knutsen')
+
+    def test_should_format_middle_names(self):
+        name = 'Jon m Tyrifjord'
+        formatted = ApiFormatter().capital_first_letter(name)
+        self.assertEqual(formatted, 'Jon M Tyrifjord')

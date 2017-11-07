@@ -4,7 +4,10 @@ from accounts.models import User
 
 
 class UserAdmin(admin.ModelAdmin):
-    pass
+    search_fields = ['last_name', 'first_name']
+
+    def get_list_display(self, request):
+        return ('customer_no','first_name','last_name', 'email', 'phone')
 
 
 admin.site.register(User, UserAdmin)

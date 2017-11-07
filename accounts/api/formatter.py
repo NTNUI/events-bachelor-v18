@@ -1,6 +1,9 @@
 
 class ApiFormatter(object):
 
+    def capital_first_letter(self, word):
+        return word.title()
+
     def format_customer_response(self, unformatted):
         expected_attributes = [
             'CustomerNo',
@@ -30,12 +33,12 @@ class ApiFormatter(object):
         return {
             'customer_no': unformatted['CustomerNo'],
             'gym_id': unformatted['GymID'],
-            'first_name': unformatted['FirstName'],
-            'last_name': unformatted['LastName'],
+            'first_name': self.capital_first_letter(unformatted['FirstName']),
+            'last_name': self.capital_first_letter(unformatted['LastName']),
             'birth_date': unformatted['BirthDate'],
             'mobile': unformatted['Mobile'],
-            'email': unformatted['Email'],
-            'gender': unformatted['Gender'],
+            'email': unformatted['Email'].lower(),
+            'gender': unformatted['Gender'].upper(),
             'active': unformatted['Active'] == 'YES',
             'expiry_date': unformatted['ExpieryDate'],
             'card_number': unformatted['CardNumber'],
