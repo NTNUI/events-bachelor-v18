@@ -15,7 +15,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', groups_views.list_groups, name='home'),
     url(r'^groups/', include('groups.urls')),
-    #url(r'^signup/$', accounts_views.signup, name='signup'),
+    url(r'^hs/', include('hs.urls')),
+    # url(r'^signup/$', accounts_views.signup, name='signup'),
     url(r'^logout/', auth_views.logout, name='logout'),
     url(r'^login/$', auth_views.LoginView.as_view(
         template_name='accounts/login.html'), name='login'),

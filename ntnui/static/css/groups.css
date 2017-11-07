@@ -122,6 +122,14 @@ a:hover {
     width: 300px;
 }
 
+.invite-download-field{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+
+}
+
 .members-list {
     display: flex;
     flex-direction: column;
@@ -129,14 +137,14 @@ a:hover {
 }
 
 .group-table-row {
+    min-height: 48px;
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    height: 48px;
     box-sizing: border-box;
-    padding: 0 16px;
+    padding: 1px 16px;
     border-bottom: 1px solid #f0f0f0;
 }
 
@@ -154,7 +162,7 @@ a:hover {
 }
 
 .group-member-name-header {
-    width: 200px;
+    width: 230px;
 }
 
 .group-member-phone-header {
@@ -166,11 +174,11 @@ a:hover {
 }
 
 .group-member-paid-header {
-    width: 40px;
+    width: 80px;
 }
 
 .group-member-name {
-    width: 200px;
+    width: 230px;
 }
 
 .group-member-phone {
@@ -182,12 +190,28 @@ a:hover {
 }
 
 .group-member-paid {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     text-align: center;
-    width: 40px;
+    width: 50px;
 }
 
 .add-new-member {
-    width: 100%;
+    width: 40%;
+    font-weight: lighter;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 48px;
+    box-sizing: border-box;
+    padding: 0 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.download-members {
+    width: 60%;
     font-weight: lighter;
     display: flex;
     flex-direction: row;
@@ -200,6 +224,10 @@ a:hover {
 }
 
 .add-new-member:hover {
+    background-color: #f0f0f0;
+}
+
+.download-members:hover {
     background-color: #f0f0f0;
 }
 
@@ -237,6 +265,21 @@ a:hover {
     text-transform: uppercase;
     font-size: 12px;
     padding: 4px 8px;
+}
+
+/**
+REQUEST LIST
+ */
+
+.no-btn {
+    width: 100%;
+    border-color: red;
+}
+
+.yes-btn {
+    width: 100%;
+    margin-right: 5px;
+    border-color: #017402;
 }
 
 /**
