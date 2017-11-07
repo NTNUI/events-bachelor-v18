@@ -48,6 +48,6 @@ urlpatterns = [
         name='password_change_done'),
     url(r'^cron/accounts/all$', accounts_views.add_all_users_from_exeline,
         name='add_all_users_from_exeline'),
-    url(r'^cron/accounts/lastweek$', accounts_views.add_last_week_users_from_exeline,
+    url(r'^cron/accounts/lastday$', accounts_views.add_last_week_users_from_exeline,
         name='add_last_week_users_from_exeline'),
 ]
