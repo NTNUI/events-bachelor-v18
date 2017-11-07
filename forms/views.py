@@ -14,7 +14,6 @@ def list_form(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
 
     if request.method == 'POST':
-        print(request.POST.get("openForm"))
         if request.POST.get("openForm") == "Board Change Form":
             return redirect('forms_board_change', slug=slug)
 
