@@ -32,3 +32,8 @@ class ApiFormatterTest(TestCase):
         name = 'Jon m Tyrifjord'
         formatted = ApiFormatter().capital_first_letter(name)
         self.assertEqual(formatted, 'Jon M Tyrifjord')
+
+    def test_should_format_date(self):
+        d = '2016.05.10'
+        formatted = ApiFormatter().format_date(d)
+        self.assertEqual(formatted, '2016-05-10')

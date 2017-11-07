@@ -37,7 +37,8 @@ def add_users_from_exeline(request):
                 'first_name': member['first_name'],
                 'last_name': member['last_name'],
                 'is_active': member['active'],
-                'phone': member['mobile']
+                'phone': member['mobile'],
+                'date_joined': member['registered_date']
             }
         )
 

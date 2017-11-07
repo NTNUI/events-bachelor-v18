@@ -24,6 +24,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         help_text=_('Designates whether the user can log into this site.'),
     )
 
+    def __str__(self):
+        return '%s %s' % (self.first_name, self.last_name)
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'

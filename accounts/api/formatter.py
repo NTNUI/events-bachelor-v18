@@ -4,6 +4,11 @@ class ApiFormatter(object):
     def capital_first_letter(self, word):
         return word.title()
 
+
+    def format_date(self, word):
+        """ 2016.01.21 -> 2016-01-21"""
+        return word.replace('.', '-')
+
     def format_customer_response(self, unformatted):
         expected_attributes = [
             'CustomerNo',
@@ -40,13 +45,13 @@ class ApiFormatter(object):
             'email': unformatted['Email'].lower(),
             'gender': unformatted['Gender'].upper(),
             'active': unformatted['Active'] == 'YES',
-            'expiry_date': unformatted['ExpieryDate'],
+            'expiry_date': self.format_date(unformatted['ExpieryDate']),
             'card_number': unformatted['CardNumber'],
-            'registered_date': unformatted['RegisterdDate'],
-            'last_visit_date': unformatted['LastVisitDate'],
+            'registered_date': self.format_date(unformatted['RegisterdDate']),
+            'last_visit_date': self.format_date(unformatted['LastVisitDate']),
             'contract_type': unformatted['CurrentOffering'],
             'contract_number': unformatted['ContractNumber'],
-            'contract_start_date': unformatted['ContractStartdate']
+            'contract_start_date': self.format_date(unformatted['ContractStartdate'])
 
         }
 
