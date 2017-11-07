@@ -7,8 +7,10 @@ from django.http import JsonResponse
 from .forms import BoardChangeForm
 from .models import FormDoc, BoardChange
 from groups.views import get_base_group_info
+from ntnui.decorators import is_member, is_board
 
 @login_required
+@is_member
 def list_form(request, slug):
     base_info = get_base_group_info(request, slug)
     group = get_object_or_404(SportsGroup, slug=slug)
@@ -18,14 +20,15 @@ def list_form(request, slug):
             return redirect('forms_board_change', slug=slug)
 
     forms = []
-    bcf = {
-        'name':'Board Change Form',
-        'description': 'Change the board members of your sports group with this form'
 
-    }
-
-    forms.append(bcf) # Add the forms you want the view to see
-
+    # Add 'board only' forms
+    if request.user in group.active_board:
+        bcf = {
+            'name':'Board Change Form',
+            'description': 'Change the board members of your sports group with this form'
+        }
+        forms.append(bcf) # Add the forms you want the view to see
+    
     return render(request, 'forms/forms_list.html', {
         **base_info,
         'group': group,
@@ -36,6 +39,7 @@ def list_form(request, slug):
 
 
 @login_required
+@is_board
 def board_change(request, slug):
     base_info = get_base_group_info(request, slug)
     group = get_object_or_404(SportsGroup, slug=slug)
