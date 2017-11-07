@@ -78,6 +78,8 @@ class NewInvitationForm(forms.Form):
 
 class SettingsForm(forms.Form):
     public = forms.BooleanField(required=False)
+    thumbnail = forms.ImageField(required=False)
+    cover_photo = forms.ImageField(required=False)
 
     # make sure to get the slug
     def __init__(self, *args, **kwargs):
@@ -109,6 +111,16 @@ class SettingsForm(forms.Form):
             return SportsGroup.objects.get(slug=self.slug)
         except SportsGroup.DoesNotExist:
             self.add_error(None, "Invalid group")
+
+    def set_images(self):
+        group = self.get_group()
+        thumbnail = self.cleaned_data.get('thumbnail')
+        cover_photo = self.cleaned_data.get('cover_photo')
+        if thumbnail:
+            group.thumbnail = thumbnail
+        if cover_photo:
+            group.cover_photo = cover_photo
+        group.save()
 
 
 class JoinOpenGroupForm(object):
@@ -165,7 +177,6 @@ class JoinPrivateGroupForm(object):
         self.errors = []
         if self.validate_group():
             self.validate_group_is_private()
-
         self.validate_not_already_member()
 
     def is_valid(self):
@@ -196,9 +207,47 @@ class JoinPrivateGroupForm(object):
         except Membership.DoesNotExist:
             return
 
-    # def delete_request_if_exists(self):
-    #     Request.objects.filter(group=self.get_group(), person=self.user).delete()
+    def validate_not_already_request(self):
+        try:
+            Request.objects.get(person=self.user, group=self.get_group())
+            self.errors.append("This user has already sent a group request.")
+        except Request.DoesNotExist:
+            return
 
     def save(self):
         if self.is_valid():
             return Request.objects.create(person=self.user, group=self.get_group())
+
+
+class LeaveGroupForm():
+    def __init__(self, slug, user):
+        self.slug = slug
+        self.user = user
+        self.errors = []
+        if self.validate_group():
+            self.validate_user_is_member()
+
+    def is_valid(self):
+        return len(self.errors) == 0
+
+    def get_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            return None
+
+    def validate_group(self):
+        try:
+            return SportsGroup.objects.get(slug=self.slug)
+        except SportsGroup.DoesNotExist:
+            self.errors.append('Invalid group.')
+
+    def validate_user_is_member(self):
+        try:
+            Membership.objects.get(person=self.user, group=self.get_group())
+        except Membership.DoesNotExist:
+            self.errors.append('This user is not a member of this group.')
+
+    def save(self):
+        if self.is_valid():
+            return Membership.objects.filter(person=self.user, group=self.get_group()).delete()

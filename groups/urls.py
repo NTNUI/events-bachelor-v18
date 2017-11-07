@@ -5,6 +5,8 @@ from . import csv
 urlpatterns = [
     url(r'^$', views.list_groups, name='list_groups'),
     url(r'^(?P<slug>[\w-]+)/members$', views.members, name='group_members'),
+    url(r'^(?P<slug>[\w-]+)/ajax/member/(?P<member_id>[\d+]+)$',
+        views.member_info, name='group_member_ajax'),
     url(r'^(?P<slug>[\w-]+)/invitations$',
         views.invitations, name='group_invitations'),
     url(r'^(?P<slug>[\w-]+)/members/invite$',
@@ -13,6 +15,5 @@ urlpatterns = [
     url(r'^(?P<slug>[\w-]+)$', views.group_index, name='group_index'),
     url(r'^(?P<slug>[\w-]+)/settings$', views.settings, name='group_settings'),
     url(r'^(?P<slug>[\w-]+)/forms/', include('forms.urls')),
-    url(r'^(?P<slug>[\w-]+)/downloadmembers$',
-        csv.download_yearly_group_members, name='download_members'),
+    url(r'^(?P<slug>[\w-]+)/downloadmembers$', csv.download_members, name='download_members'),
 ]

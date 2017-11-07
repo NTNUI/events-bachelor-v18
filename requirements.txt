@@ -5,6 +5,7 @@ selenium==3.6.0
 rules==1.2.1
 requests==2.18.4
 django-environ==0.4.4
+pillow==4.3.0
 
 # Test Coverage tools
 coverage >= 4.4.1

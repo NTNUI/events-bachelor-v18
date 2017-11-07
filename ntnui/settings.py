@@ -41,7 +41,7 @@ ALLOWED_HOSTS = ['tester', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
-    'groups.apps.GroupsConfig',
+    'groups',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -114,6 +115,7 @@ DATABASES = {
 }
 
 AUTH_USER_MODEL = "accounts.User"
+AUTH_GROUPIMAGE_MODEL = "groups.GroupImage"
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -177,3 +179,7 @@ NOSE_ARGS = [
     '--with-coverage',
     '--cover-package=groups, forms, accounts',
 ]
+
+# MEDIA
+MEDIA_URL = '/static/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'ntnui/static')

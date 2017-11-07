@@ -2,7 +2,7 @@
 
 {% block card %}
   <a class="group-card" href={% url 'group_index' slug=group.slug %}>
-    <img class="group-card-image" src="{% static 'img/ntnui2.svg' %}"/>
+    <img class="group-card-image" src="{% static group.thumbnail %}"/>
     <div class="group-card-info">
       <h2>{{ group.name }}</h2>
       <p>{{ group.description }}</p>
@@ -10,7 +10,7 @@
     {% if group.public %}
       <div class="group-card-open">Open</div>
     {% else %}
-        <div class="group-card-open">Restricted</div>
+        <div class="group-card-restricted">Restricted</div>
     {% endif %}
 
   </a>
