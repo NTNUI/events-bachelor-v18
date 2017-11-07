@@ -44,6 +44,11 @@ class SportsGroup(models.Model):
     def __str__(self):
         return self.name
 
+    def __contains__(self, other):
+        if other in self.members.all():
+            return True
+        return False
+
 
 class Board(models.Model):
     president = models.ForeignKey(
@@ -58,6 +63,15 @@ class Board(models.Model):
     def __str__(self):
         return "Board of {}: {} - {} - {}".format(
             self.sports_group.name, self.president, self.vice_president, self.cashier)
+
+    def __contains__(self, other):
+        if self.president == other:
+            return True
+        if self.vice_president == other:
+            return True
+        if self.cashier == other:
+            return True
+        return False
 
     @classmethod
     def create(cls, president, vice_president, cashier, sports_group):
