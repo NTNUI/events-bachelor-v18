@@ -36,8 +36,7 @@ a:hover {
 }
 
 .search-container {
-    vertical-align: top;
-    display: flex;
+    display: flex;  
     justify-content: space-between;
 }
 
