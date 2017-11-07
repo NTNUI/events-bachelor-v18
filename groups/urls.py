@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^(?P<slug>[\w-]+)$', views.group_index, name='group_index'),
     url(r'^(?P<slug>[\w-]+)/settings$', views.settings, name='group_settings'),
     url(r'^(?P<slug>[\w-]+)/forms/', include('forms.urls')),
-    url(r'^(?P<slug>[\w-]+)/downloadmembers$',csv.download_yearly_group_members, name='download_members'),
+    url(r'^(?P<slug>[\w-]+)/downloadmembers$',
+        csv.download_yearly_group_members, name='download_members'),
 ]

@@ -93,6 +93,7 @@ def invitations(request, slug):
         'active_tab': 'invitations',
     })
 
+
 @login_required
 def requests(request, slug):
     if request.method == 'POST':
@@ -113,14 +114,16 @@ def requests(request, slug):
         'active_tab': 'requests',
     })
 
+
 @login_required
 def downloads(request, slug):
+    if request:
+        pass
     groups = SportsGroup.objects.filter(slug=slug)
     if len(groups) != 1:
         raise Http404("Group does not exist")
     group = groups[0]
 
-    
 
 @login_required
 def invite_member(request, slug):

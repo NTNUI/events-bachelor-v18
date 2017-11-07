@@ -16,6 +16,16 @@ def mock_request(filename):
     return get
 
 
+def mock_request_since(filename):
+    def get(*args):
+        return {
+            "GetMemberDataChangesResult": {
+                "Members": get_json_fixture(filename)
+            }
+        }
+    return get
+
+
 class ExelineUrlTest(TestCase):
     def test_customer_info_url(self):
         api = Exeline('todd', 'passpass')
@@ -82,7 +92,7 @@ class ExelineTest(TestCase):
     def test_should_get_all_members_for_all_gyms_since_days(self):
         """Get all members for all gyms since days from API"""
         api = Exeline('user', 'pass')
-        api.request = mock_request('gym-response.json')
+        api.request = mock_request_since('gym-response.json')
         response = api.get_members_for_all_gyms_since(10)
         single_response = get_json_fixture('gym-response.json')
         expected = {
@@ -97,7 +107,7 @@ class ExelineTest(TestCase):
     def test_should_get_all_members_for_a_gym_since_days(self):
         """Get all members for one gym since days from API"""
         api = Exeline('user', 'pass')
-        api.request = mock_request('gym-response.json')
+        api.request = mock_request_since('gym-response.json')
         response = api.get_members_for_gym_since("3", 2)
         expected = get_json_fixture('gym-response.json')
         self.assertEqual(expected, response)

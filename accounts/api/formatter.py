@@ -4,7 +4,6 @@ class ApiFormatter(object):
     def capital_first_letter(self, word):
         return word.title()
 
-
     def format_date(self, word):
         """ 2016.01.21 -> 2016-01-21"""
         return word.replace('.', '-')

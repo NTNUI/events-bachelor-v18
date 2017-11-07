@@ -20,6 +20,10 @@ def signup(request):
 
 
 def add_all_users_from_exeline(request):
+    if not request.user.is_superuser:
+        return JsonResponse({
+            'message': 'You can not do this.',
+        })
     updater = Updater()
     added = updater.add_all_users_from_exeline()
 
@@ -28,7 +32,12 @@ def add_all_users_from_exeline(request):
         'members_updated_or_created': added,
     })
 
+
 def add_last_week_users_from_exeline(request):
+    if not request.user.is_superuser:
+        return JsonResponse({
+            'message': 'You can not do this.',
+        })
     updater = Updater()
     added = updater.add_last_day_users_from_exeline()
 
