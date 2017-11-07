@@ -6,7 +6,6 @@ from groups import views as group_views
 from django.core.urlresolvers import reverse
 
 
-
 class SettingsFormTest(TestCase):
     fixtures = ['groups.json']
 
@@ -53,4 +52,3 @@ class SettingsFormTest(TestCase):
                                    content_type="image/jpeg")
         form = SettingsForm(data={'cover_photo': image}, slug='volleyball')
         self.assertTrue(form.is_valid())
-
