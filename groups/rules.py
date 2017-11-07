@@ -49,5 +49,5 @@ add_perm('groups.can_see_invitations', is_group_board_member)
 add_perm('groups.can_invite_member', is_group_leader | is_group_vp)
 add_perm('groups.can_leave_group', (~is_group_leader  # pylint:disable=invalid-unary-operand-type # noqa
                                     & ~is_group_vp  # pylint:disable=invalid-unary-operand-type # noqa
-                                    & ~is_group_cashier) # pylint:disable=invalid-unary-operand-type # noqa
+                                    & ~is_group_cashier)  # pylint:disable=invalid-unary-operand-type # noqa
          & is_group_member)

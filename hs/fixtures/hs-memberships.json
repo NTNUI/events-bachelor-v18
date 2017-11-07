@@ -1,0 +1,12 @@
+[
+  {
+    "model": "hs.hsmembership",
+    "pk": 1,
+    "fields": {
+      "person": 1,
+      "board": 1,
+      "date_joined": "2017-09-30",
+      "role": "Leader"
+    }
+  }
+]
