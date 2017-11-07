@@ -52,3 +52,13 @@
     background-color: #f0f0f0;
 }
 
+.download-button {
+    background-color: #ffffff;
+    border-radius: 4px;
+    text-align: center;
+    color: #017402;
+    width: 32px;
+    border: 1px solid #017402;
+    margin-right: 16px;
+    padding-left: 2px;
+}
