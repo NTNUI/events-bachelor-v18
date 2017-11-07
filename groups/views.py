@@ -63,6 +63,7 @@ def group_index(request, slug):
             form = JoinOpenGroupForm(slug=slug, user=request.user)
             if form.is_valid():
                 form.save()
+                messages.success(request, 'You joined the group. Welcome!')
                 return redirect('group_index', slug=slug)
         else:
             form = JoinPrivateGroupForm(slug=slug, user=request.user)
@@ -159,18 +160,17 @@ def invite_member(request, slug):
     groups = SportsGroup.objects.filter(slug=slug)
     if len(groups) != 1:
         raise Http404("Group does not exist")
-    group = groups[0]
 
     if request.method == 'POST':
         form = NewInvitationForm(request.POST, slug=slug, user=request.user)
         if form.is_valid():
             invitation = form.save()
-            # TODO: change to redirect to 'group_invitations'
+            messages.success(request, invitation.person.email+' invited')
             return redirect('group_invitations', slug=slug)
     else:
         form = NewInvitationForm(slug=slug)
 
-    # render group form
+    # Render group form
     return render(request, 'groups/invite_member.html', {
         **get_base_members_info(request, slug),
         'form': form,
