@@ -10,6 +10,7 @@ class FormDoc(models.Model):
     def __str__(self):
         return self.name
 
+
 class BoardChange(models.Model):
     name = models.CharField(default="Board Change Form", max_length=100)
 
@@ -69,7 +70,7 @@ Board change form for: {}\n\
         return False
 
     def needs_approval_from(self):
-        ''' Returns a list of users needed to approve the form '''
+        """ Returns a list of users needed to approve the form """
         approval = []
         if not self.old_president_approved:
             approval.append(self.old_president)
@@ -81,7 +82,7 @@ Board change form for: {}\n\
         return list(set(approval))
 
     def approve(self, user):
-        ''' Saves approvals '''
+        """ Saves approvals """
         if user == self.old_president:
             self.old_president_approved = True
         # If the old president and the new are the same, this ensures both are validated
@@ -95,14 +96,14 @@ Board change form for: {}\n\
 
         if (self.old_president_approved
             and self.president_approved
-            and self.vice_president_approved):
+                and self.vice_president_approved):
             self.change_board()
 
     def change_board(self):
         new_board = Board.create(self.president,
-            self.vice_president,
-            self.cashier,
-            self.group)
+                                 self.vice_president,
+                                 self.cashier,
+                                 self.group)
 
         new_board.save()
         self.group.active_board = new_board

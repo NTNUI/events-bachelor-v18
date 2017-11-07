@@ -1,8 +1,9 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 
+
 class TestPresidentFormCreation(TestCase):
-    fixtures = [ 'groups.json', 'forms.json']
+    fixtures = ['groups.json', 'forms.json']
 
     def setUp(self):
         self.login_response = self.client.login(email='todd.packer@online.com',
@@ -16,7 +17,7 @@ class TestPresidentFormCreation(TestCase):
 
 
 class TestMemberFormList(TestCase):
-    fixtures = [ 'groups.json', 'forms.json']
+    fixtures = ['groups.json', 'forms.json']
 
     def setUp(self):
         self.login_response = self.client.login(email='mynameiscreed@bratton.com',
@@ -30,7 +31,7 @@ class TestMemberFormList(TestCase):
 
 
 class TestNonMemberFormList(TestCase):
-    fixtures = [ 'groups.json', 'forms.json']
+    fixtures = ['groups.json', 'forms.json']
 
     def setUp(self):
         self.login_response = self.client.login(email='meredith.palmer@dundermifflin.com',

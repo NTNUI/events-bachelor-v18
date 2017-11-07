@@ -2,32 +2,41 @@ from django import template
 
 register = template.Library()
 
+
 @register.filter
 def filterTitle(value):
     # Email is the first part for each section, so make sure you add a title only before that
     if value.endswith("email"):
         return '<div class="form-fill-row-title">' + value.replace('_email', '').title().replace('_', ' ') + '</div>'
 
+
 @register.filter
 def filterType(fieldname):
-    if fieldname.endswith("_email"): return "email"
-    if fieldname.endswith("_name"): return "text"
+    if fieldname.endswith("_email"):
+        return "email"
+    if fieldname.endswith("_name"):
+        return "text"
     return ""
+
 
 @register.filter
 def filterLabel(fieldname):
-    if fieldname.endswith("_name"): return "Name:"
+    if fieldname.endswith("_name"):
+        return "Name:"
 
     return {
-        "president_email" : "President email:",
-        "vice_president_email" : "Vice President email:",
-        "cashier_email" : "Cashier email:",
+        "president_email": "President email:",
+        "vice_president_email": "Vice President email:",
+        "cashier_email": "Cashier email:",
     }.get(fieldname, '')
+
 
 @register.filter
 def filterPlaceholder(fieldname):
-    if fieldname.endswith("_email"): return "Email"
+    if fieldname.endswith("_email"):
+        return "Email"
     return ""
+
 
 @register.filter
 def isDisabled(field):
@@ -35,6 +44,7 @@ def isDisabled(field):
         return 'disabled'
 
     return ''
+
 
 @register.filter(name='addAttributes')
 def addAttributes(field, css):
@@ -49,14 +59,17 @@ def addAttributes(field, css):
             attrs[t] = v
     return field.as_widget(attrs=attrs)
 
+
 @register.filter
 def add(fieldname, string):
     return fieldname + string
+
 
 @register.filter
 def printForm(form):
     print(form.name)
     return ''
+
 
 @register.filter
 def getBoardFields(fieldname):
@@ -65,6 +78,7 @@ def getBoardFields(fieldname):
         "vice_president_name": True,
         "cashier_name": True,
     }.get(fieldname, False)
+
 
 @register.filter
 def getApprovals(form):

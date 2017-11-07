@@ -26,7 +26,7 @@ class BoardChangeForm(forms.Form):
     def get_group(self):
         """ Returns the sportsgroup object if it exists, else raise validation error """
 
-        if type(self.group) == 'groups.models.SportsGroup':
+        if isinstance(self.group, 'groups.models.SportsGroup'):
             return
         try:
             self.group = SportsGroup.objects.get(slug=self.slug)
@@ -57,33 +57,33 @@ class BoardChangeForm(forms.Form):
         cleaned_data = super(BoardChangeForm, self).clean()
 
     def clean_president_email(self):
-        ''' Magic django function that is called along with form.is_Valid() in the view-file
+        """ Magic django function that is called along with form.is_Valid() in the view-file
             Atempts to set the president based on the president_email input field
-        '''
-        self.get_group() # Make sure the group exists before continuing
+        """
+        self.get_group()  # Make sure the group exists before continuing
 
         try:
             self.president = self.get_user(self.group, self.cleaned_data["president_email"])
         except KeyError:
             raise ValidationError(_("The president email field is empty"))
 
-
     def clean_vice_president_email(self):
-        ''' Magic django function that is called along with form.is_Valid() in the view-file
+        """ Magic django function that is called along with form.is_Valid() in the view-file
             Atempts to set the vice president based on the vice_president_email input field
-        '''
-        self.get_group() # Make sure the group exists before continuing
+        """
+        self.get_group()  # Make sure the group exists before continuing
 
         try:
-            self.vice_president = self.get_user(self.group, self.cleaned_data["vice_president_email"])
+            self.vice_president = self.get_user(
+                self.group, self.cleaned_data["vice_president_email"])
         except KeyError:
             raise ValidationError(_("The vice president email field is empty"))
 
     def clean_cashier_email(self):
-        ''' Magic django function that is called along with form.is_Valid() in the view-file
+        """ Magic django function that is called along with form.is_Valid() in the view-file
             Atempts to set the cashier based on the cashier input field
-        '''
-        self.get_group() # Make sure the group exists before continuing
+        """
+        self.get_group()  # Make sure the group exists before continuing
 
         try:
             self.cashier = self.get_user(self.group, self.cleaned_data["cashier_email"])
@@ -94,10 +94,9 @@ class BoardChangeForm(forms.Form):
         if (self.president and self.vice_president and self.cashier):
             old_president = Board.objects.get(sports_group=self.group).president
 
-            model = BoardChange.create(self.group, old_president, self.president, self.vice_president, self.cashier)
+            model = BoardChange.create(self.group, old_president,
+                                       self.president, self.vice_president, self.cashier)
 
-            ''' If the old president is going to sit for another period
-                then have the VP sign the form as well '''
             if old_president == self.president:
                 model.vice_president_approved = False
 

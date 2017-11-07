@@ -20,12 +20,14 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='sportsgroup',
             name='active_board',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='active_board', to='groups.Board'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='active_board', to='groups.Board'),
         ),
         migrations.AlterField(
             model_name='board',
             name='sports_group',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sports_group', to='groups.SportsGroup'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='sports_group', to='groups.SportsGroup'),
         ),
         migrations.AlterField(
             model_name='membership',

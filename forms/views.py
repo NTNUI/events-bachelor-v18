@@ -9,6 +9,7 @@ from .models import FormDoc, BoardChange
 from groups.views import get_base_group_info
 from ntnui.decorators import is_member, is_board
 
+
 @login_required
 @is_member
 def list_form(request, slug):
@@ -24,11 +25,11 @@ def list_form(request, slug):
     # Add 'board only' forms
     if request.user in group.active_board:
         bcf = {
-            'name':'Board Change Form',
+            'name': 'Board Change Form',
             'description': 'Change the board members of your sports group with this form'
         }
-        forms.append(bcf) # Add the forms you want the view to see
-    
+        forms.append(bcf)  # Add the forms you want the view to see
+
     return render(request, 'forms/forms_list.html', {
         **base_info,
         'group': group,
@@ -67,6 +68,7 @@ def board_change(request, slug):
         'active': 'forms',
     })
 
+
 @login_required
 def forms_list_submitted(request):
     user = request.user
@@ -81,9 +83,10 @@ def forms_list_submitted(request):
                 approved.append(f)
 
     return render(request, 'forms/forms_list_submitted.html', {
-        'approved' : approved,
+        'approved': approved,
         'forms': forms
     })
+
 
 @login_required
 def forms_read(request, forms_id):
@@ -100,13 +103,15 @@ def forms_read(request, forms_id):
         return redirect('forms_list_submitted')
 
     return render(request, 'forms/forms_read.html', {
-        'board' : board,
+        'board': board,
         'form': form
     })
 
 #
 # AJAX Spesific Methods
 #
+
+
 @login_required
 def ajax_validate_email(request):
     if request.method == "GET":
