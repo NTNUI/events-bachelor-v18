@@ -112,7 +112,6 @@ def list_to_csv_http_response(inputList):
     pseudo_buffer = Echo()
     writer = csv.writer(pseudo_buffer, delimiter=';')
     response = StreamingHttpResponse((
-        writer.writerow(row) for row in rows),
-                                     content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename="' + slug + '"members"' + today + '".csv"'
+        writer.writerow(row) for row in inputList),
+        content_type="text/csv")
     return response
