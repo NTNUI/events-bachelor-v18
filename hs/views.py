@@ -1,18 +1,30 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from accounts.models import User
-from groups.models import Membership
+from hs.models import HSMembership, MainBoard
 from django.contrib.auth.decorators import login_required
+from hs.forms import SettingsForm
+from django.contrib import messages
+from groups.models import Membership
 
+def get_base_hs_info(request):
+    board = get_object_or_404(MainBoard, slug='hs')
+    return {
+        'board': board,
+    }
 
 @login_required
 def hs_space(request):
+    base_info = get_base_hs_info(request)
     """Return the render for the main board view, /hs"""
-    return render(request, 'hs/hs_base.html')
+    return render(request, 'hs/hs_base.html', {
+        **base_info,
+    })
 
 
 @login_required
 def list_all_members(request):
     """Return the render for /hs/allmembers"""
+    base_info = get_base_hs_info(request)
     user_dict = {}  # a list of all the user's dictionaries
 
     for user in list(User.objects.all()):
@@ -24,8 +36,23 @@ def list_all_members(request):
         user_dict[user] = group_dict
 
     return render(request, 'hs/all_members.html', {
+        **base_info,
         'userDict': user_dict,
         'users': User.objects.all(),
         'active_tab': 'all_members',
         'total_members': len(User.objects.all()),
+    })
+
+def hs_settings(request):
+    slug = 'hs'
+    base_info = get_base_hs_info(request)
+    if request.method == 'POST':
+        form = SettingsForm(request.POST, request.FILES, slug=slug)
+        print("IS THIS VALID?!", form.is_valid())
+        if form.is_valid():
+            form.set_images()
+            messages.success(request, 'Settings saved')
+            return redirect('hs_settings')
+    return render(request, 'hs/hs_settings.html', {
+        **base_info,
     })

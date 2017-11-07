@@ -15,6 +15,9 @@ class MainBoard(models.Model):
     slug = models.CharField(max_length=12)
     cover_photo = models.ImageField(upload_to=get_cover_upload_to, default='cover_photo/ntnui-volleyball.png')
 
+    def __str__(self):
+        return self.name
+
 
 class HSMembership(models.Model):
     person = models.ForeignKey(

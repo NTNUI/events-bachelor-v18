@@ -1,4 +1,6 @@
 {% load static %}
+{% load tags %}
+    {% user_in_hs user as user_in_hs %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +15,7 @@
 
 <body>
   {% block body %}
+
 
   <nav class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container">
@@ -32,8 +35,14 @@
       <div class="collapse navbar-collapse" id="mainMenu">
         {% if user.is_authenticated %}
         <ul class="navbar-nav ml-auto">
-
-
+          {% if user_in_hs %}
+            <li>
+              <a class="link-with-icon" href="/hs">
+                <img src="{% static 'img/crown-icon.png' %}" alt="hs-icon" />
+                <p>Main Board</p>
+              </a>
+            </li>
+          {% endif %}
           <li>
             <a class="link-with-icon" href="/groups">
                 <img src="{% static 'img/organization.svg' %}" alt="groups icon" />
