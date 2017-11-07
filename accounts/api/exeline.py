@@ -54,7 +54,7 @@ class Exeline(object):
         url = self.get_url(func='members_for_gym_since_days',
                            gym_id=gym_id, days=days)
         response =  self.request(url)
-        return response['GetMemberDataResult']['Members']
+        return response['GetMemberDataChangesResult']['Members']
 
     def get_members_for_all_gyms_since(self, days):
         results = {}

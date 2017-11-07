@@ -46,6 +46,8 @@ urlpatterns = [
     url(r'^settings/password/done/$', auth_views.PasswordChangeDoneView.as_view(
         template_name='accounts/password_change_done.html'),
         name='password_change_done'),
-    url(r'^cron/accounts/exeline$', accounts_views.add_users_from_exeline,
-        name='add_users_from_exeline'),
+    url(r'^cron/accounts/all$', accounts_views.add_all_users_from_exeline,
+        name='add_all_users_from_exeline'),
+    url(r'^cron/accounts/lastweek$', accounts_views.add_last_week_users_from_exeline,
+        name='add_last_week_users_from_exeline'),
 ]
