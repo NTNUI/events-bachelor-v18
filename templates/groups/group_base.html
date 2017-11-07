@@ -13,7 +13,8 @@
           class="jumbo-background"
           src="{% static group.cover_photo %}"
           alt="NTNUI Volleyball"/>
-      <div class="group-name">{{ group.name }} ({{ role }})</div>
+      <div class="group-role">{{ role }}</div>
+      <div class="group-name">{{ group.name }}</div>
     </div>
     <div class="top-menu">
       <ul class="top-menu-list">
@@ -33,6 +34,11 @@
       </ul>
     </div>
   </div>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success group-alert" role="alert">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
 
   {% block group_content %}
   {% endblock %}
