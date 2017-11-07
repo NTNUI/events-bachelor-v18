@@ -4,8 +4,9 @@ from django.db import models
 from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-
+import datetime
 from .managers import UserManager
 
 
@@ -44,3 +45,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this User."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+class Contract(models.Model):
+    person = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    contract_type = models.CharField(max_length=3, blank=True)
+    expiry_date = models.DateField(default=datetime.date.today, blank=True)

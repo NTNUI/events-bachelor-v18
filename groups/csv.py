@@ -1,7 +1,8 @@
 import csv
 from django.contrib.auth.decorators import login_required
 from django.http import StreamingHttpResponse
-from .models import Membership, SportsGroup, Contract
+from .models import Membership, SportsGroup
+from accounts.models import Contract
 from django.shortcuts import get_object_or_404
 from datetime import date, datetime
 
@@ -65,25 +66,24 @@ def download_yearly_group_members(request, slug):
     end_date = date(year+1, 1, 31)
 
     contracts = Contract.objects.filter(
-        member__group=group.pk,
+        person__membership__group=group.pk,
         expiry_date__year=year+1,
         expiry_date__month=8,
         contract_type=YEAR_MEMBERSHIP) | Contract.objects.filter(
-            member__group=group.pk,
+            person__membership__group=group.pk,
             expiry_date__range=(start_date, end_date)
             )
 
     formatted_members = []
-    header = ['FIRST NAME', 'SECOND NAME', 'EMAIL', 'PHONE', 'PAID', 'EXP DATE',
+    header = ['FIRST NAME', 'SECOND NAME', 'EMAIL', 'PHONE', 'EXP DATE',
         'CONTRACT TYPE']
 
     for contract in contracts:
         formatted_members.append([
-            contract.member.person.first_name,
-            contract.member.person.last_name,
-            contract.member.person.email,
-            contract.member.person.phone,
-            contract.member.paid,
+            contract.person.first_name,
+            contract.person.last_name,
+            contract.person.email,
+            contract.person.phone,
             contract.expiry_date,
             contract.contract_type
             ])

@@ -2,7 +2,7 @@ rasmus:
 	python manage.py runserver 0.0.0.0:3000
 
 ask:
-	docker-compose run web python manage.py dumpdata forms.FormDoc > forms.json
+	docker-compose run web python manage.py dumpdata groups.Contract > contracts.json
 
 envrun:
 	python3 manage.py runserver 0.0.0.0:8000
