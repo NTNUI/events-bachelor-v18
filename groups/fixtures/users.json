@@ -3,7 +3,7 @@
         "model": "accounts.user",
         "pk": 1,
         "fields": {
-            "customer_no": "1",
+            "customer_number": "1",
             "password":
                 "pbkdf2_sha256$36000$qiPRGynUtAH1$7LNTkGEEH4m2jODEihPUsZJm6Q520N1fueY5c8PvD7o=",
             "last_login": "2017-10-18T08:36:41.588Z",
@@ -23,7 +23,7 @@
         "model": "accounts.user",
         "pk": 9,
         "fields": {
-            "customer_no": "9",
+            "customer_number": "9",
 
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
@@ -44,7 +44,7 @@
         "model": "accounts.user",
         "pk": 10,
         "fields": {
-            "customer_no": "10",
+            "customer_number": "10",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-10-18T08:24:31.080Z",
@@ -64,7 +64,7 @@
         "model": "accounts.user",
         "pk": 11,
         "fields": {
-            "customer_no": "11",
+            "customer_number": "11",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-09-30T14:21:26Z",
@@ -84,7 +84,7 @@
         "model": "accounts.user",
         "pk": 12,
         "fields": {
-            "customer_no": "12",
+            "customer_number": "12",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-09-30T14:22:02Z",
@@ -104,7 +104,7 @@
         "model": "accounts.user",
         "pk": 13,
         "fields": {
-            "customer_no": "13",
+            "customer_number": "13",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-09-30T15:06:28Z",
@@ -124,7 +124,7 @@
         "model": "accounts.user",
         "pk": 14,
         "fields": {
-            "customer_no": "14",
+            "customer_number": "14",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-09-30T15:06:52Z",
@@ -144,7 +144,7 @@
         "model": "accounts.user",
         "pk": 15,
         "fields": {
-            "customer_no": "15",
+            "customer_number": "15",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-09-30T15:07:15Z",
@@ -164,7 +164,7 @@
         "model": "accounts.user",
         "pk": 16,
         "fields": {
-            "customer_no": "16",
+            "customer_number": "16",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-09-30T15:07:55Z",
@@ -184,7 +184,7 @@
         "model": "accounts.user",
         "pk": 17,
         "fields": {
-            "customer_no": "17",
+            "customer_number": "17",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-09-30T15:08:28Z",
@@ -204,7 +204,7 @@
         "model": "accounts.user",
         "pk": 18,
         "fields": {
-            "customer_no": "18",
+            "customer_number": "18",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-10-18T08:23:00.012Z",
@@ -224,7 +224,7 @@
         "model": "accounts.user",
         "pk": 19,
         "fields": {
-            "customer_no": "19",
+            "customer_number": "19",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-09-30T15:09:12Z",
@@ -244,7 +244,7 @@
         "model": "accounts.user",
         "pk": 20,
         "fields": {
-            "customer_no": "20",
+            "customer_number": "20",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-09-30T15:09:33Z",
@@ -264,7 +264,7 @@
         "model": "accounts.user",
         "pk": 21,
         "fields": {
-            "customer_no": "21",
+            "customer_number": "21",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-09-30T15:09:57Z",
@@ -284,7 +284,7 @@
         "model": "accounts.user",
         "pk": 22,
         "fields": {
-            "customer_no": "22",
+            "customer_number": "22",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-09-30T15:10:28Z",
@@ -304,7 +304,7 @@
         "model": "accounts.user",
         "pk": 23,
         "fields": {
-            "customer_no": "23",
+            "customer_number": "23",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-10-01T07:01:45.923Z",
@@ -324,7 +324,7 @@
         "model": "accounts.user",
         "pk": 24,
         "fields": {
-            "customer_no": "24",
+            "customer_number": "24",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-10-02T12:01:55Z",
@@ -344,7 +344,7 @@
         "model": "accounts.user",
         "pk": 25,
         "fields": {
-            "customer_no": "25",
+            "customer_number": "25",
             "password":
                 "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
             "last_login": "2017-10-18T08:36:55Z",

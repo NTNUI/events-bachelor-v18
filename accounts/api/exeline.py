@@ -24,9 +24,9 @@ class Exeline(object):
         r = self.requests.get(self.base_url + url)
         return r.json()
 
-    def get_url(self, func, gym_id=None, customer_no=None, days=0):
+    def get_url(self, func, gym_id=None, customer_number=None, days=0):
         urls = {
-            'customer_in_gym': '/Member/%s/%s/%s/%s' % (gym_id, customer_no, self.username, self.password),
+            'customer_in_gym': '/Member/%s/%s/%s/%s' % (gym_id, customer_number, self.username, self.password),
             'members_for_gym_since_days': '/Members/%s/%i/%s/%s' % (gym_id, days, self.username, self.password),
             'members_for_gym': '/Members/%s/%s/%s' % (gym_id, self.username, self.password),
         }
@@ -62,8 +62,8 @@ class Exeline(object):
             results[gym_id] = self.get_members_for_gym_since(gym_id, days)
         return results
 
-    def get_customer_info(self, gym_id, customer_no):
+    def get_customer_info(self, gym_id, customer_number):
         url = self.get_url(func='customer_in_gym',
-                           gym_id=gym_id, customer_no=customer_no)
+                           gym_id=gym_id, customer_number=customer_number)
         response =  self.request(url)
         return response['GetMemberDataResult']['Members']

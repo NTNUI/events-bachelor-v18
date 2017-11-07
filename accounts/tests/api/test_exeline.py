@@ -19,7 +19,7 @@ def mock_request(filename):
 class ExelineUrlTest(TestCase):
     def test_customer_info_url(self):
         api = Exeline('todd', 'passpass')
-        url = api.get_url('customer_in_gym', customer_no="250", gym_id="2")
+        url = api.get_url('customer_in_gym', customer_number="250", gym_id="2")
         self.assertEqual(url, '/Member/2/250/todd/passpass')
 
     def test_member_for_gym_since_days_url(self):

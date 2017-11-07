@@ -7,10 +7,11 @@ from django.conf import settings
 from .api.exeline import Exeline
 from .api.formatter import ApiFormatter
 from .api.filterer import ApiFilterer
-from .models import User
+from .models import User, Contract
 
-# not in use
+
 def signup(request):
+    """signup is not in use"""
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -26,19 +27,30 @@ def signup(request):
 def add_users_from_exeline(request):
     def add_or_update_user_to_db(member, nr, total):
         user = None
-        customer_no = member['customer_no'] or None
+        customer_number = member['customer_number'] or None
         print('(%i/%i) Updating or creating user with email %s (%s)' %
-              (nr, total, member['email'], customer_no))
-        obj, created = User.objects.update_or_create(
-            customer_no=customer_no,
+              (nr, total, member['email'], customer_number))
+        user, user_created = User.objects.update_or_create(
+            customer_number=customer_number,
             defaults={
-                'customer_no': member['customer_no'],
+                'customer_number': member['customer_number'],
                 'email': member['email'],
                 'first_name': member['first_name'],
                 'last_name': member['last_name'],
                 'is_active': member['active'],
                 'phone': member['mobile'],
                 'date_joined': member['registered_date']
+            }
+        )
+        contract = member['contract']
+        c, contract_created = Contract.objects.update_or_create(
+            contract_number=contract['contract_number'],
+            defaults={
+                'person': user,
+                'contract_number': contract['contract_number'],
+                'contract_type': contract['type'],
+                'start_date': contract['start_date'],
+                'expiry_date': contract['expiry_date']
             }
         )
 

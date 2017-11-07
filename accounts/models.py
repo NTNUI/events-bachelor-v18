@@ -11,7 +11,7 @@ from .managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    customer_no=models.CharField(_('customer no'), unique=True, max_length=20)
+    customer_number=models.CharField(_('customer no'), unique=True, max_length=20)
     email = models.EmailField(_('email address'), blank=True)
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     last_name = models.CharField(_('last name'), max_length=30, blank=True)
@@ -46,13 +46,21 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Return the short name for the user."""
         return self.first_name
 
+    def number_of_contracts(self):
+        return len(self.contract_set.all())
+    number_of_contracts.short_description = 'Number of contracts'
+
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this User."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 
+
+
 class Contract(models.Model):
     person = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    contract_number=models.CharField(max_length=20, unique=True, blank=True)
+    start_date = models.DateField(default=datetime.date.today, blank=True)
     contract_type = models.CharField(max_length=3, blank=True)
     expiry_date = models.DateField(default=datetime.date.today, blank=True)

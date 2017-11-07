@@ -36,23 +36,24 @@ class ApiFormatter(object):
                             missing_keys)
 
         return {
-            'customer_no': unformatted['CustomerNo'],
+            'customer_number': unformatted['CustomerNo'],
             'gym_id': unformatted['GymID'],
             'first_name': self.capital_first_letter(unformatted['FirstName']),
             'last_name': self.capital_first_letter(unformatted['LastName']),
-            'birth_date': unformatted['BirthDate'],
+            'birth_date': self.format_date(unformatted['BirthDate']),
             'mobile': unformatted['Mobile'],
             'email': unformatted['Email'].lower(),
             'gender': unformatted['Gender'].upper(),
             'active': unformatted['Active'] == 'YES',
-            'expiry_date': self.format_date(unformatted['ExpieryDate']),
             'card_number': unformatted['CardNumber'],
             'registered_date': self.format_date(unformatted['RegisterdDate']),
             'last_visit_date': self.format_date(unformatted['LastVisitDate']),
-            'contract_type': unformatted['CurrentOffering'],
-            'contract_number': unformatted['ContractNumber'],
-            'contract_start_date': self.format_date(unformatted['ContractStartdate'])
-
+            'contract': {
+                'type': unformatted['CurrentOffering'],
+                'expiry_date': self.format_date(unformatted['ExpieryDate']),
+                'contract_number': unformatted['ContractNumber'],
+                'start_date': self.format_date(unformatted['ContractStartdate'])
+            }
         }
 
     def format_response_list(self, unformatted_list):
