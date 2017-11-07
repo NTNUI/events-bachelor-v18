@@ -16,10 +16,19 @@
 
   <form method="post" novalidate>
   {% csrf_token %}
-  {% for form in forms %}
-    {% block table_row %}
-    {% endblock %}
-  {% endfor %}
+  {% if forms %}
+    {% for form in forms %}
+      {% block table_row %}
+      {% endblock %}
+    {% endfor %}
+  {% else %}
+  <div class="forms-table-row">
+    <div class="row-content">
+      <div class="form-name">No forms</div>
+      <div class="form-description">There are no forms available to you.</div>
+    </div>
+  </div>
+  {% endif %}
   </form>
 </div>
 
