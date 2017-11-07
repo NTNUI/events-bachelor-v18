@@ -1,6 +1,5 @@
 {% load static %}
 {% load tags %}
-    {% user_in_hs user as user_in_hs %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,6 +34,7 @@
       <div class="collapse navbar-collapse" id="mainMenu">
         {% if user.is_authenticated %}
         <ul class="navbar-nav ml-auto">
+          {% user_in_hs user as user_in_hs %}
           {% if user_in_hs %}
             <li>
               <a class="link-with-icon" href="/hs">

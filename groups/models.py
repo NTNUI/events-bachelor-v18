@@ -26,7 +26,8 @@ class SportsGroup(models.Model):
         settings.AUTH_USER_MODEL, through='Request', related_name='group_requests')
     public = models.BooleanField(default=False)
     thumbnail = models.ImageField(upload_to=get_thumbnail_upload_to, default='thumbnail/ntnui2.svg')
-    cover_photo = models.ImageField(upload_to=get_cover_upload_to, default='cover_photo/ntnui-volleyball.png')
+    cover_photo = models.ImageField(upload_to=get_cover_upload_to,
+                                    default='cover_photo/ntnui-volleyball.png')
 
     def __str__(self):
         return self.name

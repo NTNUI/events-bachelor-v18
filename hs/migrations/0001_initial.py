@@ -21,7 +21,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='HSMembership',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('date_joined', models.DateField(default=datetime.date.today)),
                 ('role', models.CharField(max_length=30)),
             ],
@@ -29,10 +30,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MainBoard',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=50)),
                 ('slug', models.CharField(max_length=12)),
-                ('cover_photo', models.ImageField(default='cover_photo/ntnui-volleyball.png', upload_to=hs.models.get_cover_upload_to)),
+                ('cover_photo', models.ImageField(default='cover_photo/ntnui-volleyball.png',
+                                                  upload_to=hs.models.get_cover_upload_to)),
             ],
         ),
         migrations.AddField(
@@ -43,6 +46,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='hsmembership',
             name='person',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    to=settings.AUTH_USER_MODEL),
         ),
     ]

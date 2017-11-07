@@ -1,21 +1,24 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from accounts.models import User
-from hs.models import HSMembership, MainBoard
+from hs.models import MainBoard
 from django.contrib.auth.decorators import login_required
 from hs.forms import SettingsForm
 from django.contrib import messages
 from groups.models import Membership
 
-def get_base_hs_info(request):
+
+def get_base_hs_info():
     board = get_object_or_404(MainBoard, slug='hs')
     return {
         'board': board,
     }
 
+
 @login_required
 def hs_space(request):
-    base_info = get_base_hs_info(request)
-    """Return the render for the main board view, /hs"""
+    """Return the render for the main board view, hs"""
+    base_info = get_base_hs_info()
+
     return render(request, 'hs/hs_base.html', {
         **base_info,
     })
@@ -24,7 +27,7 @@ def hs_space(request):
 @login_required
 def list_all_members(request):
     """Return the render for /hs/allmembers"""
-    base_info = get_base_hs_info(request)
+    base_info = get_base_hs_info()
     user_dict = {}  # a list of all the user's dictionaries
 
     for user in list(User.objects.all()):
@@ -43,9 +46,10 @@ def list_all_members(request):
         'total_members': len(User.objects.all()),
     })
 
+
 def hs_settings(request):
     slug = 'hs'
-    base_info = get_base_hs_info(request)
+    base_info = get_base_hs_info()
     if request.method == 'POST':
         form = SettingsForm(request.POST, request.FILES, slug=slug)
         print("IS THIS VALID?!", form.is_valid())
