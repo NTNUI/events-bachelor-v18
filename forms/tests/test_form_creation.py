@@ -15,7 +15,7 @@ class TestPresidentFormCreation(TestCase):
             self.response, '<button type="submit" class="form-button btn btn-success" name="openForm" value="Board Change Form"')
 
 
-class TestMemberFormCreation(TestCase):
+class TestMemberFormList(TestCase):
     fixtures = [ 'groups.json', 'forms.json']
 
     def setUp(self):
@@ -24,12 +24,12 @@ class TestMemberFormCreation(TestCase):
         url = reverse('forms_list', kwargs={'slug': 'volleyball'})
         self.response = self.client.get(url)
 
-    def test_can_see_form(self):
-        self.assertContains(
+    def test_can_not_see_form(self):
+        self.assertNotContains(
             self.response, '<button type="submit" class="form-button btn btn-success" name="openForm" value="Board Change Form"')
 
 
-class TestNonMemberFormCreation(TestCase):
+class TestNonMemberFormList(TestCase):
     fixtures = [ 'groups.json', 'forms.json']
 
     def setUp(self):
@@ -38,5 +38,5 @@ class TestNonMemberFormCreation(TestCase):
         url = reverse('forms_list', kwargs={'slug': 'volleyball'})
         self.response = self.client.get(url)
 
-    def test_can_not_see_form(self):
+    def test_get_redirect(self):
         self.assertEquals(self.response.status_code, 302)
