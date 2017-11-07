@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from groups.models import SportsGroup
+from groups.models import SportsGroup, Board
 
 
 def is_member(view_func):
@@ -7,7 +7,7 @@ def is_member(view_func):
         try:
             if request.user not in SportsGroup.objects.get(slug=kwargs['slug']):
                 return redirect('group_index', slug=kwargs['slug'])
-        except:
+        except SportsGroup.DoesNotExist:
             pass
 
         return view_func(request, *args, **kwargs)
@@ -19,7 +19,7 @@ def is_board(view_func):
         try:
             if request.user not in SportsGroup.objects.get(slug=kwargs['slug']).active_board:
                 return redirect('group_index', slug=kwargs['slug'])
-        except:
+        except Board.DoesNotExist:
             pass
 
         return view_func(request, *args, **kwargs)

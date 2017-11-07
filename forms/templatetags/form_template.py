@@ -7,7 +7,8 @@ register = template.Library()
 def filterTitle(value):
     # Email is the first part for each section, so make sure you add a title only before that
     if value.endswith("email"):
-        return '<div class="form-fill-row-title">' + value.replace('_email', '').title().replace('_', ' ') + '</div>'
+        return '<div class="form-fill-row-title">'\
+            + value.replace('_email', '').title().replace('_', ' ') + '</div>'
 
 
 @register.filter

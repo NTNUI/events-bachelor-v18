@@ -100,5 +100,5 @@ class BoardChangeForm(forms.Form):
             if old_president == self.president:
                 model.vice_president_approved = False
 
-            if not model in BoardChange.objects.all():
+            if model not in BoardChange.objects.all():
                 model.save()

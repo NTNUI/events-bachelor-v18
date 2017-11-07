@@ -33,7 +33,7 @@ class SportsGroup(models.Model):
     active_board = models.ForeignKey('Board', related_name='active_board',
                                      null=True, on_delete=models.CASCADE)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
         super(SportsGroup, self).save(*args, **kwargs)
         self.update()  # Make sure you update the members AFTER the new board has been saved
 
@@ -94,7 +94,7 @@ class Membership(models.Model):
     role = models.CharField(max_length=50, default="member")
 
     # Update the membership fields based on the person's role in the group
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
         if self.group.active_board.president == self.person:
             self.role = "president"
         elif self.group.active_board.vice_president == self.person:

@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from accounts.models import User
-from groups.models import SportsGroup, Board
+from groups.models import SportsGroup
 from django.http import JsonResponse
 from .forms import BoardChangeForm
-from .models import FormDoc, BoardChange
+from .models import BoardChange
 from groups.views import get_base_group_info
 from ntnui.decorators import is_member, is_board
 
@@ -79,7 +79,7 @@ def forms_list_submitted(request):
         if user in f:
             if user in f.needs_approval_from():
                 forms.append(f)
-            elif len(f.needs_approval_from()) > 0:
+            elif f.needs_approval_from():
                 approved.append(f)
 
     return render(request, 'forms/forms_list_submitted.html', {
@@ -116,19 +116,19 @@ def forms_read(request, forms_id):
 def ajax_validate_email(request):
     if request.method == "GET":
         email = request.GET.get('email', None)
-        id = request.GET.get('id', None)
+        field_id = request.GET.get('id', None)
 
         try:
             user = User.objects.get(email=email)
             data = {
                 'first_name': user.first_name,
                 'last_name': user.last_name,
-                'id': id
+                'id': field_id
             }
         except User.DoesNotExist:
             data = {
                 'error': True,
-                'id': id
+                'id': field_id
             }
 
         return JsonResponse(data)

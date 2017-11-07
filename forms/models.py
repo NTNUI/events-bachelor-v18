@@ -26,11 +26,8 @@ class BoardChange(models.Model):
 
     cashier = models.ForeignKey(User, related_name='cashier')
 
-    def save(self, *args, **kwargs):
-        super(BoardChange, self).save(*args, **kwargs)
-
     @classmethod
-    def create(cls, g, op, p, vp, c):
+    def create(cls, g, op, p, vp, c):  # pylint: disable=too-many-arguments
         board_change = cls(group=g, old_president=op, president=p, vice_president=vp, cashier=c)
 
         return board_change
