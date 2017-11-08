@@ -6,6 +6,7 @@ from .models import SportsGroup, Membership, Invitation, Request
 from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm, \
     LeaveGroupForm
 from .helpers import get_group_role
+from ntnui.decorators import is_member, is_board
 
 
 def get_base_group_info(request, slug):
@@ -113,6 +114,23 @@ def member_info(request, slug, member_id):
     except Membership.DoesNotExist:
         member = None
     return render(request, 'groups/ajax/member.html', {
+        'role': get_group_role(request.user, group),
+        'group': group,
+        'slug': slug,
+        'show_members': request.user.has_perm('groups.can_see_members', group),
+        'member': member,
+    })
+
+@login_required
+@is_board
+def member_settings(request, slug, member_id):
+    group = get_object_or_404(SportsGroup, slug=slug)
+    can_see_members = request.user.has_perm('groups.can_see_members', group)
+    try:
+        member = Membership.objects.get(pk=member_id)
+    except Membership.DoesNotExist:
+        member = None
+    return render(request, 'groups/member_settings.html', {
         'role': get_group_role(request.user, group),
         'group': group,
         'slug': slug,
