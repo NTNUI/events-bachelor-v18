@@ -57,5 +57,6 @@ def hs_settings(request):
             messages.success(request, 'Settings saved')
             return redirect('hs_settings')
     return render(request, 'hs/hs_settings.html', {
+        'active_tab': 'hs_settings',
         **base_info,
     })
