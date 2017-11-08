@@ -12,4 +12,4 @@ class DownloadButtonHSTest(TestCase):
         self.response = self.client.get(url)
 
     def test_download_button_exists(self):
-        self.assertContains(self.response, '<div class="download-field"', 1)
+        self.assertContains(self.response, '<div class="download-button', 1)
