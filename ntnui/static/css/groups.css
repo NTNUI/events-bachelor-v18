@@ -360,6 +360,11 @@ REQUEST LIST
 .group-settings-input {
     width: 54.5%;
     margin-right: 2rem;
+}
+
+.group-settings-textarea {
+    width: 54.5%;
+    margin-right: 2rem;
     word-wrap: break-word;
     resize: none;
     height: 100%;
