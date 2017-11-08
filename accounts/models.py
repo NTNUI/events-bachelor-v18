@@ -26,7 +26,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
 
     def __str__(self):
-        return '%s %s' % (self.first_name, self.last_name)
+        return '{} {}'.format(self.first_name, self.last_name)
 
     objects = UserManager()
 

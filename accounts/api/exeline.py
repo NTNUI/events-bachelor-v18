@@ -26,11 +26,11 @@ class Exeline(object):
 
     def get_url(self, func, gym_id=None, customer_number=None, days=0):
         urls = {
-            'customer_in_gym': '/Member/%s/%s/%s/%s' % (gym_id, customer_number,
-                                                        self.username, self.password),
-            'members_for_gym_since_days': '/Members/%s/%i/%s/%s' % (gym_id, days,
+            'customer_in_gym': '/Member/{}/{}/{}/{}'.format(gym_id, customer_number,
+                                                            self.username, self.password),
+            'members_for_gym_since_days': '/Members/{}/{}/{}/{}'.format(gym_id, days,
                                                                     self.username, self.password),
-            'members_for_gym': '/Members/%s/%s/%s' % (gym_id, self.username, self.password),
+            'members_for_gym': '/Members/{}/{}/{}'.format(gym_id, self.username, self.password),
         }
         if func in urls:
             return urls[func]

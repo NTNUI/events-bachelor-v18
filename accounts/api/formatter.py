@@ -31,8 +31,7 @@ class ApiFormatter(object):
         present_keys = set(unformatted.keys())
         if not expected_keys.issubset(present_keys):
             missing_keys = expected_keys - present_keys
-            raise Exception('Missing attributes in customer: %s' %
-                            missing_keys)
+            raise Exception('Missing attributes in customer: {}'.format(missing_keys))
 
         return {
             'customer_number': unformatted['CustomerNo'],
