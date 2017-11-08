@@ -10,7 +10,9 @@
       {% csrf_token %}
       <div class="group-settings-header">Group images</div>
         <label class="group-settings">Cover photo (790x260)
-          <input type="file" name="cover_photo" class="group-settings-input" accept="image/*"/>
+          <div>
+            <input type="file" name="cover_photo" class="group-settings-input" accept="image/*"/>
+          </div>
         </label>
 
       <div class="group-settings-right">
