@@ -173,8 +173,10 @@ def settings(request, slug):
 
     if request.method == 'POST' and request.POST.get('save-settings'):
         form = SettingsForm(request.POST, request.FILES, slug=slug)
+        print("IS VALID=!=!=!", form.is_valid())
         if form.is_valid():
             form.set_images()
+            form.set_description()
             messages.success(request, 'Settings saved')
             return redirect('group_settings', slug=slug)
 
