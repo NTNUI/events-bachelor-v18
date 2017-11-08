@@ -46,7 +46,7 @@ def list_all_members(request):
         'total_members': len(User.objects.all()),
     })
 
-
+@login_required
 def hs_settings(request):
     slug = 'hs'
     base_info = get_base_hs_info()
@@ -57,5 +57,6 @@ def hs_settings(request):
             messages.success(request, 'Settings saved')
             return redirect('hs_settings')
     return render(request, 'hs/hs_settings.html', {
+        'active_tab': 'hs_settings',
         **base_info,
     })
