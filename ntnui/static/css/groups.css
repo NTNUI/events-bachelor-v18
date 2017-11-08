@@ -155,7 +155,7 @@
     align-items: center;
     justify-content: flex-start;
     box-sizing: border-box;
-    padding: 1px 16px;
+    padding: 0px 16px;
     border-bottom: 1px solid #f0f0f0;
 }
 
@@ -177,7 +177,7 @@
 }
 
 .group-member-phone-header {
-    width: 150px;
+    width: 120px;
 }
 
 .group-member-email-header {
@@ -193,19 +193,56 @@
 }
 
 .group-member-phone {
-    width: 150px;
+    width: 120px;
 }
 
 .group-member-email {
     width: 300px;
 }
 
-.group-member-paid {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.group-member-info-header {
+    width: 48px;
+}
+
+.group-member-info {
     text-align: center;
-    width: 50px;
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+    font-size: 24px;
+}
+
+.group-member-info:hover {
+    background-color: #017402;
+    opacity: 0.4;
+    color: white;
+}
+
+.group-member-paid {
+    text-align: center;
+    width: 48px;
+}
+
+.group-member-settings {
+    font-size: 24px;
+    width: 48px;
+    height: 48px;
+}
+
+.group-member-settings a {
+    display: block;
+    height: 100%;
+    text-align: center;
+    width: 48px;
+    padding-top: 2px;
+    line-height: 48px;
+    box-sizing: border-box;
+}
+
+.group-member-settings a:hover {
+    color: white;
+    background-color: #017402;
+    opacity: 0.6;
 }
 
 .add-new-member {

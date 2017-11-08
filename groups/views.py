@@ -124,17 +124,13 @@ def member_info(request, slug, member_id):
 @login_required
 @is_board
 def member_settings(request, slug, member_id):
-    group = get_object_or_404(SportsGroup, slug=slug)
-    can_see_members = request.user.has_perm('groups.can_see_members', group)
+    base_info = get_base_members_info(request, slug)
     try:
         member = Membership.objects.get(pk=member_id)
     except Membership.DoesNotExist:
         member = None
     return render(request, 'groups/member_settings.html', {
-        'role': get_group_role(request.user, group),
-        'group': group,
-        'slug': slug,
-        'show_members': request.user.has_perm('groups.can_see_members', group),
+        **base_info,
         'member': member,
     })
 
