@@ -1,0 +1,20 @@
+{
+    "customer_number": "1016801",
+    "gym_id": "3",
+    "first_name": "Michael",
+    "last_name": "Scott",
+    "birth_date": "1965-06-08",
+    "mobile": "97597003",
+    "email": "michael.scott@gmail.com",
+    "gender": "MALE",
+    "active": true,
+    "card_number": "2380987600",
+    "registered_date": "2017-01-05",
+    "last_visit_date": "2017-09-28",
+    "contract": {
+        "type": "231",
+        "contract_number": "646500",
+        "start_date": "2017-08-19",
+        "expiry_date": "2018-01-10"
+    }
+}

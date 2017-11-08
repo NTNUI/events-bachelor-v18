@@ -1,0 +1,12 @@
+{
+    "GetMemberByIdResult": {
+        "Members": null,
+        "Status": {
+            "StatusCode": "2",
+            "StatusMessage": "No Members Found",
+            "CustomerId": 0,
+            "GuardianCustomerId": 0,
+            "ExpirationDate": null
+        }
+    }
+}

@@ -146,6 +146,16 @@ def requests(request, slug):
 
 
 @login_required
+def downloads(request, slug):
+    if request:
+        pass
+    groups = SportsGroup.objects.filter(slug=slug)
+    if len(groups) != 1:
+        raise Http404("Group does not exist")
+    group = groups[0]
+
+
+@login_required
 def invite_member(request, slug):
     groups = SportsGroup.objects.filter(slug=slug)
     if len(groups) != 1:
