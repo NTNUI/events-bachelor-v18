@@ -20,7 +20,7 @@ function groupSearch() {
     }
 }*/
 
-let $groupRows = $('#all-groups').find('.group-card');
+let $groupRows = $('#all-groups').find('.group-card-all-groups');
 $('#group-search').keyup(function () {
     let val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
 
