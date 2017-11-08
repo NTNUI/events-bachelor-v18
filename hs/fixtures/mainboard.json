@@ -1,0 +1,10 @@
+[
+    {
+        "model": "hs.mainboard",
+        "pk": 1,
+        "fields": {
+            "name": "Main Board",
+            "slug": "hs"
+        }
+    }
+]

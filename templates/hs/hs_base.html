@@ -12,18 +12,19 @@
     <div class="header-jumbo">
       <img
           class="jumbo-background"
-          src="{% static 'img/groups/ntnui-volleyball.png' %}"
+          src="{% static board.cover_photo %}"
           alt="NTNUI Volleyball"/>
-      <div class="group-name">Hovedstyret</div>
+      <div class="group-name">Main Board</div>
     </div>
     <div class="top-menu">
       <ul class="top-menu-list">
         <li><a href="{% url 'all_members' %}" class="{% if active_tab == 'all_members' %}active-item{% endif %}">All members</a></li>
+        <li><a href="{% url 'hs_settings' %}" class="{% if active_tab == 'hs_settings' %}active-item{% endif %}">Settings</a></li>
       </ul>
     </div>
   </div>
 
-  {% block all_members %}
+  {% block hs_content %}
   {% endblock %}
 
 
