@@ -178,6 +178,144 @@ class JoinOpenGroupForm(object):
             return Membership.objects.create(person=self.user, group=self.get_group())
 
 
+class SaveGroupMemberSettingsForm(object):
+    def __init__(self, slug, member_id, has_paid, comment):
+        self.slug = slug
+        self.member_id = member_id
+        self.has_paid = has_paid
+        self.comment = comment
+        self.errors = []
+        self.group = None
+        self.member = None
+        self.validate_paid()
+        self.validate_group_is_valid()
+        if self.validate_member_is_valid():
+            self.validate_member_is_in_group()
+
+    def get_group(self):
+        if self.group:
+            return self.group
+        try:
+            group = SportsGroup.objects.get(slug=self.slug)
+            self.group = group
+            return self.group
+        except SportsGroup.DoesNotExist:
+            return None
+
+    def get_membership(self):
+        if self.member:
+            return self.member
+        try:
+            member = Membership.objects.get(pk=self.member_id)
+            self.member = member
+            return self.member
+        except Membership.DoesNotExist:
+            return None
+
+    def save(self):
+        if not self.is_valid():
+            return
+        self.member.comment = self.comment
+        self.member.paid = self.has_paid == "paid"
+        self.member.save()
+
+    def is_valid(self):
+        return len(self.errors) == 0
+
+    def validate(self, condition, message):
+        if condition:
+            self.errors.append(message)
+            return False
+        return True
+
+    def validate_paid(self):
+        return self.validate(
+            self.has_paid != "paid" and self.has_paid != "not-paid",
+            'Payment status must be supplied.')
+
+    def validate_comment(self):
+        return self.validate(
+            not isinstance(self.comment, str) or len(self.commment) > 140,
+            'Comment must be 140 characters or less.')
+
+    def validate_group_is_valid(self):
+        return self.validate(self.get_group() is None, 'Group does not exist.')
+
+    def validate_member_is_valid(self):
+        return self.validate(self.get_membership() is None, 'Membership does not exist.')
+
+    def validate_member_is_in_group(self):
+        return self.validate(
+            self.get_membership().person not in self.get_group(),
+            'This is not a member of this group.'
+        )
+
+
+class KickUserForm(object):
+    def __init__(self, slug, member_id):
+        self.slug = slug
+        self.member_id = member_id
+        self.errors = []
+        self.group = None
+        self.member = None
+        self.validate_group_is_valid()
+        if self.validate_member_is_valid():
+            if self.validate_member_is_in_group():
+                self.validate_member_is_not_in_board()
+
+    def save(self):
+        if not self.is_valid():
+            return
+        self.get_membership().delete()
+
+    def is_valid(self):
+        return len(self.errors) == 0
+
+    def get_group(self):
+        if self.group:
+            return self.group
+        try:
+            group = SportsGroup.objects.get(slug=self.slug)
+            self.group = group
+            return self.group
+        except SportsGroup.DoesNotExist:
+            return None
+
+    def get_membership(self):
+        if self.member:
+            return self.member
+        try:
+            member = Membership.objects.get(pk=self.member_id)
+            self.member = member
+            return self.member
+        except Membership.DoesNotExist:
+            return None
+
+    def validate(self, condition, message):
+        if condition:
+            self.errors.append(message)
+            return False
+        return True
+
+    def validate_group_is_valid(self):
+        return self.validate(self.get_group() is None, 'Group does not exist.')
+
+    def validate_member_is_valid(self):
+        return self.validate(self.get_membership() is None, 'Membership does not exist.')
+
+    def validate_member_is_in_group(self):
+        return self.validate(
+            self.get_membership().person not in self.get_group(),
+            'This is not a member of this group.'
+        )
+
+    def validate_member_is_not_in_board(self):
+        return self.validate(
+            self.get_membership().person in self.get_group().active_board,
+            'Board members can not be kicked.'
+        )
+
+
 class JoinPrivateGroupForm(object):
     def __init__(self, slug, user):
         self.slug = slug

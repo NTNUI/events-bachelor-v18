@@ -7,6 +7,7 @@ from django.contrib import messages
 from groups.models import Membership
 from ntnui.decorators import is_main_board
 
+
 def get_base_hs_info():
     board = get_object_or_404(MainBoard, slug='hs')
     return {
@@ -47,6 +48,7 @@ def list_all_members(request):
         'active_tab': 'all_members',
         'total_members': len(User.objects.all()),
     })
+
 
 @login_required
 @is_main_board

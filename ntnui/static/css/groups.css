@@ -17,7 +17,7 @@
     position: absolute;
     left: 0;
     bottom: 3.75rem;
-    padding: .25rem 1.5rem;
+    padding: 0.25rem 1.5rem;
     background-color: black;
 }
 
@@ -26,8 +26,8 @@
     font-size: 1.5rem;
     position: absolute;
     left: 0;
-    bottom: .5rem;
-    padding: .25rem 1.5rem;
+    bottom: 0.5rem;
+    padding: 0.25rem 1.5rem;
     background-color: black;
 }
 
@@ -56,7 +56,6 @@
     margin: 0;
     padding: 0;
 }
-
 
 .top-menu-list a {
     height: 52px;
@@ -156,7 +155,7 @@
     align-items: center;
     justify-content: flex-start;
     box-sizing: border-box;
-    padding: 1px 16px;
+    padding: 0px 16px;
     border-bottom: 1px solid #f0f0f0;
 }
 
@@ -178,7 +177,7 @@
 }
 
 .group-member-phone-header {
-    width: 150px;
+    width: 120px;
 }
 
 .group-member-email-header {
@@ -194,19 +193,56 @@
 }
 
 .group-member-phone {
-    width: 150px;
+    width: 120px;
 }
 
 .group-member-email {
     width: 300px;
 }
 
-.group-member-paid {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.group-member-info-header {
+    width: 48px;
+}
+
+.group-member-info {
     text-align: center;
-    width: 50px;
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+    font-size: 24px;
+}
+
+.group-member-info:hover {
+    background-color: #017402;
+    opacity: 0.4;
+    color: white;
+}
+
+.group-member-paid {
+    text-align: center;
+    width: 48px;
+}
+
+.group-member-settings {
+    font-size: 24px;
+    width: 48px;
+    height: 48px;
+}
+
+.group-member-settings a {
+    display: block;
+    height: 100%;
+    text-align: center;
+    width: 48px;
+    padding-top: 2px;
+    line-height: 48px;
+    box-sizing: border-box;
+}
+
+.group-member-settings a:hover {
+    color: white;
+    background-color: #017402;
+    opacity: 0.6;
 }
 
 .add-new-member {
@@ -284,13 +320,13 @@
 .btn-withdraw {
     position: absolute;
     right: 1rem;
-    bottom: .55rem;
+    bottom: 0.55rem;
     border-radius: 0.15rem;
     background: transparent;
     border: 1px solid #d0d0d0;
     text-transform: uppercase;
-    font-size: .75rem;
-    padding: .25rem .5rem;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
 }
 
 /**
@@ -348,7 +384,7 @@ REQUEST LIST
 }
 
 .group-settings-header {
-    padding: .5rem 2rem;
+    padding: 0.5rem 2rem;
     border-bottom: 1px solid #f0f0f0;
     font-weight: bold;
 }
@@ -363,6 +399,61 @@ REQUEST LIST
     word-wrap: break-word;
     resize: none;
     height: 100%;
+}
+
+.member-settings-row {
+    min-height: 64px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 1rem;
+}
+
+.member-settings-row-key {
+    width: 230px;
+    text-align: right;
+    padding-right: 2rem;
+    font-weight: bold;
+}
+
+.member-settings-row-value {
+    flex-grow: 1;
+    padding-right: 1rem;
+}
+
+.member-settings-radios {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1rem;
+}
+
+.member-settings-radios label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.member-settings-radios label input {
+    margin-right: 1rem;
+}
+
+.member-settings-row-title-subtitle {
+    padding: 2rem 1rem;
+}
+
+.member-settings-row-title {
+    padding-bottom: 0.1rem;
+    font-weight: bold;
+}
+
+.member-settings-row-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    flex-grow: 1;
+    padding-right: 1rem;
 }
 
 .group-settings-save-btn {

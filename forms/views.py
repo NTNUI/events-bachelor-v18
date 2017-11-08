@@ -56,7 +56,6 @@ def board_change(request, slug):
             return redirect('forms_list', slug=slug)
         else:
             pass
-            # print(form.errors)
     else:
         form = BoardChangeForm(slug=slug)
 

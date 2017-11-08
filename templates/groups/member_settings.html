@@ -1,0 +1,78 @@
+{% extends 'groups/group_base.html' %} {% block group_content %}
+<div class="content-table">
+  {% if show_members %}
+  <div class="list-header">
+    General Settings - {{ member.person.get_full_name }}
+  </div>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="member-settings-row">
+      <div class="member-settings-row-key">Group Role</div>
+      <div class="member-settings-row-value">{{ member.role.title }}</div>
+    </div>
+    <div class="member-settings-row">
+      <div class="member-settings-row-key">E-mail</div>
+      <div class="member-settings-row-value">{{ member.person.email }}</div>
+    </div>
+    <div class="member-settings-row">
+      <div class="member-settings-row-key">Phone</div>
+      <div class="member-settings-row-value">{{ member.person.phone }}</div>
+    </div>
+    <div class="member-settings-row">
+      <div class="member-settings-row-key">Date joined</div>
+      <div class="member-settings-row-value">{{ member.date_joined }}</div>
+    </div>
+    <div class="member-settings-row">
+      <div class="member-settings-row-key">Internal license</div>
+      <div class="member-settings-row-value">
+        <div class="member-settings-radios">
+          <div class="form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" name="has_paid" type="radio" name="license"
+                       value="paid" {% if member.paid %}checked{% endif %}/>Internal license is paid</label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" name="has_paid" type="radio" name="license"
+                       value="not-paid" {% if not member.paid %}checked{% endif %}/>Internal license is not paid</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="member-settings-row">
+        <div class="member-settings-row-key">Comment</div>
+        <div class="member-settings-row-value">
+            <input type="text" name="comment" class="form-control" placeholder="Comment" value="{{ member.comment }}" />
+        </div>
+      </div>
+      <div class="group-settings-right">
+        <input type="submit" name="save-settings" class="btn group-settings-save-btn btn-success"
+               value="Change settings"/>
+      </div>
+    </form>
+    {% endif %}
+  </div>
+
+  <div class="content-table">
+    <div class="list-header">
+      Dangerous Settings - {{ member.person.get_full_name }}
+    </div>
+    <div class="member-settings-row">
+      <div class="member-settings-row-title-subtitle">
+        <div class="member-settings-row-title">
+          Kick {{ member.person.get_full_name }} from this group
+        </div>
+        <div class="member-settings-row-subtitle">
+          This will immediately end the membership.
+        </div>
+      </div>
+      <div class="member-settings-row-button">
+        <form method="post">
+          {% csrf_token %}
+          <input type="submit" name="kick-user" class="btn btn-outline-danger" value="Kick from group" />
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
