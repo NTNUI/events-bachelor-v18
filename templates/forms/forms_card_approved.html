@@ -2,8 +2,8 @@
 {% load form_template %}
 
 {% block card %}
-  <a class="group-card" href="{% url 'forms_read' forms_id=form.id %}">
-    <img class="group-card-image" src="{% static 'img/forms.svg' %}"/>
+  <a class="group-card-all-groups" href="{% url 'forms_read' forms_id=form.id %}">
+    <img class="group-card-image-small" src="{% static 'img/forms.svg' %}"/>
     <div class="group-card-info">
       <h1><small>{{ form.name }} ({{ form.group }})
       </small></h1>
