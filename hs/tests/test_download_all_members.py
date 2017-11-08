@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 
 
 class DownloadButtonHSTest(TestCase):
-    fixtures = ['users.json']
+    fixtures = ['users.json', 'mainboard.json', 'hs-memberships.json']
 
     def setUp(self):
         self.login_response = self.client.login(email='jameshalpert@gmail.com',

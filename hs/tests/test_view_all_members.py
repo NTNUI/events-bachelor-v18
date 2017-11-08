@@ -15,7 +15,7 @@ class AllMembersLoggedOutTest(TestCase):
 
 
 class AllMembersLoggedInTest(TestCase):
-    fixtures = ['users.json']
+    fixtures = ['users.json', 'mainboard.json', 'hs-memberships.json']
 
     def setUp(self):
         self.login_response = self.client.login(email='jameshalpert@gmail.com',
@@ -32,7 +32,7 @@ class AllMembersLoggedInTest(TestCase):
 
 
 class AllMembersTest(AllMembersLoggedInTest):
-    fixtures = ['users.json', 'groups.json', 'boards.json']
+    fixtures = ['users.json', 'groups.json', 'boards.json', 'mainboard.json', 'hs-memberships.json']
 
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 200)
