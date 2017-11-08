@@ -3,6 +3,7 @@ from hs.models import MainBoardMembership
 
 register = template.Library()
 
+
 @register.assignment_tag
 def user_in_hs(user):
     try:

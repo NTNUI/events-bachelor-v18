@@ -23,6 +23,7 @@ class MainBoard(models.Model):
             return True
         return False
 
+
 class MainBoardMembership(models.Model):
     person = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

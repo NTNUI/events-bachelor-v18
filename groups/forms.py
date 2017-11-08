@@ -252,8 +252,6 @@ class SaveGroupMemberSettingsForm(object):
         )
 
 
-
-
 class KickUserForm(object):
     def __init__(self, slug, member_id):
         self.slug = slug
@@ -317,7 +315,6 @@ class KickUserForm(object):
             self.get_membership().person in self.get_group().active_board,
             'Board members can not be kicked.'
         )
-
 
 
 class JoinPrivateGroupForm(object):
