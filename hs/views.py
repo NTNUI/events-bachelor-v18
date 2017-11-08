@@ -48,7 +48,6 @@ def list_all_members(request):
         'total_members': len(User.objects.all()),
     })
 
-
 @login_required
 @is_main_board
 def hs_settings(request):
@@ -61,5 +60,6 @@ def hs_settings(request):
             messages.success(request, 'Settings saved')
             return redirect('hs_settings')
     return render(request, 'hs/hs_settings.html', {
+        'active_tab': 'hs_settings',
         **base_info,
     })
