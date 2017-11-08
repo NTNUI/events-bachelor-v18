@@ -6,7 +6,7 @@ from .models import SportsGroup, Membership, Invitation, Request
 from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm, \
     LeaveGroupForm, KickUserForm, SaveGroupMemberSettingsForm
 from .helpers import get_group_role
-from ntnui.decorators import is_member, is_board
+from ntnui.decorators import is_board
 
 
 def get_base_group_info(request, slug):
@@ -234,7 +234,6 @@ def settings(request, slug):
 
     if request.method == 'POST' and request.POST.get('save-settings'):
         form = SettingsForm(request.POST, request.FILES, slug=slug)
-        print("IS VALID=!=!=!", form.is_valid())
         if form.is_valid():
             form.set_images()
             form.set_description()

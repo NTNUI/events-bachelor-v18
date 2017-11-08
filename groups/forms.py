@@ -183,7 +183,6 @@ class SaveGroupMemberSettingsForm(object):
         self.slug = slug
         self.member_id = member_id
         self.has_paid = has_paid
-        print(self.has_paid)
         self.comment = comment
         self.errors = []
         self.group = None
@@ -236,7 +235,7 @@ class SaveGroupMemberSettingsForm(object):
 
     def validate_comment(self):
         return self.validate(
-            self.comment != type("comment") or len(self.commment) > 140,
+            not isinstance(self.comment, str) or len(self.commment) > 140,
             'Comment must be 140 characters or less.')
 
     def validate_group_is_valid(self):
