@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import SportsGroup, Membership, Invitation, Request
 from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm, \
-    LeaveGroupForm, KickUserForm
+    LeaveGroupForm, KickUserForm, SaveGroupMemberSettingsForm
 from .helpers import get_group_role
 from ntnui.decorators import is_member, is_board
 
@@ -121,6 +121,7 @@ def member_info(request, slug, member_id):
         'member': member,
     })
 
+
 @login_required
 @is_board
 def member_settings(request, slug, member_id):
@@ -128,7 +129,6 @@ def member_settings(request, slug, member_id):
 
     if request.method == 'POST':
         if request.POST.get('kick-user', ''):
-            print('kicking user!')
             form = KickUserForm(slug, member_id)
             if form.is_valid():
                 form.save()
@@ -142,7 +142,19 @@ def member_settings(request, slug, member_id):
                 messages.error(request, error)
 
         elif request.POST.get('save-settings', ''):
-            print('saving general settings')
+            form = SaveGroupMemberSettingsForm(
+                slug,
+                member_id,
+                request.POST.get('has_paid', 'not-paid'),
+                request.POST.get('comment', '')
+            )
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Settings saved.')
+                return redirect('group_member_settings', slug=slug, member_id=member_id)
+
+            for error in form.errors:
+                messages.error(request, error)
 
     try:
         member = Membership.objects.get(pk=member_id)
@@ -169,7 +181,8 @@ def requests(request, slug):
         result = request.POST.get("result", "")
         if result == "Yes":
             joinRequest = Request.objects.get(pk=requestID)
-            Membership.objects.create(person=joinRequest.person, group=joinRequest.group)
+            Membership.objects.create(
+                person=joinRequest.person, group=joinRequest.group)
             joinRequest.delete()
         elif result == "No":
             joinRequest = Request.objects.get(pk=requestID)
@@ -203,7 +216,7 @@ def invite_member(request, slug):
         form = NewInvitationForm(request.POST, slug=slug, user=request.user)
         if form.is_valid():
             invitation = form.save()
-            messages.success(request, invitation.person.email+' invited')
+            messages.success(request, invitation.person.email + ' invited')
             return redirect('group_invitations', slug=slug)
     else:
         form = NewInvitationForm(slug=slug)
