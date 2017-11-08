@@ -114,13 +114,18 @@ def requests(request, slug):
     })
 
 @login_required
-def downloads(request, slug):
+def download_members(request, slug): # TODO: add permissions
     groups = SportsGroup.objects.filter(slug=slug)
     if len(groups) != 1:
         raise Http404("Group does not exist")
     group = groups[0]
 
-    
+    return render(request, 'groups/download_members.html', {
+        **get_base_members_info(request, slug),
+        'active': 'members',
+    })
+
+
 
 @login_required
 def invite_member(request, slug):

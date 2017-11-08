@@ -1,0 +1,32 @@
+{% extends 'groups/group_members_base.html' %}
+
+{% block table_content %}
+    <div class="download-members">
+      <h2>Download .csv members list</h2>
+      <p>Download all group members:</p>
+      <div class="download-options-container">
+        <form method="get" action="{{ request.path }}/get_all">
+          <button type="submit" class="btn btn-primary">Download</button>
+        </form>
+      </div>
+
+      <p>Download a list of paper members in a year:</p>
+      <div class="download-options-container">
+
+        <form method="get" action="{{ request.path }}/get_2017">
+          <button type="submit" class="btn btn-primary">2017</button>
+        </form>
+        <form method="get" action="{{ request.path }}/get_2018">
+          <button type="submit" class="btn btn-primary">2018</button>
+        </form>
+        <form method="get" action="{{ request.path }}/get_2019">
+          <button type="submit" class="btn btn-primary">2019</button>
+        </form>
+        <form method="get" action="{{ request.path }}/get_2020">
+          <button type="submit" class="btn btn-primary">2020</button>
+        </form>
+
+      </div>
+    </div>
+
+{% endblock %}
