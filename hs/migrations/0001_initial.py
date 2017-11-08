@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='HSMembership',
+            name='MainBoardMembership',
             fields=[
                 ('id', models.AutoField(auto_created=True,
                                         primary_key=True, serialize=False, verbose_name='ID')),
@@ -39,12 +39,12 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.AddField(
-            model_name='hsmembership',
+            model_name='mainboardmembership',
             name='board',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='hs.MainBoard'),
         ),
         migrations.AddField(
-            model_name='hsmembership',
+            model_name='mainboardmembership',
             name='person',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
                                     to=settings.AUTH_USER_MODEL),

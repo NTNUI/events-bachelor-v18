@@ -423,7 +423,7 @@
         }
     },
     {
-        "model": "hs.hsmembership",
+        "model": "hs.mainboardmembership",
         "pk": 1,
         "fields": {
             "person": 1,
