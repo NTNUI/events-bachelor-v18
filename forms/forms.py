@@ -25,8 +25,8 @@ class BoardChangeForm(forms.Form):
 
     def get_group(self):
         """ Returns the sportsgroup object if it exists, else raise validation error """
-
-        if isinstance(self.group, 'groups.models.SportsGroup'):
+        
+        if isinstance(self.group, SportsGroup):
             return
         try:
             self.group = SportsGroup.objects.get(slug=self.slug)
