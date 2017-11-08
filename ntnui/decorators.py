@@ -14,6 +14,7 @@ def is_member(view_func):
         return view_func(request, *args, **kwargs)
     return _wrapped_view_func
 
+
 def is_board(view_func):
     def _wrapped_view_func(request, *args, **kwargs):
         try:
@@ -24,6 +25,7 @@ def is_board(view_func):
 
         return view_func(request, *args, **kwargs)
     return _wrapped_view_func
+
 
 def is_main_board(view_func):
     def _wrapped_view_func(request, *args, **kwargs):

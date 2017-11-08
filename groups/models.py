@@ -92,6 +92,7 @@ class Membership(models.Model):
     date_joined = models.DateField(default=datetime.date.today)
     paid = models.BooleanField(default=False)
     role = models.CharField(max_length=50, default="member")
+    comment = models.CharField(max_length=140, blank=True)
 
     # Update the membership fields based on the person's role in the group
     def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
