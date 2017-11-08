@@ -17,8 +17,8 @@
         <a href={% url 'group_index' slug=group.slug %}>
           <h2>{{ group.name }}</h2>
         </a>
-        <p>{{ group.description }}</p>
-        <button class="group-card-read-more">Read more</button>
+          <p class="group-card-description">{{ group.description }}</p>
+          <div class="group-card-read-more">Read more</div>
       </div>
       {% if group.public %}
         <div class="group-card-open">Open</div>

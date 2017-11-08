@@ -101,8 +101,8 @@ a:hover {
     align-items: center;
 }
 
-.group-card-read-more {
-    z-index: 1;
+.group-card-read-more-expanded {
+    visibility: hidden;
 }
 
 .group-card:hover {
@@ -126,12 +126,32 @@ a:hover {
     width:100%;
 }
 
-.group-card-info p {
+.group-card-info-expanded {
+    color: black;
+    padding-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width:100%;
+}
+
+.group-card-description {
     margin: 0;
     width: 95%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.group-card-description-expanded {
+    margin: 0;
+    width: 80%;
+    word-wrap: break-word;
+}
+
+.group-card-read-more-hidden {
+    visibility: hidden;
 }
 
 .group-card-open {
