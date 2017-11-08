@@ -18,8 +18,8 @@ class AllMembersLoggedInTest(TestCase):
     fixtures = ['users.json', 'mainboard.json', 'hs-memberships.json']
 
     def setUp(self):
-        self.login_response = self.client.login(email='jameshalpert@gmail.com',
-                                                password='locoloco')
+        self.login_response = self.client.login(email='super@admin.com',
+                                                password='supersuper')
         url = reverse('all_members')
         self.response = self.client.get(url)
 

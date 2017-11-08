@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from hs.forms import SettingsForm
 from django.contrib import messages
 from groups.models import Membership
-
+from ntnui.decorators import is_main_board
 
 def get_base_hs_info():
     board = get_object_or_404(MainBoard, slug='hs')
@@ -15,6 +15,7 @@ def get_base_hs_info():
 
 
 @login_required
+@is_main_board
 def hs_space(request):
     """Return the render for the main board view, hs"""
     base_info = get_base_hs_info()
@@ -25,6 +26,7 @@ def hs_space(request):
 
 
 @login_required
+@is_main_board
 def list_all_members(request):
     """Return the render for /hs/allmembers"""
     base_info = get_base_hs_info()
@@ -47,6 +49,7 @@ def list_all_members(request):
     })
 
 @login_required
+@is_main_board
 def hs_settings(request):
     slug = 'hs'
     base_info = get_base_hs_info()

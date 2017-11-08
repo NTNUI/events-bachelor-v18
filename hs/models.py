@@ -18,8 +18,12 @@ class MainBoard(models.Model):
     def __str__(self):
         return self.name
 
+    def __contains__(self, other):
+        if MainBoardMembership.objects.filter(person=other):
+            return True
+        return False
 
-class HSMembership(models.Model):
+class MainBoardMembership(models.Model):
     person = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     board = models.ForeignKey(MainBoard)

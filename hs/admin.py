@@ -1,14 +1,14 @@
 from django.contrib import admin
 
-from .models import MainBoard, HSMembership
+from .models import MainBoard, MainBoardMembership
 
 
-class HSMembershipInline(admin.TabularInline):
-    model = HSMembership
+class MainBoardMembershipInline(admin.TabularInline):
+    model = MainBoardMembership
 
 
-class HSAdmin(admin.ModelAdmin):
-    inlines = [HSMembershipInline]
+class MainBoardAdmin(admin.ModelAdmin):
+    inlines = [MainBoardMembershipInline]
 
 
-admin.site.register(MainBoard, HSAdmin)
+admin.site.register(MainBoard, MainBoardAdmin)
