@@ -78,6 +78,7 @@ class NewInvitationForm(forms.Form):
 
 class SettingsForm(forms.Form):
     public = forms.BooleanField(required=False)
+    description = forms.CharField(required=False, widget=forms.Textarea)
     thumbnail = forms.ImageField(required=False)
     cover_photo = forms.ImageField(required=False)
 
@@ -120,6 +121,13 @@ class SettingsForm(forms.Form):
             group.thumbnail = thumbnail
         if cover_photo:
             group.cover_photo = cover_photo
+        group.save()
+
+    def set_description(self):
+        group = self.get_group()
+        description = self.cleaned_data.get('description')
+        if description:
+            group.description = description
         group.save()
 
 

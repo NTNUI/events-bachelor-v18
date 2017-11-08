@@ -49,3 +49,6 @@ class VolleyballGroupTest(SettingsLoggedInTest):
     def test_image_input_exists(self):
         self.assertContains(self.response, '<input type="file" name="thumbnail', 1)
         self.assertContains(self.response, '<input type="file" name="cover_photo', 1)
+
+    def test_description_exists(self):
+        self.assertContains(self.response, '<textarea name="description', 1)

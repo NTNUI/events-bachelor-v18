@@ -14,6 +14,13 @@
                    {% if group.public %}checked{% endif %}/>
         </label>
 
+        <div class="group-settings-header">Group description</div>
+        <label class="group-settings group-settings-description">
+          Description
+          <textarea name="description" class="group-settings-input"
+                    placeholder="Change group description here..." maxlength="200">{{ group.description }}</textarea>
+        </label>
+
         <div class="group-settings-header">Group images</div>
         <label class="group-settings">Thumbnail (100x100)
           <input type="file" name="thumbnail" class="group-settings-input" accept="image/*"/>
