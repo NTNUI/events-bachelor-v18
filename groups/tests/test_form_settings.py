@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 
 
 class SettingsFormTest(TestCase):
-    fixtures = ['groups.json']
+    fixtures = ['complete.json']
 
     def test_form_has_right_fields(self):
         form = SettingsForm(slug='volleyball')

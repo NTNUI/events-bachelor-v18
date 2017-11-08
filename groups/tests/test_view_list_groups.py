@@ -37,7 +37,7 @@ class NoListTest(ListGroupsLoggedInTest):
 
 
 class MyGroupTest(ListGroupsLoggedInTest):
-    fixtures = ['users.json', 'groups.json', 'memberships.json']
+    fixtures = ['complete.json']
 
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 200)
