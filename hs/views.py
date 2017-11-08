@@ -52,7 +52,6 @@ def hs_settings(request):
     base_info = get_base_hs_info()
     if request.method == 'POST':
         form = SettingsForm(request.POST, request.FILES, slug=slug)
-        print("IS THIS VALID?!", form.is_valid())
         if form.is_valid():
             form.set_images()
             messages.success(request, 'Settings saved')

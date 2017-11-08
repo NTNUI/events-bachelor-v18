@@ -326,6 +326,11 @@ REQUEST LIST
     cursor: pointer;
 }
 
+.group-settings-description {
+    height: 130px;
+    padding: 0.5rem 2rem;
+}
+
 .group-settings:active {
     opacity: 0.6;
 }
@@ -355,6 +360,9 @@ REQUEST LIST
 .group-settings-input {
     width: 54.5%;
     margin-right: 2rem;
+    word-wrap: break-word;
+    resize: none;
+    height: 100%;
 }
 
 .group-settings-save-btn {
@@ -368,6 +376,7 @@ REQUEST LIST
 }
 
 .group-table-description {
+    word-wrap: break-word;
     padding: 32px;
 }
 

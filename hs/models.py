@@ -6,7 +6,7 @@ import datetime
 
 def get_cover_upload_to(instance, filename):
     return os.path.join(
-        "cover_photo/%s" % instance.slug, filename)
+        "cover_photo/{}".format(instance.slug), filename)
 
 
 class MainBoard(models.Model):

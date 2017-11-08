@@ -1,0 +1,82 @@
+[
+    {
+        "customer_number": "1000290",
+        "gym_id": "3",
+        "first_name": "Todd",
+        "last_name": "Packer",
+        "birth_date": "1970-06-03",
+        "mobile": "11223344",
+        "email": "todd.packer@online.com",
+        "gender": "MALE",
+        "active": true,
+        "card_number": "318529500",
+        "registered_date": "2016-01-21",
+        "last_visit_date": "2017-10-10",
+        "contract": {
+            "type": "10",
+            "contract_number": "880066",
+            "start_date": "2017-08-23",
+            "expiry_date": "2018-01-10"
+        }
+    },
+    {
+        "customer_number": "1000585",
+        "gym_id": "3",
+        "first_name": "James",
+        "last_name": "Halpert",
+        "birth_date": "1980-03-09",
+        "mobile": "33445566",
+        "email": "jameshalpert@gmail.com",
+        "gender": "MALE",
+        "active": true,
+        "card_number": "39203492308",
+        "registered_date": "2016-11-02",
+        "last_visit_date": "2017-10-08",
+        "contract": {
+            "type": "231",
+            "contract_number": "643674",
+            "start_date": "2017-08-12",
+            "expiry_date": "2018-01-10"
+        }
+    },
+    {
+        "customer_number": "1000645",
+        "gym_id": "3",
+        "first_name": "Angela",
+        "last_name": "Martin",
+        "birth_date": "1985-04-24",
+        "mobile": "21093801",
+        "email": "frankela@steinberg.org",
+        "gender": "FEMALE",
+        "active": true,
+        "card_number": "2991579707",
+        "registered_date": "2016-11-15",
+        "last_visit_date": "2017-10-12",
+        "contract": {
+            "type": "231",
+            "contract_number": "652700",
+            "start_date": "2017-09-06",
+            "expiry_date": "2018-01-10"
+        }
+    },
+    {
+        "customer_number": "1016801",
+        "gym_id": "3",
+        "first_name": "Michael",
+        "last_name": "Scott",
+        "birth_date": "1965-06-08",
+        "mobile": "97597003",
+        "email": "",
+        "gender": "MALE",
+        "active": true,
+        "card_number": "2380987600",
+        "registered_date": "2017-01-05",
+        "last_visit_date": "2017-09-28",
+        "contract": {
+            "type": "231",
+            "contract_number": "646500",
+            "start_date": "2017-08-19",
+            "expiry_date": "2018-01-10"
+        }
+    }
+]
