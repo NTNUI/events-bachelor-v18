@@ -137,6 +137,9 @@ def member_settings(request, slug, member_id):
                     form.group,
                 ))
                 return redirect('group_members', slug=slug)
+            # form not valid, print errors
+            for error in form.errors:
+                messages.error(request, error)
 
         elif request.POST.get('save-settings', ''):
             print('saving general settings')
