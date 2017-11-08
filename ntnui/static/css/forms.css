@@ -2,6 +2,8 @@
  * FORMS TABLE
  */
 
+ {% load static %}
+
  .forms-list-header {
    width: 100%;
    border-bottom: 1px solid #979797;
@@ -23,6 +25,100 @@
    box-sizing: border-box;
    border-bottom: 1px solid #f0f0f0;
  }
+
+ .add-new-member:hover {
+   background-color: #f0f0f0;
+ }
+
+ .add-new-button {
+   background-color: #ffffff;
+   border-radius: 4px;
+   text-align: center;
+   color: #d0d0d0;
+   width: 32px;
+   border: 1px solid #d0d0d0;
+   margin-right: 16px;
+ }
+
+ /*
+  * FILL FORM STYLE
+  */
+
+.field-error > input {
+  background-color: red;
+}
+
+.form-fill-save-btn {
+  width: 25%;
+  text-align: center;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.form-fill-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 32px;
+}
+
+.form-fill-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2em;
+}
+
+.form-fill-title {
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.group-name-class {
+  font-size: 1.2em;
+  color: #666;
+}
+
+.form-fill-row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding-bottom: 0.5em;
+}
+
+.form-fill-row-title {
+  width: 100%;
+  border-top: 1px solid #CFE3DC;
+  padding-top: 0.25em;
+  padding-bottom: 0.5em;
+  text-align: center;
+  font-size: 1.2em;
+  color: #666;
+}
+
+.form-fill-row-label {
+  padding-left: 10px;
+  width: 25%;
+}
+
+.form-fill-row-input {
+  width: 75%;
+}
+
+.form-fill-row-input input {
+  width: 100%;
+  padding-right: 10px;
+}
+
+:disabled {
+  background-color: #EBEBE4;
+}
 
 .row-content {
   height: 100%;
@@ -53,4 +149,15 @@
 
 .form-description {
   height: 60px;
+}
+
+/*
+ *
+*/
+
+.card-img-left {
+  color: #fff;
+  height: 20rem;
+  background: url(images/img1.jpg) center no-repeat;
+  background-size: cover;
 }

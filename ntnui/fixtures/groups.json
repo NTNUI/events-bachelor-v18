@@ -7,7 +7,8 @@
       "slug": "volleyball",
       "description":
         "NTNUI Volleyball is one of the largest groups within NTNUI and consists of over 200 members. The club is run for and by students and all work within the club is done on voluntary basis.",
-      "public": false
+      "public": false,
+      "active_board": 1
     }
   },
   {
@@ -18,7 +19,8 @@
       "slug": "friidrett",
       "description":
         "Vi kaller oss friidrett, men egentlig s\u00e5 driver vi bare med l\u00f8ping ;PPppP",
-      "public": true
+      "public": true,
+      "active_board": 2
     }
   },
   {
@@ -28,7 +30,8 @@
       "name": "NTNUI Koiene",
       "slug": "koiene",
       "description": "Try our cabins, they are the best!",
-      "public": true
+      "public": true,
+      "active_board": 3
     }
   },
   {
@@ -38,7 +41,8 @@
       "name": "NTNUI Calisthenics",
       "slug": "calisthenics",
       "description": "MUSCLE-UPS!!",
-      "public": false
+      "public": false,
+      "active_board": 4
     }
   }
 ]

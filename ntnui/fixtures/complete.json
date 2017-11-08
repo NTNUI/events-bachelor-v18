@@ -1,0 +1,797 @@
+[
+    {
+        "model": "groups.sportsgroup",
+        "pk": 1,
+        "fields": {
+            "name": "NTNUI Volleyball",
+            "slug": "volleyball",
+            "description":
+                "NTNUI Volleyball is one of the largest groups within NTNUI and consists of over 200 members. The club is run for and by students and all work within the club is done on voluntary basis.",
+            "public": false,
+            "thumbnail": "thumbnail/ntnui2.svg",
+            "cover_photo": "cover_photo/ntnui-volleyball.png",
+            "active_board": 1
+        }
+    },
+    {
+        "model": "groups.sportsgroup",
+        "pk": 2,
+        "fields": {
+            "name": "NTNUI Friidrett",
+            "slug": "friidrett",
+            "description":
+                "Vi kaller oss friidrett, men egentlig s\u00e5 driver vi bare med l\u00f8ping ;PPppP",
+            "public": true,
+            "thumbnail": "thumbnail/ntnui2.svg",
+            "cover_photo": "cover_photo/ntnui-volleyball.png",
+            "active_board": 2
+        }
+    },
+    {
+        "model": "groups.sportsgroup",
+        "pk": 3,
+        "fields": {
+            "name": "NTNUI Koiene",
+            "slug": "koiene",
+            "description": "Try our cabins, they are the best!",
+            "public": true,
+            "thumbnail": "thumbnail/ntnui2.svg",
+            "cover_photo": "cover_photo/ntnui-volleyball.png",
+            "active_board": 3
+        }
+    },
+    {
+        "model": "groups.sportsgroup",
+        "pk": 4,
+        "fields": {
+            "name": "NTNUI Calisthenics",
+            "slug": "calisthenics",
+            "description": "MUSCLE-UPS!!",
+            "public": false,
+            "thumbnail": "thumbnail/ntnui2.svg",
+            "cover_photo": "cover_photo/ntnui-volleyball.png",
+            "active_board": 4
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 1,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$qiPRGynUtAH1$7LNTkGEEH4m2jODEihPUsZJm6Q520N1fueY5c8PvD7o=",
+            "last_login": "2017-10-18T08:36:41.588Z",
+            "is_superuser": true,
+            "customer_number": "1",
+            "email": "super@admin.com",
+            "first_name": "Super",
+            "last_name": "Admin",
+            "date_joined": "2017-09-25T10:42:55.496Z",
+            "is_active": true,
+            "phone": "",
+            "is_staff": true,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 9,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-09-30T14:19:57Z",
+            "is_superuser": false,
+            "customer_number": "9",
+            "email": "todd.packer@online.com",
+            "first_name": "Todd",
+            "last_name": "Packer",
+            "date_joined": "2017-09-30T14:20:19.326Z",
+            "is_active": true,
+            "phone": "93827492",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 10,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-10-18T08:24:31.080Z",
+            "is_superuser": false,
+            "customer_number": "10",
+            "email": "jameshalpert@gmail.com",
+            "first_name": "James",
+            "last_name": "Halpert",
+            "date_joined": "2017-09-30T14:20:54.221Z",
+            "is_active": true,
+            "phone": "23092340",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 11,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-09-30T14:21:26Z",
+            "is_superuser": false,
+            "customer_number": "11",
+            "email": "frankela@steinberg.org",
+            "first_name": "Angela",
+            "last_name": "Martin",
+            "date_joined": "2017-09-30T14:21:43.074Z",
+            "is_active": true,
+            "phone": "21093801",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 12,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-09-30T14:22:02Z",
+            "is_superuser": false,
+            "customer_number": "12",
+            "email": "michael.scott@dundermifflin.com",
+            "first_name": "Michael",
+            "last_name": "Scott",
+            "date_joined": "2017-09-30T14:22:18.151Z",
+            "is_active": true,
+            "phone": "99883212",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 13,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-09-30T15:06:28Z",
+            "is_superuser": false,
+            "customer_number": "13",
+            "email": "mynameiscreed@bratton.com",
+            "first_name": "Creed",
+            "last_name": "Bratton",
+            "date_joined": "2017-09-30T15:06:42.756Z",
+            "is_active": true,
+            "phone": "49289201",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 14,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-09-30T15:06:52Z",
+            "is_superuser": false,
+            "customer_number": "14",
+            "email": "phyllis@vancerefrigiration.com",
+            "first_name": "Phyllis",
+            "last_name": "Vance",
+            "date_joined": "2017-09-30T15:07:06.940Z",
+            "is_active": true,
+            "phone": "99883212",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 15,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-09-30T15:07:15Z",
+            "is_superuser": false,
+            "customer_number": "15",
+            "email": "stanley.hudson@dundermifflin.com",
+            "first_name": "Stanley",
+            "last_name": "Hudson",
+            "date_joined": "2017-09-30T15:07:44.746Z",
+            "is_active": true,
+            "phone": "49209281",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 16,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-09-30T15:07:55Z",
+            "is_superuser": false,
+            "customer_number": "16",
+            "email": "dwight.k.schrute@schrutefarms.net",
+            "first_name": "Dwight K.",
+            "last_name": "Schrute",
+            "date_joined": "2017-09-30T15:08:22.333Z",
+            "is_active": true,
+            "phone": "49209281",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 17,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-09-30T15:08:28Z",
+            "is_superuser": false,
+            "customer_number": "17",
+            "email": "toby.flenderson@dundermifflin.com",
+            "first_name": "Toby",
+            "last_name": "Flenderson",
+            "date_joined": "2017-09-30T15:08:43.064Z",
+            "is_active": true,
+            "phone": "93282311",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 18,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-10-18T08:23:00.012Z",
+            "is_superuser": false,
+            "customer_number": "18",
+            "email": "beeslyarts@gmail.com",
+            "first_name": "Pam",
+            "last_name": "Beesly",
+            "date_joined": "2017-09-30T15:09:07.192Z",
+            "is_active": true,
+            "phone": "44920082",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 19,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-09-30T15:09:12Z",
+            "is_superuser": false,
+            "customer_number": "19",
+            "email": "ryan.the.fireguy@hotmail.com",
+            "first_name": "Ryan",
+            "last_name": "Howard",
+            "date_joined": "2017-09-30T15:09:25.753Z",
+            "is_active": true,
+            "phone": "94827328",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 20,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-09-30T15:09:33Z",
+            "is_superuser": false,
+            "customer_number": "20",
+            "email": "andrew.bernard@cornell.edu",
+            "first_name": "Andrew",
+            "last_name": "Bernard",
+            "date_joined": "2017-09-30T15:09:52.416Z",
+            "is_active": true,
+            "phone": "49209281",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 21,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-09-30T15:09:57Z",
+            "is_superuser": false,
+            "customer_number": "21",
+            "email": "givemeonemillion@robertcalifornia.com",
+            "first_name": "Robert",
+            "last_name": "California",
+            "date_joined": "2017-09-30T15:10:23.920Z",
+            "is_active": true,
+            "phone": "99382392",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 22,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-09-30T15:10:28Z",
+            "is_superuser": false,
+            "customer_number": "22",
+            "email": "jan.levinson@dundermifflin.com",
+            "first_name": "Jan",
+            "last_name": "Levinson",
+            "date_joined": "2017-09-30T15:10:44.709Z",
+            "is_active": true,
+            "phone": "11839238",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 23,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-10-01T07:01:45.923Z",
+            "is_superuser": false,
+            "customer_number": "23",
+            "email": "thebestroy@aol.com",
+            "first_name": "Roy",
+            "last_name": "Anderson",
+            "date_joined": "2017-09-30T15:11:05.877Z",
+            "is_active": true,
+            "phone": "88292038",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 24,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-10-02T12:01:55Z",
+            "is_superuser": false,
+            "customer_number": "24",
+            "email": "meredith.palmer@dundermifflin.com",
+            "first_name": "Meredith",
+            "last_name": "Palmer",
+            "date_joined": "2017-10-02T12:02:44.858Z",
+            "is_active": true,
+            "phone": "93882312",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "accounts.user",
+        "pk": 25,
+        "fields": {
+            "password":
+                "pbkdf2_sha256$36000$zEZEF3a3ROm6$1dlt8BZu0Sy2ZL511PMImsATrh2Ut8tuyICx/e8pTIA=",
+            "last_login": "2017-10-18T08:36:55Z",
+            "is_superuser": false,
+            "customer_number": "25",
+            "email": "ola.nordmann@gmail.com",
+            "first_name": "Ola",
+            "last_name": "Nordmann",
+            "date_joined": "2017-10-18T08:37:08.471Z",
+            "is_active": true,
+            "phone": "11223344",
+            "is_staff": false,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "hs.mainboard",
+        "pk": 1,
+        "fields": {
+            "name": "Main Board",
+            "slug": "hs",
+            "cover_photo": "cover_photo/ntnui-volleyball.png"
+        }
+    },
+    {
+        "model": "hs.hsmembership",
+        "pk": 1,
+        "fields": {
+            "person": 1,
+            "board": 1,
+            "date_joined": "2017-09-30",
+            "role": "Leader"
+        }
+    },
+    {
+        "model": "forms.formdoc",
+        "pk": 1,
+        "fields": {
+            "name": "Reimbursement",
+            "description": "Application for a reimbursement of NTNUI expenses."
+        }
+    },
+    {
+        "model": "forms.formdoc",
+        "pk": 2,
+        "fields": {
+            "name": "Board change form",
+            "description":
+                "Change the board members of your sports group with this form."
+        }
+    },
+    {
+        "model": "forms.formdoc",
+        "pk": 3,
+        "fields": {
+            "name": "Form name",
+            "description":
+                "Form description here lalal alalalal alala ajajajaja ajajaja hehehe ehehhe. adsfa f sd fasdf asdf asdf asdf asdf asdf asdf"
+        }
+    },
+    {
+        "model": "groups.invitation",
+        "pk": 1,
+        "fields": { "person": 19, "group": 1, "date_issued": "2017-10-02" }
+    },
+    {
+        "model": "groups.invitation",
+        "pk": 2,
+        "fields": { "person": 19, "group": 2, "date_issued": "2017-10-02" }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 1,
+        "fields": {
+            "person": 9,
+            "group": 1,
+            "date_joined": "2017-09-30",
+            "paid": true,
+            "role": "president"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 2,
+        "fields": {
+            "person": 10,
+            "group": 1,
+            "date_joined": "2017-09-30",
+            "paid": false,
+            "role": "vice_president"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 3,
+        "fields": {
+            "person": 11,
+            "group": 1,
+            "date_joined": "2017-09-30",
+            "paid": true,
+            "role": "cashier"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 4,
+        "fields": {
+            "person": 12,
+            "group": 1,
+            "date_joined": "2017-09-30",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 5,
+        "fields": {
+            "person": 13,
+            "group": 1,
+            "date_joined": "2017-10-01",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 6,
+        "fields": {
+            "person": 14,
+            "group": 1,
+            "date_joined": "2017-10-01",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 7,
+        "fields": {
+            "person": 15,
+            "group": 1,
+            "date_joined": "2017-10-01",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 8,
+        "fields": {
+            "person": 16,
+            "group": 1,
+            "date_joined": "2017-10-01",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 9,
+        "fields": {
+            "person": 17,
+            "group": 1,
+            "date_joined": "2017-10-01",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 10,
+        "fields": {
+            "person": 18,
+            "group": 1,
+            "date_joined": "2017-10-01",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 11,
+        "fields": {
+            "person": 19,
+            "group": 1,
+            "date_joined": "2017-10-01",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 12,
+        "fields": {
+            "person": 20,
+            "group": 1,
+            "date_joined": "2017-10-01",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 13,
+        "fields": {
+            "person": 21,
+            "group": 1,
+            "date_joined": "2017-10-01",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 14,
+        "fields": {
+            "person": 22,
+            "group": 1,
+            "date_joined": "2017-10-01",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 15,
+        "fields": {
+            "person": 23,
+            "group": 1,
+            "date_joined": "2017-10-01",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 16,
+        "fields": {
+            "person": 1,
+            "group": 1,
+            "date_joined": "2017-10-05",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 17,
+        "fields": {
+            "person": 1,
+            "group": 2,
+            "date_joined": "2017-10-05",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 18,
+        "fields": {
+            "person": 15,
+            "group": 2,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 19,
+        "fields": {
+            "person": 14,
+            "group": 2,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 20,
+        "fields": {
+            "person": 18,
+            "group": 3,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "role": "president"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 21,
+        "fields": {
+            "person": 19,
+            "group": 3,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "role": "vice_president"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 22,
+        "fields": {
+            "person": 20,
+            "group": 3,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "role": "cashier"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 23,
+        "fields": {
+            "person": 24,
+            "group": 4,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 24,
+        "fields": {
+            "person": 23,
+            "group": 4,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 25,
+        "fields": {
+            "person": 18,
+            "group": 4,
+            "date_joined": "2017-10-12",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.membership",
+        "pk": 26,
+        "fields": {
+            "person": 9,
+            "group": 2,
+            "date_joined": "2017-09-30",
+            "paid": false,
+            "role": "member"
+        }
+    },
+    {
+        "model": "groups.board",
+        "pk": 1,
+        "fields": {
+            "president": 9,
+            "vice_president": 10,
+            "cashier": 11,
+            "sports_group": 1
+        }
+    },
+    {
+        "model": "groups.board",
+        "pk": 2,
+        "fields": {
+            "president": 14,
+            "vice_president": 15,
+            "cashier": 1,
+            "sports_group": 2
+        }
+    },
+    {
+        "model": "groups.board",
+        "pk": 3,
+        "fields": {
+            "president": 18,
+            "vice_president": 19,
+            "cashier": 20,
+            "sports_group": 3
+        }
+    },
+    {
+        "model": "groups.board",
+        "pk": 4,
+        "fields": {
+            "president": 24,
+            "vice_president": 23,
+            "cashier": 18,
+            "sports_group": 4
+        }
+    }
+]

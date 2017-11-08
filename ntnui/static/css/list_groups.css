@@ -36,7 +36,7 @@ a:hover {
 }
 
 .search-container {
-    display: flex;  
+    display: flex;
     justify-content: space-between;
 }
 
@@ -91,8 +91,15 @@ a:hover {
 
 .group-card-image {
     min-width: 100px;
-    width: 100px;
-    height: 100px;
+    max-height: 6rem;
+    width: 6rem;
+    height: 6rem;
+}
+
+.group-card-image-small {
+  max-height: 5rem;
+  width: 5rem;
+  height: 5rem;
 }
 
 .group-card-info {

@@ -6,8 +6,7 @@ from ..models import SportsGroup
 
 
 class LeaveGroupFormTest(TestCase):
-    fixtures = ['users.json', 'groups.json',
-                'memberships.json', 'invitations.json']
+    fixtures = ['complete.json']
 
     def setUp(self):
         self.USER_IS_MEMBER = User.objects.get(email='todd.packer@online.com')
@@ -33,7 +32,7 @@ class LeaveGroupFormTest(TestCase):
 
 
 class LeaveGroupViewTest(TestCase):
-    fixtures = ['users.json', 'groups.json', 'memberships.json']
+    fixtures = ['complete.json']
 
     def setUp(self):
         self.login_response = self.client.login(email='todd.packer@online.com',
@@ -46,7 +45,7 @@ class LeaveGroupViewTest(TestCase):
 
 
 class LeaveGroupAsPresidentViewTest(TestCase):
-    fixtures = ['users.json', 'groups.json', 'memberships.json', 'boards.json']
+    fixtures = ['complete.json']
 
     def setUp(self):
         self.login_response = self.client.login(email='todd.packer@online.com',
