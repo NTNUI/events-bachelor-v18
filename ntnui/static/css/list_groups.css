@@ -85,6 +85,26 @@ a:hover {
     align-items: center;
 }
 
+.group-card-all-groups-expanded {
+    padding: 16px 32px;
+    box-sizing: border-box;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
+    display: flex;
+    flex-direction: row;
+    border: solid 1px #dfdfdf;
+    width: 100%;
+    min-height: 10rem;
+    max-height: 10rem;
+    margin-top: 1rem;
+    position: relative;
+    align-items: center;
+}
+
+.group-card-read-more {
+    z-index: 1;
+}
+
 .group-card:hover {
     opacity: 0.8;
 }
