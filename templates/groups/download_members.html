@@ -13,17 +13,15 @@
       <p>Download a list of paper members in a year:</p>
       <div class="download-options-container">
 
-        <form method="get" action="{{ request.path }}/get_2017">
-          <button type="submit" class="btn btn-primary">2017</button>
-        </form>
-        <form method="get" action="{{ request.path }}/get_2018">
-          <button type="submit" class="btn btn-primary">2018</button>
-        </form>
-        <form method="get" action="{{ request.path }}/get_2019">
-          <button type="submit" class="btn btn-primary">2019</button>
-        </form>
-        <form method="get" action="{{ request.path }}/get_2020">
-          <button type="submit" class="btn btn-primary">2020</button>
+        <form method="POST" action="{{ request.path }}/get_year">
+          {% csrf_token %}
+          <select name="year">
+          {% for year in years %}
+            <option value="{{ year }}">{{ year }}</option>
+          {% endfor %}
+          </select>
+          <br><br>
+          <button type="submit" class="btn btn-primary">Download</button>
         </form>
 
       </div>

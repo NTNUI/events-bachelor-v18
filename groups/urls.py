@@ -18,16 +18,7 @@ urlpatterns = [
     url(r'^(?P<slug>[\w-]+)/members/download/get_all$',
         csv.download_members,
         name='download_all_group_members'),
-    url(r'^(?P<slug>[\w-]+)/members/download/get_2017$',
-        csv.download_yearly_group_members_2017,
-        name='download_yearly_group_members_2017'),
-    url(r'^(?P<slug>[\w-]+)/members/download/get_2018$',
-        csv.download_yearly_group_members_2018,
-        name='download_yearly_group_members_2018'),
-    url(r'^(?P<slug>[\w-]+)/members/download/get_2019$',
-        csv.download_yearly_group_members_2019,
-        name='download_yearly_group_members_2019'),
-    url(r'^(?P<slug>[\w-]+)/members/download/get_2020$',
-        csv.download_yearly_group_members_2020,
-        name='download_yearly_group_members_2020')
+    url(r'^(?P<slug>[\w-]+)/members/download/get_year$',
+        csv.download_yearly_group_members,
+        name='download_yearly_group_members')
 ]

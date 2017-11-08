@@ -52,28 +52,14 @@ def download_members(request, slug):
     response['Content-Disposition'] = 'attachment; filename=""' + slug + '"members""' + today + '".csv"'
     return response
 
-def download_yearly_group_members_2017(request, slug):
-    return download_yearly_group_members(request, slug, 2017)
-
-def download_yearly_group_members_2018(request, slug):
-    return download_yearly_group_members(request, slug, 2018)
-
-def download_yearly_group_members_2019(request, slug):
-    return download_yearly_group_members(request, slug, 2019)
-
-def download_yearly_group_members_2020(request, slug):
-    return download_yearly_group_members(request, slug, 2020)
-
 @login_required
-def download_yearly_group_members(request, slug, year):
-
-    if request:
-        pass
-
-    group = get_object_or_404(SportsGroup, slug=slug)
-
+def download_yearly_group_members(request, slug):
+    if request.method == "POST":
+        year = request.POST.get("year", "2000")
+    year = int(year)
     start_date = date(year, 8, 1)
     end_date = date(year+1, 1, 31)
+    group = get_object_or_404(SportsGroup, slug=slug)
 
     contracts = Contract.objects.filter(
         person__membership__group=group.pk,
