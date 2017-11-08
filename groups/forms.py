@@ -178,6 +178,18 @@ class JoinOpenGroupForm(object):
             return Membership.objects.create(person=self.user, group=self.get_group())
 
 
+class KickUserForm(object):
+    def __init__(self, slug, member_id):
+        self.group = SportsGroup.objects.get(slug=slug)
+        self.member = Membership.objects.get(pk=member_id)
+
+    def save(self):
+        pass
+
+    def is_valid(self):
+        return True
+
+
 class JoinPrivateGroupForm(object):
     def __init__(self, slug, user):
         self.slug = slug

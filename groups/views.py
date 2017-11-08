@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import SportsGroup, Membership, Invitation, Request
 from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm, \
-    LeaveGroupForm
+    LeaveGroupForm, KickUserForm
 from .helpers import get_group_role
 from ntnui.decorators import is_member, is_board
 
@@ -125,6 +125,22 @@ def member_info(request, slug, member_id):
 @is_board
 def member_settings(request, slug, member_id):
     base_info = get_base_members_info(request, slug)
+
+    if request.method == 'POST':
+        if request.POST.get('kick-user', ''):
+            print('kicking user!')
+            form = KickUserForm(slug, member_id)
+            if form.is_valid():
+                form.save()
+                messages.success(request, '{} is now kicked from {}.'.format(
+                    form.member.person,
+                    form.group,
+                ))
+                return redirect('group_members', slug=slug)
+
+        elif request.POST.get('save-settings', ''):
+            print('saving general settings')
+
     try:
         member = Membership.objects.get(pk=member_id)
     except Membership.DoesNotExist:
