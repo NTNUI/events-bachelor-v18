@@ -6,12 +6,12 @@ import os
 
 def get_thumbnail_upload_to(instance, filename):
     return os.path.join(
-        "thumbnail/%s" % instance.slug, filename)
+        "thumbnail/{}".format(instance.slug), filename)
 
 
 def get_cover_upload_to(instance, filename):
     return os.path.join(
-        "cover_photo/%s" % instance.slug, filename)
+        "cover_photo/{}".format(instance.slug), filename)
 
 
 class SportsGroup(models.Model):
