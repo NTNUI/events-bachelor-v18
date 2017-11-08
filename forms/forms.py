@@ -25,9 +25,12 @@ class BoardChangeForm(forms.Form):
 
     def get_group(self):
         """ Returns the sportsgroup object if it exists, else raise validation error """
-        
+
+        # If the group is already instantiated return
         if isinstance(self.group, SportsGroup):
             return
+
+        # If group is not instantiated try setting the group
         try:
             self.group = SportsGroup.objects.get(slug=self.slug)
         except SportsGroup.DoesNotExist:
