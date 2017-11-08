@@ -46,7 +46,7 @@ def list_all_members(request):
         'total_members': len(User.objects.all()),
     })
 
-
+@login_required
 def hs_settings(request):
     slug = 'hs'
     base_info = get_base_hs_info()
