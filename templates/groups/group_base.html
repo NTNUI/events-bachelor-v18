@@ -17,7 +17,7 @@
       <div class="group-name">{{ group.name }}</div>
     </div>
     <div class="top-menu">
-      <ul class="top-menu-list">
+      <ul>
         <li><a href="{% url 'group_index' slug=slug %}" class="{% if active == 'about' %}active-item{% endif %}">About</a></li>
         {% if show_forms %}
           <li><div class="vert-divider"></div></li>

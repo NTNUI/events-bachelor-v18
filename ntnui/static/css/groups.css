@@ -1,12 +1,11 @@
 .header {
-    width: 790px;
-    margin-top: 32px;
-    margin-bottom: 32px;
+    width: 60%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .header-jumbo {
-    width: 790px;
-    height: 260px;
+    height: 16rem;
     position: relative;
     color: white;
 }
@@ -37,12 +36,12 @@
     top: 0;
     max-width: 100%;
     min-width: 100%;
-    height: 260px;
+    height: 16rem;
 }
 
 .top-menu {
     background: white;
-    height: 52px;
+    height: 3rem;
     border: 1px solid #dfdfdf;
     box-sizing: border-box;
 }
@@ -57,7 +56,7 @@
     padding: 0;
 }
 
-.top-menu-list a {
+.top-menu a {
     height: 52px;
     width: 160px;
     display: block;
@@ -66,16 +65,16 @@
     text-align: center;
 }
 
+.top-menu a:hover {
+    color: #017402;
+    border-bottom: 4px solid #017402;
+    opacity: 0.8;
+}
+
 .vert-divider {
     width: 1px;
     height: 1.5rem;
     background-color: #979797;
-}
-
-.top-menu-list a:hover {
-    color: #017402;
-    border-bottom: 4px solid #017402;
-    opacity: 0.8;
 }
 
 .group-alert {
@@ -88,9 +87,6 @@
     border-bottom: 4px solid #017402;
 }
 
-.top-menu-list li:nth-child(2) {
-}
-
 .no-border {
     border-right: none;
 }
@@ -100,23 +96,22 @@
  */
 
 .content-table {
-    width: 790px;
-    min-height: 100px;
+    width: 60%  ;
+    min-height: 6rem;
     background-color: white;
     border: 1px solid #dfdfdf;
     display: flex;
     flex-direction: column;
-    margin-bottom: 32px;
+    margin-bottom: 2rem;
 }
 
 .list-header {
-    width: 100%;
     border-bottom: 1px solid #979797;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 0 1rem;
     display: flex;
-    height: 64px;
+    height: 4rem;
     box-sizing: border-box;
     font-weight: bold;
 }
@@ -130,7 +125,7 @@
 }
 
 #member-search {
-    width: 300px;
+    max-width: 40%;
 }
 
 .download-field {
@@ -155,7 +150,7 @@
     align-items: center;
     justify-content: flex-start;
     box-sizing: border-box;
-    padding: 0px 16px;
+    padding: 0 1rem;
     border-bottom: 1px solid #f0f0f0;
 }
 
@@ -213,9 +208,7 @@
 }
 
 .group-member-info:hover {
-    background-color: #017402;
-    opacity: 0.4;
-    color: white;
+    border-bottom: 4px solid #017402;
 }
 
 .group-member-paid {
@@ -234,15 +227,13 @@
     height: 100%;
     text-align: center;
     width: 48px;
-    padding-top: 2px;
     line-height: 48px;
     box-sizing: border-box;
 }
 
 .group-member-settings a:hover {
-    color: white;
-    background-color: #017402;
-    opacity: 0.6;
+    border-bottom: 4px solid #017402;
+    opacity: 0.7;
 }
 
 .add-new-member {
@@ -284,7 +275,7 @@
     border-radius: 4px;
     text-align: center;
     color: #017402;
-    width: 32px;
+    width: 2rem;
     border: 1px solid #017402;
     margin-right: 16px;
 }
@@ -294,7 +285,7 @@
     border-radius: 4px;
     text-align: center;
     color: #017402;
-    width: 32px;
+    width: 2rem;
     border: 1px solid #017402;
     margin-right: 16px;
     padding-left: 2px;
@@ -379,7 +370,7 @@ REQUEST LIST
     justify-content: flex-end;
     height: 60px;
     box-sizing: border-box;
-    padding: 0 32px;
+    padding: 0 2rem;
     border-bottom: 1px solid #f0f0f0;
 }
 
@@ -400,7 +391,7 @@ REQUEST LIST
 
 .group-settings-textarea {
     width: 54.5%;
-    margin-right: 2rem;
+
     word-wrap: break-word;
     resize: none;
     height: 100%;
@@ -461,19 +452,14 @@ REQUEST LIST
     padding-right: 1rem;
 }
 
-.group-settings-save-btn {
-    width: 25%;
-    text-align: center;
+.group-settings-button {
     cursor: pointer;
-}
-
-.group-settings-leave-button {
-    margin-right: 32px;
+    width: 22%;
 }
 
 .group-table-description {
     word-wrap: break-word;
-    padding: 32px;
+    padding: 2rem;
 }
 
 .form-control {
