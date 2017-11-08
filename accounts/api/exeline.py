@@ -2,7 +2,6 @@ import requests as req
 
 
 class Exeline(object):
-
     def __init__(self, username, password, requests=None):
         if requests is None:
             self.requests = req
@@ -28,8 +27,8 @@ class Exeline(object):
         urls = {
             'customer_in_gym': '/Member/{}/{}/{}/{}'.format(gym_id, customer_number,
                                                             self.username, self.password),
-            'members_for_gym_since_days': '/Members/{}/{}/{}/{}'.format(gym_id, days,
-                                                                    self.username, self.password),
+            'members_for_gym_since_days': '/Members/{}/{}/{}/{}'.format(gym_id, days, self.username,
+                                                                        self.password),
             'members_for_gym': '/Members/{}/{}/{}'.format(gym_id, self.username, self.password),
         }
         if func in urls:
