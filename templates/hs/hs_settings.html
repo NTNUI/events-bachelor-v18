@@ -1,0 +1,27 @@
+{% extends 'hs/hs_base.html' %}
+
+{% block hs_content %}
+  <div class="content-table">
+
+    <div class="list-header">
+      Group Settings
+    </div>
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      <div class="group-settings-header">Group images</div>
+        <label class="group-settings">Cover photo (790x260)
+          <input type="file" name="cover_photo" class="group-settings-input" accept="image/*"/>
+        </label>
+
+      <div class="group-settings-right">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-success settings-alert" role="alert">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+        <input type="submit" name="save-settings" class="btn group-settings-save-btn btn-success"
+               value="Change settings"/>
+      </div>
+    </form>
+  </div>
+{% endblock %}

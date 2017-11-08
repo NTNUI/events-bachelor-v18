@@ -41,7 +41,7 @@ build:
 testenv:
 	rm -f mydatabase
 	make migrate
-	docker-compose run web python manage.py loaddata users.json groups.json memberships.json boards.json invitations.json forms.json
+	docker-compose run web python manage.py loaddata users.json groups.json memberships.json boards.json invitations.json mainboard.json hs-memberships.json
 
 browser-tests:
 	docker-compose up -d chrome
