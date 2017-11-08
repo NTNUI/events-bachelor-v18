@@ -4,3 +4,4 @@ env
 mydatabase
 geckodriver.log
 .coverage
+.env
