@@ -96,7 +96,7 @@
  */
 
 .content-table {
-    width: 60%  ;
+    width: 60%;
     min-height: 6rem;
     background-color: white;
     border: 1px solid #dfdfdf;
@@ -391,10 +391,10 @@ REQUEST LIST
 
 .group-settings-textarea {
     width: 54.5%;
-
     word-wrap: break-word;
     resize: none;
     height: 100%;
+    margin-right: 2rem;
 }
 
 .member-settings-row {
