@@ -231,11 +231,11 @@ def download_members(request, slug):  # TODO: add permissions
         if (contract.contract_type == "10" and
             contract.expiry_date.year - 1 < first_contract_year) or \
             (contract.expiry_date.month == 1 and
-            contract.expiry_date.year - 1 < first_contract_year):
-                first_contract_year = contract.expiry_date.year - 1
+             contract.expiry_date.year - 1 < first_contract_year):
+            first_contract_year = contract.expiry_date.year - 1
         elif (contract.expiry_date.month == 8 and
-            contract.expiry_date.year < first_contract_year):
-                first_contract_year = contract.expiry_date.year
+              contract.expiry_date.year < first_contract_year):
+            first_contract_year = contract.expiry_date.year
 
     years = [i for i in range(current_year + 1, first_contract_year - 1, -1)]
     return render(request, 'groups/download_members.html', {
