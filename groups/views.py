@@ -167,6 +167,7 @@ def member_settings(request, slug, member_id):
 
 
 @login_required
+@is_board
 def invitations(request, slug):
     if request.method == 'POST':
         if request.POST.get('withdraw-invitation', ''):
