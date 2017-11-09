@@ -1,12 +1,11 @@
 .header {
-    width: 790px;
-    margin-top: 32px;
-    margin-bottom: 32px;
+    width: 60%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .header-jumbo {
-    width: 790px;
-    height: 260px;
+    height: 16rem;
     position: relative;
     color: white;
 }
@@ -17,7 +16,7 @@
     position: absolute;
     left: 0;
     bottom: 3.75rem;
-    padding: .25rem 1.5rem;
+    padding: 0.25rem 1.5rem;
     background-color: black;
 }
 
@@ -26,8 +25,8 @@
     font-size: 1.5rem;
     position: absolute;
     left: 0;
-    bottom: .5rem;
-    padding: .25rem 1.5rem;
+    bottom: 0.5rem;
+    padding: 0.25rem 1.5rem;
     background-color: black;
 }
 
@@ -37,12 +36,12 @@
     top: 0;
     max-width: 100%;
     min-width: 100%;
-    height: 260px;
+    height: 16rem;
 }
 
 .top-menu {
     background: white;
-    height: 52px;
+    height: 3rem;
     border: 1px solid #dfdfdf;
     box-sizing: border-box;
 }
@@ -57,8 +56,7 @@
     padding: 0;
 }
 
-
-.top-menu-list a {
+.top-menu a {
     height: 52px;
     width: 160px;
     display: block;
@@ -67,16 +65,16 @@
     text-align: center;
 }
 
+.top-menu a:hover {
+    color: #017402;
+    border-bottom: 4px solid #017402;
+    opacity: 0.8;
+}
+
 .vert-divider {
     width: 1px;
     height: 1.5rem;
     background-color: #979797;
-}
-
-.top-menu-list a:hover {
-    color: #017402;
-    border-bottom: 4px solid #017402;
-    opacity: 0.8;
 }
 
 .group-alert {
@@ -89,9 +87,6 @@
     border-bottom: 4px solid #017402;
 }
 
-.top-menu-list li:nth-child(2) {
-}
-
 .no-border {
     border-right: none;
 }
@@ -101,23 +96,22 @@
  */
 
 .content-table {
-    width: 790px;
-    min-height: 100px;
+    width: 60%;
+    min-height: 6rem;
     background-color: white;
     border: 1px solid #dfdfdf;
     display: flex;
     flex-direction: column;
-    margin-bottom: 32px;
+    margin-bottom: 2rem;
 }
 
 .list-header {
-    width: 100%;
     border-bottom: 1px solid #979797;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
+    padding: 0 1rem;
     display: flex;
-    height: 64px;
+    height: 4rem;
     box-sizing: border-box;
     font-weight: bold;
 }
@@ -131,7 +125,7 @@
 }
 
 #member-search {
-    width: 300px;
+    max-width: 40%;
 }
 
 .download-field {
@@ -156,7 +150,7 @@
     align-items: center;
     justify-content: flex-start;
     box-sizing: border-box;
-    padding: 1px 16px;
+    padding: 0 1rem;
     border-bottom: 1px solid #f0f0f0;
 }
 
@@ -178,7 +172,7 @@
 }
 
 .group-member-phone-header {
-    width: 150px;
+    width: 120px;
 }
 
 .group-member-email-header {
@@ -194,19 +188,52 @@
 }
 
 .group-member-phone {
-    width: 150px;
+    width: 120px;
 }
 
 .group-member-email {
     width: 300px;
 }
 
-.group-member-paid {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.group-member-info-header {
+    width: 48px;
+}
+
+.group-member-info {
     text-align: center;
-    width: 50px;
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+    font-size: 24px;
+}
+
+.group-member-info:hover {
+    border-bottom: 4px solid #017402;
+}
+
+.group-member-paid {
+    text-align: center;
+    width: 48px;
+}
+
+.group-member-settings {
+    font-size: 24px;
+    width: 48px;
+    height: 48px;
+}
+
+.group-member-settings a {
+    display: block;
+    height: 100%;
+    text-align: center;
+    width: 48px;
+    line-height: 48px;
+    box-sizing: border-box;
+}
+
+.group-member-settings a:hover {
+    border-bottom: 4px solid #017402;
+    opacity: 0.7;
 }
 
 .add-new-member {
@@ -248,7 +275,7 @@
     border-radius: 4px;
     text-align: center;
     color: #017402;
-    width: 32px;
+    width: 2rem;
     border: 1px solid #017402;
     margin-right: 16px;
 }
@@ -258,7 +285,7 @@
     border-radius: 4px;
     text-align: center;
     color: #017402;
-    width: 32px;
+    width: 2rem;
     border: 1px solid #017402;
     margin-right: 16px;
     padding-left: 2px;
@@ -284,13 +311,13 @@
 .btn-withdraw {
     position: absolute;
     right: 1rem;
-    bottom: .55rem;
+    bottom: 0.55rem;
     border-radius: 0.15rem;
     background: transparent;
     border: 1px solid #d0d0d0;
     text-transform: uppercase;
-    font-size: .75rem;
-    padding: .25rem .5rem;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
 }
 
 /**
@@ -326,6 +353,11 @@ REQUEST LIST
     cursor: pointer;
 }
 
+.group-settings-description {
+    height: 130px;
+    padding: 0.5rem 2rem;
+}
+
 .group-settings:active {
     opacity: 0.6;
 }
@@ -338,12 +370,12 @@ REQUEST LIST
     justify-content: flex-end;
     height: 60px;
     box-sizing: border-box;
-    padding: 0 32px;
+    padding: 0 2rem;
     border-bottom: 1px solid #f0f0f0;
 }
 
 .group-settings-header {
-    padding: .5rem 2rem;
+    padding: 0.5rem 2rem;
     border-bottom: 1px solid #f0f0f0;
     font-weight: bold;
 }
@@ -357,18 +389,77 @@ REQUEST LIST
     margin-right: 2rem;
 }
 
-.group-settings-save-btn {
-    width: 25%;
-    text-align: center;
-    cursor: pointer;
+.group-settings-textarea {
+    width: 54.5%;
+    word-wrap: break-word;
+    resize: none;
+    height: 100%;
+    margin-right: 2rem;
 }
 
-.group-settings-leave-button {
-    margin-right: 32px;
+.member-settings-row {
+    min-height: 64px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 1rem;
+}
+
+.member-settings-row-key {
+    width: 230px;
+    text-align: right;
+    padding-right: 2rem;
+    font-weight: bold;
+}
+
+.member-settings-row-value {
+    flex-grow: 1;
+    padding-right: 1rem;
+}
+
+.member-settings-radios {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1rem;
+}
+
+.member-settings-radios label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.member-settings-radios label input {
+    margin-right: 1rem;
+}
+
+.member-settings-row-title-subtitle {
+    padding: 2rem 1rem;
+}
+
+.member-settings-row-title {
+    padding-bottom: 0.1rem;
+    font-weight: bold;
+}
+
+.member-settings-row-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    flex-grow: 1;
+    padding-right: 1rem;
+}
+
+.group-settings-button {
+    cursor: pointer;
+    width: 22%;
 }
 
 .group-table-description {
-    padding: 32px;
+    word-wrap: break-word;
+    padding: 2rem;
 }
 
 .form-control {

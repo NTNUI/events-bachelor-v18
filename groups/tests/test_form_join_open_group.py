@@ -7,7 +7,7 @@ from ..models import SportsGroup, Invitation
 
 class JoinOpenGroupFormTest(TestCase):
     fixtures = ['users.json', 'groups.json',
-                'memberships.json', 'invitations.json']
+                'memberships.json', 'invitations.json', 'boards.json']
 
     def setUp(self):
         self.USER_IS_MEMBER = User.objects.get(email='todd.packer@online.com')
@@ -58,7 +58,7 @@ class JoinOpenGroupFormTest(TestCase):
 
 
 class OpenGroupViewTest(TestCase):
-    fixtures = ['users.json', 'groups.json']
+    fixtures = ['users.json', 'groups.json', 'boards.json']
 
     def setUp(self):
         self.login_response = self.client.login(email='meredith.palmer@dundermifflin.com',

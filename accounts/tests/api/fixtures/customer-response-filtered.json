@@ -1,0 +1,18 @@
+{
+    "CustomerNo": "1016801",
+    "GymID": "3",
+    "FirstName": "Michael",
+    "LastName": "Scott",
+    "BirthDate": "1965.06.08",
+    "Mobile": "97597003",
+    "Email": "michael.scott@gmail.com",
+    "Gender": "MALE",
+    "Active": "YES",
+    "ExpieryDate": "2018.01.10",
+    "CardNumber": "2380987600",
+    "RegisterdDate": "2017.01.05",
+    "LastVisitDate": "2017.09.28",
+    "CurrentOffering": "231",
+    "ContractNumber": "646500",
+    "ContractStartdate": "2017.08.19"
+}

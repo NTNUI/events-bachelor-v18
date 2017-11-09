@@ -7,8 +7,7 @@
       "group": 1,
       "date_joined": "2017-09-30",
       "paid": true,
-      "in_board": true,
-      "role": "President"
+      "role": "president"
     }
   },
   {
@@ -19,8 +18,7 @@
       "group": 1,
       "date_joined": "2017-09-30",
       "paid": false,
-      "in_board": true,
-      "role": "VP"
+      "role": "vice_president"
     }
   },
   {
@@ -31,8 +29,7 @@
       "group": 1,
       "date_joined": "2017-09-30",
       "paid": true,
-      "in_board": true,
-      "role": "Cashier"
+      "role": "cashier"
     }
   },
   {
@@ -43,8 +40,7 @@
       "group": 1,
       "date_joined": "2017-09-30",
       "paid": false,
-      "in_board": false,
-      "role": "Chief of Materials"
+      "role": "member"
     }
   },
   {
@@ -55,8 +51,7 @@
       "group": 1,
       "date_joined": "2017-10-01",
       "paid": false,
-      "in_board": false,
-      "role": "Member"
+      "role": "member"
     }
   },
   {
@@ -67,8 +62,7 @@
       "group": 1,
       "date_joined": "2017-10-01",
       "paid": false,
-      "in_board": false,
-      "role": "Member"
+      "role": "member"
     }
   },
   {
@@ -79,8 +73,7 @@
       "group": 1,
       "date_joined": "2017-10-01",
       "paid": false,
-      "in_board": false,
-      "role": "Member"
+      "role": "member"
     }
   },
   {
@@ -91,8 +84,7 @@
       "group": 1,
       "date_joined": "2017-10-01",
       "paid": false,
-      "in_board": false,
-      "role": "Member"
+      "role": "member"
     }
   },
   {
@@ -103,8 +95,7 @@
       "group": 1,
       "date_joined": "2017-10-01",
       "paid": false,
-      "in_board": false,
-      "role": "Member"
+      "role": "member"
     }
   },
   {
@@ -115,8 +106,7 @@
       "group": 1,
       "date_joined": "2017-10-01",
       "paid": false,
-      "in_board": false,
-      "role": "Member"
+      "role": "member"
     }
   },
   {
@@ -127,8 +117,7 @@
       "group": 1,
       "date_joined": "2017-10-01",
       "paid": false,
-      "in_board": false,
-      "role": "Member"
+      "role": "member"
     }
   },
   {
@@ -139,8 +128,7 @@
       "group": 1,
       "date_joined": "2017-10-01",
       "paid": false,
-      "in_board": false,
-      "role": "Member"
+      "role": "member"
     }
   },
   {
@@ -151,8 +139,7 @@
       "group": 1,
       "date_joined": "2017-10-01",
       "paid": false,
-      "in_board": false,
-      "role": "Member"
+      "role": "member"
     }
   },
   {
@@ -163,8 +150,7 @@
       "group": 1,
       "date_joined": "2017-10-01",
       "paid": false,
-      "in_board": false,
-      "role": "Member"
+      "role": "member"
     }
   },
   {
@@ -175,8 +161,7 @@
       "group": 1,
       "date_joined": "2017-10-01",
       "paid": false,
-      "in_board": false,
-      "role": "Member"
+      "role": "member"
     }
   },
   {
@@ -187,8 +172,7 @@
       "group": 1,
       "date_joined": "2017-10-05",
       "paid": false,
-      "in_board": false,
-      "role": "Member"
+      "role": "member"
     }
   },
   {
@@ -199,8 +183,7 @@
       "group": 2,
       "date_joined": "2017-10-05",
       "paid": false,
-      "in_board": true,
-      "role": ""
+      "role": "member"
     }
   },
   {
@@ -211,8 +194,7 @@
       "group": 2,
       "date_joined": "2017-10-12",
       "paid": false,
-      "in_board": true,
-      "role": ""
+      "role": "member"
     }
   },
   {
@@ -223,8 +205,7 @@
       "group": 2,
       "date_joined": "2017-10-12",
       "paid": false,
-      "in_board": true,
-      "role": ""
+      "role": "member"
     }
   },
   {
@@ -235,8 +216,7 @@
       "group": 3,
       "date_joined": "2017-10-12",
       "paid": false,
-      "in_board": true,
-      "role": "President"
+      "role": "president"
     }
   },
   {
@@ -247,8 +227,7 @@
       "group": 3,
       "date_joined": "2017-10-12",
       "paid": false,
-      "in_board": true,
-      "role": "VP"
+      "role": "vice_president"
     }
   },
   {
@@ -259,8 +238,7 @@
       "group": 3,
       "date_joined": "2017-10-12",
       "paid": false,
-      "in_board": true,
-      "role": "Cashier"
+      "role": "cashier"
     }
   },
   {
@@ -271,8 +249,7 @@
       "group": 4,
       "date_joined": "2017-10-12",
       "paid": false,
-      "in_board": true,
-      "role": ""
+      "role": "member"
     }
   },
   {
@@ -283,8 +260,7 @@
       "group": 4,
       "date_joined": "2017-10-12",
       "paid": false,
-      "in_board": true,
-      "role": ""
+      "role": "member"
     }
   },
   {
@@ -295,8 +271,7 @@
       "group": 4,
       "date_joined": "2017-10-12",
       "paid": false,
-      "in_board": true,
-      "role": ""
+      "role": "member"
     }
   },
   {
@@ -307,8 +282,7 @@
       "group": 2,
       "date_joined": "2017-09-30",
       "paid": false,
-      "in_board": false,
-      "role": "Member"
+      "role": "member"
     }
   }
 ]

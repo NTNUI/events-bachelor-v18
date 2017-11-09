@@ -24,15 +24,20 @@
     <div class="group-member-name-header">Name</div>
     <div class="group-member-phone-header">Phone</div>
     <div class="group-member-email-header">E-mail</div>
-    <div class="group-member-paid-header">Paid</div>
+    <div class="group-member-info-header"></div>
+    <div class="group-member-paid-header"></div>
   </div>
 
 
   {% for member in members %}
-  <div class="group-table-row open-modal" href="/groups/{{ slug }}/ajax/member/{{ member.pk }}">
+  <div class="group-table-row">
     <div class="group-member-name">{{ member.person.first_name }} {{ member.person.last_name }}</div>
     <div class="group-member-phone">{{ member.person.phone }}</div>
     <div class="group-member-email">{{ member.person.email }}</div>
+    <div class="group-member-info open-modal" href="/groups/{{ slug }}/ajax/member/{{ member.pk }}">ℹ</div>
+    <div class="group-member-settings">
+      <a href="{% url 'group_member_settings' slug=slug member_id=member.pk %}">⚙</a>
+    </div>
   </div>
   {% endfor %}
 

@@ -6,7 +6,7 @@ import datetime
 
 def get_cover_upload_to(instance, filename):
     return os.path.join(
-        "cover_photo/%s" % instance.slug, filename)
+        "cover_photo/{}".format(instance.slug), filename)
 
 
 class MainBoard(models.Model):
@@ -18,8 +18,13 @@ class MainBoard(models.Model):
     def __str__(self):
         return self.name
 
+    def __contains__(self, other):
+        if MainBoardMembership.objects.filter(person=other):
+            return True
+        return False
 
-class HSMembership(models.Model):
+
+class MainBoardMembership(models.Model):
     person = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     board = models.ForeignKey(MainBoard)

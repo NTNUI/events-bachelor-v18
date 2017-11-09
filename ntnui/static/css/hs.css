@@ -2,51 +2,13 @@
  * ALL MEMBERS
  */
 
-.allmembers-name-header{
-    width: 170px;
-}
-
-.allmembers-group-header{
-    width: 170px;
-}
-
-.allmembers-role-header{
-    width: 120px;
-}
-
-.allmembers-contact-header{
-    width: 280px;
-}
-
-.allmembers-name{
-    width: 170px;
-}
-
-.allmembers-group{
-    width: 170px;
-}
-
-.allmembers-role{
-    width: 120px;
-}
-
-.allmembers-contact{
-    width: 280px;
-}
-
 .download-members {
-    width: 100%;
-    font-weight: lighter;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    height: 48px;
-    box-sizing: border-box;
-    padding: 0 16px;
-    border-bottom: 1px solid #f0f0f0;
+    height:72px;
+    width:100%;
+    border-width: thin;
+    border-left-color: #6c757d;
+    justify-content: center;
 }
-
 
 .download-members:hover {
     background-color: #f0f0f0;

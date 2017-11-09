@@ -7,11 +7,11 @@ from django.core.urlresolvers import reverse
 
 
 class SettingsFormTest(TestCase):
-    fixtures = ['groups.json']
+    fixtures = ['complete.json']
 
     def test_form_has_right_fields(self):
         form = SettingsForm(slug='volleyball')
-        expected = ['public', 'thumbnail', 'cover_photo']
+        expected = ['public', 'description', 'thumbnail', 'cover_photo']
         self.assertSequenceEqual(expected, list(form.fields))
 
     def test_group_set_to_private(self):
@@ -52,3 +52,10 @@ class SettingsFormTest(TestCase):
                                    content_type="image/jpeg")
         form = SettingsForm(data={'cover_photo': image}, slug='volleyball')
         self.assertTrue(form.is_valid())
+
+    def test_description(self):
+        form = SettingsForm(data={'description': "See you space cowboy.."}, slug='volleyball')
+        self.assertTrue(form.is_valid())
+        form.set_description()
+        group = SportsGroup.objects.get(slug='volleyball')
+        self.assertEqual(group.description, "See you space cowboy..")

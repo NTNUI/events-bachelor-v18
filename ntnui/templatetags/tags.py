@@ -1,5 +1,5 @@
 from django import template
-from hs.models import HSMembership
+from hs.models import MainBoardMembership
 
 register = template.Library()
 
@@ -7,7 +7,7 @@ register = template.Library()
 @register.assignment_tag
 def user_in_hs(user):
     try:
-        HSMembership.objects.get(person=user)
+        MainBoardMembership.objects.get(person=user)
         return True
-    except HSMembership.DoesNotExist:
+    except MainBoardMembership.DoesNotExist:
         return False

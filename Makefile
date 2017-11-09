@@ -2,7 +2,7 @@ rasmus:
 	python manage.py runserver 0.0.0.0:3000
 
 ask:
-	docker-compose run web python manage.py dumpdata forms.FormDoc > forms.json
+	docker-compose run web python manage.py dumpdata groups.Contract > contracts.json
 
 envrun:
 	python3 manage.py runserver 0.0.0.0:8000
@@ -25,6 +25,7 @@ stop:
 
 test:
 	docker-compose run web python manage.py test
+	docker-compose down
 
 migrations:
 	docker-compose run web python manage.py makemigrations
@@ -41,7 +42,7 @@ build:
 testenv:
 	rm -f mydatabase
 	make migrate
-	docker-compose run web python manage.py loaddata users.json groups.json memberships.json boards.json invitations.json mainboard.json hs-memberships.json
+	docker-compose run web python manage.py loaddata users.json groups.json memberships.json boards.json invitations.json forms.json mainboard.json hs-memberships.json
 
 browser-tests:
 	docker-compose up -d chrome
