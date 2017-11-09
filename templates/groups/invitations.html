@@ -20,7 +20,13 @@
       <div class="group-member-name">{{ invitation.person.first_name }} {{ invitation.person.last_name }}</div>
       <div class="group-member-phone">{{ invitation.person.phone }}</div>
       <div class="group-member-email">{{ invitation.person.email }}</div>
-      <div class="group-member-paid"><input type="submit" value="Withdraw" class="btn-withdraw" /></div>
+      <div class="group-member-paid">
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="invitation-id" value="{{ invitation.pk }}" />
+          <input type="submit" value="Withdraw" class="btn-withdraw" name="withdraw-invitation" />
+        </form>
+      </div>
     </div>
     {% endfor %}
 {% endblock %}

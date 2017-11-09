@@ -15,11 +15,11 @@ class AllMembersLoggedOutTest(TestCase):
 
 
 class AllMembersLoggedInTest(TestCase):
-    fixtures = ['users.json']
+    fixtures = ['users.json', 'mainboard.json', 'hs-memberships.json']
 
     def setUp(self):
-        self.login_response = self.client.login(email='jameshalpert@gmail.com',
-                                                password='locoloco')
+        self.login_response = self.client.login(email='super@admin.com',
+                                                password='supersuper')
         url = reverse('all_members')
         self.response = self.client.get(url)
 
@@ -27,15 +27,12 @@ class AllMembersLoggedInTest(TestCase):
         view = resolve('/hs/allmembers')
         self.assertEquals(view.func, hs_views.list_all_members)
 
-    def test_shows_member(self):
-        self.assertContains(self.response, 'James Halpert', 1)
-
 
 class AllMembersTest(AllMembersLoggedInTest):
-    fixtures = ['users.json', 'groups.json', 'boards.json']
+    fixtures = ['users.json', 'groups.json', 'boards.json', 'mainboard.json', 'hs-memberships.json']
 
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 200)
 
     def test_table_exists(self):
-        self.assertContains(self.response, '<div class="members-list-header">', 1)
+        self.assertContains(self.response, '<div class="list-header">', 1)

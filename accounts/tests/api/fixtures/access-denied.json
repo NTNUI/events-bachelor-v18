@@ -1,0 +1,12 @@
+{
+    "GetMemberByIdResult": {
+        "Members": null,
+        "Status": {
+            "StatusCode": "6",
+            "StatusMessage": "Access denied ",
+            "CustomerId": 0,
+            "GuardianCustomerId": 0,
+            "ExpirationDate": null
+        }
+    }
+}

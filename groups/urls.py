@@ -5,6 +5,10 @@ from . import csv
 urlpatterns = [
     url(r'^$', views.list_groups, name='list_groups'),
     url(r'^(?P<slug>[\w-]+)/members$', views.members, name='group_members'),
+    url(r'^(?P<slug>[\w-]+)/members/(?P<member_id>[\d+]+)/settings$',
+        views.member_settings, name='group_member_settings'),
+    url(r'^(?P<slug>[\w-]+)/ajax/member/(?P<member_id>[\d+]+)$',
+        views.member_info, name='group_member_ajax'),
     url(r'^(?P<slug>[\w-]+)/invitations$',
         views.invitations, name='group_invitations'),
     url(r'^(?P<slug>[\w-]+)/members/invite$',

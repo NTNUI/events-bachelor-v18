@@ -2,36 +2,25 @@
  * ALL MEMBERS
  */
 
-.allmembers-name-header{
-    width: 170px;
+.download-members {
+    height:72px;
+    width:100%;
+    border-width: thin;
+    border-left-color: #6c757d;
+    justify-content: center;
 }
 
-.allmembers-group-header{
-    width: 170px;
+.download-members:hover {
+    background-color: #f0f0f0;
 }
 
-.allmembers-role-header{
-    width: 120px;
+.download-button {
+    background-color: #ffffff;
+    border-radius: 4px;
+    text-align: center;
+    color: #017402;
+    width: 32px;
+    border: 1px solid #017402;
+    margin-right: 16px;
+    padding-left: 2px;
 }
-
-.allmembers-contact-header{
-    width: 280px;
-}
-
-.allmembers-name{
-    width: 170px;
-}
-
-.allmembers-group{
-    width: 170px;
-}
-
-.allmembers-role{
-    width: 120px;
-}
-
-.allmembers-contact{
-    width: 280px;
-}
-
-

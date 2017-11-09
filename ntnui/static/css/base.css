@@ -2,6 +2,15 @@ body {
     background-color: #f1f1f1;
 }
 
+a {
+    color: black;
+}
+
+a:hover {
+    text-decoration: none;
+    color: black;
+}
+
 .content {
     display: flex;
     justify-content: center;
@@ -44,5 +53,20 @@ body {
 }
 
 .btn:disabled {
-    cursor: not-allowed;
+    cursor: default;
+}
+
+/*
+ * Responsive design CSS
+*/
+
+.content-pane {
+    width: 60%;
+    max-width: 60%;
+    min-height: 100px;
+    background-color: white;
+    border: 1px solid #dfdfdf;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 32px;
 }

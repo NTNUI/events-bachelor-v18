@@ -2,7 +2,7 @@
 
 {% load hs_template %}
 
-{% block all_members %}
+{% block hs_content %}
 
   {% load static %}
 
@@ -12,36 +12,14 @@
   {% endblock %}
 
   <div class="content-table">
-    <div class="members-list-header">
-      <div>{{ total_members }}
+    <div class="list-header">
+      <div>{{ total_members }} NTNUI
         member{{ total_members|pluralize }}</div>
-      <input class="search-input form-control" type="text" placeholder="Search for NTNUI members" disabled/>
     </div>
-    <div class="members-header">
-      <div class="allmembers-name-header">Name</div>
-      <div class="allmembers-group-header">Group</div>
-      <div class="allmembers-role-header">Role</div>
-      <div class="allmembers-contact-header">Contact</div>
-    </div>
-    {% for user in users %}
-      {% if user.first_name %}
-        <div class="group-table-row">
-          <div class="allmembers-name">
-            {{ user.first_name }} {{ user.last_name }}
-          </div>
-          <div class="allmembers-group">
-            {{ userDict|member:user|safe }}
-          </div>
-          <div class="allmembers-role">
-            {{ userDict|role:user|safe }}
-          </div>
-          <div class="allmembers-contact">
-            <div>{{ user.email }} </div>
-            <div>{{ user.phone }}</div>
-          </div>
-        </div>
-      {% endif %}
-    {% endfor %}
+    <a href="{% url 'download_all_members' %}" class="download-members">
+      <div class="download-button">⇩</div>
+      <div class="add-new-text">Download NTNUI members list</div>
+    </a>
   </div>
 {% endblock %}
 
