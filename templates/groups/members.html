@@ -1,5 +1,7 @@
 {% extends 'groups/group_members_base.html' %}
 
+{% load static %}
+
 {% block table_content %}
 
 
@@ -27,15 +29,19 @@
 
 
   {% for member in members %}
-  <div class="group-table-row">
+  <div class="group-table-row open-modal" href="/groups/{{ slug }}/ajax/member/{{ member.pk }}">
     <div class="group-member-name">{{ member.person.first_name }} {{ member.person.last_name }}</div>
     <div class="group-member-phone">{{ member.person.phone }}</div>
     <div class="group-member-email">{{ member.person.email }}</div>
-    <div class="group-member-paid">
-      <input type="checkbox" value="" {% if member.paid %}checked{% endif %} disabled>
-    </div>
   </div>
   {% endfor %}
+
+  <div id="modal-container"></div>
+
 {% endif %}
 
+{% endblock %}
+
+{% block script %}
+  <script type="text/javascript" src="{% static 'js/modal.js' %}"></script>
 {% endblock %}
