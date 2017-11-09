@@ -61,16 +61,12 @@ def download_members(request, slug):
 
 @login_required
 def download_yearly_group_members(request, slug):
-
-    if request:
-        pass
-
-    group = get_object_or_404(SportsGroup, slug=slug)
-
-    current_year = date.today().year
-    year = 2017          # Temporary, should choose year
+    if request.method == "POST":
+        year = request.POST.get("year", "2000")
+    year = int(year)
     start_date = date(year, 8, 1)
     end_date = date(year + 1, 1, 31)
+    group = get_object_or_404(SportsGroup, slug=slug)
 
     contracts = Contract.objects.filter(
         person__membership__group=group.pk,

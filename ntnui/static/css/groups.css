@@ -249,7 +249,7 @@
     border-bottom: 1px solid #f0f0f0;
 }
 
-.download-members {
+.download-members-button {
     width: 60%;
     font-weight: lighter;
     display: flex;
@@ -266,7 +266,7 @@
     background-color: #f0f0f0;
 }
 
-.download-members:hover {
+.download-members-button:hover {
     background-color: #f0f0f0;
 }
 
@@ -289,6 +289,27 @@
     border: 1px solid #017402;
     margin-right: 16px;
     padding-left: 2px;
+}
+
+/**
+ * DOWLOAD MEMBERS
+ */
+
+.download-members {
+  width: 100%;
+  padding: 16px;
+}
+
+.download-members h2 {
+  padding: 16px 0;
+}
+
+.download-options-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 /**

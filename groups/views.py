@@ -6,6 +6,8 @@ from .models import SportsGroup, Membership, Invitation, Request
 from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm, \
     LeaveGroupForm, KickUserForm, SaveGroupMemberSettingsForm, WithdrawInvitationForm
 from .helpers import get_group_role
+from datetime import date
+from accounts.models import Contract
 from ntnui.decorators import is_board
 
 
@@ -188,7 +190,6 @@ def invitations(request, slug):
     })
 
 
-
 @login_required
 def requests(request, slug):
     if request.method == 'POST':
@@ -212,13 +213,36 @@ def requests(request, slug):
 
 
 @login_required
-def downloads(request, slug):
+def download_members(request, slug):  # TODO: add permissions
     if request:
         pass
+
     groups = SportsGroup.objects.filter(slug=slug)
     if len(groups) != 1:
         raise Http404("Group does not exist")
     group = groups[0]
+
+    contracts = Contract.objects.filter(
+        person__membership__group=group.pk)
+
+    current_year = date.today().year
+    first_contract_year = current_year
+    for contract in contracts:
+        if (contract.contract_type == "10" and
+            contract.expiry_date.year - 1 < first_contract_year) or \
+            (contract.expiry_date.month == 1 and
+             contract.expiry_date.year - 1 < first_contract_year):
+            first_contract_year = contract.expiry_date.year - 1
+        elif (contract.expiry_date.month == 8 and
+              contract.expiry_date.year < first_contract_year):
+            first_contract_year = contract.expiry_date.year
+
+    years = [i for i in range(current_year + 1, first_contract_year - 1, -1)]
+    return render(request, 'groups/download_members.html', {
+        **get_base_members_info(request, slug),
+        'active': 'members',
+        'years': years,
+    })
 
 
 @login_required
