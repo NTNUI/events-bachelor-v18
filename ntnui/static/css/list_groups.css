@@ -78,8 +78,8 @@ a:hover {
     flex-direction: row;
     border: solid 1px #dfdfdf;
     width: 100%;
-    min-height: 6rem;
-    max-height: 6rem;
+    min-height: 7rem;
+    max-height: 7rem;
     margin-top: 1rem;
     position: relative;
     align-items: center;
@@ -101,10 +101,6 @@ a:hover {
     align-items: center;
 }
 
-.group-card-read-more-expanded {
-    visibility: hidden;
-}
-
 .group-card:hover {
     opacity: 0.8;
 }
@@ -118,6 +114,7 @@ a:hover {
 .group-card-info {
     color: black;
     padding-left: 2rem;
+    padding-right: 4.5rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -129,25 +126,37 @@ a:hover {
 .group-card-info-expanded {
     color: black;
     padding-left: 2rem;
+    padding-right: 4.5rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+    overflow:hidden;
     width:100%;
 }
 
 .group-card-description {
-    margin: 0;
-    width: 95%;
+    margin: 0 4rem 0 0;
+    max-width: 100%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
 
 .group-card-description-expanded {
-    margin: 0;
-    width: 80%;
+    margin: 0 4rem 0 0;
+    max-width: 100%;
     word-wrap: break-word;
+}
+
+.group-card-read-more {
+    align-self: flex-start;
+    color: green;
+}
+
+.group-card-read-more:hover {
+    color: limegreen;
+    cursor: pointer;
 }
 
 .group-card-read-more-hidden {
