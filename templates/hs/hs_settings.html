@@ -4,15 +4,13 @@
   <div class="content-table">
 
     <div class="list-header">
-      Group Settings
+      Main Board Settings
     </div>
     <form method="post" enctype="multipart/form-data" novalidate>
       {% csrf_token %}
-      <div class="group-settings-header">Group images</div>
+      <div class="group-settings-header">Image</div>
         <label class="group-settings">Cover photo (790x260)
-          <div>
             <input type="file" name="cover_photo" class="group-settings-input" accept="image/*"/>
-          </div>
         </label>
 
       <div class="group-settings-right">
@@ -21,7 +19,7 @@
             <div class="alert alert-success settings-alert" role="alert">{{ message }}</div>
           {% endfor %}
         {% endif %}
-        <input type="submit" name="save-settings" class="btn group-settings-save-btn btn-success"
+        <input type="submit" name="save-settings" class="btn group-settings-button btn-success"
                value="Change settings"/>
       </div>
     </form>

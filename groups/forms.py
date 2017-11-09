@@ -316,6 +316,64 @@ class KickUserForm(object):
         )
 
 
+class WithdrawInvitationForm(object):
+    def __init__(self, slug, inv_id):
+        self.slug = slug
+        self.inv_id = inv_id
+        self.errors = []
+        self.group = None
+        self.invitation = None
+        self.validate_group()
+        if self.validate_invitation():
+            self.validate_invitation_is_for_group()
+
+    def save(self):
+        if not self.is_valid():
+            return
+        self.get_invitation().delete()
+
+    def is_valid(self):
+        return len(self.errors) == 0
+
+    def get_group(self):
+        if self.group:
+            return self.group
+        try:
+            group = SportsGroup.objects.get(slug=self.slug)
+            self.group = group
+            return self.group
+        except SportsGroup.DoesNotExist:
+            return None
+
+    def get_invitation(self):
+        if self.invitation:
+            return self.invitation
+        try:
+            invitation = Invitation.objects.get(pk=self.inv_id)
+            self.invitation = invitation
+            return self.invitation
+        except Invitation.DoesNotExist:
+            return None
+
+    def validate(self, condition, message):
+        if condition:
+            self.errors.append(message)
+            return False
+        return True
+
+    def validate_group(self):
+        return self.validate(self.get_group() is None, 'Group does not exist.')
+
+    def validate_invitation(self):
+        return self.validate(self.get_invitation() is None, 'Invitation does not exist.')
+
+    def validate_invitation_is_for_group(self):
+        return self.validate(
+            self.get_invitation().group != self.get_group(),
+            'This is not an invitation for this group.'
+        )
+
+
 class JoinPrivateGroupForm(object):
     def __init__(self, slug, user):
         self.slug = slug
