@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import SportsGroup, Membership, Invitation, Request
 from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPrivateGroupForm, \
-    LeaveGroupForm, KickUserForm, SaveGroupMemberSettingsForm
+    LeaveGroupForm, KickUserForm, SaveGroupMemberSettingsForm, WithdrawInvitationForm
 from .helpers import get_group_role
 from ntnui.decorators import is_board
 
@@ -168,10 +168,25 @@ def member_settings(request, slug, member_id):
 
 @login_required
 def invitations(request, slug):
+    if request.method == 'POST':
+        if request.POST.get('withdraw-invitation', ''):
+            inv_id = request.POST.get('invitation-id', '')
+            form = WithdrawInvitationForm(slug, inv_id)
+            if form.is_valid():
+                form.save()
+                messages.success(request, '{} is now no longer invited to {}.'.format(
+                    form.invitation.person,
+                    form.group,
+                ))
+                return redirect('group_invitations', slug=slug)
+            # form not valid, print errors
+            for error in form.errors:
+                messages.error(request, error)
     return render(request, 'groups/invitations.html', {
         **get_base_members_info(request, slug),
         'active_tab': 'invitations',
     })
+
 
 
 @login_required
