@@ -1,5 +1,5 @@
 <p align="center">
-<img style="max-width: 200px" src="ntnui/static/img/ntnui.svg" />
+<img width="200" src="ntnui/static/img/ntnui.svg" />
 </p>
 
 ## Description
