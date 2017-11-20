@@ -32,6 +32,7 @@ def get_base_group_info(request, slug):
         'show_group_settings': request.user.has_perm('groups.can_see_group_settings', group),
         'show_leave_button': request.user.has_perm('groups.can_leave_group', group),
         'show_forms': request.user.has_perm('groups.can_see_forms', group),
+        'show_download': request.user.has_perm('groups.can_download', group)
     }
 
 
@@ -213,6 +214,7 @@ def requests(request, slug):
 
 
 @login_required
+@is_board
 def download_members(request, slug):  # TODO: add permissions
     if request:
         pass
