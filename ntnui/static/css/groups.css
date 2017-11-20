@@ -217,8 +217,13 @@
     font-size: 24px;
 }
 
+.group-member-info img {
+    width: 24px;
+    height: 24px;
+}
+
 .group-member-info:hover {
-    border-bottom: 4px solid #017402;
+    border-bottom: 4px solid #007D32;
 }
 
 .group-member-paid {
@@ -230,19 +235,17 @@
     font-size: 24px;
     width: 48px;
     height: 48px;
-}
-
-.group-member-settings a {
-    display: block;
-    height: 100%;
-    text-align: center;
-    width: 48px;
     line-height: 48px;
-    box-sizing: border-box;
+    text-align: center;
 }
 
-.group-member-settings a:hover {
-    border-bottom: 4px solid #017402;
+.group-member-settings img {
+    width: 24px;
+    height: 24px;
+}
+
+.group-member-settings:hover {
+    border-bottom: 4px solid #007D32;
     opacity: 0.7;
 }
 
