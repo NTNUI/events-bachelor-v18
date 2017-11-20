@@ -110,10 +110,6 @@ a:hover {
     max-height: 6rem;
     width: 6rem;
     height: 6rem;
-    /*
-        Fjern dette:
-     */
-    border: solid 1px #dfdfdf;
 }
 
 .group-card-image-small {
