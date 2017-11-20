@@ -1,0 +1,42 @@
+[
+    {
+        "model": "groups.board",
+        "pk": 1,
+        "fields": {
+            "president": 9,
+            "vice_president": 10,
+            "cashier": 11,
+            "sports_group": 1
+        }
+    },
+    {
+        "model": "groups.board",
+        "pk": 2,
+        "fields": {
+            "president": 14,
+            "vice_president": 15,
+            "cashier": 1,
+            "sports_group": 2
+        }
+    },
+    {
+        "model": "groups.board",
+        "pk": 3,
+        "fields": {
+            "president": 18,
+            "vice_president": 19,
+            "cashier": 20,
+            "sports_group": 3
+        }
+    },
+    {
+        "model": "groups.board",
+        "pk": 4,
+        "fields": {
+            "president": 24,
+            "vice_president": 23,
+            "cashier": 18,
+            "sports_group": 4
+        }
+    }
+]

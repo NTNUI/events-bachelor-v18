@@ -34,14 +34,21 @@ class NoGroupTest(SettingsLoggedInTest):
 
 
 class VolleyballGroupTest(SettingsLoggedInTest):
-    fixtures = ['users.json', 'groups.json']
+    fixtures = ['users.json', 'groups.json', 'boards.json']
 
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 200)
 
     def test_button_exists(self):
-        self.assertContains(self.response, '<button type="submit"', 1)
-        self.assertContains(self.response, 'Change settings</button>', 1)
+        self.assertContains(self.response, '<input type="submit"', 1)
+        self.assertContains(self.response, 'Change settings', 1)
 
     def test_checkbox_exists(self):
         self.assertContains(self.response, '<input type="checkbox"', 1)
+
+    def test_image_input_exists(self):
+        self.assertContains(self.response, '<input type="file" name="thumbnail', 1)
+        self.assertContains(self.response, '<input type="file" name="cover_photo', 1)
+
+    def test_description_exists(self):
+        self.assertContains(self.response, '<textarea name="description', 1)

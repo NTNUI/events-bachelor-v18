@@ -1,0 +1,35 @@
+{% extends 'groups/group_base.html' %}
+
+{% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" href="{% static 'css/groups.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/forms.css' %}" />
+{% endblock %}
+
+{% block group_content %}
+
+<div class="content-table">
+	<div class="list-header">
+		<a href="{% url 'forms_list' slug=slug %}" class="forms-name-header">Forms</a>
+	</div>
+
+  <form method="post" novalidate>
+  {% csrf_token %}
+  {% if forms %}
+    {% for form in forms %}
+      {% block table_row %}
+      {% endblock %}
+    {% endfor %}
+  {% else %}
+  <div class="forms-table-row">
+    <div class="row-content">
+      <div class="form-name">No forms</div>
+      <div class="form-description">There are no forms available to you.</div>
+    </div>
+  </div>
+  {% endif %}
+  </form>
+</div>
+
+{% endblock group_content %}

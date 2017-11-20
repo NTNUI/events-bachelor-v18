@@ -37,12 +37,12 @@ class NoListTest(ListGroupsLoggedInTest):
 
 
 class MyGroupTest(ListGroupsLoggedInTest):
-    fixtures = ['users.json', 'groups.json', 'memberships.json']
+    fixtures = ['complete.json']
 
     def test_status_code(self):
         self.assertEquals(self.response.status_code, 200)
 
     def test_group_number(self):
-        self.assertContains(self.response, '<a class="group-card"', 4)
+        self.assertContains(self.response, '<div class="group-card-all-groups', 3)
 
     # TODO: write more tests..

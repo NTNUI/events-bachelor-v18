@@ -3,7 +3,7 @@ from ntnui.tests.browser.lib.browser_test_case import ChromeTestCase, FirefoxTes
 from ntnui.tests.browser.lib.helpers import login_user
 from selenium.webdriver.support.wait import WebDriverWait
 from groups.models import Invitation, SportsGroup
-from ntnui.models import User
+from accounts.models import User
 
 
 def invite_success(cls, browser):
@@ -12,7 +12,7 @@ def invite_success(cls, browser):
     email_input.send_keys('meredith.palmer@dundermifflin.com')
     browser.find_element_by_xpath('//button[text()="Invite person"]').click()
     element = WebDriverWait(browser, 10).until(
-        lambda x: x.find_element_by_xpath('//div[contains(@class, "members-list-header")]'))
+        lambda x: x.find_element_by_xpath('//div[contains(@class, "list-header")]'))
     cls.assertTrue('1 invitation' in browser.page_source)
     cls.assertTrue('Meredith Palmer' in browser.page_source)
     invitations = Invitation.objects.all()
@@ -23,17 +23,21 @@ def invite_success(cls, browser):
     cls.assertEquals(invitations[0].group, volleyball)
 
 
+LEADER_TODD_PACKER = 'todd.packer@online.com'
+DUMMY_PASSWORD = 'locoloco'
+
+
 class InviteChrome(ChromeTestCase):
-    fixtures = ['users.json', 'groups.json', 'memberships.json']
+    fixtures = ['users.json', 'groups.json', 'memberships.json', 'boards.json']
 
     def test_success_invite(self):
-        login_user(self, self.chrome)
+        login_user(self, self.chrome, LEADER_TODD_PACKER, DUMMY_PASSWORD)
         invite_success(self, self.chrome)
 
 
 class LoginFirefox(FirefoxTestCase):
-    fixtures = ['users.json', 'groups.json', 'memberships.json']
+    fixtures = ['users.json', 'groups.json', 'memberships.json', 'boards.json']
 
     def test_success_invite(self):
-        login_user(self, self.firefox)
+        login_user(self, self.firefox, LEADER_TODD_PACKER, DUMMY_PASSWORD)
         invite_success(self, self.firefox)

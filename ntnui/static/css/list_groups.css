@@ -1,69 +1,189 @@
-body {
-  background-color: #f1f1f1;
-}
-
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 a:hover {
-  color: black;
-  text-decoration: none;
+    color: black;
+    text-decoration: none;
 }
 
 .group-no-groups-info {
-  margin-top: 16px;
-  color: #222;
+    margin-top: 1rem;
+    color: #222;
 }
 
 .list-groups {
-  display: flex;
-  flex-direction: column;
-  width: 60%;
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.list-my-groups {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .group-header {
-  margin-top: 32px;
-  text-transform: uppercase;
-  color: green;
-  font-size: 24px;
+    margin-top: 2rem;
+    margin-left: 1rem;
+    text-transform: uppercase;
+    color: green;
+    font-size: 1.5rem;
+    max-width: 50%;
+    display: inline-block;
 }
 
-.group-card {
-  padding: 16px 32px;
-  box-sizing: border-box;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(50, 50, 93, .1);
-  display: flex;
-  flex-direction: row;
-  border: solid 1px #dfdfdf;
-  width: 100%;
-  min-height: 132px;
-  margin-top: 16px;
+.search-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+#group-search {
+    margin-right: 1rem;
+    align-self: flex-end;
+    max-width: 50%;
+}
+
+#all-groups {
+    margin-bottom: 2rem;
+}
+
+/**
+ * GROUP CARD
+ */
+
+.group-card-my-groups {
+    padding: 1rem 1rem;
+    box-sizing: border-box;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
+    display: flex;
+    flex-direction: row;
+    border: solid 1px #dfdfdf;
+    width: 49%;
+    min-height: 8rem;
+    margin-top: 1rem;
+    position: relative;
+    align-items: center;
+}
+
+.group-card-all-groups {
+    padding: 1rem 2rem;
+    box-sizing: border-box;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
+    display: flex;
+    flex-direction: row;
+    border: solid 1px #dfdfdf;
+    width: 100%;
+    min-height: 7rem;
+    max-height: 7rem;
+    margin-top: 1rem;
+    position: relative;
+    align-items: center;
+}
+
+.group-card-all-groups-expanded {
+    padding: 16px 32px;
+    box-sizing: border-box;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
+    display: flex;
+    flex-direction: row;
+    border: solid 1px #dfdfdf;
+    width: 100%;
+    min-height: 10rem;
+    max-height: 10rem;
+    margin-top: 1rem;
+    position: relative;
+    align-items: center;
 }
 
 .group-card:hover {
-  opacity: 0.8;
+    opacity: 0.8;
 }
 
 .group-card-image {
-  min-width: 100px;
-  width: 100px;
-  height: 100px;
+    min-width: 100px;
+    max-height: 6rem;
+    width: 6rem;
+    height: 6rem;
+}
+
+.group-card-image-small {
+  max-height: 5rem;
+  width: 5rem;
+  height: 5rem;
 }
 
 .group-card-info {
-  color: black;
-  padding-left: 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+    color: black;
+    padding-left: 1rem;
+    padding-right: 4.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: hidden;
+    width:100%;
 }
 
-.group-info h2 {
-  color: #008000;
+.group-card-info-expanded {
+    color: black;
+    padding-left: 2rem;
+    padding-right: 4.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    overflow:hidden;
+    width:100%;
 }
 
-.group-info p {
-  margin: 0;
+.group-card-description {
+    margin: 0 4rem 0 0;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.group-card-description-expanded {
+    margin: 0 4rem 0 0;
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+.group-card-read-more {
+    align-self: flex-start;
+    color: green;
+}
+
+.group-card-read-more:hover {
+    color: limegreen;
+    cursor: pointer;
+}
+
+.group-card-read-more-hidden {
+    visibility: hidden;
+}
+
+.group-card-open {
+    line-height: 1rem;
+    color: green;
+    position: absolute;
+    top: 1.25rem;
+    right: 1.5rem;
+    flex-shrink: 0;
+}
+
+.group-card-restricted {
+    line-height: 1rem;
+    color: #d7d700;
+    position: absolute;
+    top: 1.25rem;
+    right: 1.5rem;
+    flex-shrink: 0;
 }

@@ -1,16 +1,38 @@
-body {
-  background-color: #fafafa;
-}
-
 .logo-container {
-  height: 100px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
-
 
 .logo {
-  width: 100px;
+    width: 100px;
+}
+
+.login-title {
+    width: 100%;
+    text-align: center;
+}
+
+.button-ntnu {
+    background-color: green;
+    color: #fff;
+}
+
+.button-ntnu:hover {
+    background-color: #006400;
+}
+
+.reset-password {
+    color: green;
+}
+
+.reset-password:hover {
+    color: #006400;
+}
+
+.card {
+    border-radius: 0.15rem;
+    margin-top: 120px;
 }

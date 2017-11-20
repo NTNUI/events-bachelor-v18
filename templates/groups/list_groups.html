@@ -3,28 +3,38 @@
 {% load static %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/list_groups.css' %}">
+  <link rel="stylesheet" href="{% static 'css/list_groups.css' %}">
 {% endblock %}
 
 {% block content %}
-    <div class="list-groups">
-        <h1 class="group-header">
-            My groups
-        </h1>
-        {% if myGroups %}
-          {% for group in myGroups %}
-              {% include "groups/group_card.html" with group=group %}
-          {% endfor %}
-        {% else %}
-          <div class="group-no-groups-info">You are not a member of any groups. Find a group today!</div>
-        {% endif %}
-        <h1 class="group-header">
-            All groups
-        </h1>
-        {% for group in allGroups %}
-            {% include "groups/group_card.html" with group=group %}
+  <div class="list-groups">
+    <h1 class="group-header">
+        My groups
+    </h1>
+    <div class="list-my-groups">
+      {% if my_groups %}
+        {% for group in my_groups %}
+          {% include "groups/group_card.html" with group=group my_groups=my_groups %}
         {% endfor %}
-
+      {% else %}
+        <div class="group-no-groups-info">You are not a member of any groups. Find a group today!</div>
+      {% endif %}
     </div>
 
-{% endblock %}
+    <div class="search-container">
+      <h1 class="group-header">All groups</h1>
+      <input type="text" id="group-search" class="form-control"
+               placeholder="Search for groups.." aria-label="Search for groups..">
+    </div>
+    <div id="all-groups">
+      {% for group in all_groups %}
+        {% include "groups/group_card.html" with group=group %}
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}
+
+{% block script %}
+  <script type="text/javascript" src="{% static 'js/search_functions.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/expand_group_card.js' %}"></script>
+{% endblock script %}

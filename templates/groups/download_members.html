@@ -1,0 +1,30 @@
+{% extends 'groups/group_members_base.html' %}
+
+{% block table_content %}
+    <div class="download-members">
+      <h2>Download .csv members list</h2>
+      <p>Download all group members:</p>
+      <div class="download-options-container">
+        <form method="get" action="{{ request.path }}/get_all">
+          <button type="submit" class="btn btn-primary">Download</button>
+        </form>
+      </div>
+
+      <p>Download a list of paper members in a year:</p>
+      <div class="download-options-container">
+
+        <form method="POST" action="{{ request.path }}/get_year">
+          {% csrf_token %}
+          <select name="year">
+          {% for year in years %}
+            <option value="{{ year }}">{{ year }}</option>
+          {% endfor %}
+          </select>
+          <br><br>
+          <button type="submit" class="btn btn-primary">Download</button>
+        </form>
+
+      </div>
+    </div>
+
+{% endblock %}

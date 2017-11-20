@@ -1,0 +1,25 @@
+{% extends 'hs/hs_base.html' %}
+
+{% load hs_template %}
+
+{% block hs_content %}
+
+  {% load static %}
+
+  {% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/groups.css' %}">
+    <link rel="stylesheet" href="{% static 'css/hs.css' %}">
+  {% endblock %}
+
+  <div class="content-table">
+    <div class="list-header">
+      <div>{{ total_members }} NTNUI
+        member{{ total_members|pluralize }}</div>
+    </div>
+    <a href="{% url 'download_all_members' %}" class="download-members">
+      <div class="download-button">⇩</div>
+      <div class="add-new-text">Download NTNUI members list</div>
+    </a>
+  </div>
+{% endblock %}
+
