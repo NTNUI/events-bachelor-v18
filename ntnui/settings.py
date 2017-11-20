@@ -120,9 +120,9 @@ DATABASES = {
 if os.environ.get('DATABASE_URL'):
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
-    print('Using DB from environment variable')
+    print('Using DB from environment variable.')
 else:
-    print('Using default file-based DB')
+    print('Using default file-based DB.')
 
 AUTH_USER_MODEL = "accounts.User"
 AUTH_GROUPIMAGE_MODEL = "groups.GroupImage"
