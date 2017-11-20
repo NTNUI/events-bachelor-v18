@@ -66,7 +66,7 @@
 }
 
 .top-menu a:hover {
-    color: #017402;
+    color: #007D32;
     border-bottom: 4px solid #017402;
     opacity: 0.8;
 }
@@ -274,9 +274,9 @@
     background-color: #ffffff;
     border-radius: 4px;
     text-align: center;
-    color: #017402;
+    color: #007D32;
     width: 2rem;
-    border: 1px solid #017402;
+    border: 1px solid #007D32;
     margin-right: 16px;
 }
 
@@ -284,9 +284,9 @@
     background-color: #ffffff;
     border-radius: 4px;
     text-align: center;
-    color: #017402;
+    color: #007D32;
     width: 2rem;
-    border: 1px solid #017402;
+    border: 1px solid #007D32;
     margin-right: 16px;
     padding-left: 2px;
 }
@@ -353,7 +353,7 @@ REQUEST LIST
 .yes-btn {
     width: 100%;
     margin-right: 5px;
-    border-color: #017402;
+    border-color: #007D32;
 }
 
 /**
