@@ -52,6 +52,10 @@ a:hover {
     border-radius: 0.15rem;
 }
 
+.dropdown-menu {
+    border-radius: 0;
+}
+
 .btn:disabled {
     cursor: default;
 }
