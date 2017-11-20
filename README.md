@@ -1,4 +1,22 @@
-# ntnui
+<p align="center">
+<img style="width: 200px" src="ntnui/static/img/ntnui.svg" />
+</p>
+
+## Description
+
+Internal system for members and volunteers in NTNUI.
+
+## Installation
+
+```
+make build
+```
+
+## How to run
+
+```
+make start
+```
 
 ## Docker
 
@@ -34,3 +52,7 @@
     * [Download geckodriver](https://github.com/mozilla/geckodriver/releases)
     * Unzip
     * Put into `/usr/local/bin`
+
+```
+
+```
