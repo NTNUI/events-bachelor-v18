@@ -1,10 +1,11 @@
-import csv
 from django.contrib.auth.decorators import login_required
 from django.http import StreamingHttpResponse
-from .models import Membership, SportsGroup
-from accounts.models import Contract
 from django.shortcuts import get_object_or_404
 from datetime import date
+import csv
+from .models import Membership, SportsGroup
+from accounts.models import Contract
+from ntnui.decorators import is_board
 
 YEAR_MEMBERSHIP = 10
 HALF_YEAR_MEMBERSHIP = 20
@@ -21,6 +22,7 @@ class Echo(object):
 
 
 @login_required
+@is_board
 def download_members(request, slug):
     """A view that streams a large CSV file."""
     if request:  # dummy method, to use request, to pass travis tests
@@ -60,6 +62,7 @@ def download_members(request, slug):
 
 
 @login_required
+@is_board
 def download_yearly_group_members(request, slug):
     if request.method == "POST":
         year = request.POST.get("year", "2000")
