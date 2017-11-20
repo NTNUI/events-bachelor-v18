@@ -44,6 +44,10 @@ testenv:
 	make migrate
 	docker-compose run web python manage.py loaddata users.json groups.json memberships.json boards.json invitations.json forms.json mainboard.json hs-memberships.json
 
+dokkuenv:
+	python manage.py migrate
+	python manage.py loaddata users.json groups.json memberships.json boards.json invitations.json forms.json mainboard.json hs-memberships.json
+
 browser-tests:
 	docker-compose up -d chrome
 	docker-compose up -d firefox
