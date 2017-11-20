@@ -19,7 +19,7 @@ a:hover {
 }
 
 .navbar-logo {
-    width: 64px;
+    width: 78px;
 }
 
 .navbar {
@@ -31,17 +31,18 @@ a:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 0 16px;
+    margin: 0 12px;
 }
 
 .link-with-icon img {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
 }
 
 .link-with-icon p {
     margin: 0;
     padding: 0;
+    font-size: small;
 }
 
 .form-control {
@@ -69,4 +70,10 @@ a:hover {
     display: flex;
     flex-direction: column;
     margin-bottom: 32px;
+}
+
+@media (min-width: 1200px){
+    .container {
+        max-width: 900px;
+    }
 }
