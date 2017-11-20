@@ -70,7 +70,7 @@ a:hover {
 }
 
 .group-card-all-groups {
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     box-sizing: border-box;
     background-color: white;
     box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
@@ -86,7 +86,7 @@ a:hover {
 }
 
 .group-card-all-groups-expanded {
-    padding: 16px 32px;
+    padding: 1rem 1rem;
     box-sizing: border-box;
     background-color: white;
     box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
@@ -110,6 +110,10 @@ a:hover {
     max-height: 6rem;
     width: 6rem;
     height: 6rem;
+    /*
+        Fjern dette:
+     */
+    border: solid 1px #dfdfdf;
 }
 
 .group-card-image-small {
@@ -120,7 +124,7 @@ a:hover {
 
 .group-card-info {
     color: black;
-    padding-left: 1rem;
+    padding-left: 1.5rem;
     padding-right: 4.5rem;
     display: flex;
     flex-direction: column;
@@ -132,7 +136,7 @@ a:hover {
 
 .group-card-info-expanded {
     color: black;
-    padding-left: 2rem;
+    padding-left: 1.5rem;
     padding-right: 4.5rem;
     display: flex;
     flex-direction: column;
