@@ -1,0 +1,51 @@
+@startuml
+
+left to right direction
+
+actor Administrator
+actor Attacker #red
+actor User
+
+rectangle Database {
+  usecase (Steal user data)
+}
+
+rectangle Server {
+  usecase (SQL-injection)
+  usecase (DoS-attack)
+  usecase (Gain admin access)
+}
+
+rectangle Groups {
+  usecase (Modify members)
+  usecase (Modify roles)
+  usecase (Modify settings)
+}
+
+rectangle Forms {
+  usecase (Create and modify)
+}
+
+rectangle Accounts {
+  usecase (Log in)
+  usecase (Steal digital identity)
+}
+
+Administrator -> (Gain admin access)
+Attacker -> (Gain admin access)
+
+User -left-> (Log in)
+
+Attacker -left->  (Steal digital identity)
+Attacker -left-> (Create and modify)
+Attacker -right-> (Modify members)
+Attacker -down-> (Modify roles)
+Attacker -> (Modify settings)
+Attacker -> (Steal user data)
+Attacker -right-> (SQL-injection)
+Attacker -> (DoS-attack)
+
+
+
+
+@enduml
