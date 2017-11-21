@@ -43,13 +43,22 @@ a:hover {
 
 .search-container {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
 }
 
 #group-search {
-    margin-right: 1rem;
+    margin: 0 1rem;
     align-self: flex-end;
-    max-width: 50%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media screen and (min-width: 500px) {
+    #group-search {
+        max-width: 50%;
+    }
 }
 
 #all-groups {
