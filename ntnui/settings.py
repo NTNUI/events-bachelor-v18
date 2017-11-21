@@ -12,12 +12,14 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import environ
+import dj_database_url
+
 
 env = environ.Env(
     EXELINE_USER=(str, ''),
     EXELINE_PASSWORD=(str, ''),
 )
-environ.Env.read_env('.env')
+# environ.Env.read_env('.env')
 
 EXELINE_USER = env('EXELINE_USER')
 EXELINE_PASSWORD = env('EXELINE_PASSWORD')
@@ -35,7 +37,7 @@ SECRET_KEY = 'n0b&@0hxu@r+#z6!w%)(%8q)y7e9i6m19r&htjanialmik6t#3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['tester', 'localhost']
+ALLOWED_HOSTS = ['tester', 'localhost', 'beta.ntnui.no']
 
 
 # Application definition
@@ -107,12 +109,20 @@ DATABASES = {
     }
 }
 """
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'mydatabase',
     }
 }
+
+if os.environ.get('DATABASE_URL'):
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+    print('Using DB from environment variable.')
+else:
+    print('Using default file-based DB.')
 
 AUTH_USER_MODEL = "accounts.User"
 AUTH_GROUPIMAGE_MODEL = "groups.GroupImage"
