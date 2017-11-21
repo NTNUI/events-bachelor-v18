@@ -67,7 +67,7 @@
 
 .top-menu a:hover {
     color: #007D32;
-    border-bottom: 4px solid #017402;
+    border-bottom: 4px solid #007D32;
     opacity: 0.8;
 }
 
@@ -84,7 +84,7 @@
 }
 
 .active-item {
-    border-bottom: 4px solid #017402;
+    border-bottom: 4px solid #007D32;
 }
 
 .no-border {
@@ -97,7 +97,7 @@
 
 .content-table {
     width: 60%;
-    min-height: 6rem;
+    min-height: 3rem;
     background-color: white;
     border: 1px solid #dfdfdf;
     display: flex;
@@ -208,7 +208,7 @@
 }
 
 .group-member-info:hover {
-    border-bottom: 4px solid #017402;
+    border-bottom: 4px solid #007D32;
 }
 
 .group-member-paid {
@@ -232,7 +232,7 @@
 }
 
 .group-member-settings a:hover {
-    border-bottom: 4px solid #017402;
+    border-bottom: 4px solid #007D32;
     opacity: 0.7;
 }
 
@@ -292,7 +292,7 @@
 }
 
 /**
- * DOWLOAD MEMBERS
+ * DOWNLOAD MEMBERS
  */
 
 .download-members {
@@ -360,27 +360,35 @@ REQUEST LIST
  * SETTINGS
  */
 
-.group-settings {
+.group-settings, .no-settings {
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    height: 60px;
+    min-height: 3.75rem;
     box-sizing: border-box;
-    padding: 0 2rem;
+    padding: 0.75rem 2rem;
     margin-bottom: 0;
     border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
 }
 
-.group-settings-description {
-    height: 130px;
-    padding: 0.5rem 2rem;
+.no-settings {
+    justify-content: center;
 }
 
 .group-settings:active {
     opacity: 0.6;
+}
+
+.group-settings span{
+    width: 80%
+}
+
+.group-settings-description {
+    height: 130px;
+    padding: 0.5rem 2rem;
 }
 
 .group-settings-right {
@@ -397,7 +405,7 @@ REQUEST LIST
 
 .group-settings-header {
     color: #606060;
-    padding: 0.5rem 2rem;
+    padding: 0.75rem 1rem;
     border-bottom: 1px solid #f0f0f0;
     font-weight: bold;
 }
