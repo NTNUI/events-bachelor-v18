@@ -195,13 +195,14 @@ def requests(request, slug):
     if request.method == 'POST':
         requestID = request.POST.get("request_id", "")
         result = request.POST.get("result", "")
+        joinRequest = Request.objects.get(pk=requestID)
         if result == "Yes":
-            joinRequest = Request.objects.get(pk=requestID)
             Membership.objects.create(
                 person=joinRequest.person, group=joinRequest.group)
+            messages.success(request, joinRequest.person.email + ' is now a member of your group')
             joinRequest.delete()
         elif result == "No":
-            joinRequest = Request.objects.get(pk=requestID)
+            messages.warning(request, 'You declined the request from ' + joinRequest.person.email)
             joinRequest.delete()
         else:
             raise Http404("Request does not exist")
