@@ -102,7 +102,7 @@ a:hover {
     min-height: 7rem;
     margin-top: 1rem;
     position: relative;
-    align-items: space-between;
+    justify-content: space-between;
 }
 
 .group-card-top-row {
