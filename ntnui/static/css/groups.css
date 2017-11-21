@@ -62,13 +62,18 @@
     align-items: center;
     list-style-type: none;
     height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
 }
 
+.top-menu ul li:nth-child(2n-1) {
+    flex-grow: 1;
+}
+
 .top-menu a {
+    flex-grow: 1;
     height: 52px;
-    width: 160px;
     display: block;
     padding-top: 14px;
     box-sizing: border-box;
