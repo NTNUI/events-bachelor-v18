@@ -143,6 +143,7 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .members-list {
@@ -240,8 +241,8 @@
 }
 
 .group-member-settings img {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
 }
 
 .group-member-settings:hover {
@@ -259,7 +260,6 @@
     height: 48px;
     box-sizing: border-box;
     padding: 0 16px;
-    border-bottom: 1px solid #f0f0f0;
 }
 
 .download-members-button {
@@ -272,7 +272,6 @@
     height: 48px;
     box-sizing: border-box;
     padding: 0 16px;
-    border-bottom: 1px solid #f0f0f0;
 }
 
 .add-new-member:hover {
@@ -283,25 +282,14 @@
     background-color: #f0f0f0;
 }
 
-.add-new-button {
-    background-color: #ffffff;
-    border-radius: 4px;
-    text-align: center;
-    color: #017402;
-    width: 2rem;
-    border: 1px solid #017402;
-    margin-right: 16px;
+.add-new-member-icon{
+    margin-right: 1rem;
+    margin-left: 0.3rem;
 }
 
-.download-button {
-    background-color: #ffffff;
-    border-radius: 4px;
-    text-align: center;
-    color: #017402;
-    width: 2rem;
-    border: 1px solid #017402;
-    margin-right: 16px;
-    padding-left: 2px;
+.download-icon{
+    margin-right: 1rem;
+    margin-left: 0.3rem;
 }
 
 /**
@@ -311,6 +299,9 @@
 .download-members {
     width: 100%;
     padding: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
 .download-members h2 {
