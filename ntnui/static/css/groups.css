@@ -224,10 +224,6 @@
     font-weight: bold;
 }
 
-.group-member-name-header {
-    flex-grow: 1;
-}
-
 .group-column-5 {
     width: 5%;
     word-wrap: break-word;
@@ -258,55 +254,16 @@
     word-wrap: break-word;
 }
 
-.group-member-email-header {
-    flex-grow: 2;
-}
-
-.group-member-paid-header {
-    width: 80px;
-}
-
-.group-member-name {
-    flex-grow: 1;
-}
-
-.group-member-email {
-    flex-grow: 2;
-}
-
-.group-member-info-header {
-    width: 48px;
-}
-
-.group-member-info {
-    text-align: center;
-    width: 48px;
-    height: 48px;
-    line-height: 48px;
-    font-size: 24px;
-}
-
-.group-member-info:hover {
-    border-bottom: 4px solid #017402;
-}
-
-.group-member-paid {
-    text-align: center;
-    width: 48px;
-}
-
 .group-member-settings {
-    font-size: 24px;
-    width: 48px;
-    height: 48px;
+    box-sizing: border-box;
 }
 
 .group-member-settings a {
     display: block;
     height: 100%;
     text-align: center;
-    width: 48px;
     line-height: 48px;
+    height: 48px;
     box-sizing: border-box;
 }
 

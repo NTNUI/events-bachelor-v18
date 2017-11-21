@@ -34,8 +34,8 @@
     <div class="group-column-20">{{ member.person.first_name }} {{ member.person.last_name }}</div>
     <div class="group-column-20">{{ member.person.phone }}</div>
     <div class="group-column-40">{{ member.person.email }}</div>
-    <div class="group-column-5 open-modal" href="/groups/{{ slug }}/ajax/member/{{ member.pk }}">ℹ</div>
-    <div class="group-column-5">
+    <div class="group-column-5 group-member-settings open-modal" href="/groups/{{ slug }}/ajax/member/{{ member.pk }}">ℹ</div>
+    <div class="group-column-5 group-member-settings">
       <a href="{% url 'group_member_settings' slug=slug member_id=member.pk %}">⚙</a>
     </div>
   </div>
