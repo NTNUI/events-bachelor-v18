@@ -248,6 +248,7 @@
 .group-column-40 {
     width: 40%;
     word-wrap: break-word;
+}
 
 .group-column-40 img {
     width: 24px;
@@ -291,12 +292,12 @@
     background-color: #f0f0f0;
 }
 
-.add-new-member-icon{
+.add-new-member-icon {
     margin-right: 1rem;
     margin-left: 0.3rem;
 }
 
-.download-icon{
+.download-icon {
     margin-right: 1rem;
     margin-left: 0.3rem;
 }
