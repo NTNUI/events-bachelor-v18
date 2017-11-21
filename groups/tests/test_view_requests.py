@@ -44,7 +44,7 @@ class ViewRequestMemberTest(GeneralMemberMixin, TestCase):
             'group_requests', kwargs={'slug': 'volleyball'}))
 
     def test_should_not_contain_request_table(self):
-        self.assertNotContains(self.response, 'Can I join?')
+        self.assertNotContains(self.response, 'Accept')
 
     def test_should_not_contain_request_table_content(self):
         self.assertNotContains(

@@ -2,9 +2,14 @@
 
 {% block card %}
   <a class="group-card-all-groups" href="{% url 'forms_read' forms_id=form.id %}">
-    <img class="group-card-image-small" src="{% static 'img/forms.svg' %}"/>
-    <div class="group-card-info">
-      <h1><small>{{ form.name }} ({{ form.group }})<small></h1>
+    <div class="group-card-top-row">
+      <img class="group-card-image" src="{% static 'img/forms.svg' %}"/>
+      <div class="group-card-title">
+        <h2>{{ form.name }} ({{ form.group }})</h2>
+      </div>
+    </div>
+    <div class="group-card-content">
+      <p class="group-card-description">This form needs approval from {{form.needs_approval_from|join:", "}}.</p>
     </div>
   </a>
 {% endblock %}
