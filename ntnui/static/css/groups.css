@@ -18,6 +18,8 @@
     height: 16rem;
     position: relative;
     color: white;
+    background-size: cover;
+    background-position: center;
 }
 
 .group-role {
