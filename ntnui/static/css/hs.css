@@ -3,24 +3,11 @@
  */
 
 .download-members {
-    height:72px;
     width:100%;
     border-width: thin;
     border-left-color: #6c757d;
-    justify-content: center;
 }
 
 .download-members:hover {
     background-color: #f0f0f0;
-}
-
-.download-button {
-    background-color: #ffffff;
-    border-radius: 4px;
-    text-align: center;
-    color: #007D32;
-    width: 32px;
-    border: 1px solid #007D32;
-    margin-right: 16px;
-    padding-left: 2px;
 }

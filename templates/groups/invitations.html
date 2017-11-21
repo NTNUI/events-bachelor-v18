@@ -1,5 +1,7 @@
 {% extends 'groups/group_members_base.html' %}
 
+{% load static %}
+
 {% block table_content %}
     <div class="members-header">
       <div class="group-member-name-header">Name</div>
@@ -9,9 +11,9 @@
     </div>
 
     {% if show_new_invitation %}
-    <a href="{% url 'group_invite_member' slug=slug %}" class="add-new-member">
-      <div class="add-new-button">+</div>
-      <div class="add-new-text">Invite new member</div>
+    <a class="add-new-member" href="{% url 'group_invite_member' slug=slug %}">
+        <img class="add-new-member-icon" src="{% static 'img/invite-icon.svg' %}" alt="Invite member"/>
+        <div class="add-new-text">Invite new member</div>
     </a>
     {% endif %}
 
