@@ -1,5 +1,15 @@
+.group-content {
+    width: 100%;
+}
+
+@media screen and (min-width: 800px) {
+    .group-content {
+        width: 790px;
+    }
+}
+
 .header {
-    width: 60%;
+    width: 100%;
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
@@ -78,7 +88,7 @@
 }
 
 .group-alert {
-    width: 60%;
+    width: 100%;
     margin-bottom: 2rem;
     text-align: center;
 }
@@ -96,7 +106,7 @@
  */
 
 .content-table {
-    width: 60%;
+    width: 100%;
     min-height: 3rem;
     background-color: white;
     border: 1px solid #dfdfdf;
@@ -296,20 +306,20 @@
  */
 
 .download-members {
-  width: 100%;
-  padding: 16px;
+    width: 100%;
+    padding: 16px;
 }
 
 .download-members h2 {
-  padding: 16px 0;
+    padding: 16px 0;
 }
 
 .download-options-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1rem;
 }
 
 /**
