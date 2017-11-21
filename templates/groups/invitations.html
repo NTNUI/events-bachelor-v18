@@ -2,10 +2,10 @@
 
 {% block table_content %}
     <div class="members-header">
-      <div class="group-member-name-header">Name</div>
-      <div class="group-member-phone-header">Phone</div>
-      <div class="group-member-email-header">E-mail</div>
-      <div class="group-member-paid-header"></div>
+      <div class="group-column-20">Name</div>
+      <div class="group-column-20">Phone</div>
+      <div class="group-column-40">E-mail</div>
+      <div class="group-column-10"></div>
     </div>
 
     {% if show_new_invitation %}
@@ -17,10 +17,10 @@
 
     {% for invitation in invitations %}
     <div class="group-table-row">
-      <div class="group-member-name">{{ invitation.person.first_name }} {{ invitation.person.last_name }}</div>
-      <div class="group-member-phone">{{ invitation.person.phone }}</div>
-      <div class="group-member-email">{{ invitation.person.email }}</div>
-      <div class="group-member-paid">
+      <div class="group-column-20">{{ invitation.person.first_name }} {{ invitation.person.last_name }}</div>
+      <div class="group-column-20">{{ invitation.person.phone }}</div>
+      <div class="group-column-40">{{ invitation.person.email }}</div>
+      <div class="group-column-10">
         <form method="POST">
           {% csrf_token %}
           <input type="hidden" name="invitation-id" value="{{ invitation.pk }}" />
