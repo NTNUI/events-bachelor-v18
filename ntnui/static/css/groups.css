@@ -126,23 +126,50 @@
     border-bottom: 1px solid #979797;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
     display: flex;
-    height: 4rem;
+    min-height: 4rem;
     box-sizing: border-box;
     font-weight: bold;
+    flex-wrap: wrap;
 }
 
 .total-tab-active {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 0.9rem;
     font-weight: bold;
+    height: 36px;
 }
 
 .total-tab {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 36px;
+    text-align: center;
+    font-size: 0.9rem;
     font-weight: lighter;
 }
 
+@media screen and (min-width: 500px) {
+    .total-tab-active {
+        font-size: 1rem;
+    }
+
+    .total-tab {
+        font-size: 1rem;
+    }
+}
+
 #member-search {
-    max-width: 40%;
+    flex-grow: 1;
+    width: 40%;
+    display: inline-block;
 }
 
 .download-field {
@@ -165,10 +192,23 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     box-sizing: border-box;
     padding: 0 1rem;
+    font-size: 0.8rem;
     border-bottom: 1px solid #f0f0f0;
+}
+
+@media screen and (min-width: 400px) {
+    .group-table-row {
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .group-table-row {
+        font-size: 1rem;
+    }
 }
 
 .members-header {
@@ -176,7 +216,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     height: 48px;
     box-sizing: border-box;
     padding: 0 16px;
@@ -185,15 +225,36 @@
 }
 
 .group-member-name-header {
-    width: 230px;
+    flex-grow: 1;
 }
 
-.group-member-phone-header {
-    width: 120px;
+.group-column-5 {
+    width: 5%;
+    word-wrap: break-word;
+}
+
+.group-column-10 {
+    width: 10%;
+    word-wrap: break-word;
+}
+
+.group-column-20 {
+    width: 20%;
+    word-wrap: break-word;
+}
+
+.group-column-40 {
+    width: 40%;
+    word-wrap: break-word;
+}
+
+.group-column-50 {
+    width: 50%;
+    word-wrap: break-word;
 }
 
 .group-member-email-header {
-    width: 300px;
+    flex-grow: 2;
 }
 
 .group-member-paid-header {
@@ -201,15 +262,11 @@
 }
 
 .group-member-name {
-    width: 230px;
-}
-
-.group-member-phone {
-    width: 120px;
+    flex-grow: 1;
 }
 
 .group-member-email {
-    width: 300px;
+    flex-grow: 2;
 }
 
 .group-member-info-header {

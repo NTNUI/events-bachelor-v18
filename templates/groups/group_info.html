@@ -33,24 +33,24 @@
       </div>
 
       <div class="members-header">
-        <div class="group-member-name-header">Name</div>
-        <div class="group-member-email-header">E-mail</div>
-        <div class="group-member-phone-header">Role</div>
+        <div class="group-column-20">Name</div>
+        <div class="group-column-50">E-mail</div>
+        <div class="group-column-20">Role</div>
       </div>
 
       {% for core in board_core %}
         <div class="group-table-row">
-          <div class="group-member-name">{{ core.membership.person.first_name }} {{ core.membership.person.last_name }}</div>
-          <div class="group-member-email">{{ core.membership.person.email }}</div>
-          <div class="group-member-phone">{{ core.role }}</div>
+          <div class="group-column-20">{{ core.membership.person.first_name }} {{ core.membership.person.last_name }}</div>
+          <div class="group-column-50">{{ core.membership.person.email }}</div>
+          <div class="group-column-20">{{ core.role }}</div>
         </div>
       {% endfor %}
 
       {% for membership in board_members %}
         <div class="group-table-row">
-          <div class="group-member-name">{{ membership.person.first_name }} {{ membership.person.last_name }}</div>
-          <div class="group-member-email">{{ membership.person.email }}</div>
-          <div class="group-member-phone">{{ membership.role }}</div>
+          <div class="group-column-20">{{ membership.person.first_name }} {{ membership.person.last_name }}</div>
+          <div class="group-column-50">{{ membership.person.email }}</div>
+          <div class="group-column-20">{{ membership.role }}</div>
         </div>
       {% endfor %}
 
