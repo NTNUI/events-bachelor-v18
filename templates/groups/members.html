@@ -6,18 +6,17 @@
 
 
   <div class="download-field">
-      {% if show_new_invitation %}
-      <a href="{% url 'group_invite_member' slug=slug %}" class="add-new-member">
-        <div class="add-new-button">+</div>
+    {% if show_new_invitation %}
+      <a class="add-new-member" href="{% url 'group_invite_member' slug=slug %}">
+        <img class="add-new-member-icon" src="{% static 'img/invite-icon.svg' %}" alt="Invite member"/>
         <div class="add-new-text">Invite new member</div>
       </a>
-      {% endif %}
-      <a href="{% url 'download_members' slug=slug %}" class="download-members-button">
-        <div class="download-button">⇩</div>
-        <div class="add-new-text">Download members list</div>
-      </a>
+    {% endif %}
+    <a class="download-members-button" href="{% url 'download_members' slug=slug %}">
+      <img class="download-icon" src="{% static 'img/download-icon.svg' %}" alt="Download members"/>
+      <div class="add-new-text">Download members list</div>
+    </a>
   </div>
-
 
 {% if show_members %}
   <div class="members-header">
@@ -34,17 +33,21 @@
     <div class="group-column-20">{{ member.person.first_name }} {{ member.person.last_name }}</div>
     <div class="group-column-20">{{ member.person.phone }}</div>
     <div class="group-column-40">{{ member.person.email }}</div>
-    <div class="group-column-5 group-member-settings open-modal" href="/groups/{{ slug }}/ajax/member/{{ member.pk }}">ℹ</div>
+    <div class="group-column-5 group-member-settings open-modal" href="/groups/{{ slug }}/ajax/member/{{ member.pk }}">
+      <img src="{% static 'img/info-icon.svg' %}" alt="Info"/>
+    </div>
     <div class="group-column-5 group-member-settings">
-      <a href="{% url 'group_member_settings' slug=slug member_id=member.pk %}">⚙</a>
+      <a href="{% url 'group_member_settings' slug=slug member_id=member.pk %}">
+        <img src="{% static 'img/settings-icon.svg' %}" alt="Member settings"/>
+      </a>
     </div>
   </div>
-  {% endfor %}
+  {% endfor %}    
 
   <div id="modal-container"></div>
 
-{% endif %}
-
+  {% endif %}
+    
 {% endblock %}
 
 {% block script %}
