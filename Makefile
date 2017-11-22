@@ -42,7 +42,7 @@ build:
 testenv:
 	rm -f mydatabase
 	make migrate
-	docker-compose run web python manage.py loaddata users.json groups.json memberships.json boards.json invitations.json forms.json mainboard.json hs-memberships.json
+	docker-compose run web python manage.py loaddata users.json groups.json memberships.json boards.json invitations.json forms.json mainboard.json hs-memberships.json contracts.json
 
 dokkuenv:
 	python manage.py migrate
