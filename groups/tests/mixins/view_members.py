@@ -32,8 +32,8 @@ class VM_BoardMemberMixin(VM_CoreBoardMemberMixin, GeneralBoardMemberMixin):
     def setUp(self):
         super(VM_BoardMemberMixin, self).setUp()
 
-    def test_should_not_link_to_new_invite(self):
-        self.assertNotContains(self.response, reverse(
+    def test_should_link_to_new_invite(self):
+        self.assertContains(self.response, reverse(
             'group_invite_member', kwargs={'slug': 'volleyball'}))
 
 

@@ -9,6 +9,8 @@ def is_group_member(user, group):
 
 @predicate
 def is_group_board_member(user, group):
+    if group == None:
+        return False
     try:
         membership = group.membership_set.get(person=user)
         board_roles = ["president", "vice_president", "cashier"]
