@@ -43,7 +43,7 @@ class VR_GroupLeaderMixin(VR_CoreBoardMemberMixin, GeneralGroupLeaderMixin):
             'group_requests', kwargs={'slug': 'volleyball'}))
 
     def test_should_contain_request_table(self):
-        self.assertContains(self.response, 'Can I join?')
+        self.assertContains(self.response, 'Accept')
 
     def test_should_contain_request_table_content(self):
         self.assertContains(

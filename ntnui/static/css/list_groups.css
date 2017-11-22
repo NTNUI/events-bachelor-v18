@@ -28,7 +28,7 @@ a:hover {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .group-header {
@@ -43,13 +43,22 @@ a:hover {
 
 .search-container {
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
 }
 
 #group-search {
-    margin-right: 1rem;
+    margin: 0 1rem;
     align-self: flex-end;
-    max-width: 50%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media screen and (min-width: 500px) {
+    #group-search {
+        max-width: 50%;
+    }
 }
 
 #all-groups {
@@ -68,11 +77,17 @@ a:hover {
     display: flex;
     flex-direction: row;
     border: solid 1px #dfdfdf;
-    width: 49%;
     min-height: 8rem;
+    width: 100%;
     margin-top: 1rem;
     position: relative;
     align-items: center;
+}
+
+@media screen and (min-width: 400px) {
+    .group-card-my-groups {
+        max-width: 380px;
+    }
 }
 
 .group-card-all-groups {
@@ -81,29 +96,20 @@ a:hover {
     background-color: white;
     box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     border: solid 1px #dfdfdf;
     width: 100%;
     min-height: 7rem;
-    max-height: 7rem;
     margin-top: 1rem;
     position: relative;
-    align-items: center;
+    justify-content: space-between;
 }
 
-.group-card-all-groups-expanded {
-    padding: 1rem 1rem;
-    box-sizing: border-box;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(50, 50, 93, 0.1);
+.group-card-top-row {
     display: flex;
     flex-direction: row;
-    border: solid 1px #dfdfdf;
-    width: 100%;
-    min-height: 10rem;
-    max-height: 10rem;
-    margin-top: 1rem;
-    position: relative;
+    margin-bottom: 8px;
+    height: 36px;
     align-items: center;
 }
 
@@ -112,40 +118,29 @@ a:hover {
 }
 
 .group-card-image {
-    min-width: 100px;
-    max-height: 6rem;
-    width: 6rem;
-    height: 6rem;
+    width: 2rem;
+    height: 2rem;
+    margin-right: 1rem;
 }
 
-.group-card-image-small {
-    max-height: 5rem;
-    width: 5rem;
-    height: 5rem;
+.group-card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
 }
 
-.group-card-info {
-    color: black;
-    padding-left: 1.5rem;
-    padding-right: 4.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    overflow: hidden;
-    width: 100%;
-}
+@media screen and (min-width: 500px) {
+    .group-card-title {
+        font-size: 2rem;
+    }
 
-.group-card-info-expanded {
-    color: black;
-    padding-left: 1.5rem;
-    padding-right: 4.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    overflow: hidden;
-    width: 100%;
+    .group-card-top-row {
+        height: 4rem;
+    }
+
+    .group-card-image {
+        width: 4rem;
+        height: 4rem;
+    }
 }
 
 .group-card-description {
@@ -164,6 +159,7 @@ a:hover {
 
 .group-card-read-more {
     align-self: flex-start;
+    margin-top: 0.5rem;
     color: green;
 }
 
@@ -173,7 +169,7 @@ a:hover {
 }
 
 .group-card-read-more-hidden {
-    visibility: hidden;
+    display: none;
 }
 
 .group-card-open {

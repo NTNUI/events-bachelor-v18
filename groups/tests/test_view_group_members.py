@@ -56,7 +56,7 @@ class MemberTest(GeneralMemberMixin, TestCase):
             self.response, 'You do not have permissions to see this.')
 
     def test_download_button_exists(self):
-        self.assertContains(self.response, '<div class="download-button">', 0)
+        self.assertContains(self.response, '<img class="download-icon"', 0)
 
     def test_should_not_link_to_inviations(self):
         self.assertNotContains(self.response, reverse(
@@ -88,4 +88,4 @@ class PresidentTest(VM_GroupLeaderMixin, TestCase):
         super(PresidentTest, self).setUp()
 
     def test_download_button_exists(self):
-        self.assertContains(self.response, '<div class="download-button">', 1)
+        self.assertContains(self.response, '<img class="download-icon"', 1)

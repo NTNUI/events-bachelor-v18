@@ -15,4 +15,4 @@ class VA_CoreMemberMixin(object):
             self.response, 'NTNUI Volleyball is one of the largest groups within NTNUI')
 
     def test_total_count_board_members(self):
-        self.assertContains(self.response, '<div class="group-member-name"', 3)
+        self.assertContains(self.response, '<div class="group-table-row"', 3)

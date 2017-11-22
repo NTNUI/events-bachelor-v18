@@ -10,21 +10,23 @@
     </a>
   {% else %}
     <div class="group-card-all-groups">
-      <a href={% url 'group_index' slug=group.slug %}>
-          <img class="group-card-image" src="{% static group.thumbnail %}"/>
-      </a>
-      <div class="group-card-info">
+      <div class="group-card-top-row">
         <a href={% url 'group_index' slug=group.slug %}>
-          <h2>{{ group.name }}</h2>
+            <img class="group-card-image" src="{% static group.thumbnail %}"/>
         </a>
-          <p class="group-card-description">{{ group.description }}</p>
-          <div class="group-card-read-more group-card-read-more-hidden">Read more</div>
+        <a class="group-card-title" href={% url 'group_index' slug=group.slug %}>
+          {{ group.name }}
+        </a>
+        {% if group.public %}
+          <div class="group-card-open">Open</div>
+        {% else %}
+          <div class="group-card-open">Restricted</div>
+        {% endif %}
       </div>
-      {% if group.public %}
-        <div class="group-card-open">Open</div>
-      {% else %}
-        <div class="group-card-open">Restricted</div>
-      {% endif %}
+      <div class="group-card-content">
+        <p class="group-card-description">{{ group.description }}</p>
+        <div class="group-card-read-more group-card-read-more-hidden">Read more</div>
+      </div>
     </div>
   {% endif %}
 {% endblock %}

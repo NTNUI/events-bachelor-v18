@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+  <div class="group-content">
 
   <div class="header">
     <div class="header-jumbo">
@@ -19,6 +20,7 @@
     <div class="top-menu">
       <ul>
         <li><a href="{% url 'all_members' %}" class="{% if active_tab == 'all_members' %}active-item{% endif %}">All members</a></li>
+        <li><div class="vert-divider"></div></li>
         <li><a href="{% url 'hs_settings' %}" class="{% if active_tab == 'hs_settings' %}active-item{% endif %}">Settings</a></li>
       </ul>
     </div>
@@ -27,5 +29,5 @@
   {% block hs_content %}
   {% endblock %}
 
-
+  </div>
 {% endblock content %}

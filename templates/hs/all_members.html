@@ -2,6 +2,8 @@
 
 {% load hs_template %}
 
+{% load static %}
+
 {% block hs_content %}
 
   {% load static %}
@@ -17,7 +19,7 @@
         member{{ total_members|pluralize }}</div>
     </div>
     <a href="{% url 'download_all_members' %}" class="download-members">
-      <div class="download-button">⇩</div>
+      <img class="download-icon" src="{% static 'img/download-icon.svg' %}" alt="Download members"/>
       <div class="add-new-text">Download NTNUI members list</div>
     </a>
   </div>
