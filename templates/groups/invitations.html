@@ -3,32 +3,35 @@
 {% load static %}
 
 {% block table_content %}
-    <div class="members-header">
-      <div class="group-column-20">Name</div>
-      <div class="group-column-20">Phone</div>
-      <div class="group-column-40">E-mail</div>
-      <div class="group-column-10"></div>
-    </div>
 
-    {% if show_new_invitation %}
+  {% if show_new_invitation %}
     <a class="add-new-member" href="{% url 'group_invite_member' slug=slug %}">
-        <img class="add-new-member-icon" src="{% static 'img/invite-icon.svg' %}" alt="Invite member"/>
-        <div class="add-new-text">Invite new member</div>
+      <img class="add-new-member-icon" src="{% static 'img/invite-icon.svg' %}"
+           alt="Invite member"/>
+      <div class="add-new-text">Invite new member</div>
     </a>
-    {% endif %}
+  {% endif %}
 
-    {% for invitation in invitations %}
+  <div class="members-header">
+    <div class="group-column-20">Name</div>
+    <div class="group-column-20">Phone</div>
+    <div class="group-column-40">E-mail</div>
+    <div class="group-column-10"></div>
+  </div>
+
+  {% for invitation in invitations %}
     <div class="group-table-row">
-      <div class="group-column-20">{{ invitation.person.first_name }} {{ invitation.person.last_name }}</div>
+      <div
+          class="group-column-20">{{ invitation.person.first_name }} {{ invitation.person.last_name }}</div>
       <div class="group-column-20">{{ invitation.person.phone }}</div>
       <div class="group-column-40">{{ invitation.person.email }}</div>
       <div class="group-column-10">
         <form method="POST">
           {% csrf_token %}
-          <input type="hidden" name="invitation-id" value="{{ invitation.pk }}" />
-          <input type="submit" value="Withdraw" class="btn-withdraw" name="withdraw-invitation" />
+          <input type="hidden" name="invitation-id" value="{{ invitation.pk }}"/>
+          <input type="submit" value="Withdraw" class="btn-withdraw" name="withdraw-invitation"/>
         </form>
       </div>
     </div>
-    {% endfor %}
+  {% endfor %}
 {% endblock %}
