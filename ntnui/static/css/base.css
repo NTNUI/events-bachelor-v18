@@ -49,8 +49,12 @@ a:hover {
     border-radius: 0;
 }
 
-.btn {
+.btn, .modal {
     border-radius: 0.15rem;
+}
+
+.btn:disabled {
+    cursor: default;
 }
 
 .dropdown-menu {
@@ -72,15 +76,11 @@ a:hover {
     border: 0
 }
 
-.btn:disabled {
-    cursor: default;
-}
-
 /*
  * Responsive design CSS
 */
 
-.content-pane {
+.content-pane { /* TODO: find the reference and remove this rule */
     width: 60%;
     max-width: 60%;
     min-height: 100px;
