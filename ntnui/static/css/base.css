@@ -57,6 +57,21 @@ a:hover {
     border-radius: 0;
 }
 
+#logged-in-as {
+    font-size: 0.75rem;
+    display: block;
+    width: 100%;
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    cursor: default;
+    background: 0 0;
+    border: 0
+}
+
 .btn:disabled {
     cursor: default;
 }
@@ -76,7 +91,7 @@ a:hover {
     margin-bottom: 32px;
 }
 
-@media (min-width: 1200px){
+@media (min-width: 1200px) {
     .container {
         max-width: 900px;
     }
