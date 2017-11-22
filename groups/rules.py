@@ -53,3 +53,4 @@ add_perm('groups.can_leave_group', (~is_group_leader  # pylint:disable=invalid-u
                                     & ~is_group_vp  # pylint:disable=invalid-unary-operand-type # noqa
                                     & ~is_group_cashier)  # pylint:disable=invalid-unary-operand-type # noqa
          & is_group_member)
+add_perm('groups.can_download', is_group_board_member)

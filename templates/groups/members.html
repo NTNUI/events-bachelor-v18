@@ -10,12 +10,13 @@
         <img class="add-new-member-icon" src="{% static 'img/invite-icon.svg' %}" alt="Invite member"/>
         <div class="add-new-text">Invite new member</div>
       </a>
-
     {% endif %}
-    <a class="download-members-button" href="{% url 'download_members' slug=slug %}">
-      <img class="download-icon" src="{% static 'img/download-icon.svg' %}" alt="Download members"/>
-      <div class="add-new-text">Download members list</div>
-    </a>
+    {% if show_download %}
+      <a class="download-members-button" href="{% url 'download_members' slug=slug %}">
+        <img class="download-icon" src="{% static 'img/download-icon.svg' %}" alt="Download members"/>
+        <div class="add-new-text">Download members list</div>
+      </a>
+    {% endif %}
   </div>
 
 {% if show_members %}

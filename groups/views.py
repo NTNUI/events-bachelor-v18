@@ -10,6 +10,8 @@ from datetime import date
 from accounts.models import Contract
 from ntnui.decorators import is_board
 
+YEAR_MEMBERSHIPS = ["10", "359", "483"]
+
 
 def get_base_group_info(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
@@ -32,6 +34,7 @@ def get_base_group_info(request, slug):
         'show_group_settings': request.user.has_perm('groups.can_see_group_settings', group),
         'show_leave_button': request.user.has_perm('groups.can_leave_group', group),
         'show_forms': request.user.has_perm('groups.can_see_forms', group),
+        'show_download': request.user.has_perm('groups.can_download', group)
     }
 
 
@@ -214,6 +217,7 @@ def requests(request, slug):
 
 
 @login_required
+@is_board
 def download_members(request, slug):  # TODO: add permissions
     if request:
         pass
@@ -229,7 +233,7 @@ def download_members(request, slug):  # TODO: add permissions
     current_year = date.today().year
     first_contract_year = current_year
     for contract in contracts:
-        if (contract.contract_type == "10" and
+        if (contract.contract_type in YEAR_MEMBERSHIPS and
             contract.expiry_date.year - 1 < first_contract_year) or \
             (contract.expiry_date.month == 1 and
              contract.expiry_date.year - 1 < first_contract_year):
