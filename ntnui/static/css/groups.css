@@ -405,6 +405,7 @@ REQUEST LIST
 
 .no-settings {
     justify-content: center;
+    color: #d0d0d0;
 }
 
 .group-settings:active {
