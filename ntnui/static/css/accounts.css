@@ -16,20 +16,20 @@
 }
 
 .button-ntnu {
-    background-color: green;
+    background-color: #007D32;
     color: #fff;
 }
 
 .button-ntnu:hover {
-    background-color: #006400;
+    opacity: 0.8;
 }
 
-.reset-password {
-    color: green;
+.reset-password, .reset-password:hover {
+    color: #007D32;
 }
 
 .reset-password:hover {
-    color: #006400;
+    opacity: 0.8;
 }
 
 .card {
