@@ -95,7 +95,7 @@ class BoardChangeForm(forms.Form):
 
     def create_model(self):
         if (self.president and self.vice_president and self.cashier):
-            old_president = Board.objects.get(sports_group=self.group).president
+            old_president = self.group.active_board.president
 
             model = BoardChange.create(self.group, old_president,
                                        self.president, self.vice_president, self.cashier)
