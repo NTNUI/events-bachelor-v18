@@ -20,10 +20,12 @@
     {% endfor %}
   {% else %}
     <a class="group-card-all-groups">
-      <img class="group-card-image-small" src="{% static 'img/sun.svg' %}"/>
+      <div class="group-card-top-row">
+      <img class="group-card-image" src="{% static 'img/sun.svg' %}"/>
+      <h2>No forms</h2>
+      </div>
       <div class="group-card-info">
-        <h2>No forms</h2>
-        <p>Yay! You have no forms that needs you approval. Go out and enjoy your day. </p>
+        <p>You have no forms that needs you approval. Go out and enjoy your day. </p>
       </div>
     </a>
   {% endif %}

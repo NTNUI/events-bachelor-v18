@@ -8,22 +8,22 @@
       </div>
       <form method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
-        <div class="group-settings-header">Admittance options</div>
+        <div class="group-settings-header">Admittance Options</div>
         <label class="group-settings form-check">
-          <span><b>Open:</b> people can join and leave the group as they please</span>
+          <span><b>Open:</b> People can join and leave the group as they please.</span>
           <input type="radio" class="group-settings-public-check"
                  name="public" value="True"
                  {% if group.public %}checked{% endif %}/>
         </label>
         <label class="group-settings form-check">
-          <span><b>Restricted:</b> people have to request access to the group, which then has to be
-            approved by someone in the group board</span>
+          <span><b>Restricted:</b> People have to request access to the group, which then has to be
+            approved by someone in the group board.</span>
           <input type="radio" class="group-settings-public-check"
                  name="public" value="False"
                  {% if not group.public %}checked{% endif %}/>
         </label>
 
-        <div class="group-settings-header">Group description</div>
+        <div class="group-settings-header">Group Description</div>
         <label class="group-settings group-settings-description">
           Description
           <textarea name="description" class="group-settings-textarea"
@@ -31,11 +31,11 @@
                     maxlength="200">{{ group.description }}</textarea>
         </label>
 
-        <div class="group-settings-header">Group images</div>
+        <div class="group-settings-header">Group Images</div>
         <label class="group-settings">Thumbnail (100x100)
           <input type="file" name="thumbnail" class="group-settings-input" accept="image/*"/>
         </label>
-        <label class="group-settings">Cover photo (790x260)
+        <label class="group-settings">Cover Photo (790x260)
           <input type="file" name="cover_photo" class="group-settings-input" accept="image/*"/>
         </label>
 
@@ -60,7 +60,7 @@
       </form>
     {% else %}
       <div class="no-settings">
-        Board members cannot leave the group
+        Board members cannot leave the group.
       </div>
     {% endif %}
   </div>
