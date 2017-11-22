@@ -35,7 +35,7 @@ a:hover {
     margin-top: 2rem;
     margin-left: 1rem;
     text-transform: uppercase;
-    color: green;
+    color: #007D32;
     font-size: 1.5rem;
     max-width: 50%;
     display: inline-block;
@@ -159,12 +159,12 @@ a:hover {
 
 .group-card-read-more {
     align-self: flex-start;
+    color: #007D32;
     margin-top: 0.5rem;
-    color: green;
 }
 
 .group-card-read-more:hover {
-    color: limegreen;
+    opacity: 0.8;
     cursor: pointer;
 }
 
@@ -174,7 +174,7 @@ a:hover {
 
 .group-card-open {
     line-height: 1rem;
-    color: green;
+    color: #007D32;
     position: absolute;
     top: 1.25rem;
     right: 1.5rem;
