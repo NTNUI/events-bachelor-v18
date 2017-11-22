@@ -4,13 +4,9 @@
 {% load form_template %}
 
 {% block table_row %}
-<div class="forms-table-row">
-	<div class="row-content">
-		<div class="form-name">{{ form.name }}</div>
-		<div class="form-description"> {{ form.description }} </div>
-	</div>
-	<div class="button-container">
-      <button type="submit" class="form-button btn btn-success" name="openForm" value="{{ form.name }}">Open</button>
-	</div>
-</div>
+  <div class="group-settings-header">{{ form.name }}</div>
+  <div class="group-settings">{{ form.description }}
+    <button type="submit" class="group-settings-public-check btn btn-success" name="openForm"
+            value="{{ form.name }}">Open</button>
+  </div>
 {% endblock %}
