@@ -172,6 +172,13 @@
     display: inline-block;
 }
 
+#member-search-placeholder{
+    visibility: hidden;
+    flex-grow: 1;
+    width: 40%;
+    display: inline-block;
+}
+
 .download-field {
     display: flex;
     flex-direction: row;

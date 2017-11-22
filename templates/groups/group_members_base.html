@@ -15,10 +15,13 @@
         <a href="{% url 'group_requests' slug=slug %}"
            class="{% if active_tab == 'requests' %}total-tab-active{% else %}total-tab{% endif %}">
           {{ total_requests }} request{{ total_requests|pluralize }}</a>
+      {% if active_tab == 'members' %}
         <input type="text" id="member-search" class="form-control"
                placeholder="Search for group member.." aria-label="Search for group member.." />
+      {% else %}
+        <div id="member-search-placeholder"></div>
+      {% endif %}
       </div>
-
       <div class="members-list">
         {% block table_content %}
         {% endblock %}
