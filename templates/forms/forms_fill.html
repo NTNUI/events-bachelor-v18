@@ -3,42 +3,44 @@
 {% load static %}
 {% load form_template %}
 
-{%  block script %}
-  <script type="text/javascript">window.slug="{{ slug }}";</script>
+{% block script %}
+  <script type="text/javascript">window.slug = "{{ slug }}";</script>
   <script type="text/javascript" src="{% static 'js/forms.js' %}"></script>
-{%  endblock %}
+{% endblock %}
 
 {% block group_content %}
   <div class="content-table">
-      <div class="container-fluid col-xs-10 mb-3">
-      <form method="post" novalidate>
-        {% csrf_token %}
-        <div class="form-fill-header">
-          <div class="form-fill-title">Board Change Form</div>
-          <div class="group-name-class"></div>
-          <div class="form-fill-description">Bruk epost-adressene som er registret på treningsmedlemskapene i Sit</div>
-        </div>
+  <div class="container-fluid col-xs-10 mb-3">
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="form-fill-header">
+      <div class="form-fill-title">Board Change Form</div>
+      <div class="group-name-class"></div>
+      <div class="form-fill-description">Enter the e-mail adresses of the new board members.<br>Use
+        the e-mail addresses which are registered in SiT's database.</div>
+    </div>
 
-          {% for field in form %}
-            <div class="form-group">
-              <label for="{{ field.name }}">{{ field.name|filterLabel }}</label>
-              <input id="{{ field.name }}"
-                class="form-control {% if field.errors %}is-invalid{% endif %}" name="{{ field.name }}"
-                type="{{ field.name|filterType }}" value="{{ field.value }}"
-                placeholder="{{ field.name|filterPlaceholder }}"
-                {{ field|isDisabled }}/>
-              {% if field.errors %}
-                {% for error in field.errors %}
-                  <small id="{{ field.name|add:'_error' }}"
-                  class="form-text text-muted">{{ error }}</small>
-                {% endfor %}
-              {% endif %}
-            </div>
+    {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.name }}">{{ field.name|filterLabel }}</label>
+        <input id="{{ field.name }}"
+               class="form-control {% if field.errors %}is-invalid{% endif %}"
+               name="{{ field.name }}"
+               type="{{ field.name|filterType }}" value="{{ field.value }}"
+               placeholder="{{ field.name|filterPlaceholder }}"
+            {{ field|isDisabled }}/>
+        {% if field.errors %}
+          {% for error in field.errors %}
+            <small id="{{ field.name|add:'_error' }}"
+                   class="form-text text-muted">{{ error }}</small>
           {% endfor %}
-          <div class="col-sm-12 text-center">
-            <button type="submit" class="btn btn-success">Submit form</button>
-          </div>
-        </form>
-        <div>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <div class="col-sm-12 text-center">
+      <button type="submit" class="btn btn-success">Submit form</button>
+    </div>
+  </form>
+  <div>
   </div>
 {% endblock %}

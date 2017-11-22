@@ -172,6 +172,13 @@
     display: inline-block;
 }
 
+#member-search-placeholder{
+    visibility: hidden;
+    flex-grow: 1;
+    width: 40%;
+    display: inline-block;
+}
+
 .download-field {
     display: flex;
     flex-direction: row;
@@ -223,6 +230,11 @@
     padding: 0 16px;
     border-bottom: 1px solid #f0f0f0;
     font-weight: bold;
+}
+
+.group-member-settings{
+    display: flex;
+    justify-content: center;
 }
 
 .group-column-5 {
@@ -361,6 +373,7 @@
     text-transform: uppercase;
     font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
+    cursor: pointer;
 }
 
 /**
@@ -374,7 +387,7 @@ REQUEST LIST
 
 .yes-btn {
     width: 40%;
-    margin-right: 5px;
+    margin-right: 0.25rem;
     border-color: #007D32;
 }
 
@@ -398,6 +411,8 @@ REQUEST LIST
 
 .no-settings {
     justify-content: center;
+    font-size: 0.9rem;
+    color: #d0d0d0;
 }
 
 .group-settings:active {
@@ -529,5 +544,4 @@ REQUEST LIST
 .request-buttons {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
 }

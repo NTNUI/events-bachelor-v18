@@ -113,7 +113,6 @@ def members(request, slug):
 def member_info(request, slug, member_id):
     group = get_object_or_404(SportsGroup, slug=slug)
     can_see_members = request.user.has_perm('groups.can_see_members', group)
-    # TODO: sjekke om man faktisk har tilgang til å se medlemmer, basert på gruppe. Utrygt endepunkt
     try:
         member = Membership.objects.get(pk=member_id)
     except Membership.DoesNotExist:
@@ -122,7 +121,7 @@ def member_info(request, slug, member_id):
         'role': get_group_role(request.user, group),
         'group': group,
         'slug': slug,
-        'show_members': request.user.has_perm('groups.can_see_members', group),
+        'show_members': can_see_members,
         'member': member,
     })
 
@@ -218,7 +217,7 @@ def requests(request, slug):
 
 @login_required
 @is_board
-def download_members(request, slug):  # TODO: add permissions
+def download_members(request, slug):
     if request:
         pass
 
