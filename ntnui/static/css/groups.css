@@ -232,6 +232,11 @@
     font-weight: bold;
 }
 
+.group-member-settings{
+    display: flex;
+    justify-content: center;
+}
+
 .group-column-5 {
     width: 5%;
     word-wrap: break-word;
