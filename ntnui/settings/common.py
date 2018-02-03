@@ -27,6 +27,26 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['tester', 'localhost', 'beta.ntnui.no']
 
+########## GENERAL CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#time-zone
+TIME_ZONE = 'America/Los_Angeles'
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
+LANGUAGE_CODE = 'en-us'
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
+SITE_ID = 1
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
+USE_I18N = True
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
+USE_L10N = True
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
+USE_TZ = True
+########## END GENERAL CONFIGURATION
+
 ##### APP CONFIGURATION
 DJANGO_APPS = [
     # Default Django Apps
@@ -143,21 +163,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.11/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
