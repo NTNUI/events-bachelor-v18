@@ -54,5 +54,4 @@ make start
     * Put into `/usr/local/bin`
 
 ```
-	test
 ```
