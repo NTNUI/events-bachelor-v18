@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^forms/', include('forms.urls')),
     url(r'^groups/', include('groups.urls')),
     url(r'^hs/', include('hs.urls')),
+    url(r'^events', include('events.urls')),
     # url(r'^signup/$', accounts_views.signup, name='signup'),
     url(r'^logout/', auth_views.logout, name='logout'),
     url(r'^login/$', auth_views.LoginView.as_view(
