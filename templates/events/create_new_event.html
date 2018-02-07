@@ -4,8 +4,12 @@
 
     {% block content %}
     <form action="/events/api/create-event" method="POST">{% csrf_token %}
-        First name: <input type="text" name="FirstName" value="Mickey"><br>
-        Last name: <input type="text" name="LastName" value="Mouse"><br>
-        <input type="submit" value="Submit">
+        From date: </br>
+        <input type="date" name="from_date"></br>
+        End date:</br>
+        <input type="date" name="end_date"></br>
+        <input type="checkbox" name="is_host_ntnui"> NTNUI Event</br>
+        <input type="checkbox" name="priority"> Priority</br>
+        <input type="submit" value="Submit"></br>
     </form>
     {% endblock %}
