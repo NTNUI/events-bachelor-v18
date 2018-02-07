@@ -23,5 +23,5 @@ class EventDescription(models.Model):
     name = models.CharField(max_length=100)
     description_text = models.CharField(max_length=500)
     language = models.CharField(max_length=30)
-    event = models.ForeignKey(Events)
+    event = models.ForeignKey(Event)
 
