@@ -31,7 +31,7 @@ class SportsGroup(models.Model):
 
     # Store the currently active board
     active_board = models.ForeignKey('Board', related_name='active_board',
-                                     null=True, on_delete=models.CASCADE)
+                                     null=True, blank=True, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):  # pylint: disable=arguments-differ
         super(SportsGroup, self).save(*args, **kwargs)
