@@ -1,11 +1,19 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect as redirect, HttpResponse
 from events.models import Event, EventDescription
+
+"""Returnees the main page for events
+"""
+
 
 @login_required
 def get_event_page(request):
     return render(request, 'events/events_main_page.html')
+
+
+"""Returnees he page where events are created
+"""
 
 
 @login_required
@@ -13,16 +21,20 @@ def get_create_event_page(request):
     return render(request, 'events/create_new_event.html')
 
 
+"""Creates a new event with the given data
+"""
+
+
 @login_required
 def create_event(request):
     print('Hei!')
     if request.method == "POST":
         # Get prams from post
-        from_date = request.POST.get('from_date')
+        start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
         host = request.POST.get('host')
         name = request.POST.get('name')
-        description = request.POST.get('description')
+        description_text = request.POST.get('description_text')
 
         # Checks if priority is selected
         if request.POST.get('priority') is not None:
@@ -39,14 +51,18 @@ def create_event(request):
 
         # Creates a new entry in the database
         try:
-            event = Event.objects.create(start_date = from_date, end_date = end_date, priority = priority,
-                             is_host_ntnui = is_ntnui)
-            EventDescription.objects.create(name = name, description_text = description, language = "NO",
-                                                               event = event)
+            event = Event.objects.create(start_date = start_date, end_date = end_date, priority = priority,
+                                         is_host_ntnui = is_ntnui)
+            EventDescription.objects.create(name = name, description_text = description_text , language = "NO",
+                                            event = event)
         except Exception as e:
             print(e)
             # return failure
-            return HttpResponse(status=400)
+            return JsonResponse({
+                'message': 'Faild to create event!'},
+                status = 400)
 
     # return success
-    return HttpResponse(status=201)
+    return JsonResponse({
+        'message':'New event successfully created!'},
+         status=201)
