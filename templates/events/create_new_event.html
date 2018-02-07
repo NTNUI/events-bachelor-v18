@@ -3,13 +3,47 @@
     {% block title %}NTNUI - Create events{% endblock %}
 
     {% block content %}
-    <form action="/events/api/create-event" method="POST">{% csrf_token %}
-        From date: </br>
-        <input type="date" name="from_date"></br>
-        End date:</br>
-        <input type="date" name="end_date"></br>
-        <input type="checkbox" name="is_host_ntnui"> NTNUI Event</br>
-        <input type="checkbox" name="priority"> Priority</br>
-        <input type="submit" value="Submit"></br>
-    </form>
+        <h1>Create new event</h1>
+        <form action="/events/api/create-event" method="POST">{% csrf_token %}
+            <div class="form-group row">
+              <label class="col-2 col-form-label">Name:</label>
+              <div class="col-10">
+                <input class="form-control" type="text" name="name">
+              </div>
+            </div>
+              <div class="form-group row">
+                <label class="col-2 col-form-label">Host:</label>
+                  <div class="col-10">
+                    <select class="form-control" name="host">
+                      <option>NTNUI</option>
+                    </select>
+                  </div>
+              </div>
+            <div class="form-group row">
+              <label class="col-2 col-form-label">From date:</label>
+              <div class="col-10">
+                   <input class="form-control" type="datetime-local"  value="" name="from_date">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-2 col-form-label">To date:</label>
+              <div class="col-10">
+                   <input class="form-control" type="datetime-local" value="" name="end_date">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="form-check-label">
+                <input name="priority" type="checkbox" value="True">
+                Priority
+              </label>
+            </div>
+            <div class="form-group row">
+              <label class="col-3 col-form-label">Description:</label>
+              <div class="col-10">
+                  <textarea class="form-control" type="textArea" name="description"></textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-success">Create event!</button>
+        </form>
+
     {% endblock %}
