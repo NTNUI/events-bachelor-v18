@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ntnui',
     'widget_tweaks',
+    'events',
     'accounts',
     'django_nose',
     'hs',
