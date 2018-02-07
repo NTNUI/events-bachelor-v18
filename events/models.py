@@ -7,7 +7,7 @@ If ntnui is host, is_host_ntnui is true, otherwise false.
 """
 
 
-class Events(models.Model):
+class Event(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     priority = models.BooleanField(default=False)
