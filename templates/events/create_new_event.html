@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+    {% block title %}NTNUI - Create events{% endblock %}
+
+    {% block content %}
+    <form action="/events/api/create-event" method="POST">{% csrf_token %}
+        First name: <input type="text" name="FirstName" value="Mickey"><br>
+        Last name: <input type="text" name="LastName" value="Mouse"><br>
+        <input type="submit" value="Submit">
+    </form>
+    {% endblock %}

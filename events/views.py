@@ -4,3 +4,14 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def get_event_page(request):
     return render(request, 'events/events_main_page.html')
+
+@login_required
+def get_create_event_page(request):
+    return render(request, 'events/create_new_event.html')
+
+@login_required
+def create_event(request):
+    print('Hei!')
+    if request.method == "POST":
+        print('Something!')
+    
