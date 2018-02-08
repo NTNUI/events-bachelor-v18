@@ -10,9 +10,14 @@ from django.contrib.auth import views as auth_views
 
 from accounts import views as accounts_views
 from groups import views as groups_views
+from django.conf.urls.i18n import i18n_patterns
+from django.utils.translation import ugettext_lazy as _
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
+]
+urlpatterns += i18n_patterns(
+    url(_(r'^admin/'), admin.site.urls),
     url(r'^ajax/', include('forms.ajax')),
     url(r'^$', groups_views.list_groups, name='home'),
     url(r'^forms/', include('forms.urls')),
@@ -53,4 +58,4 @@ urlpatterns = [
         name='add_all_users_from_exeline'),
     url(r'^cron/accounts/lastday$', accounts_views.add_last_week_users_from_exeline,
         name='add_last_week_users_from_exeline'),
-]
+)
