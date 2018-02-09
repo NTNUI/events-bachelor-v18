@@ -20,8 +20,8 @@ before_script:
 
 script:
   - make style
-  - make test
-  - make browser-tests
+  - make docker_test
+  - make docker_browser_test
 
 after_script:
   - docker-compose down
