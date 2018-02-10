@@ -21,9 +21,11 @@ def get_create_event_page(request):
 """
 @login_required
 def create_event(request):
-    print('Hei!')
     if request.method == "POST":
-        return create_database_entry_for_event_from_post(request)
+        entry_created = create_database_entry_for_event_from_post(request)
+        if entry_created:
+            return JsonResponse({'message': 'New event successfully created!'},
+                                status=201)
     return JsonResponse({
         'message': 'Failed to create event!'},
         status=400)
@@ -35,7 +37,7 @@ def create_database_entry_for_event_from_post(request):
     description_text, end_date, host, name, start_date = get_params_from_post(request)
     priority = priority_is_selected(request)
     is_ntnui = ntnui_is_host(host)
-    create_and_validate_database_entry(description_text, end_date, is_ntnui, name, priority, start_date)
+    return create_and_validate_database_entry(description_text, end_date, is_ntnui, name, priority, start_date)
 
 
 """ Returns parameters from POST message.
@@ -81,7 +83,5 @@ def create_and_validate_database_entry(description_text, end_date, is_ntnui, nam
                                         event=event)
     except Exception as e:
         print(e)
-        return
-    return JsonResponse({
-        'message': 'New event successfully created!'},
-        status=201)
+        return False
+    return True
