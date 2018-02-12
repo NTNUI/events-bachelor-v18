@@ -1,7 +1,7 @@
 {% load static %}
 {% load tags %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>{% block title %}NTNUI{% endblock %}</title>
   <link rel="icon" href="{% static 'img/ntnui-icon.png'%}" />
@@ -49,6 +49,13 @@
                 <p>Groups</p>
             </a>
           </li>
+            <li>
+            <a class="link-with-icon" href="/events">
+                <span class="oi oi-person"></span>
+                <img src="{% static 'img/calendar.svg' %}" alt="events icon" />
+                <p>Events</p>
+            </a>
+          </li>
           <li class="nav-item dropdown">
             <a
               class="link-with-icon"
@@ -76,6 +83,7 @@
   </nav>
 
   <div class="content">
+
     <!--<ol class="breadcrumb my-4">
       {% block breadcrumb %}
       {% endblock %}
