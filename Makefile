@@ -3,7 +3,7 @@
 APPDIR := $(subst /, , $(subst  ./ntnui/apps/, , $(filter-out ./ntnui/apps/,$(dir $(wildcard ./ntnui/apps/*/)))))
 JSONDATA := users.json groups.json memberships.json boards.json invitations.json forms.json mainboard.json hs-memberships.json contracts.json
 JSONDOKKU := users.json groups.json memberships.json boards.json invitations.json forms.json mainboard.json hs-memberships.json
-DATABASE := mydatabase
+DATABASE := dev_database.db
 
 #---- END VARIABLES ----#
 
@@ -33,6 +33,7 @@ HELP_COMM = \
     }
 
 help:
+	@-clear
 	@perl -e '$(HELP_COMM)' $(MAKEFILE_LIST)
 
 #---- END HELP COMMANDS ----#
@@ -68,6 +69,12 @@ docker_stop: ##@Docker (stop) Stop the running containers
 docker_superuser: ##@Docker Create a superuser (details found in settings/common.py)
 	@-docker-compose run web python manage.py createsuperuser
 
+docker_app: ##@Docker Create a new app. 
+	@read -p "Enter app name: " app; \
+	mkdir ntnui/apps/$$app; \
+	docker-compose run web python manage.py startapp $$app ntnui/apps/$$app
+	@echo "App successfully created. Make sure you add it to the LOCAL_APPS in settings/common.py"
+
 #---- END DOCKER INSTALL COMMANDS ----#
 
 #----- TEST ENVIRONMENT COMMANDS ----#
@@ -95,7 +102,7 @@ dev_dumpdata:
 	@-docker-compose run web python manage.py dumpdata --format=json --exclude auth.permission >  ntnui/fixtures/initial_data.json
 
 docker_test: ##@Test (test) Run all docker-tests (this does not include browser-tests)
-	@-docker-compose run web python manage.py test # Run the test suite (details found in settings/common.py)
+	$(foreach app,$(filter-out __pycache__, $(APPDIR)), docker-compose run web python manage.py test $(app);)  # Run the test suite (details found in settings/common.py)
 	@-make docker_stop
 
 docker_browser_test: ##@Test (btest) Run all browser-tests in docker
