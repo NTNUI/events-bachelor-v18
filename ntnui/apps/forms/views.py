@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from .forms import BoardChangeForm
 from .models import BoardChange
 from groups.views import get_base_group_info
-from ntnui.decorators import is_member, is_board
+from accounts.decorators import is_member, is_board
 
 
 @login_required

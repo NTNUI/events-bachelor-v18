@@ -5,7 +5,7 @@ from datetime import date
 import csv
 from .models import Membership, SportsGroup
 from accounts.models import Contract
-from ntnui.decorators import is_board
+from accounts.decorators import is_board
 
 YEAR_MEMBERSHIPS = [10, 359, 483]
 HALF_YEAR_MEMBERSHIPS = [20, 485]
@@ -19,7 +19,6 @@ class Echo(object):
     def write(self, value):
         """Write the value by returning it, instead of storing in a buffer."""
         return value
-
 
 @login_required
 @is_board
