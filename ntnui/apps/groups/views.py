@@ -8,7 +8,7 @@ from .forms import NewInvitationForm, SettingsForm, JoinOpenGroupForm, JoinPriva
 from .helpers import get_group_role
 from datetime import date
 from accounts.models import Contract
-from ntnui.decorators import is_board
+from accounts.decorators import is_board
 
 YEAR_MEMBERSHIPS = ["10", "359", "483"]
 

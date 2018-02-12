@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from hs.forms import SettingsForm
 from django.contrib import messages
 from groups.models import Membership
-from ntnui.decorators import is_main_board
+from accounts.decorators import is_main_board
 
 
 def get_base_hs_info():
