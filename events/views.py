@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from events.models import Event, EventDescription
+from django.utils.translation import gettext as _
 
 """Returnees the main page for events
 """
@@ -27,7 +28,6 @@ def get_create_event_page(request):
 
 @login_required
 def create_event(request):
-    print('Hei!')
     if request.method == "POST":
         # Get prams from post
         start_date = request.POST.get('start_date')
@@ -59,10 +59,10 @@ def create_event(request):
             print(e)
             # return failure
             return JsonResponse({
-                'message': 'Faild to create event!'},
+                'message': _('Faild to create event!')},
                 status = 400)
 
     # return success
     return JsonResponse({
-        'message':'New event successfully created!'},
+        'message': _('New event successfully created!')},
          status=201)
