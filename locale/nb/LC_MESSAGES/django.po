@@ -1,0 +1,107 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-02-12 21:51+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\accounts\models.py:14
+msgid "customer no"
+msgstr "Kunde id"
+
+#: .\accounts\models.py:15
+msgid "email address"
+msgstr "epost adresse"
+
+#: .\accounts\models.py:16
+msgid "first name"
+msgstr "fornavn"
+
+#: .\accounts\models.py:17
+msgid "last name"
+msgstr "etternavn"
+
+#: .\accounts\models.py:18
+msgid "date joined"
+msgstr "Medlem siden"
+
+#: .\accounts\models.py:19
+msgid "active"
+msgstr "akrivert"
+
+#: .\accounts\models.py:20
+msgid "phone number"
+msgstr "mobilnr"
+
+#: .\accounts\models.py:23
+msgid "staff status"
+msgstr "ansatt status"
+
+#: .\accounts\models.py:25
+msgid "Designates whether the user can log into this site."
+msgstr "Bestemmer om brukeren kan logge inn opå denne siden"
+
+#: .\accounts\models.py:37
+msgid "user"
+msgstr "bruker"
+
+#: .\accounts\models.py:38
+msgid "users"
+msgstr "brukere"
+
+#: .\forms\forms.py:37
+msgid "Group does not exist"
+msgstr "Gruppen finnes ikke"
+
+#: .\forms\forms.py:50
+msgid "{} does not belong to {}"
+msgstr ""
+
+#: .\forms\forms.py:53
+msgid "{} not found"
+msgstr ""
+
+#: .\forms\forms.py:55
+msgid "This email does not exist in the database"
+msgstr ""
+
+#: .\forms\forms.py:71
+msgid "The president email field is empty"
+msgstr ""
+
+#: .\forms\forms.py:83
+msgid "The vice president email field is empty"
+msgstr ""
+
+#: .\forms\forms.py:94
+msgid "The cashier email field is empty"
+msgstr ""
+
+#: .\templates\events\create_new_event.html:10
+msgid "Create new event:"
+msgstr "Lag nytt arrangement"
+
+#: .\templates\events\create_new_event.html:13
+msgid "Name"
+msgstr "Navn"
+
+#: .\templates\events\create_new_event.html:19
+msgid "Host"
+msgstr "Arrangør"
+
+#: .\templates\events\create_new_event.html:27
+msgid "Start date:"
+msgstr "Start dato"
