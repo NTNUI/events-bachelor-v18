@@ -1,16 +1,5 @@
 import os
 import sys
-import environ
-import dj_database_url
-
-env = environ.Env(
-    EXELINE_USER=(str, ''),
-    EXELINE_PASSWORD=(str, ''),
-)
-# environ.Env.read_env('.env')
-
-EXELINE_USER = env('EXELINE_USER')
-EXELINE_PASSWORD = env('EXELINE_PASSWORD')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,35 +8,15 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'n0b&@0hxu@r+#z6!w%)(%8q)y7e9i6m19r&htjanialmik6t#3'
+# TODO: Fix this before deployment - See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
+SECRET_KEY = 'cpivc$!*6-)c(u4k+bw-+cv*j1omilwt)#@#dezn6jb%m)j$y+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['tester', 'localhost', 'beta.ntnui.no']
+ALLOWED_HOSTS = []
 
-########## GENERAL CONFIGURATION
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#time-zone
-TIME_ZONE = 'America/Los_Angeles'
-
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = 'en-us'
-
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
-SITE_ID = 1
-
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
-USE_I18N = True
-
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
-USE_L10N = True
-
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
-USE_TZ = True
-########## END GENERAL CONFIGURATION
-
-##### APP CONFIGURATION
+##### APP CONFIGURATION #####
 DJANGO_APPS = [
     # Default Django Apps
     'django.contrib.auth',
@@ -67,16 +36,15 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    'groups',
     'accounts',
     'hs',
+    'groups',
     'forms',
 ]
 
 INSTALLED_APPS  = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
-##### END APP CONFIGURATION
+##### END APP CONFIGURATION #####
 
-##### MIDDLEWARE CONFIGURATION
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -86,14 +54,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-##### END MIDDLEWARE CONIFGURATION
 
 ROOT_URLCONF = 'ntnui.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['./templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,37 +68,19 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.media',
             ],
         },
     },
 ]
 
-AUTHENTICATION_BACKENDS = (
-    'rules.permissions.ObjectPermissionBackend',
-    'django.contrib.auth.backends.ModelBackend',
-)
-
 WSGI_APPLICATION = 'wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'HOST': 'db',
-        'PORT': 5432,
-    }
-}
-"""
+##### DATABASE CONFIGURATION #####
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mydatabase.db',
+        'NAME': os.path.join(BASE_DIR, 'dev_database.db'),
     }
 }
 
@@ -142,11 +91,9 @@ if os.environ.get('DATABASE_URL'):
 else:
     print('Using default file-based DB.')
 
-AUTH_USER_MODEL = "accounts.User"
-AUTH_GROUPIMAGE_MODEL = "groups.GroupImage"
+##### END DATABASE CONFIGURATION #####
 
-# Password validation
-# https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
+##### AUTHENTICATION CONFIGURATION #####
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -163,15 +110,43 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.11/howto/static-files/
+AUTH_USER_MODEL = "accounts.User"
+AUTH_GROUPIMAGE_MODEL = "groups.GroupImage"
 
-STATIC_URL = '/static/'
+AUTHENTICATION_BACKENDS = (
+    'rules.permissions.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+##### END AUTHENTICATION CONFIGURATION #####
+
+# Internationalization
+# https://docs.djangoproject.com/en/1.11/topics/i18n/
+
+LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'UTC'
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
+##### STATIC FILE CONFIGURATION #####
+
+STATIC_URL = '/ntnui/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+MEDIA_URL = 'ntnui/static/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'ntnui/static')
+
+##### END STATIC FILE CONFIGURATION #####
+
+##### LOGIN CONFIGURATION #####
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'
@@ -181,15 +156,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DUMMY_USER_EMAIL = 'todd.packer@online.com'
 DUMMY_USER_PASSWORD = 'locoloco'
 
+##### END LOGIN CONFIGURATION #####
+
+##### TEST CONFIGURATION #####
 # Use nose to run all tests
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-# Tell nose to measure coverage on the 'foo' and 'bar' apps
-NOSE_ARGS = [
-    '--with-coverage',
-    '--cover-package=groups, forms, accounts',
-]
-
-# MEDIA
-MEDIA_URL = '/static/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'ntnui/static')
+#NOSE_ARGS = [
+#    '--with-coverage',
+#    '--cover-package=groups, forms, accounts',
+#]
+##### END TEST CONFIGURATION #####
