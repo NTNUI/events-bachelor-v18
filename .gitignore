@@ -5,3 +5,4 @@ mydatabase
 geckodriver.log
 .coverage
 .env
+.vscode
