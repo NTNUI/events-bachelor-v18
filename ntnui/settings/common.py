@@ -71,7 +71,6 @@ LOCAL_APPS = [
     'accounts',
     'hs',
     'forms',
-    'ntnui'
 ]
 
 INSTALLED_APPS  = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -113,7 +112,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-WSGI_APPLICATION = 'ntnui.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -174,11 +173,8 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = 'home'
-
 LOGIN_URL = 'login'
-
 LOGOUT_REDIRECT_URL = 'login'
-
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # USER settings

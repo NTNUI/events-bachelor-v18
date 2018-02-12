@@ -91,6 +91,9 @@ dev_clean_migrations: ##@TestEnv Delete all migration files
 dev_loaddata:
 	@-docker-compose run web python manage.py loaddata $(JSONDATA)
 
+dev_dumpdata:
+	@-docker-compose run web python manage.py dumpdata --format=json --exclude auth.permission >  ntnui/fixtures/initial_data.json
+
 docker_test: ##@Test (test) Run all docker-tests (this does not include browser-tests)
 	@-docker-compose run web python manage.py test # Run the test suite (details found in settings/common.py)
 	@-make docker_stop
