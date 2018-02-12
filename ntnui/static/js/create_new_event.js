@@ -6,7 +6,7 @@ $(() => {
         const postData = $('#create-event-form').serialize()
         $.ajax({
             type: 'POST',
-            url: '/events/api/create-event',
+            url: '/ajax/events/add-event',
             data: postData,
             success: (data) => {
                 //show success alert

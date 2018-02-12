@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-12 22:11+0100\n"
+"POT-Creation-Date: 2018-02-12 22:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,13 +62,13 @@ msgstr "bruker"
 msgid "users"
 msgstr "brukere"
 
-#: .\events\views.py:62
-msgid "Faild to create event!"
-msgstr "Klarte ikke opprette arrangement"
-
-#: .\events\views.py:67
+#: .\events\views.py:28
 msgid "New event successfully created!"
 msgstr "Nytt arrangement opprettet suksessfullt"
+
+#: .\events\views.py:31
+msgid "Failed to create event!"
+msgstr "Klarte ikke opprette arrangement"
 
 #: .\forms\forms.py:37
 msgid "Group does not exist"

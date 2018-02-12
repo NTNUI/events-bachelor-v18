@@ -14,16 +14,17 @@ from django.conf.urls.i18n import i18n_patterns
 from django.utils.translation import ugettext_lazy as _
 
 urlpatterns = [
+    url(r'^ajax/', include('forms.ajax')),
+    url(r'^ajax/events/', include('events.ajax')),
     url(r'^i18n/', include('django.conf.urls.i18n')),
 ]
 urlpatterns += i18n_patterns(
-    url(_(r'^admin/'), admin.site.urls),
-    url(r'^ajax/', include('forms.ajax')),
     url(r'^$', groups_views.list_groups, name='home'),
     url(r'^forms/', include('forms.urls')),
     url(r'^groups/', include('groups.urls')),
     url(r'^hs/', include('hs.urls')),
     url(r'^events/', include('events.urls')),
+    url(_(r'^admin/'), admin.site.urls),
     # url(r'^signup/$', accounts_views.signup, name='signup'),
     url(r'^logout/', auth_views.logout, name='logout'),
     url(r'^login/$', auth_views.LoginView.as_view(
