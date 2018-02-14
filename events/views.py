@@ -1,15 +1,37 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from events.models import Event, EventDescription
+from .models import Event, EventDescription
+from hs.models import MainBoardMembership
+from groups.models import Board
 from django.utils.translation import gettext as _
 
 """Returns the main page for events
 """
 @login_required
 def get_event_page(request):
-    return render(request, 'events/events_main_page.html')
+    #Used to find out if the create-event button shall be rendered or not
+    can_create_event = user_can_create_event(request.user)
+    return render(request, 'events/events_main_page.html',{
+                'can_create_event': can_create_event
+                  })
 
+
+"""Checks to see if a user can create event of any kind"""
+def user_can_create_event(user):
+    # User is in MainBoard
+    if MainBoardMembership.objects.filter(person_id=user).exists():
+        return True
+    # User is President for one or more
+    if Board.objects.filter(president=user).exists():
+        return True
+    # User is Vice President for one or more groups
+    if Board.objects.filter(vice_president=user).exists():
+        return True
+    # User is cashier for one or more group
+    if Board.objects.filter(cashier=user).exists():
+        return True
+    return False
 
 """Returns the page where events are created
 """
