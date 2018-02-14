@@ -6,8 +6,7 @@ from hs.models import MainBoardMembership
 from groups.models import Board, SportsGroup
 from django.utils.translation import gettext as _
 
-"""Returns the main page for events
-"""
+"""Returns the main page for events"""
 @login_required
 def get_event_page(request):
     #Used to find out if the create-event button shall be rendered or not
@@ -20,7 +19,7 @@ def get_event_page(request):
 """Checks to see if a user can create event of any kind"""
 def user_can_create_event(user):
     # User is in MainBoard
-    if MainBoardMembership.objects.filter(person_id=user).exists():
+    if user_is_in_mainboard(user):
         return True
     # Checks if the user is in any active board
     for board in Board.objects.filter(president=user) | \
@@ -46,8 +45,8 @@ def user_can_create_events_for_groups(user):
     return_list = []
 
     # Adds NTNUI if member of hs
-    if MainBoardMembership.objects.filter(person_id=user).exists():
-        return_list.append({'id': "", 'name': 'NTNUI'})
+    if user_is_in_mainboard(user):
+        return_list.append({'id': "NTNUI", 'name': 'NTNUI'})
 
     # Finds all the groups were the user is in the board
     for board in Board.objects.filter(president=user) | \
@@ -80,8 +79,7 @@ def create_event(request):
 def create_database_entry_for_event_from_post(request):
     description_text, end_date, host, name, start_date = get_params_from_post(request)
     priority = priority_is_selected(request)
-    is_ntnui = ntnui_is_host(host)
-    return create_and_validate_database_entry(description_text, end_date, is_ntnui, name, priority, start_date)
+    return create_and_validate_database_entry(description_text, end_date, host, name, priority, start_date, request)
 
 """ Returns parameters from POST message."""
 def get_params_from_post(request):
@@ -102,26 +100,42 @@ def priority_is_selected(request):
     return priority
 
 
-""" Checks whether NTNUI is hosting the event or not."""
-def ntnui_is_host(host):
-    if host == "NTNUI":
-        is_ntnui = True
-        host = None
-    else:
-        is_ntnui = False
-    return is_ntnui
-
-
 """ Tries to create an entry in the database for the event described in the POST message.
 The entry is validated, as well.
 """
-def create_and_validate_database_entry(description_text, end_date, is_ntnui, name, priority, start_date):
+def create_and_validate_database_entry(description_text, end_date, host, name, priority, start_date, request):
     try:
-        event = Event.objects.create(start_date=start_date, end_date=end_date, priority=priority,
-                                     is_host_ntnui=is_ntnui)
-        EventDescription.objects.create(name=name, description_text=description_text, language="NO",
-                                        event=event)
+        # checks if host is NTNUI, if so check that the user is member of the board
+        if host == 'NTNUI' and user_is_in_mainboard(request.user):
+            event = Event.objects.create(start_date=start_date, end_date=end_date, priority=priority,
+                                         is_host_ntnui=True)
+            return True
+            # Checks that the sportGroup exists
+        if SportsGroup.objects.filter(id=int(host)).exists():
+            # Get the active board
+            active_board = SportsGroup.objects.get(id=int(host)).active_board
+            # Check that the active board is not None
+            if active_board is not None:
+                # Checks that the user got a position at the board
+                if user_is_in_board(active_board, request.user):
+                    # create the events
+                    event = Event.objects.create(start_date=start_date, end_date=end_date, priority=priority,
+                                                 is_host_ntnui=False)
+                    # Add the group as the host
+                    event.sports_group.add(SportsGroup.objects.get(id=int(host)))
+
+                    # Add description and name
+                    EventDescription.objects.create(name=name, description_text=description_text, language="NO",
+                                                    event=event)
+                    return True
     except Exception as e:
         print(e)
-        return False
-    return True
+    return False
+
+"""Checks if user is in mainboard"""
+def user_is_in_mainboard(user):
+    return MainBoardMembership.objects.filter(person_id=user).exists()
+
+"""Checks if a given user is in board"""
+def user_is_in_board(user, board):
+    return board.president == user or board.vice_president == user or board.cashier == user

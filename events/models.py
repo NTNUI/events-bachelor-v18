@@ -12,7 +12,6 @@ class Event(models.Model):
     is_host_ntnui = models.BooleanField(default=False)
     sports_group = models.ManyToManyField(SportsGroup, null=True, blank=True)
 
-
 """Add description and name to event, this way a event can have name and description in different languages.
 """
 class EventDescription(models.Model):
