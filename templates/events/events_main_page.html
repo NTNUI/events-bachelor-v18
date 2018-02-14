@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
-
+{% load i18n %}
     {% block title %}NTNUI - Events{% endblock %}
 
     {% block content %}
         <h1>Welcome to events!</h1>
+        <a id="go-to-create-event" class="btn btn-primary" href="{% url 'create_event_page' %}">Create event</a>
+
     {% endblock %}

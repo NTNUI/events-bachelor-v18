@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load static %}
     {% block title %}NTNUI - Create events{% endblock %}
 
@@ -6,16 +7,16 @@
         <div class="alert-message-container">
 
         </div>
-        <h1>Create new event</h1>
+        <h1>{% trans 'Create new event:' %}</h1>
         <form id="create-event-form" >{% csrf_token %}
             <div class="form-group row">
-              <label class="col-2 col-form-label">Name:</label>
+              <label class="col-2 col-form-label">{% trans 'Name' %}</label>
               <div class="col-10">
                 <input class="form-control" type="text" name="name">
               </div>
             </div>
               <div class="form-group row">
-                <label class="col-2 col-form-label">Host:</label>
+                <label class="col-2 col-form-label">{% trans 'Host' %}</label>
                   <div class="col-10">
                     <select class="form-control" name="host">
                       <option>NTNUI</option>
@@ -23,13 +24,13 @@
                   </div>
               </div>
             <div class="form-group row">
-              <label class="col-2 col-form-label">Start date:</label>
+              <label class="col-2 col-form-label">{% trans 'Start date:' %}</label>
               <div class="col-10">
                    <input class="form-control" type="datetime-local"  value="" name="start_date">
               </div>
             </div>
             <div class="form-group row">
-              <label class="col-2 col-form-label">To date:</label>
+              <label class="col-2 col-form-label">{% trans 'To date:' %}</label>
               <div class="col-10">
                    <input class="form-control" type="datetime-local" value="" name="end_date">
               </div>
@@ -37,16 +38,16 @@
             <div class="form-group row">
               <label class="form-check-label">
                 <input name="priority" type="checkbox" value="True">
-                Priority
+                {% trans 'Priority' %}
               </label>
             </div>
             <div class="form-group row">
-              <label class="col-3 col-form-label">Description:</label>
+              <label class="col-3 col-form-label">{% trans 'Description' %}</label>
               <div class="col-10">
                   <textarea class="form-control" type="textArea" name="description_text"></textarea>
               </div>
             </div>
-            <button id="create-event-button" type="button" class="btn btn-success">Create event!</button>
+            <button id="create-event-button" type="button" class="btn btn-success">{% trans 'Create event' %}</button>
         </form>
 
     {% endblock %}
