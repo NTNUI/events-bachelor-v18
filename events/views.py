@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Event, EventDescription
 from hs.models import MainBoardMembership
-from groups.models import Board
+from groups.models import Board, SportsGroup
 from django.utils.translation import gettext as _
 
 """Returns the main page for events
@@ -22,26 +22,47 @@ def user_can_create_event(user):
     # User is in MainBoard
     if MainBoardMembership.objects.filter(person_id=user).exists():
         return True
-    # User is President for one or more
-    if Board.objects.filter(president=user).exists():
-        return True
-    # User is Vice President for one or more groups
-    if Board.objects.filter(vice_president=user).exists():
-        return True
-    # User is cashier for one or more group
-    if Board.objects.filter(cashier=user).exists():
-        return True
+    # Checks if the user is in any active board
+    for board in Board.objects.filter(president=user) | \
+            Board.objects.filter(vice_president=user) | \
+            Board.objects.filter(cashier=user):
+        # Checks that the board is active
+        if SportsGroup.objects.filter(active_board=board):
+            return True
     return False
 
-"""Returns the page where events are created
-"""
+
+"""Returns the page where events are created"""
 @login_required
 def get_create_event_page(request):
-    return render(request, 'events/create_new_event.html')
+    groups = user_can_create_events_for_groups(request.user)
+    return render(request, 'events/create_new_event.html',
+                  {'groups': groups})
 
 
-"""Creates a new event with the given data
-"""
+"""Finds the groups a user can create events for"""
+def user_can_create_events_for_groups(user):
+    # Create an empty return list
+    return_list = []
+
+    # Adds NTNUI if member of hs
+    if MainBoardMembership.objects.filter(person_id=user).exists():
+        return_list.append({'id': "", 'name': 'NTNUI'})
+
+    # Finds all the groups were the user is in the board
+    for board in Board.objects.filter(president=user) | \
+            Board.objects.filter(vice_president=user) | \
+            Board.objects.filter(cashier=user):
+
+        #Checks that the board is active
+        for group in SportsGroup.objects.filter(active_board = board):
+            return_list.append(group)
+
+    return return_list
+
+
+
+"""Creates a new event with the given data"""
 @login_required
 def create_event(request):
     print(request)
@@ -55,16 +76,14 @@ def create_event(request):
         status=400)
 
 
-""" Creates database entry from POST message.
-"""
+""" Creates database entry from POST message."""
 def create_database_entry_for_event_from_post(request):
     description_text, end_date, host, name, start_date = get_params_from_post(request)
     priority = priority_is_selected(request)
     is_ntnui = ntnui_is_host(host)
     return create_and_validate_database_entry(description_text, end_date, is_ntnui, name, priority, start_date)
 
-""" Returns parameters from POST message.
-"""
+""" Returns parameters from POST message."""
 def get_params_from_post(request):
     start_date = request.POST.get('start_date')
     end_date = request.POST.get('end_date')
@@ -74,8 +93,7 @@ def get_params_from_post(request):
     return description_text, end_date, host, name, start_date
 
 
-""" Checks whether the event is priorized or not.
-"""
+""" Checks whether the event is priorized or not."""
 def priority_is_selected(request):
     if request.POST.get('priority') is not None:
         priority = True
@@ -84,8 +102,7 @@ def priority_is_selected(request):
     return priority
 
 
-""" Checks whether NTNUI is hosting the event or not.
-"""
+""" Checks whether NTNUI is hosting the event or not."""
 def ntnui_is_host(host):
     if host == "NTNUI":
         is_ntnui = True
