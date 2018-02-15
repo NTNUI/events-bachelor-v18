@@ -56,7 +56,7 @@ function slideUpAlert(redirect) {
         //slide up the alert
     $(".alert").slideUp(500)
     if(redirect){
-        window.location.href = '../'
+        window.location.href = '/events'
     }
     //sets the amount of ms before the alert is closed
     }, 1500)
