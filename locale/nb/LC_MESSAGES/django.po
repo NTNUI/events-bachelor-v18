@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-12 22:42+0100\n"
+"POT-Creation-Date: 2018-02-15 02:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: .\accounts\models.py:14
 msgid "customer no"
-msgstr "Kunde id"
+msgstr "kunde id"
 
 #: .\accounts\models.py:15
 msgid "email address"
@@ -62,11 +62,59 @@ msgstr "bruker"
 msgid "users"
 msgstr "brukere"
 
-#: .\events\views.py:28
+#: .\events\models.py:13 .\events\models.py:46
+msgid "event"
+msgstr "arrangement"
+
+#: .\events\models.py:14
+msgid "events"
+msgstr "arrangement"
+
+#: .\events\models.py:16
+msgid "start date"
+msgstr "start dato"
+
+#: .\events\models.py:17
+msgid "end date"
+msgstr "til dato"
+
+#: .\events\models.py:18
+msgid "priority"
+msgstr "prioritet"
+
+#: .\events\models.py:19
+msgid "hosted by NTNUI"
+msgstr "arrangementet er arrangert av NTNUI"
+
+#: .\events\models.py:20
+msgid "hosted by"
+msgstr "arrangert av"
+
+#: .\events\models.py:25 .\events\models.py:43
+msgid "name"
+msgstr "navn"
+
+#: .\events\models.py:30 .\events\models.py:44
+msgid "description"
+msgstr "beskrivelse"
+
+#: .\events\models.py:40
+msgid "event description"
+msgstr "arrangement beskrivelse"
+
+#: .\events\models.py:41
+msgid "event descriptions"
+msgstr "arrangement beskrivelser"
+
+#: .\events\models.py:45
+msgid "language"
+msgstr "språk"
+
+#: .\events\views.py:71
 msgid "New event successfully created!"
 msgstr "Nytt arrangement opprettet suksessfullt"
 
-#: .\events\views.py:31
+#: .\events\views.py:74
 msgid "Failed to create event!"
 msgstr "Klarte ikke opprette arrangement"
 
@@ -98,34 +146,46 @@ msgstr ""
 msgid "The cashier email field is empty"
 msgstr ""
 
+#: .\templates\base.html:5
+msgid "en"
+msgstr "en"
+
 #: .\templates\events\create_new_event.html:10
 msgid "Create new event:"
 msgstr "Lag nytt arrangement"
 
 #: .\templates\events\create_new_event.html:13
-msgid "Name"
-msgstr "Navn"
+msgid "Name norwegian"
+msgstr "navn norsk"
 
 #: .\templates\events\create_new_event.html:19
+msgid "Name english"
+msgstr "navn engelsk"
+
+#: .\templates\events\create_new_event.html:25
 msgid "Host"
 msgstr "Arrangør"
 
-#: .\templates\events\create_new_event.html:27
+#: .\templates\events\create_new_event.html:35
 msgid "Start date:"
 msgstr "Start dato"
 
-#: .\templates\events\create_new_event.html:33
+#: .\templates\events\create_new_event.html:41
 msgid "To date:"
 msgstr "Til dato"
 
-#: .\templates\events\create_new_event.html:41
+#: .\templates\events\create_new_event.html:49
 msgid "Priority"
 msgstr "Prioritet"
 
-#: .\templates\events\create_new_event.html:45
-msgid "Description"
-msgstr "Beskrivelse"
+#: .\templates\events\create_new_event.html:53
+msgid "Description norwegian"
+msgstr "Beskrivelse norsk"
 
-#: .\templates\events\create_new_event.html:50
+#: .\templates\events\create_new_event.html:59
+msgid "Description english"
+msgstr "Beskrivelse engelsk"
+
+#: .\templates\events\create_new_event.html:64
 msgid "Create event"
 msgstr "Lag ny event!"

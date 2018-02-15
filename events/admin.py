@@ -7,6 +7,7 @@ class EventDescriptionInline(admin.TabularInline):
     extra = 1
 
 class EventAdmin(admin.ModelAdmin):
+    list_display = ['name', 'description', 'start_date', 'end_date', 'priority','is_host_ntnui']
     inlines = [EventDescriptionInline,
                ]
 

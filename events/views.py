@@ -77,18 +77,22 @@ def create_event(request):
 
 """ Creates database entry from POST message."""
 def create_database_entry_for_event_from_post(request):
-    description_text, end_date, host, name, start_date = get_params_from_post(request)
+    description_text_no, description_text_en, end_date, host, name_no, name_en, \
+    start_date = get_params_from_post(request)
     priority = priority_is_selected(request)
-    return create_and_validate_database_entry(description_text, end_date, host, name, priority, start_date, request)
+    return create_and_validate_database_entry(description_text_no, description_text_en, end_date, host, name_no,
+                                              name_en, start_date, priority,request)
 
 """ Returns parameters from POST message."""
 def get_params_from_post(request):
     start_date = request.POST.get('start_date')
     end_date = request.POST.get('end_date')
     host = request.POST.get('host')
-    name = request.POST.get('name')
-    description_text = request.POST.get('description_text')
-    return description_text, end_date, host, name, start_date
+    name_no = request.POST.get('name_no')
+    description_text_no = request.POST.get('description_text_no')
+    name_en = request.POST.get('name_en')
+    description_text_en = request.POST.get('description_text_en')
+    return description_text_no, description_text_en, end_date, host, name_no, name_en, start_date
 
 
 """ Checks whether the event is priorized or not."""
@@ -103,12 +107,18 @@ def priority_is_selected(request):
 """ Tries to create an entry in the database for the event described in the POST message.
 The entry is validated, as well.
 """
-def create_and_validate_database_entry(description_text, end_date, host, name, priority, start_date, request):
+def create_and_validate_database_entry(description_text_no, description_text_en, end_date, host, name_no,
+                                       name_en, start_date, priority, request):
     try:
         # checks if host is NTNUI, if so check that the user is member of the board
         if host == 'NTNUI' and user_is_in_mainboard(request.user):
             event = Event.objects.create(start_date=start_date, end_date=end_date, priority=priority,
                                          is_host_ntnui=True)
+
+            EventDescription.objects.create(name=name_no, description_text=description_text_no, language="nb",
+                                            event=event)
+            EventDescription.objects.create(name=name_en, description_text=description_text_en, language="en",
+                                            event=event)
             return True
             # Checks that the sportGroup exists
         if SportsGroup.objects.filter(id=int(host)).exists():
@@ -125,8 +135,11 @@ def create_and_validate_database_entry(description_text, end_date, host, name, p
                     event.sports_group.add(SportsGroup.objects.get(id=int(host)))
 
                     # Add description and name
-                    EventDescription.objects.create(name=name, description_text=description_text, language="NO",
+                    EventDescription.objects.create(name=name_no, description_text=description_text_no, language="nb",
                                                     event=event)
+                    EventDescription.objects.create(name=name_en, description_text=description_text_en, language="en",
+                                                    event=event)
+                    # print(event.manager.get_name())
                     return True
     except Exception as e:
         print(e)
@@ -137,5 +150,5 @@ def user_is_in_mainboard(user):
     return MainBoardMembership.objects.filter(person_id=user).exists()
 
 """Checks if a given user is in board"""
-def user_is_in_board(user, board):
+def user_is_in_board(board, user):
     return board.president == user or board.vice_president == user or board.cashier == user
