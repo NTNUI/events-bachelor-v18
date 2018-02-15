@@ -19,12 +19,12 @@ class Event(models.Model):
     is_host_ntnui = models.BooleanField(_('hosted by NTNUI'), default=False)
     sports_group = models.ManyToManyField(SportsGroup, null=True, blank=True, verbose_name=_('hosted by'))
 
-
+    """Returnes the name of the event, in the current language"""
     def name(self):
         return EventDescription.objects.get(event=self, language=translation.get_language()).name
     name.short_description = _('name')
 
-
+    """Returnes the description of the event, in the current language"""
     def description(self):
         return EventDescription.objects.get(event=self, language=translation.get_language()).description_text
     description.short_description = _('description')
@@ -32,8 +32,8 @@ class Event(models.Model):
     def __str__(self):
         return self.name()
 
-"""Add description and name to event, this way a event can have name and description in different languages.
-"""
+
+"""Add description and name to event, this way a event can have name and description in different languages."""
 class EventDescription(models.Model):
 
     class Meta:
