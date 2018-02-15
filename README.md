@@ -53,6 +53,19 @@ make start
     * Unzip
     * Put into `/usr/local/bin`
 
-```
+## Updating language files:
 
+All language files are located in the locale folder, to edit them simply 
+choose the language of your choice
+Language files can be updated by using:
 ```
+python manage.py makemessages -l nb -i env
+```
+were nb is norwegian (bokmål), to add a diffrent language simply find its code.
+English is default.
+
+Use:
+```
+python manage.py compilemessages
+```
+To compile the new translations, and you are good to go.
