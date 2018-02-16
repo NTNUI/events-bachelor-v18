@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: .\accounts\models.py:14
-msgid "customer no"
+msgid "customer id"
 msgstr "kunde id"
 
 #: .\accounts\models.py:15
@@ -36,15 +36,15 @@ msgstr "etternavn"
 
 #: .\accounts\models.py:18
 msgid "date joined"
-msgstr "Medlem siden"
+msgstr "medlem siden"
 
 #: .\accounts\models.py:19
 msgid "active"
-msgstr "akrivert"
+msgstr "aktiv"
 
 #: .\accounts\models.py:20
 msgid "phone number"
-msgstr "mobilnr"
+msgstr "telefonnummer"
 
 #: .\accounts\models.py:23
 msgid "staff status"
@@ -52,7 +52,7 @@ msgstr "ansatt status"
 
 #: .\accounts\models.py:25
 msgid "Designates whether the user can log into this site."
-msgstr "Bestemmer om brukeren kan logge inn opå denne siden"
+msgstr "Bestemmer om brukeren kan logge inn på denne siden"
 
 #: .\accounts\models.py:37
 msgid "user"
@@ -76,7 +76,7 @@ msgstr "start dato"
 
 #: .\events\models.py:17
 msgid "end date"
-msgstr "til dato"
+msgstr "sluttdato"
 
 #: .\events\models.py:18
 msgid "priority"
@@ -84,7 +84,7 @@ msgstr "prioritet"
 
 #: .\events\models.py:19
 msgid "hosted by NTNUI"
-msgstr "arrangementet er arrangert av NTNUI"
+msgstr "arrangert av NTNUI"
 
 #: .\events\models.py:20
 msgid "hosted by"
@@ -100,11 +100,11 @@ msgstr "beskrivelse"
 
 #: .\events\models.py:40
 msgid "event description"
-msgstr "arrangement beskrivelse"
+msgstr "arrangementsbeskrivelse"
 
 #: .\events\models.py:41
 msgid "event descriptions"
-msgstr "arrangement beskrivelser"
+msgstr "arrangementsbeskrivelser"
 
 #: .\events\models.py:45
 msgid "language"
@@ -112,7 +112,7 @@ msgstr "språk"
 
 #: .\events\views.py:71
 msgid "New event successfully created!"
-msgstr "Nytt arrangement opprettet suksessfullt"
+msgstr "Nytt arrangement opprettet"
 
 #: .\events\views.py:74
 msgid "Failed to create event!"
@@ -124,31 +124,31 @@ msgstr "Gruppen finnes ikke"
 
 #: .\forms\forms.py:50
 msgid "{} does not belong to {}"
-msgstr ""
+msgstr "{} tilhører ikke {}"
 
 #: .\forms\forms.py:53
 msgid "{} not found"
-msgstr ""
+msgstr "{} ikke funnet"
 
 #: .\forms\forms.py:55
 msgid "This email does not exist in the database"
-msgstr ""
+msgstr "Denne eposten finnes ikke i databasen"
 
 #: .\forms\forms.py:71
 msgid "The president email field is empty"
-msgstr ""
+msgstr "Presidentens epostfelt er tom"
 
 #: .\forms\forms.py:83
 msgid "The vice president email field is empty"
-msgstr ""
+msgstr "Visepresidentens epostfelt er tomt"
 
 #: .\forms\forms.py:94
 msgid "The cashier email field is empty"
-msgstr ""
+msgstr "Økonomiansvarligs epostfelt er tomt"
 
 #: .\templates\base.html:5
 msgid "en"
-msgstr "en"
+msgstr "nb"
 
 #: .\templates\events\create_new_event.html:10
 msgid "Create new event:"
@@ -156,11 +156,11 @@ msgstr "Lag nytt arrangement"
 
 #: .\templates\events\create_new_event.html:13
 msgid "Name norwegian"
-msgstr "navn norsk"
+msgstr "Navn norsk"
 
 #: .\templates\events\create_new_event.html:19
 msgid "Name english"
-msgstr "navn engelsk"
+msgstr "Navn engelsk"
 
 #: .\templates\events\create_new_event.html:25
 msgid "Host"
@@ -188,4 +188,4 @@ msgstr "Beskrivelse engelsk"
 
 #: .\templates\events\create_new_event.html:64
 msgid "Create event"
-msgstr "Lag ny event!"
+msgstr "Lag event!"
