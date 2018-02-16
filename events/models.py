@@ -33,7 +33,7 @@ class Event(models.Model):
         return self.name()
 
 
-"""Add description and name to event, this way a event can have name and description in different languages."""
+"""Add description and name to event, this way an event can have name and description in different languages."""
 class EventDescription(models.Model):
 
     class Meta:
