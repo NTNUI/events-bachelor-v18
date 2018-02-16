@@ -4,8 +4,10 @@ from django.shortcuts import render
 from django.utils.translation import gettext as _
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
-
+from django.core.paginator import Paginator
 from .models import Event, EventDescription
+from django.core import serializers
+
 
 """Returns the main page for events"""
 
@@ -14,9 +16,44 @@ from .models import Event, EventDescription
 def get_event_page(request):
     # Used to find out if the create-event button shall be rendered or not
     can_create_event = user_can_create_event(request.user)
+
     return render(request, 'events/events_main_page.html', {
-        'can_create_event': can_create_event
+        'can_create_event': can_create_event,
     })
+
+@login_required
+def get_events(request):
+    if(request.GET):
+        page = request.GET.get('page', 1)
+        events = Event.objects.all()
+        p = Paginator(events, 10)
+
+        events = get_event_json(p.page(page))
+
+        return JsonResponse( {
+            'events': events,
+            'page_number': page,
+            'page_count': p.num_pages }
+        )
+    return JsonResponse( {
+        'messsage': 'must be get'
+    }, 404)
+
+
+"""Returnes list of dic of event"""
+def get_event_json(events):
+    return_events = []
+    for event in events:
+        return_events.append({
+            'name': str(event.name()),
+            'description': str(event.description()),
+            'start_date': str(event.start_date),
+            'end_date': str(event.end_date),
+            'priority': str(event.priority),
+            'host': str(event.get_host)
+        })
+    return return_events
+
 
 
 """Checks to see if a user can create event of any kind"""

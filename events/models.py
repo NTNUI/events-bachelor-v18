@@ -2,6 +2,7 @@ from django.db import models
 from groups.models import SportsGroup
 from django.utils.translation import gettext_lazy as _
 from django.utils import translation
+from accounts.models import User
 
 
 """Creates a model for events, with start date, end date, priority, host group and ntnui as host.
@@ -17,7 +18,8 @@ class Event(models.Model):
     end_date = models.DateTimeField(_('end date'))
     priority = models.BooleanField(_('priority'), default=False)
     is_host_ntnui = models.BooleanField(_('hosted by NTNUI'), default=False)
-    sports_group = models.ManyToManyField(SportsGroup, null=True, blank=True, verbose_name=_('hosted by'))
+    attending_members = models.ManyToManyField(User, verbose_name=_('attending members'), blank=True)
+    sports_groups = models.ManyToManyField(SportsGroup, blank=True, verbose_name=_('hosted by'))
 
     """Returnes the name of the event, in the current language"""
     def name(self):
@@ -28,6 +30,13 @@ class Event(models.Model):
     def description(self):
         return EventDescription.objects.get(event=self, language=translation.get_language()).description_text
     description.short_description = _('description')
+
+    """Returnes the name of the host"""
+    def get_host(self):
+        if(self.is_host_ntnui):
+            return 'NTNUI'
+        return str(self.sports_groups.name)
+
 
     def __str__(self):
         return self.name()
