@@ -182,7 +182,7 @@ def create_event_for_group(data, priority, is_ntnui):
 
         if not is_ntnui:
             # Add the group as the host
-            event.sports_group.add(SportsGroup.objects.get(id=int(data.get('host'))))
+            event.sports_groups.add(SportsGroup.objects.get(id=int(data.get('host'))))
 
         # Creates description and checks that it was created
         if create_description_for_event(event, data.get('description_text_no'), data.get('name_no'), 'nb') and \

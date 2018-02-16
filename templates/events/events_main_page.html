@@ -8,9 +8,12 @@
         <div id="event-container">
         </div>
         {% if can_create_event %}
-            <a id="go-to-create-event" class="btn btn-primary" href="{% url 'create_event_page' %}">Create event</a>
+            <a id="go-to-create-event" class="btn btn-success" href="{% url 'create_event_page' %}">Create event</a>
         {% endif %}
+            <p id="load-more" class="btn btn-success">Load more events!</p>
+
     {% endblock %}
+
 
 {% block script %}
      <script type="text/javascript" src="{% static 'js/event_main.js' %}"></script>
