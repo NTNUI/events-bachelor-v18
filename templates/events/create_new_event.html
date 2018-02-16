@@ -10,16 +10,24 @@
         <h1>{% trans 'Create new event:' %}</h1>
         <form id="create-event-form" >{% csrf_token %}
             <div class="form-group row">
-              <label class="col-2 col-form-label">{% trans 'Name' %}</label>
+              <label class="col-2 col-form-label">{% trans 'Name norwegian' %}</label>
               <div class="col-10">
-                <input class="form-control" type="text" name="name">
+                <input class="form-control" type="text" name="name_no">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-2 col-form-label">{% trans 'Name english' %}</label>
+              <div class="col-10">
+                <input class="form-control" type="text" name="name_en">
               </div>
             </div>
               <div class="form-group row">
                 <label class="col-2 col-form-label">{% trans 'Host' %}</label>
                   <div class="col-10">
                     <select class="form-control" name="host">
-                      <option>NTNUI</option>
+                        {% for group in groups %}
+                            <option value="{{ group.id }}">{{ group.name }}</option>
+                        {% endfor %}
                     </select>
                   </div>
               </div>
@@ -42,9 +50,15 @@
               </label>
             </div>
             <div class="form-group row">
-              <label class="col-3 col-form-label">{% trans 'Description' %}</label>
+              <label class="col-3 col-form-label">{% trans 'Description norwegian' %}</label>
               <div class="col-10">
-                  <textarea class="form-control" type="textArea" name="description_text"></textarea>
+                  <textarea class="form-control" type="textArea" name="description_text_no"></textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-3 col-form-label">{% trans 'Description english' %}</label>
+              <div class="col-10">
+                  <textarea class="form-control" type="textArea" name="description_text_en"></textarea>
               </div>
             </div>
             <button id="create-event-button" type="button" class="btn btn-success">{% trans 'Create event' %}</button>
