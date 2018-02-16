@@ -35,7 +35,11 @@ class Event(models.Model):
     def get_host(self):
         if(self.is_host_ntnui):
             return 'NTNUI'
-        return str(self.sports_groups.name)
+        groups = []
+        for group in self.sports_groups.all():
+            groups.append(group.name)
+        return groups
+
 
 
     def __str__(self):

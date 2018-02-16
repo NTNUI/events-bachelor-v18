@@ -50,7 +50,7 @@ def get_event_json(events):
             'start_date': str(event.start_date),
             'end_date': str(event.end_date),
             'priority': str(event.priority),
-            'host': str(event.get_host)
+            'host': str(event.get_host())
         })
     return return_events
 
