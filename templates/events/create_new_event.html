@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+    {% block title %}NTNUI - Create events{% endblock %}
+
+    {% block content %}
+        <div class="alert-message-container">
+
+        </div>
+        <h1>{% trans 'Create new event:' %}</h1>
+        <form id="create-event-form" >{% csrf_token %}
+            <div class="form-group row">
+              <label class="col-2 col-form-label">{% trans 'Name norwegian' %}</label>
+              <div class="col-10">
+                <input class="form-control" type="text" name="name_no">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-2 col-form-label">{% trans 'Name english' %}</label>
+              <div class="col-10">
+                <input class="form-control" type="text" name="name_en">
+              </div>
+            </div>
+              <div class="form-group row">
+                <label class="col-2 col-form-label">{% trans 'Host' %}</label>
+                  <div class="col-10">
+                    <select class="form-control" name="host">
+                        {% for group in groups %}
+                            <option value="{{ group.id }}">{{ group.name }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+              </div>
+            <div class="form-group row">
+              <label class="col-2 col-form-label">{% trans 'Start date:' %}</label>
+              <div class="col-10">
+                   <input class="form-control" type="datetime-local"  value="" name="start_date">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-2 col-form-label">{% trans 'To date:' %}</label>
+              <div class="col-10">
+                   <input class="form-control" type="datetime-local" value="" name="end_date">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="form-check-label">
+                <input name="priority" type="checkbox" value="True">
+                {% trans 'Priority' %}
+              </label>
+            </div>
+            <div class="form-group row">
+              <label class="col-3 col-form-label">{% trans 'Description norwegian' %}</label>
+              <div class="col-10">
+                  <textarea class="form-control" type="textArea" name="description_text_no"></textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-3 col-form-label">{% trans 'Description english' %}</label>
+              <div class="col-10">
+                  <textarea class="form-control" type="textArea" name="description_text_en"></textarea>
+              </div>
+            </div>
+            <button id="create-event-button" type="button" class="btn btn-success">{% trans 'Create event' %}</button>
+        </form>
+
+    {% endblock %}
+{% block script %}
+     <script type="text/javascript" src="{% static 'js/create_new_event.js' %}"></script>
+{% endblock %}

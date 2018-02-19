@@ -118,4 +118,3 @@ Where the language_code is the extension for the language you would like to use,
 ```
 python manage.py compilemessages
 ```   
-To compile the new translations, and you are good to go.
