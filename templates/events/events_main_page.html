@@ -8,29 +8,58 @@
     {% block title %}NTNUI - Events{% endblock %}
 
     {% block content %}
-        <h1>Events you can attend:</h1>
+        <div class="filter-bar">
+            <div class="filter-bar-left">
+            <div class="filter-element input-group">
+                    <span class="input-group-addon" id="basic-addon1">
+                        Hosted by
+                    </span>
+                      <select class="form-control-select">
+                        <option selected>Host</option>
+                        <option value="1">NTNUI</option>
+                        <option value="2">Some group</option>
+                        <option value="3">Some other group</option>
+                      </select>
+            </div>
+            <div class="filter-element input-group">
+                    <span class="input-group-addon" id="basic-addon1">
+                        From date
+                    </span>
+                      <select class="form-control-select">
+                        <option selected>Choose...</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select>
+            </div>
+             <div class="filter-element input-group">
+                    <span class="input-group-addon" id="basic-addon1">
+                        To date
+                    </span>
+                      <select class="form-control-select">
+                        <option selected>Choose...</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select>
+            </div>
+            </div>
+            <div class="filter-bar-right">
+            <div id="search" class="filter-element input-group">
+                <span class="input-group-addon" id="basic-addon1">
+                    <img src="{% static 'img/serach.svg' %}" alt="groups icon" style="max-height:1rem;"/>
+                </span>
+            <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1">
+            </div>
+            </div>
+        </div>
         <div class="event-main-page-container">
-              <div class="content-table">
-                  <div class="list-header">
-                    Filter:
-                  </div>
-                  <label class="group-settings">
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">Search</span>
-                      </div>
-                      <input type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1">
-                    </div>
-                  </label>
-              </div>
             <div style="width:30rem;">
                 <div id="event-container">
                 </div>
                 <div style="display:flex;justify-content: center; margin-top:1rem;">
                     <p id="load-more" class="btn btn-success">Load more events!</p>
                 </div>
-            </div>
-            <div>
                 {% if can_create_event %}
                     <a id="go-to-create-event" class="btn btn-success" href="{% url 'create_event_page' %}">Create event</a>
                 {% endif %}
