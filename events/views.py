@@ -85,7 +85,7 @@ def get_filtered_events(request):
         return events.order_by(order_by, 'priority', 'start_date')
     else:
         # return the result
-        return  events.order_by('priority', 'start_date')
+        return  events.order_by('-priority', 'start_date')
 
 
 
