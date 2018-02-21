@@ -7,6 +7,8 @@ from hs.models import MainBoardMembership
 from django.core.paginator import Paginator
 from .models import Event, EventDescription
 from django.core import serializers
+from django.db.models import Q
+from django.utils import translation
 
 
 """Returns the main page for events"""
@@ -21,26 +23,75 @@ def get_event_page(request):
         'can_create_event': can_create_event,
     })
 
+
 @login_required
 def get_events(request):
-    if(request.GET):
+    if (request.GET):
         page = request.GET.get('page', 1)
-        events = Event.objects.all()
+
+        # get filtered events
+        events = get_filtered_events(request)
+
         p = Paginator(events, 10)
 
         events = get_event_json(p.page(page))
 
-        return JsonResponse( {
+        return JsonResponse({
             'events': events,
             'page_number': page,
-            'page_count': p.num_pages }
+            'page_count': p.num_pages}
         )
-    return JsonResponse( {
+    return JsonResponse({
         'messsage': 'must be get'
     }, 404)
 
 
+"""Returnes all the events that fits the order_by, search and filter_by"""
+
+
+def get_filtered_events(request):
+    order_by = request.GET.get('order_by')
+    search = request.GET.get('search')
+
+    # Checks if search have a value
+    if search is not None and search != '':
+        # serach for the word in descriptions and name
+        events = Event.objects.filter(Q(eventdescription__language=translation.get_language()) &
+                                      Q(eventdescription__name__icontains=search) | Q(
+            eventdescription__description_text__icontains=search))
+    else:
+        # if not search return all event objects
+        events = Event.objects.all()
+
+    # Allowed order_by
+    allowed_order_by = ['name', 'description', 'start_date', 'end_date']
+
+    # checks that order_by have a value and that it is in the allowed_order_by
+    if order_by is not None and (order_by in allowed_order_by or order_by[1:] in allowed_order_by):
+
+        # checks the first character
+        type = ''
+        if order_by[0] == '-':
+            type = '-'
+            order_by = order_by[1:]
+
+        # if the sort by is not in the event table we need to find the filed by merging
+        if order_by == 'name':
+            order_by = type + 'eventdescription__name'
+        elif order_by == 'description':
+            order_by = type + 'eventdescription__description_text'
+
+        # return the result
+        return events.order_by(order_by, 'priority', 'start_date')
+    else:
+        # return the result
+        return  events.order_by('-priority', 'start_date')
+
+
+
 """Returnes list of dic of event"""
+
+
 def get_event_json(events):
     return_events = []
     for event in events:
@@ -55,7 +106,6 @@ def get_event_json(events):
     return return_events
 
 
-
 """Checks to see if a user can create event of any kind"""
 
 
@@ -66,8 +116,8 @@ def user_can_create_event(user):
 
     # Checks if the user is in any active board
     for board in Board.objects.filter(president=user) | \
-            Board.objects.filter(vice_president=user) | \
-            Board.objects.filter(cashier=user):
+                 Board.objects.filter(vice_president=user) | \
+                 Board.objects.filter(cashier=user):
 
         # Checks that the board is active
         if SportsGroup.objects.filter(active_board=board):
@@ -98,8 +148,8 @@ def get_groups_user_can_create_events_for(user):
 
     # Finds all the groups were the user is in the board
     for board in Board.objects.filter(president=user) | \
-            Board.objects.filter(vice_president=user) | \
-            Board.objects.filter(cashier=user):
+                 Board.objects.filter(vice_president=user) | \
+                 Board.objects.filter(cashier=user):
 
         # Checks that the board is active
         for group in SportsGroup.objects.filter(active_board=board):
