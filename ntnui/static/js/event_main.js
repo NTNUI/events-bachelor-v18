@@ -60,7 +60,7 @@ function displayEvents(events) {
 // display one event
 function displayEvent(event) {
     $("#event-container").append(
-        "<div>" + event.name + ": " + event.start_date + "<div/>"
+        "<div class=\"card card-body\">" + event.name + ": " + event.start_date + "<div/>"
     );
 }
 
