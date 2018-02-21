@@ -25,9 +25,7 @@ function loadEvents(page) {
 
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
-    const orderBy = searchParams.has("order_by")
-        ? searchParams.get("order_by")
-        : "";
+    const orderBy = searchParams.has("order_by") ? searchParams.get("order_by") : "";
 
     console.log(orderBy);
     $.ajax({

@@ -1,23 +1,44 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load static %}
+
+ {% block stylesheet %}
+      <link rel="stylesheet" href="{% static 'css/events.css' %}" />
+ {% endblock %}
     {% block title %}NTNUI - Events{% endblock %}
 
     {% block content %}
         <h1>Events you can attend:</h1>
-<<<<<<< HEAD
-        <div id="event-container">
+        <div class="event-main-page-container">
+              <div class="content-table">
+                  <div class="list-header">
+                    Filter:
+                  </div>
+                  <label class="group-settings">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Search</span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Search" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                  </label>
+              </div>
+            </div>
+            <div style="width:30rem;">
+                <div id="event-container">
+                </div>
+                <div style="display:flex;justify-content: center; margin-top:1rem;">
+                    <p id="load-more" class="btn btn-success">Load more events!</p>
+                </div>
+            </div>
+            <div>
+                {% if can_create_event %}
+                    <a id="go-to-create-event" class="btn btn-success" href="{% url 'create_event_page' %}">Create event</a>
+                {% endif %}
+            </div>
         </div>
-=======
-          <div id="event-container">
-          </div>
->>>>>>> 6040a19048a73a0d881635118df03522966962c6
-        {% if can_create_event %}
-            <a id="go-to-create-event" class="btn btn-success" href="{% url 'create_event_page' %}">Create event</a>
-        {% endif %}
-            <p id="load-more" class="btn btn-success">Load more events!</p>
-
     {% endblock %}
+
 
 
 {% block script %}
