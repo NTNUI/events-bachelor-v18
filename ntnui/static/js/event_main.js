@@ -23,10 +23,19 @@ function getNextPage() {
 
 // ajax for requesting events from server
 function loadEvents(page) {
+    let searchParams = new URLSearchParams(window.location.search)
+
+    //get parms from url. if they dont exsits set em as blank
+    const search = searchParams.has('search') ? searchParams.get('search'): ''
+    const orderBy = searchParams.has('order_by') ? searchParams.get('order_by'): ''
+
+    console.log(orderBy)
     $.ajax({
         dataType: "json",
         url: URL,
-        data: {page: page},
+        data: {page: page,
+        search: search ,
+        order_by: orderBy},
         success: (data) => {
             console.log(data)
             pageNr = parseInt(data.page_number)
