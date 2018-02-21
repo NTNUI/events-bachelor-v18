@@ -5,10 +5,8 @@
 
     {% block content %}
         <h1>Events you can attend:</h1>
-        {% for element in #event-container %}
-          <div class="card card-body" id="event-container">
-          </div>
-        {% endfor %}
+        <div id="event-container">
+        </div>
         {% if can_create_event %}
             <a id="go-to-create-event" class="btn btn-success" href="{% url 'create_event_page' %}">Create event</a>
         {% endif %}
