@@ -2,73 +2,103 @@
 {% load i18n %}
 {% load static %}
 
- {% block stylesheet %}
-      <link rel="stylesheet" href="{% static 'css/events.css' %}" />
- {% endblock %}
-    {% block title %}NTNUI - Events{% endblock %}
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/events.css' %}"/>
+{% endblock %}
+{% block title %}NTNUI - Events{% endblock %}
 
-    {% block content %}
-        <div class="filter-bar">
-            <div class="filter-bar-left">
+{% block content %}
+    <div class="filter-bar">
+        <div class="filter-bar-left">
             <div class="filter-element input-group">
                     <span class="input-group-addon" id="basic-addon1">
                         Hosted by
                     </span>
-                      <select class="form-control-select">
-                        <option selected>Host</option>
-                        <option value="1">NTNUI</option>
-                        <option value="2">Some group</option>
-                        <option value="3">Some other group</option>
-                      </select>
+                <select class="form-control-select">
+                    <option selected>Select a host</option>
+                    <option value="1">NTNUI</option>
+                    <option value="2">Some group</option>
+                    <option value="3">Some other group</option>
+                </select>
+            </div>
+            <div class="filter-element input-group">
+                    <span class="input-group-addon" id="basic-addon1">
+                        Place
+                    </span>
+                <select class="form-control-select">
+                    <option selected>Choose...</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
             </div>
             <div class="filter-element input-group">
                     <span class="input-group-addon" id="basic-addon1">
                         From date
                     </span>
-                      <select class="form-control-select">
-                        <option selected>Choose...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select>
+                <select class="form-control-select">
+                    <option selected>Choose...</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
             </div>
-             <div class="filter-element input-group">
+            <div class="filter-element input-group">
                     <span class="input-group-addon" id="basic-addon1">
                         To date
                     </span>
-                      <select class="form-control-select">
-                        <option selected>Choose...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select>
+                <select class="form-control-select">
+                    <option selected>Choose...</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
             </div>
-            </div>
-            <div class="filter-bar-right">
+        </div>
+        <div class="filter-bar-right">
             <div id="search" class="filter-element input-group">
                 <span class="input-group-addon" id="basic-addon1">
                     <img src="{% static 'img/serach.svg' %}" alt="groups icon" style="max-height:1rem;"/>
                 </span>
-            <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1">
-            </div>
-            </div>
-        </div>
-        <div class="event-main-page-container">
-            <div style="width:30rem;">
-                <div id="event-container">
-                </div>
-                <div style="display:flex;justify-content: center; margin-top:1rem;">
-                    <p id="load-more" class="btn btn-success">Load more events!</p>
-                </div>
-                {% if can_create_event %}
-                    <a id="go-to-create-event" class="btn btn-success" href="{% url 'create_event_page' %}">Create event</a>
-                {% endif %}
+                <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1">
             </div>
         </div>
-    {% endblock %}
+    </div>
+    <div class="event-main-page-container">
+        <div class="create-event">
+            {% if can_create_event %}
+                <h3>My options:</h3>
+                <div>
+                    <a id="go-to-create-event" href="/">
+                        <button type="button" class="buttons btn btn-success">My events</button>
+                    </a>
+                </div>
+                <div>
+                    <a id="go-to-create-event" href="{% url 'create_event_page' %}">
+                        <button type="button" class="buttons btn btn-success">Create event</button>
+                    </a>
+                </div>
+                <div>
+                    <a id="go-to-create-event" href="/">
+                        <button type="button" class="buttons btn btn-success">Manage event</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div id="main">
+            <div id="event-container">
+            </div>
+            <div style="display:flex;justify-content: center; margin-top:1rem;">
+                <button type="button" id="load-more" class="buttons btn btn-success">Load more events!</button>
+            </div>
+        </div>
+
+    </div>
+    </div>
+{% endblock %}
 
 
 
 {% block script %}
-     <script type="text/javascript" src="{% static 'js/event_main.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/event_main.js' %}"></script>
 {% endblock %}
