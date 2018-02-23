@@ -1,3 +1,9 @@
+body {
+  --NTNUI-green: #008000;
+  --NTNUI-red: #FB0000;
+  --NTNUI-yellow: #FFFF00;
+}
+
 .event-main-page-container {
     display: grid;
     flex-wrap: wrap;
