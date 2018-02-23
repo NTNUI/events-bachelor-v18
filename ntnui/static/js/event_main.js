@@ -1,13 +1,25 @@
-const URL = "/ajax/events/get-events";
+const GET_URL = "/ajax/events/get-events";
 let pageNr;
 let pageCount;
+let searchParams = new URLSearchParams(window.location.search)
 
 // on document ready, send ajax request for the first page
 $(() => {
+
+    $("#search-field").val(searchParams.has("search") ? searchParams.get("search") : "")
     loadEvents(1);
+
     $("#load-more").click(() => {
         getNextPage();
     });
+
+    $("#search").on('input',() => {
+
+        searchParams.set('search', $("#search-field").val());
+        history.replaceState('test', 'test', '?' + searchParams)
+        loadEvents(1)
+
+    })
 });
 
 function getNextPage() {
@@ -22,8 +34,7 @@ function getNextPage() {
 
 // ajax for requesting events from server
 function loadEvents(page) {
-    let searchParams = new URLSearchParams(window.location.search);
-
+    console.log(searchParams)
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
     const orderBy = searchParams.has("order_by") ? searchParams.get("order_by") : "";
@@ -31,7 +42,7 @@ function loadEvents(page) {
     console.log(orderBy);
     $.ajax({
         dataType: "json",
-        url: URL,
+        url: GET_URL,
         data: {
             page: page,
             search: search,
@@ -41,27 +52,32 @@ function loadEvents(page) {
             console.log(data);
             pageNr = parseInt(data.page_number);
             pageCount = data.page_count;
-            displayEvents(data.events);
+            displayEvents(data.events, page==1);
         },
         error: data => {
-            displayError(data.message);
+            console.log(data.message);
         }
     });
 }
 
 // for each event dispay event
-function displayEvents(events) {
+function displayEvents(events, reload) {
+    if(reload) {
+        $("#event-container").empty()
+    }
     events.map(event => {
         displayEvent(event);
     });
 }
 
 // display one event
-function displayEvent(event) {
+function displayEvent(event, reload) {
     priority = false
+
     if(event.priority == 'True') {
         priority = true
     }
+
     $("#event-container").append(
         '<div class="card bg-light mb-3">' +
             '<div class="card-header">' +
