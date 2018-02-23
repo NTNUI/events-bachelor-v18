@@ -10,9 +10,13 @@
 #main {
     grid-column: 2;
 }
+.accordion {
+    grid-row: 1;
+    grid-column: 1;
+}
 
 .create-event {
-    grid-column: 1;
+    grid-column: 3;
     grid-row: 1;
     margin-left: 10%;
 }
@@ -94,12 +98,18 @@ filter-element-height {
 }
 
 @media only screen and (max-width: 700px) {
-    .filter-bar-left, .filter-bar-right {
+    .filter-bar-left,
+    .filter-bar-right {
         width: 100%;
         justify-content: flex-start;
     }
 
-    .filter-element, .form-control-select, #search, .create-event, #main, .buttons {
+    .filter-element,
+    .form-control-select,
+    #search,
+    .create-event,
+    #main,
+    .buttons {
         width: 100%;
         max-width: 100%;
     }
@@ -111,5 +121,4 @@ filter-element-height {
     .event-main-page-container {
         display: block;
     }
-
 }

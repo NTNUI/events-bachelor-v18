@@ -27,9 +27,6 @@ function getNextPage() {
         pageNr = pageNr + 1;
         loadEvents(pageNr);
     }
-    if (pageNr === pageCount){
-        removeButton();
-    }
 }
 
 // ajax for requesting events from server
@@ -37,7 +34,9 @@ function loadEvents(page) {
     console.log(searchParams)
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
-    const orderBy = searchParams.has("order_by") ? searchParams.get("order_by") : "";
+    const orderBy = searchParams.has("order_by")
+        ? searchParams.get("order_by")
+        : "";
 
     console.log(orderBy);
     $.ajax({
@@ -53,6 +52,10 @@ function loadEvents(page) {
             pageNr = parseInt(data.page_number);
             pageCount = data.page_count;
             displayEvents(data.events, page==1);
+            displayEvents(data.events);
+            if (pageNr === pageCount) {
+                removeButton();
+            }
         },
         error: data => {
             console.log(data.message);
@@ -71,9 +74,8 @@ function displayEvents(events, reload) {
 }
 
 // display one event
-function displayEvent(event, reload) {
+function displayEvent(event) {
     priority = false
-
     if(event.priority == 'True') {
         priority = true
     }
