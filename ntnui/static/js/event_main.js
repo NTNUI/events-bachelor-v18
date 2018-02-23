@@ -5,6 +5,7 @@ let pageCount;
 // on document ready, send ajax request for the first page
 $(() => {
     loadEvents(1);
+
     $("#load-more").click(() => {
         getNextPage();
     });
@@ -15,9 +16,6 @@ function getNextPage() {
         pageNr = pageNr + 1;
         loadEvents(pageNr);
     }
-    if (pageNr === pageCount){
-        removeButton();
-    }
 }
 
 // ajax for requesting events from server
@@ -26,7 +24,9 @@ function loadEvents(page) {
 
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
-    const orderBy = searchParams.has("order_by") ? searchParams.get("order_by") : "";
+    const orderBy = searchParams.has("order_by")
+        ? searchParams.get("order_by")
+        : "";
 
     console.log(orderBy);
     $.ajax({
@@ -42,6 +42,9 @@ function loadEvents(page) {
             pageNr = parseInt(data.page_number);
             pageCount = data.page_count;
             displayEvents(data.events);
+            if (pageNr === pageCount) {
+                removeButton();
+            }
         },
         error: data => {
             displayError(data.message);
@@ -58,9 +61,9 @@ function displayEvents(events) {
 
 // display one event
 function displayEvent(event) {
-    priority = false
-    if(event.priority == 'True') {
-        priority = true
+    priority = false;
+    if (event.priority == "True") {
+        priority = true;
     }
     $("#event-container").append(
         '<div class="card bg-light mb-3">' +
