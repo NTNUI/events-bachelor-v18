@@ -5,20 +5,25 @@
     width: 100%;
     max-height: 30rem;
     grid-template-columns: 20% 60% 20%;
+    margin-top: 2rem;
 }
 
 #main {
     grid-column: 2;
 }
-.accordion {
+#accordion {
     grid-row: 1;
     grid-column: 1;
+    margin-left: 10%;
+    margin-right: 10%;
+    width:80%;
 }
 
 .create-event {
     grid-column: 3;
     grid-row: 1;
     margin-left: 10%;
+    margin-right: 10%;
 }
 
 .buttons {
@@ -52,40 +57,12 @@ filter-element-height {
 }
 
 .filter-element {
-    max-width: 50rem;
-    width: auto;
+    max-width: 80%;
+    width: 80%;
     max-height: 2rem;
     margin: 0.5rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
 }
 
-.filter-bar {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid lightgray;
-}
-
-.filter-bar-left {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
-    position: relative;
-    float: left;
-    width: 70%;
-}
-
-.filter-bar-right {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-end;
-    position: relative;
-    float: left;
-    width: 30%;
-}
 
 .form-control-select {
     height: 2rem;
@@ -98,18 +75,8 @@ filter-element-height {
 }
 
 @media only screen and (max-width: 700px) {
-    .filter-bar-left,
-    .filter-bar-right {
-        width: 100%;
-        justify-content: flex-start;
-    }
 
-    .filter-element,
-    .form-control-select,
-    #search,
-    .create-event,
-    #main,
-    .buttons {
+    .filter-element, .form-control-select, #search, .create-event, #main, .buttons {
         width: 100%;
         max-width: 100%;
     }
