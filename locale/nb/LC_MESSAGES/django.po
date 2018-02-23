@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-23 11:33+0100\n"
+"POT-Creation-Date: 2018-02-23 11:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -208,6 +208,10 @@ msgstr "Opprett nytt arrangement"
 #: .\templates\events\events_main_page.html:15
 msgid "Hosted by"
 msgstr "Arrangert av"
+
+#: .\templates\events\events_main_page.html:18
+msgid "Select a host"
+msgstr "Velg en arrangør"
 
 #: .\templates\events\events_main_page.html:20
 #: .\templates\events\events_main_page.html:21
