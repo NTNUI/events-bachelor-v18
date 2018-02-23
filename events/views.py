@@ -58,8 +58,8 @@ def get_filtered_events(request):
     if search is not None and search != '':
         # serach for the word in descriptions and name
         events = Event.objects.filter(Q(eventdescription__language=translation.get_language()) &
-                                      Q(eventdescription__name__icontains=search) | Q(
-            eventdescription__description_text__icontains=search))
+                                      (Q(eventdescription__name__icontains=search) | Q(
+            eventdescription__description_text__icontains=search)))
     else:
         # if not search return all event objects
         events = Event.objects.filter(eventdescription__language=translation.get_language())
