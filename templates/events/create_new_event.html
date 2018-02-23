@@ -1,30 +1,39 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load static %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" href="{% static 'css/create_new_event.css' %}">
+{% endblock %}
     {% block title %}NTNUI - Create events{% endblock %}
 
     {% block content %}
-        <div class="alert-message-container">
 
-        </div>
         <h1>{% trans 'Create new event:' %}</h1>
         <form id="create-event-form" >{% csrf_token %}
             <div class="form-group row">
               <label class="col-2 col-form-label">{% trans 'Name norwegian' %}</label>
               <div class="col-10">
-                <input class="form-control" type="text" name="name_no">
+                <input class="form-control" onblur="return validateName_no()" pattern="^[a-zA-ZæøåÆØÅ\s]*$" type="text" name="name_no" required>
               </div>
+                <div id="alert-name-no">
+                <p id="name_no_message"></p>
+                    </div>
             </div>
             <div class="form-group row">
               <label class="col-2 col-form-label">{% trans 'Name english' %}</label>
               <div class="col-10">
-                <input class="form-control" type="text" name="name_en">
+                <input class="form-control" onblur="return validateName_en()" pattern="^[a-zA-Z\s]*$" type="text" name="name_en" required>
               </div>
+
+                <div id="alert-name-en">
+                    <p id="name_en_message"></p>
+            </div>
             </div>
               <div class="form-group row">
                 <label class="col-2 col-form-label">{% trans 'Host' %}</label>
                   <div class="col-10">
-                    <select class="form-control" name="host">
+                    <select class="form-control" name="host" required>
                         {% for group in groups %}
                             <option value="{{ group.id }}">{{ group.name }}</option>
                         {% endfor %}
@@ -34,14 +43,20 @@
             <div class="form-group row">
               <label class="col-2 col-form-label">{% trans 'Start date:' %}</label>
               <div class="col-10">
-                   <input class="form-control" type="datetime-local"  value="" name="start_date">
+                   <input class="form-control" type="datetime-local" onblur="return validateStart_date()" name="start_date" required>
               </div>
+                <div id="alert-start-date">
+                <p id="start_date_message"></p>
+                    </div>
             </div>
             <div class="form-group row">
               <label class="col-2 col-form-label">{% trans 'To date:' %}</label>
               <div class="col-10">
-                   <input class="form-control" type="datetime-local" value="" name="end_date">
+                   <input class="form-control" type="datetime-local" onblur="return validateEnd_date()" name="end_date" required>
               </div>
+                <div id="alert-end-date">
+                <p id="end_date_message"></p>
+                    </div>
             </div>
             <div class="form-group row">
               <label class="form-check-label">
@@ -52,15 +67,24 @@
             <div class="form-group row">
               <label class="col-3 col-form-label">{% trans 'Description norwegian' %}</label>
               <div class="col-10">
-                  <textarea class="form-control" type="textArea" name="description_text_no"></textarea>
+                  <textarea class="form-control" type="textArea" onblur="return validateDescription_text_no()" name="description_text_no" required></textarea>
               </div>
+                <div id="alert-description-no">
+                <p id="description_no_message"></p>
+                    </div>
             </div>
             <div class="form-group row">
               <label class="col-3 col-form-label">{% trans 'Description english' %}</label>
               <div class="col-10">
-                  <textarea class="form-control" type="textArea" name="description_text_en"></textarea>
+                  <textarea class="form-control" type="textArea" onblur="return validateDescription_text_en()" name="description_text_en" required></textarea>
               </div>
+                <div id="alert-description-en">
+                <p id="description_en_message"></p>
+                    </div>
             </div>
+        <div class="alert-message-container">
+
+        </div>
             <button id="create-event-button" type="button" class="btn btn-success">{% trans 'Create event' %}</button>
         </form>
 
