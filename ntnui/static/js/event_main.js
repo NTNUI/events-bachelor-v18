@@ -6,17 +6,25 @@ let searchParams = new URLSearchParams(window.location.search)
 // on document ready, send ajax request for the first page
 $(() => {
 
+    // Sets the search filed to the same search that is in the url
     $("#search-field").val(searchParams.has("search") ? searchParams.get("search") : "")
+
+    // Load the first page
     loadEvents(1);
 
+    // On click
     $("#load-more").click(() => {
         getNextPage();
     });
 
+    // on change in the search field
     $("#search").on('input',() => {
 
+        // update parms
         searchParams.set('search', $("#search-field").val());
+        //update current url
         history.replaceState('test', 'test', '?' + searchParams)
+        // Load events
         loadEvents(1)
 
     })
@@ -31,14 +39,10 @@ function getNextPage() {
 
 // ajax for requesting events from server
 function loadEvents(page) {
-    console.log(searchParams)
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
-    const orderBy = searchParams.has("order_by")
-        ? searchParams.get("order_by")
-        : "";
+    const orderBy = searchParams.has("order_by") ? searchParams.get("order_by") : "";
 
-    console.log(orderBy);
     $.ajax({
         dataType: "json",
         url: GET_URL,
@@ -52,7 +56,6 @@ function loadEvents(page) {
             pageNr = parseInt(data.page_number);
             pageCount = data.page_count;
             displayEvents(data.events, page==1);
-            displayEvents(data.events);
             if (pageNr === pageCount) {
                 removeButton();
             }
@@ -68,6 +71,7 @@ function displayEvents(events, reload) {
     if(reload) {
         $("#event-container").empty()
     }
+
     events.map(event => {
         displayEvent(event);
     });
@@ -75,10 +79,6 @@ function displayEvents(events, reload) {
 
 // display one event
 function displayEvent(event) {
-    priority = false
-    if(event.priority == 'True') {
-        priority = true
-    }
 
     $("#event-container").append(
         '<div class="card bg-light mb-3">' +
