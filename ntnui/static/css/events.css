@@ -1,3 +1,9 @@
+* {
+  --NTNUI-green: #008000;
+  --NTNUI-red: #FB0000;
+  --NTNUI-yellow: #FFFF00;
+}
+
 .event-main-page-container {
     display: grid;
     flex-wrap: wrap;
@@ -70,6 +76,10 @@ filter-element-height {
     color: darkgray;
 }
 
+.btn-success {
+  background-color: var(--NTNUI-green) !important;
+}
+
 #search {
     /*max-width: 20rem;*/
     calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
@@ -101,6 +111,10 @@ filter-element-height {
     width: 100%;
 }
 
+label.custom-control.custom-checkbox {
+    margin-top: 1%;
+    margin-left: 2%;
+}
 
 @media only screen and (max-width: 700px) {
 
