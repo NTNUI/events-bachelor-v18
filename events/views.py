@@ -61,7 +61,7 @@ def get_filtered_events(request):
             eventdescription__description_text__icontains=search))
     else:
         # if not search return all event objects
-        events = Event.objects.all()
+        events = Event.objects.filter(eventdescription__language=translation.get_language())
 
     # Allowed order_by
     allowed_order_by = ['name', 'description', 'start_date', 'end_date']

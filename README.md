@@ -53,19 +53,26 @@ make start
     * Unzip
     * Put into `/usr/local/bin`
 
-## Updating language files:
+## Language files
 
-All language files are located in the locale folder, to edit them simply 
-choose the language of your choice
-Language files can be updated by using:
-```
-python manage.py makemessages -l nb -i env
-```
-were nb is norwegian (bokmål), to add a diffrent language simply find its code.
-English is default.
+###gettext
+To make any changes to the language files(.po, .mo) you will first need to install gettext, 
+it can be downloaded from the following site ([gettext link](https://www.gnu.org/software/gettext))
+    
+To find out how to add translations to your view or templates, you may visit djangos[documentation](https://docs.djangoproject.com/en/2.0/topics/i18n/translation/)
+    
+All language files are located in the locale folder, with subfolders corresponding to the language extension(nb, nn etc) 
 
-Use:
-```
-python manage.py compilemessages
-```
+###Update or create a language
+After you have navigated to you project root directory, you can create or update languages using the following command:
+    ```
+    python manage.py makemessages -l language_code -i env
+    ```
+Where the language_code is the extension for the language you would like to use, for instance nb is norwegian bokmål. 
+
+###Compile messages
+After you have made the translations, you can compile them using the following comand. 
+    ```
+    python manage.py compilemessages
+    ```
 To compile the new translations, and you are good to go.

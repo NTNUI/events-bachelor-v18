@@ -1,0 +1,115 @@
+.event-main-page-container {
+    display: grid;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+    max-height: 30rem;
+    grid-template-columns: 20% 60% 20%;
+}
+
+#main {
+    grid-column: 2;
+}
+
+.create-event {
+    grid-column: 1;
+    grid-row: 1;
+    margin-left: 10%;
+}
+
+.buttons {
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.content-table {
+    width: 20rem;
+    min-height: 6rem;
+    background-color: white;
+    border: 1px solid #dfdfdf;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+
+.list-header {
+    border-bottom: 1px solid #979797;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    display: flex;
+    height: 4rem;
+    box-sizing: border-box;
+    font-weight: bold;
+}
+
+filter-element-height {
+    max-height: 2rem;
+}
+
+.filter-element {
+    max-width: 50rem;
+    width: auto;
+    max-height: 2rem;
+    margin: 0.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.filter-bar {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid lightgray;
+}
+
+.filter-bar-left {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    float: left;
+    width: 70%;
+}
+
+.filter-bar-right {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    float: left;
+    width: 30%;
+}
+
+.form-control-select {
+    height: 2rem;
+    border: 1px solid lightgrey;
+    color: darkgray;
+}
+
+#search {
+    max-width: 20rem;
+}
+
+@media only screen and (max-width: 700px) {
+    .filter-bar-left, .filter-bar-right {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .filter-element, .form-control-select, #search, .create-event, #main, .buttons {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .create-event {
+        margin-left: 0;
+    }
+
+    .event-main-page-container {
+        display: block;
+    }
+
+}

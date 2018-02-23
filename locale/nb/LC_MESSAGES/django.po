@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-15 02:48+0100\n"
+"POT-Creation-Date: 2018-02-23 11:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: .\accounts\models.py:14
-msgid "customer id"
+#, fuzzy
+#| msgid "customer id"
+msgid "customer no"
 msgstr "kunde id"
 
 #: .\accounts\models.py:15
@@ -62,61 +64,57 @@ msgstr "bruker"
 msgid "users"
 msgstr "brukere"
 
-#: .\events\models.py:13 .\events\models.py:46
+#: .\events\models.py:14 .\events\models.py:59
 msgid "event"
 msgstr "arrangement"
 
-#: .\events\models.py:14
+#: .\events\models.py:15
 msgid "events"
 msgstr "arrangement"
 
-#: .\events\models.py:16
+#: .\events\models.py:17
 msgid "start date"
 msgstr "start dato"
 
-#: .\events\models.py:17
+#: .\events\models.py:18
 msgid "end date"
 msgstr "sluttdato"
 
-#: .\events\models.py:18
+#: .\events\models.py:19
 msgid "priority"
 msgstr "prioritet"
 
-#: .\events\models.py:19
+#: .\events\models.py:20
 msgid "hosted by NTNUI"
 msgstr "arrangert av NTNUI"
 
-#: .\events\models.py:20
+#: .\events\models.py:21
+msgid "attending members"
+msgstr ""
+
+#: .\events\models.py:22
 msgid "hosted by"
 msgstr "arrangert av"
 
-#: .\events\models.py:25 .\events\models.py:43
+#: .\events\models.py:27 .\events\models.py:56
 msgid "name"
 msgstr "navn"
 
-#: .\events\models.py:30 .\events\models.py:44
+#: .\events\models.py:32 .\events\models.py:57
 msgid "description"
 msgstr "beskrivelse"
 
-#: .\events\models.py:40
+#: .\events\models.py:53
 msgid "event description"
 msgstr "arrangementsbeskrivelse"
 
-#: .\events\models.py:41
+#: .\events\models.py:54
 msgid "event descriptions"
 msgstr "arrangementsbeskrivelser"
 
-#: .\events\models.py:45
+#: .\events\models.py:58
 msgid "language"
 msgstr "språk"
-
-#: .\events\views.py:71
-msgid "New event successfully created!"
-msgstr "Nytt arrangement opprettet"
-
-#: .\events\views.py:74
-msgid "Failed to create event!"
-msgstr "Klarte ikke opprette arrangement"
 
 #: .\forms\forms.py:37
 msgid "Group does not exist"
@@ -149,6 +147,22 @@ msgstr "Økonomiansvarligs epostfelt er tomt"
 #: .\templates\base.html:5
 msgid "en"
 msgstr "nb"
+
+#: .\templates\base.html:42
+msgid "Main Board"
+msgstr "Hovedstyre"
+
+#: .\templates\base.html:49
+msgid "Groups"
+msgstr "Grupper"
+
+#: .\templates\base.html:56
+msgid "Events"
+msgstr "Arrangement"
+
+#: .\templates\base.html:68
+msgid "Account"
+msgstr "Konto"
 
 #: .\templates\events\create_new_event.html:10
 msgid "Create new event:"
@@ -187,5 +201,63 @@ msgid "Description english"
 msgstr "Beskrivelse engelsk"
 
 #: .\templates\events\create_new_event.html:64
+#: .\templates\events\events_main_page.html:78
 msgid "Create event"
-msgstr "Lag event!"
+msgstr "Opprett nytt arrangement"
+
+#: .\templates\events\events_main_page.html:15
+msgid "Hosted by"
+msgstr "Arrangert av"
+
+#: .\templates\events\events_main_page.html:18
+msgid "Select a host"
+msgstr "Velg en arrangør"
+
+#: .\templates\events\events_main_page.html:20
+#: .\templates\events\events_main_page.html:21
+msgid "test"
+msgstr "test"
+
+#: .\templates\events\events_main_page.html:26
+msgid "Place"
+msgstr "Sted"
+
+#: .\templates\events\events_main_page.html:29
+#: .\templates\events\events_main_page.html:40
+#: .\templates\events\events_main_page.html:51
+msgid "Choose..."
+msgstr "Velg..."
+
+#: .\templates\events\events_main_page.html:37
+msgid "From date"
+msgstr "Fra dato"
+
+#: .\templates\events\events_main_page.html:48
+msgid "To date"
+msgstr "Til dato"
+
+#: .\templates\events\events_main_page.html:63
+msgid "search"
+msgstr "Søk"
+
+#: .\templates\events\events_main_page.html:70
+msgid "My options"
+msgstr "Mine valg"
+
+#: .\templates\events\events_main_page.html:73
+msgid "My events"
+msgstr "Mine arrangementer"
+
+#: .\templates\events\events_main_page.html:83
+msgid "Manage events"
+msgstr "Håndtere arrangementer"
+
+#: .\templates\events\events_main_page.html:92
+msgid "Load more events"
+msgstr "Last inn flere"
+
+#~ msgid "New event successfully created!"
+#~ msgstr "Nytt arrangement opprettet"
+
+#~ msgid "Failed to create event!"
+#~ msgstr "Klarte ikke opprette arrangement"
