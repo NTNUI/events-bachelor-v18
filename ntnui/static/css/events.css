@@ -1,4 +1,4 @@
-body {
+* {
   --NTNUI-green: #008000;
   --NTNUI-red: #FB0000;
   --NTNUI-yellow: #FFFF00;
@@ -74,6 +74,10 @@ filter-element-height {
     height: 2rem;
     border: 1px solid lightgrey;
     color: darkgray;
+}
+
+.btn-success {
+  background-color: var(--NTNUI-green) !important;
 }
 
 #search {
