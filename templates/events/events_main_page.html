@@ -12,21 +12,21 @@
         <div class="filter-bar-left">
             <div class="filter-element input-group">
                     <span class="input-group-addon" id="basic-addon1">
-                        Hosted by
+                        {% trans 'Hosted by' %}
                     </span>
                 <select class="form-control-select">
                     <option selected>Select a host</option>
                     <option value="1">NTNUI</option>
-                    <option value="2">Some group</option>
-                    <option value="3">Some other group</option>
+                    <option value="2">{% trans 'test' %}</option>
+                    <option value="3">{% trans 'test' %}</option>
                 </select>
             </div>
             <div class="filter-element input-group">
                     <span class="input-group-addon" id="basic-addon1">
-                        Place
+                        {% trans 'Place' %}
                     </span>
                 <select class="form-control-select">
-                    <option selected>Choose...</option>
+                    <option selected>{% trans 'Choose...' %}</option>
                     <option value="1">One</option>
                     <option value="2">Two</option>
                     <option value="3">Three</option>
@@ -34,10 +34,10 @@
             </div>
             <div class="filter-element input-group">
                     <span class="input-group-addon" id="basic-addon1">
-                        From date
+                        {% trans 'From date' %}
                     </span>
                 <select class="form-control-select">
-                    <option selected>Choose...</option>
+                    <option selected>{% trans 'Choose...' %}</option>
                     <option value="1">One</option>
                     <option value="2">Two</option>
                     <option value="3">Three</option>
@@ -45,10 +45,10 @@
             </div>
             <div class="filter-element input-group">
                     <span class="input-group-addon" id="basic-addon1">
-                        To date
+                        {% trans 'To date' %}
                     </span>
                 <select class="form-control-select">
-                    <option selected>Choose...</option>
+                    <option selected>{% trans 'Choose...' %}</option>
                     <option value="1">One</option>
                     <option value="2">Two</option>
                     <option value="3">Three</option>
@@ -60,27 +60,27 @@
                 <span class="input-group-addon" id="basic-addon1">
                     <img src="{% static 'img/serach.svg' %}" alt="groups icon" style="max-height:1rem;"/>
                 </span>
-                <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1">
+                <input type="text" class="form-control" placeholder="{% trans 'search' %}" aria-describedby="basic-addon1">
             </div>
         </div>
     </div>
     <div class="event-main-page-container">
         <div class="create-event">
             {% if can_create_event %}
-                <h3>My options:</h3>
+                <h3>{% trans 'My options' %}</h3>
                 <div>
                     <a id="go-to-create-event" href="/">
-                        <button type="button" class="buttons btn btn-success">My events</button>
+                        <button type="button" class="buttons btn btn-success">{% trans 'My events' %}</button>
                     </a>
                 </div>
                 <div>
                     <a id="go-to-create-event" href="{% url 'create_event_page' %}">
-                        <button type="button" class="buttons btn btn-success">Create event</button>
+                        <button type="button" class="buttons btn btn-success">{% trans 'Create event' %}</button>
                     </a>
                 </div>
                 <div>
                     <a id="go-to-create-event" href="/">
-                        <button type="button" class="buttons btn btn-success">Manage event</button>
+                        <button type="button" class="buttons btn btn-success">{% trans 'Manage events' %}</button>
                     </a>
                 </div>
             {% endif %}
@@ -89,7 +89,7 @@
             <div id="event-container">
             </div>
             <div style="display:flex;justify-content: center; margin-top:1rem;">
-                <button type="button" id="load-more" class="buttons btn btn-success">Load more events!</button>
+                <button type="button" id="load-more" class="buttons btn btn-success">{% trans 'Load more events' %}</button>
             </div>
         </div>
 
