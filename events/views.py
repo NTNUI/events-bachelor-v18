@@ -183,12 +183,12 @@ def create_event(request):
 
         # if succsess send event created
         if entry_created[0]:
-            return get_json(201, 'New event successfully created!')
+            return get_json(201, _('New event successfully created!'))
         if entry_created[1] is not None:
             return get_json(400, entry_created[1])
 
     # if something goes wrong send faild to create event
-    return get_json(400, 'Failed to create event!')
+    return get_json(400, _('Failed to create event!'))
 
 
 """ Tries to create an entry in the database for the event described in the POST message.
@@ -238,7 +238,7 @@ def create_event_for_group(data, priority, is_ntnui):
         if create_description_for_event(event, data.get('description_text_no'), data.get('name_no'), 'nb') and \
                 create_description_for_event(event, data.get('description_text_en'), data.get('name_en'), 'en'):
             return True, None
-        return False, 'could not create description'
+        return False, _('could not create description')
 
     # if something goes worng return false and print error to console
     except Exception as e:
@@ -289,7 +289,7 @@ def event_has_description_and_name(description, name):
     if description is None or description.replace(' ', '') == "":
         return False, 'Event must have description'
     elif name is None or name.replace(' ', '') == "":
-        return False, 'Event must have a name'
+        return False, _('Event must have a name')
     return True, None
 
 
@@ -298,5 +298,5 @@ def event_has_description_and_name(description, name):
 
 def get_json(code, message):
     return JsonResponse({
-        'message': _(message)},
+        'message': message},
         status=code)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-23 11:37+0100\n"
+"POT-Creation-Date: 2018-02-23 12:09+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,6 +115,24 @@ msgstr "arrangementsbeskrivelser"
 #: .\events\models.py:58
 msgid "language"
 msgstr "språk"
+
+#: .\events\views.py:186
+msgid "New event successfully created!"
+msgstr "Nytt arrangement opprettet"
+
+#: .\events\views.py:191
+msgid "Failed to create event!"
+msgstr "Klarte ikke opprette arrangement"
+
+#: .\events\views.py:241
+#, fuzzy
+#| msgid "event description"
+msgid "could not create description"
+msgstr "Kunne ikke opprette arrangementsbeskrivelse"
+
+#: .\events\views.py:292
+msgid "Event must have a name"
+msgstr "Arrangemnter må ha et navn"
 
 #: .\forms\forms.py:37
 msgid "Group does not exist"
@@ -255,9 +273,3 @@ msgstr "Håndtere arrangementer"
 #: .\templates\events\events_main_page.html:92
 msgid "Load more events"
 msgstr "Last inn flere"
-
-#~ msgid "New event successfully created!"
-#~ msgstr "Nytt arrangement opprettet"
-
-#~ msgid "Failed to create event!"
-#~ msgstr "Klarte ikke opprette arrangement"
