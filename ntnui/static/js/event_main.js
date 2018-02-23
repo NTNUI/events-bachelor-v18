@@ -14,7 +14,8 @@ function getNextPage() {
     if (pageNr < pageCount) {
         pageNr = pageNr + 1;
         loadEvents(pageNr);
-    } else {
+    }
+    if (pageNr === pageCount){
         removeButton();
     }
 }
@@ -57,6 +58,10 @@ function displayEvents(events) {
 
 // display one event
 function displayEvent(event) {
+    priority = false
+    if(event.priority == 'True') {
+        priority = true
+    }
     $("#event-container").append(
         '<div class="card bg-light mb-3">' +
             '<div class="card-header">' +

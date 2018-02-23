@@ -24,6 +24,7 @@ def get_event_page(request):
     })
 
 
+
 @login_required
 def get_events(request):
     if (request.GET):

@@ -125,8 +125,6 @@ msgid "Failed to create event!"
 msgstr "Klarte ikke opprette arrangement"
 
 #: .\events\views.py:241
-#, fuzzy
-#| msgid "event description"
 msgid "could not create description"
 msgstr "Kunne ikke opprette arrangementsbeskrivelse"
 
