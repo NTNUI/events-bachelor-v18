@@ -19,10 +19,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: .\accounts\models.py:14
-#, fuzzy
-#| msgid "customer id"
 msgid "customer no"
-msgstr "kunde id"
+msgstr "kunde nr"
 
 #: .\accounts\models.py:15
 msgid "email address"
@@ -50,7 +48,7 @@ msgstr "telefonnummer"
 
 #: .\accounts\models.py:23
 msgid "staff status"
-msgstr "ansatt status"
+msgstr "ansattstatus"
 
 #: .\accounts\models.py:25
 msgid "Designates whether the user can log into this site."
@@ -90,7 +88,7 @@ msgstr "arrangert av NTNUI"
 
 #: .\events\models.py:21
 msgid "attending members"
-msgstr ""
+msgstr "deltagende medlemmer"
 
 #: .\events\models.py:22
 msgid "hosted by"
@@ -122,21 +120,19 @@ msgstr "Nytt arrangement opprettet"
 
 #: .\events\views.py:191
 msgid "Failed to create event!"
-msgstr "Klarte ikke opprette arrangement"
+msgstr "Kunne ikke opprette arrangement"
 
 #: .\events\views.py:241
-#, fuzzy
-#| msgid "event description"
 msgid "could not create description"
-msgstr "Kunne ikke opprette arrangementsbeskrivelse"
+msgstr "Kunne ikke lage beskrivelse"
 
 #: .\events\views.py:292
 msgid "Event must have a name"
-msgstr "Arrangemnter må ha et navn"
+msgstr "Arrangemnt må ha et navn"
 
 #: .\forms\forms.py:37
 msgid "Group does not exist"
-msgstr "Gruppen finnes ikke"
+msgstr "Gruppe finnes ikke"
 
 #: .\forms\forms.py:50
 msgid "{} does not belong to {}"
@@ -152,7 +148,7 @@ msgstr "Denne eposten finnes ikke i databasen"
 
 #: .\forms\forms.py:71
 msgid "The president email field is empty"
-msgstr "Presidentens epostfelt er tom"
+msgstr "Presidentens epostfelt er tomt"
 
 #: .\forms\forms.py:83
 msgid "The vice president email field is empty"
@@ -256,7 +252,7 @@ msgstr "Til dato"
 
 #: .\templates\events\events_main_page.html:63
 msgid "search"
-msgstr "Søk"
+msgstr "søk"
 
 #: .\templates\events\events_main_page.html:70
 msgid "My options"
@@ -268,8 +264,8 @@ msgstr "Mine arrangementer"
 
 #: .\templates\events\events_main_page.html:83
 msgid "Manage events"
-msgstr "Håndtere arrangementer"
+msgstr "Håndtere arrangement"
 
 #: .\templates\events\events_main_page.html:92
 msgid "Load more events"
-msgstr "Last inn flere"
+msgstr "Last flere arrangement"
