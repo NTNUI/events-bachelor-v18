@@ -8,10 +8,16 @@
 {% block title %}NTNUI - Events{% endblock %}
 
 {% block content %}
+    <div class="event-main-page-container">
 
-    <div class="filter-bar">
-        <div class="filter-bar-left">
-            <div class="filter-element input-group">
+      <div id="accordion" role="tablist" aria-multiselectable="true">
+          <div id="search" class="filter-element input-group">
+                <span class="input-group-addon" id="basic-addon1">
+                    <img src="{% static 'img/serach.svg' %}" alt="groups icon" style="max-height:1rem;"/>
+                </span>
+                <input id="search-field" type="text" class="form-control" placeholder="{% trans 'search' %}" aria-describedby="basic-addon1">
+            </div>
+          <div class="filter-element input-group">
                     <span class="input-group-addon" id="basic-addon1">
                         {% trans 'From date' %}
                     </span>
@@ -33,19 +39,7 @@
                     <option value="3">Three</option>
                 </select>
             </div>
-        </div>
-        <div class="filter-bar-right">
-            <div id="search" class="filter-element input-group">
-                <span class="input-group-addon" id="basic-addon1">
-                    <img src="{% static 'img/serach.svg' %}" alt="groups icon" style="max-height:1rem;"/>
-                </span>
-                <input type="text" class="form-control" placeholder="{% trans 'search' %}" aria-describedby="basic-addon1">
-            </div>
-        </div>
-    </div>
-    <div class="event-main-page-container">
 
-      <div id="accordion" role="tablist" aria-multiselectable="true">
         <div class="card">
           <div class="card-header" role="tab" id="headingOne" aria-controls="collapseOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true">
             <h5 class="mb-0">
@@ -55,7 +49,7 @@
             </h5>
           </div>
 
-          <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+          <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" style="background-color: white;" >
             <div class="card-block">
               <input type="checkbox" name="group" value="NTNUI"> NTNUI<br>
               <input type="checkbox" name="group" value="Svømming"> Svømming<br>
