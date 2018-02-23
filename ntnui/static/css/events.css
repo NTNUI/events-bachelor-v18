@@ -71,12 +71,40 @@ filter-element-height {
 }
 
 #search {
-    max-width: 20rem;
+    /*max-width: 20rem;*/
+    calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+    margin-left: 10%;
+    margin-right: 10%;
 }
+
+#search {
+    calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#to-date {
+    calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 100%;
+}
+
+#from-date {
+    calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 100%;
+}
+
+.form-control-select {
+    width: 100%;
+}
+
 
 @media only screen and (max-width: 700px) {
 
-    .filter-element, .form-control-select, #search, .create-event, #main, .buttons {
+    .filter-element .form-control-select  #search .create-event #main .buttons {
         width: 100%;
         max-width: 100%;
     }
@@ -84,6 +112,7 @@ filter-element-height {
     .create-event {
         margin-left: 0;
     }
+
 
     .event-main-page-container {
         display: block;

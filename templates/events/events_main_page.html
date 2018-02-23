@@ -9,15 +9,14 @@
 
 {% block content %}
     <div class="event-main-page-container">
-
-      <div id="accordion" role="tablist" aria-multiselectable="true">
-          <div id="search" class="filter-element input-group">
+    <div>
+        <div id="search" class="filter-element input-group">
                 <span class="input-group-addon" id="basic-addon1">
                     <img src="{% static 'img/serach.svg' %}" alt="groups icon" style="max-height:1rem;"/>
                 </span>
                 <input id="search-field" type="text" class="form-control" placeholder="{% trans 'search' %}" aria-describedby="basic-addon1">
             </div>
-          <div class="filter-element input-group">
+          <div class="filter-element input-group" id="from-date">
                     <span class="input-group-addon" id="basic-addon1">
                         {% trans 'From date' %}
                     </span>
@@ -28,7 +27,7 @@
                     <option value="3">Three</option>
                 </select>
             </div>
-            <div class="filter-element input-group">
+            <div class="filter-element input-group" id="to-date">
                     <span class="input-group-addon" id="basic-addon1">
                         {% trans 'To date' %}
                     </span>
@@ -39,6 +38,7 @@
                     <option value="3">Three</option>
                 </select>
             </div>
+        <div id="accordion" role="tablist" aria-multiselectable="true">
 
         <div class="card">
           <div class="card-header" role="tab" id="headingOne" aria-controls="collapseOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true">
@@ -102,6 +102,8 @@
         </div>
       </div>
       </div>
+    </div>
+
         <div class="create-event">
             {% if can_create_event %}
                 <h3>{% trans 'My options' %}</h3>
