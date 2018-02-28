@@ -54,10 +54,11 @@ function validateName_no() {
     if (!name_no.checkValidity()) {
 
         document.getElementById("name_no_message").innerHTML = "Invalid input!";
-
+        $("#name-no-alerter").show();
     }
     else{
         document.getElementById("name_no_message").innerHTML = "";
+        $("#name-no-alerter").hide();
     }
 }
 
@@ -66,9 +67,11 @@ function validateName_en(){
     if (!name_en.checkValidity()) {
 
         document.getElementById("name_en_message").innerHTML = "Invalid input!";
+        $("#name-en-alerter").show();
     }
     else{
         document.getElementById("name_en_message").innerHTML = "";
+        $("#name-en-alerter").hide();
     }
     }
 
@@ -86,16 +89,17 @@ function validateStart_date(){
     if (!(input_Start_date > today)){
         start_date.setCustomValidity("Invalid date!");
         document.getElementById("start_date_message").innerHTML = start_date.validationMessage;
+        $("#start-date-alerter").show();
     }
     //if end date is already entered, check whether start date is before it
-    else if(!(input_End_date=="")) {
-        if (!(input_End_date > input_Start_date)) {
+    else if(!(input_End_date=="") && !(input_End_date > input_Start_date)) {
             start_date.setCustomValidity("Start date is not before end date!");
             document.getElementById("start_date_message").innerHTML = start_date.validationMessage;
-        }
+            $("#start-date-alerter").show();
     }
     else{
         document.getElementById("start_date_message").innerHTML = "";
+        $("#start-date-alerter").hide();
     }
 }
 ////check whether end_date input is valid and make a message pop up if invalid
@@ -111,15 +115,18 @@ function validateEnd_date(){
     if (!(input_End_date > today)){
         end_date.setCustomValidity("Invalid date!");
         document.getElementById("end_date_message").innerHTML = start_date.validationMessage;
+        $("#end-date-alerter").show();
     }
 
     //check whether end date is after start date
     else if(!(input_End_date > input_Start_date)){
         end_date.setCustomValidity("End date is not after start date!");
         document.getElementById("end_date_message").innerHTML = end_date.validationMessage;
+        $("#end-date-alerter").show();
     }
     else{
         document.getElementById("end_date_message").innerHTML = "";
+        $("#end-date-alerter").hide();
     }
 }
 
@@ -127,9 +134,11 @@ function validateEnd_date(){
 function validateDescription_text_no() {
     if (!description_text_no.checkValidity()) {
         document.getElementById("description_no_message").innerHTML = "Empty field!";
+        $("#description-no-alerter").show();
     }
     else{
         document.getElementById("description_no_message").innerHTML = "";
+        $("#description-no-alerter").hide();
 
     }
 }
@@ -138,9 +147,12 @@ function validateDescription_text_no() {
 function validateDescription_text_en(){
     if (!description_text_en.checkValidity()) {
         document.getElementById("description_en_message").innerHTML = "Empty field";
+        $("#description-en-alerter").show();
+
     }
     else{
         document.getElementById("description_en_message").innerHTML = "";
+        $("#description-en-alerter").hide();
 
     }
 }
