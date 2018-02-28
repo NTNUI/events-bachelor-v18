@@ -3,9 +3,11 @@ from events.models import Event, EventDescription
 from groups.models import SportsGroup
 from datetime import date
 from django.utils import translation
-
+from django.core.urlresolvers import reverse
 
 class TestEventModel(TestCase):
+
+
     def setUp(self):
 
         # Create a new event with NTNUI as host
@@ -16,13 +18,11 @@ class TestEventModel(TestCase):
         EventDescription.objects.create(name='Norsk', description_text='Norsk beskrivelse', language='nb', event=event)
         EventDescription.objects.create(name='Engelsk', description_text='Engelsk beskrivelse', language='en', event=event)
 
-
-
         # Create a second event with a group
         event = Event.objects.create(start_date= date.today(), end_date= date.today(),
                                      priority=True)
         # Add a sports group
-        SportsGroup.objects.create(name = 'Test Group', description = 'this is a test group', event=event)
+        event.sports_groups.add(SportsGroup.objects.create(name = 'Test Group', description = 'this is a test group'))
 
         # add norwegian and english description to the name and the description
         EventDescription.objects.create(name='test norsk', description_text='test norsk', language='nb', event=event)
@@ -81,5 +81,4 @@ class TestEventModel(TestCase):
 
         # Checks that the right group is host for test event
         event = Event.objects.get(eventdescription__name='test norsk')
-        print(event)
-        self.assertEquals(event.get_host(), SportsGroup.objects.get(name='Test Group'))
+        self.assertEquals((event.get_host())[0], str(SportsGroup.objects.get(name='Test Group')))
