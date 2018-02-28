@@ -62,6 +62,7 @@ function slideUpAlert(redirect) {
     })
 }
 
+var form = document.getElementById('create-event-form');
 var name_no = document.getElementsByName("name_no")[0];
 var name_en = document.getElementsByName("name_en")[0];
 var start_date = document.getElementsByName("start_date")[0];
@@ -97,6 +98,7 @@ function validateStart_date(){
     today = today.slice(0, -8);
     var input_End_date = end_date.value.toLocaleString();
     var input_Start_date = start_date.value.toLocaleString();
+
     if (!(input_Start_date > today)){
         start_date.setCustomValidity("Invalid date!");
         document.getElementById("start_date_message").innerHTML = start_date.validationMessage;
@@ -118,12 +120,12 @@ function validateEnd_date(){
     var input_Start_date = start_date.value.toLocaleString();
     var input_End_date = end_date.value.toLocaleString();
     if (!(input_Start_date > today)){
-        start_date.setCustomValidity("Invalid date!");
+        end_date.setCustomValidity("Invalid date!");
         document.getElementById("end_date_message").innerHTML = start_date.validationMessage;
     }
     else if(!(input_End_date > input_Start_date)){
-        start_date.setCustomValidity("End date is not after start date!");
-        document.getElementById("end_date_message").innerHTML = start_date.validationMessage;
+        end_date.setCustomValidity("End date is not after start date!");
+        document.getElementById("end_date_message").innerHTML = end_date.validationMessage;
     }
     else{
         document.getElementById("end_date_message").innerHTML = "";
@@ -149,4 +151,12 @@ function validateDescription_text_en(){
 
     }
 }
-
+form.addEventListener("submit", function (event) {
+  // Each time the user tries to send the data, we check
+  // if the email field is valid.
+  if (!(name_no.validity.valid || name_en.validity.valid || start_date.validity.valid || end_date.validity.valid
+      || description_text_no.validity.valid || description_text_en.validity.valid )) {
+    // And we prevent the form from being sent by canceling the event
+    event.preventDefault();
+  }
+}, false);
