@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.utils.translation import gettext as _
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
@@ -22,6 +22,15 @@ def get_event_page(request):
     return render(request, 'events/events_main_page.html', {
         'can_create_event': can_create_event,
     })
+
+def get_event_details(request, id):
+
+    event = get_object_or_404(Event, id=id)
+    context = {
+        "event": event,
+    }
+    return render(request, 'events/event_details.html', context)
+
 
 
 
@@ -301,3 +310,15 @@ def get_json(code, message):
     return JsonResponse({
         'message': message},
         status=code)
+
+
+def event_add_attendance(request, pk):
+    this_event = Event.objects.get(pk=pk)
+    this_event.add_user_to_list_of_attendees(user=request.user)
+    return redirect('detail', pk=pk)
+
+def event_cancel_attendance(request, pk):
+    this_event = Event.objects.get(pk=pk)
+    this_event.remove_user_from_list_of_attendees(request.user)
+    return redirect('detail', pk=pk)
+

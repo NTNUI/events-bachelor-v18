@@ -3,6 +3,7 @@ from groups.models import SportsGroup
 from django.utils.translation import gettext_lazy as _
 from django.utils import translation
 from accounts.models import User
+from django.core.urlresolvers import reverse
 
 
 """Creates a model for events, with start date, end date, priority, host group and ntnui as host.
@@ -40,10 +41,23 @@ class Event(models.Model):
             groups.append(group.name)
         return groups
 
-
+    def get_absolute_url(self):
+        return reverse("detail", kwargs={"id": self.id})
 
     def __str__(self):
         return self.name()
+
+    def get_registrations(self):
+        return EventRegistration.objects.filter(event=self)
+
+    def add_user_to_list_of_attendees(self, user):
+        registration = EventRegistration.objects.create(user=user,
+                                                        event=self,
+                                                        registration_time=timezone.now())
+
+    def remove_user_from_list_of_attendees(self, user):
+        registration = EventRegistration.objects.get(user=user, event=self)
+        registration.delete()
 
 
 """Add description and name to event, this way an event can have name and description in different languages."""
@@ -60,3 +74,22 @@ class EventDescription(models.Model):
 
     def __str__(self):
         return self.name
+
+class EventRegistration(models.Model):
+    event = models.ForeignKey(Event,verbose_name='Event')
+    user = models.ForeignKey(User,verbose_name='Attendee')
+    registration_time = models.DateTimeField()
+
+    def __str__(self):
+        return self.user.email
+
+    class Meta:
+        verbose_name = 'Attendee for event'
+        verbose_name_plural = 'Attendees for events'
+        ordering = ['registration_time']
+        unique_together = ('event', 'user')
+
+    def save(self, *args, **kwargs):
+        if self.id is None and self.registration_time is None:
+            self.registration_time = datetime.datetime.now()
+        super(EventRegistration, self).save(*args, **kwargs)

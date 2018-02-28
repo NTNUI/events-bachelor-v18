@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/events.css' %}"/>
+{% endblock %}
+
+{% block content %}
+<h1> {{title}} </h1>
+<div class="card bg-light mb-3">{{ event.host }}
+{{ event.start_date }}
+    {{ event.end_date }}<button id="event-sign-up-button" type="button" class="btn btn-success">{% trans 'Sign up for event' %}</button></div>
+<div class="card bg-light mb-3">{{ event.description }}</div>
+
+{% endblock %}
+
+
+
+{% block script %}
+    <script type="text/javascript" src="{% static 'js/event_main.js' %}"></script>
+{% endblock %}
