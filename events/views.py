@@ -15,13 +15,21 @@ from django.utils import translation
 
 
 @login_required
-def get_event_page(request):
+def events(request):
     # Used to find out if the create-event button shall be rendered or not
     can_create_event = user_can_create_event(request.user)
+    groups = get_groups_currently_hosting_events()
 
     return render(request, 'events/events_main_page.html', {
         'can_create_event': can_create_event,
+        'groups': groups,
     })
+
+
+def get_groups_currently_hosting_events():
+    groups_hosting_events = []
+    event_hosts = SportsGroup.objects.filter(event__in   = Event.objects.all()).distinct()
+    return event_hosts
 
 
 
