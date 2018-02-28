@@ -1,7 +1,19 @@
 input:focus:invalid {
-  border: 1px dashed darkred;
+    border: 1px dashed darkred;
 }
 
 input:focus:valid {
-  border: 1px dashed darkgreen;
+    border: 1px dashed darkgreen;
+}
+
+.invalid-message {
+
+}
+
+.form-control {
+
+}
+
+.form-group {
+
 }

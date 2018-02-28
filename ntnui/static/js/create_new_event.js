@@ -1,25 +1,4 @@
-/**
- * When the document have loaded, add listener to create-event-button and send ajax.
- */
-$(() => {
-    $("#create-event-button").click(() => {
-        const postData = $('#create-event-form').serialize()
-        $.ajax({
-            type: 'POST',
-            url: '/ajax/events/add-event',
-            data: postData,
-            success: (data) => {
-                //show success alert
-                printMessage('success', data.message)
-                slideUpAlert(true)
-            }, error: (data) => {
-                //show error alert
-                printMessage('error', data.responseJSON.message)
-                slideUpAlert(false)
-            }
-        })
-    })
-})
+
 
 /**
  * Prints message to screen, using a dialog box
@@ -61,7 +40,7 @@ function slideUpAlert(redirect) {
     //sets the amount of ms before the alert is closed
     })
 }
-
+//get form inputs
 var form = document.getElementById('create-event-form');
 var name_no = document.getElementsByName("name_no")[0];
 var name_en = document.getElementsByName("name_en")[0];
@@ -70,7 +49,7 @@ var end_date = document.getElementsByName("end_date")[0];
 var description_text_no = document.getElementsByName("description_text_no")[0];
 var description_text_en = document.getElementsByName("description_text_en")[0];
 
-
+//check whether name_no input is valid and make a message pop up if invalid
 function validateName_no() {
     if (!name_no.checkValidity()) {
 
@@ -82,6 +61,7 @@ function validateName_no() {
     }
 }
 
+//check whether name_en input is valid and make a message pop up if invalid
 function validateName_en(){
     if (!name_en.checkValidity()) {
 
@@ -92,17 +72,22 @@ function validateName_en(){
     }
     }
 
+//check whether start_date input is valid and make a message pop up if invalid
 function validateStart_date(){
+    //create date today
     var today = new Date().toISOString();
-
+    //slice seconds and timezone
     today = today.slice(0, -8);
+    //get end date and start date
     var input_End_date = end_date.value.toLocaleString();
     var input_Start_date = start_date.value.toLocaleString();
 
+    //check whether start_date is after current date
     if (!(input_Start_date > today)){
         start_date.setCustomValidity("Invalid date!");
         document.getElementById("start_date_message").innerHTML = start_date.validationMessage;
     }
+    //if end date is already entered, check whether start date is before it
     else if(!(input_End_date=="")) {
         if (!(input_End_date > input_Start_date)) {
             start_date.setCustomValidity("Start date is not before end date!");
@@ -113,16 +98,22 @@ function validateStart_date(){
         document.getElementById("start_date_message").innerHTML = "";
     }
 }
-
+////check whether end_date input is valid and make a message pop up if invalid
 function validateEnd_date(){
+    //create date today
     var today = new Date().toISOString();
+    //slice seconds and timezone
     today = today.slice(0, -8);
+    //get start date and end date
     var input_Start_date = start_date.value.toLocaleString();
     var input_End_date = end_date.value.toLocaleString();
-    if (!(input_Start_date > today)){
+    //check whether end date is before today
+    if (!(input_End_date > today)){
         end_date.setCustomValidity("Invalid date!");
         document.getElementById("end_date_message").innerHTML = start_date.validationMessage;
     }
+
+    //check whether end date is after start date
     else if(!(input_End_date > input_Start_date)){
         end_date.setCustomValidity("End date is not after start date!");
         document.getElementById("end_date_message").innerHTML = end_date.validationMessage;
@@ -132,6 +123,7 @@ function validateEnd_date(){
     }
 }
 
+//check whether description_text_no is valid and make a message pop up if invalid
 function validateDescription_text_no() {
     if (!description_text_no.checkValidity()) {
         document.getElementById("description_no_message").innerHTML = "Empty field!";
@@ -142,6 +134,7 @@ function validateDescription_text_no() {
     }
 }
 
+//check whether description_text_en is valid and make a message pop up if invalid
 function validateDescription_text_en(){
     if (!description_text_en.checkValidity()) {
         document.getElementById("description_en_message").innerHTML = "Empty field";
@@ -151,12 +144,35 @@ function validateDescription_text_en(){
 
     }
 }
-form.addEventListener("submit", function (event) {
-  // Each time the user tries to send the data, we check
-  // if the email field is valid.
-  if (!(name_no.validity.valid || name_en.validity.valid || start_date.validity.valid || end_date.validity.valid
-      || description_text_no.validity.valid || description_text_en.validity.valid )) {
-    // And we prevent the form from being sent by canceling the event
-    event.preventDefault();
-  }
-}, false);
+
+//when clicking on create event at the end of the form, check if all fields are valid
+//if they are valid, create the event
+$(document).ready(function() {
+    $("#create-event-button").click(function(e) {
+        e.preventDefault();
+        if (!name_no.validity.valid || !name_en.validity.valid || !start_date.validity.valid || !end_date.validity.valid
+      || !description_text_no.validity.valid || !description_text_en.validity.valid ){
+        $("div.alert-message-container").html("<p>Please validate all fields</p>");
+
+
+        }
+        else{
+            const postData = $('#create-event-form').serialize()
+            $.ajax({
+                type: 'POST',
+                url: '/ajax/events/add-event',
+                data: postData,
+                success: (data) => {
+                    //show success alert
+                    printMessage('success', data.message)
+                    slideUpAlert(true)
+                },
+                error: (data) => {
+                    //show error alert
+                    printMessage('error', data.responseJSON.message)
+                    slideUpAlert(false)
+                }
+            })
+        }}
+    )
+});

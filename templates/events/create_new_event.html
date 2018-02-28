@@ -16,7 +16,7 @@
               <div class="col-10">
                 <input class="form-control" onblur="return validateName_no()" pattern="^[a-zA-ZæøåÆØÅ\s]*$" type="text" name="name_no" required>
               </div>
-                <div id="alert-name-no">
+                <div class="invalid-message">
                 <p id="name_no_message"></p>
                     </div>
             </div>
@@ -26,7 +26,7 @@
                 <input class="form-control" onblur="return validateName_en()" pattern="^[a-zA-Z\s]*$" type="text" name="name_en" required>
               </div>
 
-                <div id="alert-name-en">
+                <div class="invalid-message">
                     <p id="name_en_message"></p>
             </div>
             </div>
@@ -45,7 +45,7 @@
               <div class="col-10">
                    <input class="form-control" type="datetime-local" onblur="return validateStart_date()" name="start_date" required>
               </div>
-                <div id="alert-start-date">
+                <div class="invalid-message">
                 <p id="start_date_message"></p>
                     </div>
             </div>
@@ -54,7 +54,7 @@
               <div class="col-10">
                    <input class="form-control" type="datetime-local" onblur="return validateEnd_date()" name="end_date" required>
               </div>
-                <div id="alert-end-date">
+                <div class="invalid-message">
                 <p id="end_date_message"></p>
                     </div>
             </div>
@@ -69,7 +69,7 @@
               <div class="col-10">
                   <textarea class="form-control" type="textArea" onblur="return validateDescription_text_no()" name="description_text_no" required></textarea>
               </div>
-                <div id="alert-description-no">
+                <div class="invalid-message">
                 <p id="description_no_message"></p>
                     </div>
             </div>
@@ -78,7 +78,7 @@
               <div class="col-10">
                   <textarea class="form-control" type="textArea" onblur="return validateDescription_text_en()" name="description_text_en" required></textarea>
               </div>
-                <div id="alert-description-en">
+                <div class="invalid-message">
                 <p id="description_en_message"></p>
                     </div>
             </div>
