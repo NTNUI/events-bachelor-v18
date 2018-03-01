@@ -51,7 +51,7 @@ def get_events(request):
 
 
 def get_filtered_events(request):
-    order_by = request.GET.get('sort-by')
+    order_by = request.GET.get('order_by')
     search = request.GET.get('search')
 
     # Checks if search have a value
@@ -66,10 +66,8 @@ def get_filtered_events(request):
 
     # Allowed order_by
     allowed_order_by = ['name', 'description', 'start_date', 'end_date']
-
     # checks that order_by have a value and that it is in the allowed_order_by
     if order_by is not None and (order_by in allowed_order_by or order_by[1:] in allowed_order_by):
-
         # checks the first character
         type = ''
         if order_by[0] == '-':
@@ -81,6 +79,8 @@ def get_filtered_events(request):
             order_by = type + 'eventdescription__name'
         elif order_by == 'description':
             order_by = type + 'eventdescription__description_text'
+        #elif order_by == 'end_date':
+        #   order_by = type + 'event__end_date'
 
         # return the result
         return events.order_by(order_by, 'priority', 'start_date')
