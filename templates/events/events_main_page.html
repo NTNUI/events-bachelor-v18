@@ -133,8 +133,19 @@
           </div>
         </div>
       </div>
+                <div>
+                    <!--<input type="text" list="order-list" id="ordered_by">-->
+                    <select id="sorted-list">
+                        <option value="name"> Name </option>
+                        <option value="description">Description</option>
+                        <option value="start_date" selected>Start Date</option>
+                        <option value="end_date">End Date</option>
+                    </select>
+                </div>
+
       </div>
     </div>
+
 
         <div class="create-event">
             {% if can_create_event %}

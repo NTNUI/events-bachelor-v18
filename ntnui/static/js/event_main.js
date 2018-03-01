@@ -3,11 +3,15 @@ let pageNr;
 let pageCount;
 let searchParams = new URLSearchParams(window.location.search)
 
+
 // on document ready, send ajax request for the first page
 $(() => {
 
     // Sets the search filed to the same search that is in the url
     $("#search-field").val(searchParams.has("search") ? searchParams.get("search") : "")
+
+    // Sets the sort by filed to the same sort by that is in the url
+    $("#sort-by").val(searchParams.has("sort-by") ? searchParams.get("sort-by") : "")
 
     // Load the first page
     loadEvents(1);
@@ -28,6 +32,15 @@ $(() => {
         loadEvents(1)
 
     })
+
+    $("#sorted-list").on('change', () => {
+        // update parms
+        searchParams.set('sort-by', $("#sorted-list").val())
+        //update current url
+        history.replaceState('test', 'test', '?' + searchParams)
+        // Load events
+        loadEvents(1)
+    })
 });
 
 function getNextPage() {
@@ -42,6 +55,7 @@ function loadEvents(page) {
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
     const orderBy = searchParams.has("order_by") ? searchParams.get("order_by") : "";
+    const filterBy = searchParams.has("filter_by") ? searchParams.get("filter_by") : "";
 
     $.ajax({
         dataType: "json",
@@ -49,7 +63,8 @@ function loadEvents(page) {
         data: {
             page: page,
             search: search,
-            order_by: orderBy
+            order_by: orderBy,
+            filter_by: filterBy
         },
         success: data => {
             console.log(data);

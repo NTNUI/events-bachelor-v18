@@ -51,7 +51,7 @@ def get_events(request):
 
 
 def get_filtered_events(request):
-    order_by = request.GET.get('order_by')
+    order_by = request.GET.get('sort-by')
     search = request.GET.get('search')
 
     # Checks if search have a value
