@@ -11,7 +11,7 @@ $(() => {
     $("#search-field").val(searchParams.has("search") ? searchParams.get("search") : "")
 
     // Sets the sort by filed to the same sort by that is in the url
-    $("#sort-by").val(searchParams.has("sort-by") ? searchParams.get("sort-by") : "")
+    $("#sorted-list").val(searchParams.has("sort-by") ? searchParams.get("sort-by") : "start_date")
 
     // Load the first page
     loadEvents(1);
