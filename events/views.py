@@ -51,7 +51,7 @@ def get_events(request):
 
 
 def get_filtered_events(request):
-    order_by = request.GET.get('order_by')
+    sort_by = request.GET.get('sort_by')
     search = request.GET.get('search')
 
     # Checks if search have a value
@@ -65,25 +65,23 @@ def get_filtered_events(request):
         events = Event.objects.filter(eventdescription__language=translation.get_language())
 
     # Allowed order_by
-    allowed_order_by = ['name', 'description', 'start_date', 'end_date']
-
+    allowed_sort_by = ['name', 'description', 'start_date', 'end_date']
     # checks that order_by have a value and that it is in the allowed_order_by
-    if order_by is not None and (order_by in allowed_order_by or order_by[1:] in allowed_order_by):
-
+    if sort_by is not None and (sort_by in allowed_sort_by or sort_by[1:] in allowed_sort_by):
         # checks the first character
         type = ''
-        if order_by[0] == '-':
+        if sort_by[0] == '-':
             type = '-'
-            order_by = order_by[1:]
+            order_by = sort_by[1:]
 
         # if the sort by is not in the event table we need to find the filed by merging
-        if order_by == 'name':
-            order_by = type + 'eventdescription__name'
-        elif order_by == 'description':
-            order_by = type + 'eventdescription__description_text'
+        if sort_by == 'name':
+            sort_by = type + 'eventdescription__name'
+        elif sort_by == 'description':
+            sort_by = type + 'eventdescription__description_text'
 
         # return the result
-        return events.order_by(order_by, 'priority', 'start_date')
+        return events.order_by(sort_by, 'priority', 'start_date')
     else:
         # return the result
         return  events.order_by('-priority', 'start_date')
