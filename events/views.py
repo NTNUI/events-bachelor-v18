@@ -43,8 +43,8 @@ def get_events(request):
             'page_count': p.num_pages}
         )
     return JsonResponse({
-        'messsage': 'must be get'
-    }, 404)
+        'messsage': 'You must use the request type GET'
+    }, status=404)
 
 
 """Returnes all the events that fits the order_by, search and filter_by"""

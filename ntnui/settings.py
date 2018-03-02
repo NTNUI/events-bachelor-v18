@@ -194,7 +194,9 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_ARGS = [
     '--with-coverage',
     '--cover-package=groups, forms, accounts, events',
-    '--cover-html'
+    '--cover-html',
+    '--nocapture',
+    '--nologcapture',
 ]
 
 # MEDIA

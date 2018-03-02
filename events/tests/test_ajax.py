@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
+from django.utils import translation
 
 from events.models import Event, EventDescription
 from groups.models import SportsGroup
@@ -23,13 +24,32 @@ class TestLoadEvents(TestCase):
         EventDescription.objects.create(name='Engelsk', description_text='Engelsk beskrivelse', language='en', event=event)
 
     def test_loading_events(self):
-
         c = Client()
 
         # login
         c.login(email='testuser@test.com', password='4epape?Huf+V')
 
-        request = c.get(reverse('get_events'), follow=True)
-        self.assertEquals(request.status_code, 200)
+        response = c.get(reverse('get_events'), follow=True)
+        self.assertEquals(response.status_code, 200)
 
+    def test_create_events(self):
+        c = Client()
 
+        # login
+        c.login(email='testuser@test.com', password='4epape?Huf+V')
+
+        response = c.post(reverse('create_event'),{'name_en': 'engelsk navn',
+                                                   'name_no': 'norsk navn',
+                                                   'description_text_en': 'engelsk beskrivelse',
+                                                   'description_text_no': 'norsk beskrivelse',
+                                                   'start_date': date.today(),
+                                                   'end_date': date.today(),
+                                                   'priority': 'false',
+                                                   'host': 'NTNUI'
+                                                   }, follow=True)
+        print(response)
+        self.assertEquals(response.status_code, 201)
+
+        translation.activate('nb')
+        print(Event.objects.all())
+        self.assertIsNotNone(Event.objects.get(eventdescription__name='norsk navn'))
