@@ -79,8 +79,6 @@ def get_filtered_events(request):
             sort_by = type + 'eventdescription__name'
         elif sort_by == 'description':
             sort_by = type + 'eventdescription__description_text'
-        #elif order_by == 'end_date':
-        #   order_by = type + 'event__end_date'
 
         # return the result
         return events.order_by(sort_by, 'priority', 'start_date')
