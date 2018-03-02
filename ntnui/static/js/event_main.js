@@ -37,6 +37,7 @@ $(() => {
         // update parms
         searchParams.set('sort-by', $("#sorted-list").val())
         //update current url
+
         history.replaceState('test', 'test', '?' + searchParams)
         // Load events
         loadEvents(1)

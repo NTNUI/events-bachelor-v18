@@ -54,10 +54,10 @@
                         {% trans 'Sort by' %}
                     </span>
             <select id="sorted-list" class="form-control-select">
-                <option value="name"> Name </option>
-                <option value="description">Description</option>
-                <option value="start_date">Start Date</option>
-                <option value="end_date">End Date</option>
+                <option value="start_date">{% trans 'Start date (ascending)' %}</option>
+                <option value="-start_date">{% trans 'Start date (descending)' %}</option>
+                <option value="name">{% trans 'Name' %}</option>
+                <option value="description">{% trans 'Description'%}</option>
             </select>
         </div>
         <div id="accordion" role="tablist" aria-multiselectable="true">

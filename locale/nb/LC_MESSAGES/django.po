@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-02 13:04+0100\n"
+"POT-Creation-Date: 2018-03-02 13:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -241,6 +241,22 @@ msgstr "Til dato"
 #: .\templates\events\events_main_page.html:54
 msgid "Sort by"
 msgstr "Sorter etter"
+
+#: .\templates\events\events_main_page.html:57
+msgid "Start date (ascending)"
+msgstr "Startdato (stigende)"
+
+#: .\templates\events\events_main_page.html:58
+msgid "Start date (descending)"
+msgstr "Startdato (synkende)"
+
+#: .\templates\events\events_main_page.html:59
+msgid "Name"
+msgstr "Navn"
+
+#: .\templates\events\events_main_page.html:60
+msgid "Description"
+msgstr "Beskrivelse"
 
 #: .\templates\events\events_main_page.html:69
 msgid "Hosted by"
