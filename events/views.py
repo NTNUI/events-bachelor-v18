@@ -4,8 +4,12 @@ from django.shortcuts import render
 from django.utils.translation import gettext as _
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
-
+from django.core.paginator import Paginator
 from .models import Event, EventDescription
+from django.core import serializers
+from django.db.models import Q
+from django.utils import translation
+
 
 """Returns the main page for events"""
 
@@ -14,9 +18,91 @@ from .models import Event, EventDescription
 def get_event_page(request):
     # Used to find out if the create-event button shall be rendered or not
     can_create_event = user_can_create_event(request.user)
+
     return render(request, 'events/events_main_page.html', {
-        'can_create_event': can_create_event
+        'can_create_event': can_create_event,
     })
+
+
+
+@login_required
+def get_events(request):
+    if (request.GET):
+        page = request.GET.get('page', 1)
+
+        # get filtered events
+        events = get_filtered_events(request)
+
+        p = Paginator(events, 10)
+
+        events = get_event_json(p.page(page))
+
+        return JsonResponse({
+            'events': events,
+            'page_number': page,
+            'page_count': p.num_pages}
+        )
+    return JsonResponse({
+        'messsage': 'must be get'
+    }, 404)
+
+
+"""Returnes all the events that fits the order_by, search and filter_by"""
+
+
+def get_filtered_events(request):
+    sort_by = request.GET.get('sort_by')
+    search = request.GET.get('search')
+
+    # Checks if search have a value
+    if search is not None and search != '':
+        # serach for the word in descriptions and name
+        events = Event.objects.filter(Q(eventdescription__language=translation.get_language()) &
+                                      (Q(eventdescription__name__icontains=search) | Q(
+            eventdescription__description_text__icontains=search)))
+    else:
+        # if not search return all event objects
+        events = Event.objects.filter(eventdescription__language=translation.get_language())
+
+    # Allowed order_by
+    allowed_sort_by = ['name', 'description', 'start_date', 'end_date']
+    # checks that order_by have a value and that it is in the allowed_order_by
+    if sort_by is not None and (sort_by in allowed_sort_by or sort_by[1:] in allowed_sort_by):
+        # checks the first character
+        type = ''
+        if sort_by[0] == '-':
+            type = '-'
+            order_by = sort_by[1:]
+
+        # if the sort by is not in the event table we need to find the filed by merging
+        if sort_by == 'name':
+            sort_by = type + 'eventdescription__name'
+        elif sort_by == 'description':
+            sort_by = type + 'eventdescription__description_text'
+
+        # return the result
+        return events.order_by(sort_by, 'priority', 'start_date')
+    else:
+        # return the result
+        return  events.order_by('-priority', 'start_date')
+
+
+
+"""Returnes list of dic of event"""
+
+
+def get_event_json(events):
+    return_events = []
+    for event in events:
+        return_events.append({
+            'name': str(event.name()),
+            'description': str(event.description()),
+            'start_date': str(event.start_date),
+            'end_date': str(event.end_date),
+            'priority': str(event.priority),
+            'host': str(event.get_host())
+        })
+    return return_events
 
 
 """Checks to see if a user can create event of any kind"""
@@ -29,8 +115,8 @@ def user_can_create_event(user):
 
     # Checks if the user is in any active board
     for board in Board.objects.filter(president=user) | \
-            Board.objects.filter(vice_president=user) | \
-            Board.objects.filter(cashier=user):
+                 Board.objects.filter(vice_president=user) | \
+                 Board.objects.filter(cashier=user):
 
         # Checks that the board is active
         if SportsGroup.objects.filter(active_board=board):
@@ -61,8 +147,8 @@ def get_groups_user_can_create_events_for(user):
 
     # Finds all the groups were the user is in the board
     for board in Board.objects.filter(president=user) | \
-            Board.objects.filter(vice_president=user) | \
-            Board.objects.filter(cashier=user):
+                 Board.objects.filter(vice_president=user) | \
+                 Board.objects.filter(cashier=user):
 
         # Checks that the board is active
         for group in SportsGroup.objects.filter(active_board=board):
@@ -96,12 +182,12 @@ def create_event(request):
 
         # if succsess send event created
         if entry_created[0]:
-            return get_json(201, 'New event successfully created!')
+            return get_json(201, _('New event successfully created!'))
         if entry_created[1] is not None:
             return get_json(400, entry_created[1])
 
     # if something goes wrong send faild to create event
-    return get_json(400, 'Failed to create event!')
+    return get_json(400, _('Failed to create event!'))
 
 
 """ Tries to create an entry in the database for the event described in the POST message.
@@ -145,13 +231,13 @@ def create_event_for_group(data, priority, is_ntnui):
 
         if not is_ntnui:
             # Add the group as the host
-            event.sports_group.add(SportsGroup.objects.get(id=int(data.get('host'))))
+            event.sports_groups.add(SportsGroup.objects.get(id=int(data.get('host'))))
 
         # Creates description and checks that it was created
         if create_description_for_event(event, data.get('description_text_no'), data.get('name_no'), 'nb') and \
                 create_description_for_event(event, data.get('description_text_en'), data.get('name_en'), 'en'):
             return True, None
-        return False, 'could not create description'
+        return False, _('could not create description')
 
     # if something goes worng return false and print error to console
     except Exception as e:
@@ -202,7 +288,7 @@ def event_has_description_and_name(description, name):
     if description is None or description.replace(' ', '') == "":
         return False, 'Event must have description'
     elif name is None or name.replace(' ', '') == "":
-        return False, 'Event must have a name'
+        return False, _('Event must have a name')
     return True, None
 
 
@@ -211,5 +297,5 @@ def event_has_description_and_name(description, name):
 
 def get_json(code, message):
     return JsonResponse({
-        'message': _(message)},
+        'message': message},
         status=code)
