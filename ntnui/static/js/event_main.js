@@ -54,7 +54,7 @@ function getNextPage() {
 function loadEvents(page) {
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
-    const orderBy = searchParams.has("sort-by") ? searchParams.get("sort-by") : "";
+    const sortBy = searchParams.has("sort-by") ? searchParams.get("sort-by") : "";
     const filterBy = searchParams.has("filter_by") ? searchParams.get("filter_by") : "";
 
     $.ajax({
@@ -63,7 +63,7 @@ function loadEvents(page) {
         data: {
             page: page,
             search: search,
-            order_by: orderBy,
+            sort_by: sortBy,
             filter_by: filterBy
         },
         success: data => {
