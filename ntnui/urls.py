@@ -7,6 +7,7 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.views.i18n import JavaScriptCatalog
 
 from accounts import views as accounts_views
 from groups import views as groups_views
@@ -58,6 +59,7 @@ urlpatterns = [
 ]
 urlpatterns += i18n_patterns(
     url(r'^events/', include('events.urls')),
+    url(r'^jsi18n/$', JavaScriptCatalog.as_view(), name='javascript-catalog'),
     url(_(r'^admin/'), admin.site.urls),
 
 )

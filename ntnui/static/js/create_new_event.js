@@ -1,5 +1,3 @@
-
-
 /**
  * Prints message to screen, using a dialog box
  * @param msgType
@@ -51,9 +49,9 @@ var description_text_en = document.getElementsByName("description_text_en")[0];
 
 //check whether name_no input is valid and make a message pop up if invalid
 function validateName_no() {
-    if (!name_no.checkValidity()) {
 
-        document.getElementById("name_no_message").innerHTML = "Invalid input!";
+    if (!name_no.checkValidity()) {
+        document.getElementById("name_no_message").innerHTML = gettext("Invalid input!");
         $("#name-no-alerter").show();
     }
     else{
@@ -66,7 +64,7 @@ function validateName_no() {
 function validateName_en(){
     if (!name_en.checkValidity()) {
 
-        document.getElementById("name_en_message").innerHTML = "Invalid input!";
+        document.getElementById("name_en_message").innerHTML = gettext("Invalid input!");
         $("#name-en-alerter").show();
     }
     else{
@@ -87,13 +85,13 @@ function validateStart_date(){
 
     //check whether start_date is after current date
     if (!(input_Start_date > today)){
-        start_date.setCustomValidity("Invalid date!");
+        start_date.setCustomValidity(gettext("Invalid date!"));
         document.getElementById("start_date_message").innerHTML = start_date.validationMessage;
         $("#start-date-alerter").show();
     }
     //if end date is already entered, check whether start date is before it
     else if(!(input_End_date=="") && !(input_End_date > input_Start_date)) {
-            start_date.setCustomValidity("Start date is not before end date!");
+            start_date.setCustomValidity(gettext("Start date is not before end date!"));
             document.getElementById("start_date_message").innerHTML = start_date.validationMessage;
             $("#start-date-alerter").show();
     }
@@ -113,14 +111,14 @@ function validateEnd_date(){
     var input_End_date = end_date.value.toLocaleString();
     //check whether end date is before today
     if (!(input_End_date > today)){
-        end_date.setCustomValidity("Invalid date!");
+        end_date.setCustomValidity(gettext("Invalid date!"));
         document.getElementById("end_date_message").innerHTML = start_date.validationMessage;
         $("#end-date-alerter").show();
     }
 
     //check whether end date is after start date
     else if(!(input_End_date > input_Start_date)){
-        end_date.setCustomValidity("End date is not after start date!");
+        end_date.setCustomValidity(gettext("End date is not after start date!"));
         document.getElementById("end_date_message").innerHTML = end_date.validationMessage;
         $("#end-date-alerter").show();
     }
@@ -133,7 +131,7 @@ function validateEnd_date(){
 //check whether description_text_no is valid and make a message pop up if invalid
 function validateDescription_text_no() {
     if (!description_text_no.checkValidity()) {
-        document.getElementById("description_no_message").innerHTML = "Empty field!";
+        document.getElementById("description_no_message").innerHTML = gettext("Empty field!");
         $("#description-no-alerter").show();
     }
     else{
@@ -146,7 +144,7 @@ function validateDescription_text_no() {
 //check whether description_text_en is valid and make a message pop up if invalid
 function validateDescription_text_en(){
     if (!description_text_en.checkValidity()) {
-        document.getElementById("description_en_message").innerHTML = "Empty field";
+        document.getElementById("description_en_message").innerHTML = gettext("Empty field!");
         $("#description-en-alerter").show();
 
     }
