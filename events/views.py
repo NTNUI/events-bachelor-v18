@@ -3,7 +3,7 @@ from django.shortcuts import render
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 from .models import Event, EventDescription
-from events import create_event, get_events
+from . import create_event, get_events
 
 
 @login_required
@@ -23,12 +23,12 @@ def get_main_page(request):
 
 
 @login_required
-def get_events(request):
+def get_events_request(request):
     return get_events.get_events(request)
 
 
 @login_required
-def create_event(request):
+def create_event_request(request):
     """Creates a new event with the given data"""
     return create_event.create_event(request)
 

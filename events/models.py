@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from groups.models import SportsGroup
 from django.utils.translation import gettext_lazy as _
@@ -40,6 +41,10 @@ class Event(models.Model):
         verbose_name = _('event')
         verbose_name_plural = _('events')
 
+    def get_cover_upload_to(instance, filename):
+        return os.path.join(
+            "cover_photo/{}".format(instance.slug), filename)
+
     start_date = models.DateTimeField(_('start date'))
     end_date = models.DateTimeField(_('end date'))
     place = models.CharField(_('place'), max_length=50, blank=True)
@@ -49,6 +54,8 @@ class Event(models.Model):
     attending_members = models.ManyToManyField(User, verbose_name=_('attending members'), blank=True)
     sports_groups = models.ManyToManyField(SportsGroup, blank=True, verbose_name=_('hosted by'))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
+    cover_photo = models.ImageField(upload_to=get_cover_upload_to, default='cover_photo/ntnui-volleyball.png')
+
 
     # Returnes the name of the given event, in the given language
     def name(self):
