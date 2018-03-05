@@ -61,6 +61,7 @@ def get_events(request):
 def get_filtered_events(request):
     sort_by = request.GET.get('sort_by')
     search = request.GET.get('search')
+    filter_host = request.GET.get('fiter_host', [])
 
     # Checks if search have a value
     if search is not None and search != '':
@@ -71,6 +72,9 @@ def get_filtered_events(request):
     else:
         # if not search return all event objects
         events = Event.objects.filter(eventdescription__language=translation.get_language())
+
+
+
 
     # Allowed order_by
     allowed_sort_by = ['name', 'description', 'start_date', 'end_date']

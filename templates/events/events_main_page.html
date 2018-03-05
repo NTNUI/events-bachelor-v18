@@ -16,17 +16,6 @@
                 </span>
                 <input id="search-field" type="text" class="form-control" placeholder="{% trans 'search' %}" aria-describedby="basic-addon1">
             </div>
-          <div class="filter-element input-group" id="from-date">
-                    <span class="input-group-addon" id="basic-addon1">
-                        {% trans 'From date' %}
-                    </span>
-                <select class="form-control-select">
-                    <option selected>{% trans 'Choose...' %}</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
-            </div>
         <div class="filter-element input-group" id="from-date">
                     <span class="input-group-addon" id="basic-addon1">
                         {% trans 'From date' %}
@@ -75,7 +64,7 @@
             <div class="card-block">
                 <div>
                         <label class="custom-control custom-checkbox">
-                            <input type="checkbox" name="group"  value="NTNUI" class="custom-control-input">
+                            <input type="checkbox" name="group"  value="NTNUI" class="host-checkbox custom-control-input">
                             <span class="custom-control-indicator"></span>
                             <span class="custom-control-description">NTNUI</span>
                         </label><br>
@@ -83,7 +72,7 @@
                 {% for group in groups %}
                     <div>
                         <label class="custom-control custom-checkbox">
-                            <input type="checkbox" name="group"  value={{ group.id }} class="custom-control-input">
+                            <input type="checkbox" name="group"  value="{{ group.id }}" class="host-checkbox custom-control-input">
                             <span class="custom-control-indicator"></span>
                             <span class="custom-control-description">{{ group.name }}</span>
                         </label><br>

@@ -21,6 +21,22 @@ $(() => {
         getNextPage();
     });
 
+
+    $(".host-checkbox").change( () => {
+        let filterHost = []
+        $(".host-checkbox").each( (i, checkbox) => {
+            if(checkbox.checked){
+                filterHost.push(checkbox.value)
+        }
+        })
+        // update parms
+        searchParams.set('filter-host', filterHost);
+        //update current url
+        history.replaceState('test', 'test', '?' + searchParams)
+        // Load events
+        loadEvents(1)
+    })
+
     // on change in the search field
     $("#search").on('input',() => {
 
@@ -56,8 +72,10 @@ function loadEvents(page) {
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
     const sortBy = searchParams.has("sort-by") ? searchParams.get("sort-by") : "";
-    const filterBy = searchParams.has("filter_by") ? searchParams.get("filter_by") : "";
+    const filterHost = searchParams.has("filter_host") ? searchParams.get("filter_host") : [];
 
+
+    console.log(filterHost)
     $.ajax({
         dataType: "json",
         url: GET_URL,
@@ -65,7 +83,7 @@ function loadEvents(page) {
             page: page,
             search: search,
             sort_by: sortBy,
-            filter_by: filterBy
+            filter_host: filterHost
         },
         success: data => {
             console.log(data);
