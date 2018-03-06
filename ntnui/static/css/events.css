@@ -124,6 +124,14 @@ label.custom-control.custom-checkbox:checked + label::before {
 .checkbox-success input[type="checkbox"]:checked + label::after {
   color: #000;
 }
+.card-element {
+    background-color: white;
+    display:flex;
+
+}
+.card-element-container {
+
+}
 
 @media only screen and (max-width: 700px) {
 

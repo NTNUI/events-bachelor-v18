@@ -105,13 +105,13 @@ def get_events_json(events):
     return_events = []
     for event in events:
         return_events.append({
-            'name': str(event.name()),
-            'description': str(event.description()),
-            'start_date': str(event.start_date),
-            'end_date': str(event.end_date),
-            'priority': str(event.priority),
-            'host': str(event.get_host()),
-            'place': str(event.place),
+            'name': event.name(),
+            'description': event.description(),
+            'start_date': event.start_date,
+            'end_date': event.end_date,
+            'priority': event.priority,
+            'host': event.get_host(),
+            'place': event.place,
             'cover_photo': str(event.cover_photo)
         })
     return return_events

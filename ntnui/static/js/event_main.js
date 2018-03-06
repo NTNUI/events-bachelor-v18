@@ -126,24 +126,29 @@ function displayEvents(events, reload) {
 // display one event
 function displayEvent(event) {
 
+    let start_date = new Date(event.start_date)
+    let printeble_date = start_date.getDate() + "." + ((start_date.getMonth())+1) + "." + start_date.getFullYear()
+    let hosts = event.host
+    console.log(printeble_date)
+
     $("#event-container").append(
-        '<div class="card bg-light mb-3">' +
-            '<div class="card-header">' +
-            event.host +
+        '<div class="card bg-light mb-3" >' +
+            '<div class="card-element card-header">' +
+                event.name +
             "</div>" +
-            '<div class="card-body">' +
-            '<img  style="max-height=2rem; max-width:5rem" src="/static/' + event.cover_photo + '" alt="photo">' +
-            '<h5 class="card-title">' +
-            event.name +
-            " | " +
-            event.start_date.substr(0, 10) +
-            "</h5>" +
-            '<p class="card-text">' +
-            event.description.substr(0, 100) +
-            "..." +
-            "</p>" +
+            '<div class="card-element card-body">' +
+            '<div class="card-element-container">' +
+                '<h6 class="card-title">' +
+                     event.description.substr(0, 100) + (event.description.length > 100 ? '...' : '') +
+                    ' </h6>' +
+                    '<b>Sted</b>: Gløshaugen </br>' +
+                    '<b> Dato: </b>' + printeble_date +
+                '</br> <p class="card-text"> <b>Arrangert av: </b> ' +
+                    hosts +
+                "</p>" +
+                "</div>" +
             "</div>" +
-            "</div>"
+        "</div>"
     );
 }
 

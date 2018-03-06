@@ -72,7 +72,7 @@ class Event(models.Model):
     # Retunes a list of host or ntnui
     def get_host(self):
         if (self.is_host_ntnui):
-            return 'NTNUI'
+            return ['NTNUI']
         groups = []
         for group in self.sports_groups.all():
             groups.append(group.name)
