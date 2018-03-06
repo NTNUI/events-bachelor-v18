@@ -36,9 +36,9 @@ def get_filtered_events(request):
     """Returnes all the events that fits the order_by, search and filter_by"""
 
     # Get filters from parms
-    sort_by = request.GET.get('sort_by')
+    sort_by = request.GET.get('sort-by')
     search = request.GET.get('search')
-    filter_host = request.GET.get('fiter_host', [])
+    filter_host = request.GET.get('filter-host', "")
 
     # Filter the events
     events = get_filtered_on_search_events(search)
@@ -62,7 +62,16 @@ def get_filtered_on_search_events(search):
 
 
 def get_filtered_on_host_events(filter_host, events):
-    return events
+    print(filter_host)
+    if filter_host == "":
+        return events
+    host_list = filter_host.split("-")
+    if 'NTNUI' in host_list:
+        host_list.remove('NTNUI')
+        return events.filter(Q(sports_groups__in=host_list) | Q(is_host_ntnui=True))
+    return events.filter(sports_groups__in=host_list)
+
+
 
 
 def get_sorted_events(sort_by, events):

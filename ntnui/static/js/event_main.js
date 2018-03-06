@@ -13,6 +13,17 @@ $(() => {
     // Sets the sort by filed to the same sort by that is in the url
     $("#sorted-list").val(searchParams.has("sort-by") ? searchParams.get("sort-by") : "start_date")
 
+    const hostedBy = searchParams.has("filter-host") ? searchParams.get("filter-host") : ""
+    const hostedBy_list = hostedBy.split("-")
+
+
+    $(".host-checkbox").each( (i, checkbox) => {
+        if(hostedBy_list.includes(checkbox.value)){
+            console.log("here")
+            checkbox.checked = true
+            }
+        })
+
     // Load the first page
     loadEvents(1);
 
@@ -30,9 +41,11 @@ $(() => {
         }
         })
         // update parms
-        searchParams.set('filter-host', filterHost);
+        let updateString = filterHost.join()
+        updateString = updateString.replace(",", "-")
+        searchParams.set('filter-host', updateString)
         //update current url
-        history.replaceState('test', 'test', '?' + searchParams)
+        history.replaceState({}, 'filter', '?' + searchParams)
         // Load events
         loadEvents(1)
     })
@@ -43,7 +56,7 @@ $(() => {
         // update parms
         searchParams.set('search', $("#search-field").val());
         //update current url
-        history.replaceState('test', 'test', '?' + searchParams)
+        history.replaceState({}, 'search', '?' + searchParams)
         // Load events
         loadEvents(1)
 
@@ -54,7 +67,7 @@ $(() => {
         searchParams.set('sort-by', $("#sorted-list").val())
         //update current url
 
-        history.replaceState('test', 'test', '?' + searchParams)
+        history.replaceState({}, 'sort-by', '?' + searchParams)
         // Load events
         loadEvents(1)
     })
@@ -72,18 +85,17 @@ function loadEvents(page) {
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
     const sortBy = searchParams.has("sort-by") ? searchParams.get("sort-by") : "";
-    const filterHost = searchParams.has("filter_host") ? searchParams.get("filter_host") : [];
+    const filterHost = searchParams.has("filter-host") ? searchParams.get("filter-host") : "";
 
 
-    console.log(filterHost)
     $.ajax({
         dataType: "json",
         url: GET_URL,
         data: {
-            page: page,
-            search: search,
-            sort_by: sortBy,
-            filter_host: filterHost
+            'page': page,
+            'search': search,
+            'sort-by': sortBy,
+            'filter-host': filterHost
         },
         success: data => {
             console.log(data);
