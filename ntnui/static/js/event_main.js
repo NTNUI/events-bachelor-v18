@@ -120,6 +120,7 @@ function displayEvent(event) {
             event.host +
             "</div>" +
             '<div class="card-body">' +
+            '<img  style="max-height=2rem; max-width:5rem" src="/static/' + event.cover_photo + '" alt="photo">' +
             '<h5 class="card-title">' +
             event.name +
             " | " +
