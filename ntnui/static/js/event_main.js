@@ -3,11 +3,19 @@ let pageNr;
 let pageCount;
 let searchParams = new URLSearchParams(window.location.search)
 
+
 // on document ready, send ajax request for the first page
 $(() => {
 
     // Sets the search filed to the same search that is in the url
     $("#search-field").val(searchParams.has("search") ? searchParams.get("search") : "")
+
+    // Sets the sort by filed to the same sort by that is in the url
+    $("#sorted-list").val(searchParams.has("sort-by") ? searchParams.get("sort-by") : "start_date")
+
+    $("#sorted-list").val() != null && !searchParams.has("sort-by") ? history.replaceState('test', 'test', '?sort-by=' + $("#sorted-list").val() ): ""
+
+
 
     // Load the first page
     loadEvents(1);
@@ -28,6 +36,16 @@ $(() => {
         loadEvents(1)
 
     })
+
+    $("#sorted-list").on('change', () => {
+        // update parms
+        searchParams.set('sort-by', $("#sorted-list").val())
+        //update current url
+
+        history.replaceState('test', 'test', '?' + searchParams)
+        // Load events
+        loadEvents(1)
+    })
 });
 
 function getNextPage() {
@@ -41,7 +59,8 @@ function getNextPage() {
 function loadEvents(page) {
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
-    const orderBy = searchParams.has("order_by") ? searchParams.get("order_by") : "";
+    const sortBy = searchParams.has("sort-by") ? searchParams.get("sort-by") : "";
+    const filterBy = searchParams.has("filter_by") ? searchParams.get("filter_by") : "";
 
     $.ajax({
         dataType: "json",
@@ -49,7 +68,8 @@ function loadEvents(page) {
         data: {
             page: page,
             search: search,
-            order_by: orderBy
+            sort_by: sortBy,
+            filter_by: filterBy
         },
         success: data => {
             console.log(data);
