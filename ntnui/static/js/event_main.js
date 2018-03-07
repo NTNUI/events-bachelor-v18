@@ -133,6 +133,7 @@ function displayEvent(event) {
     console.log(printeble_date)
 
     $("#event-container").append(
+      '<a href="/events/' + event.id + '/' + event.name.replace(/\s+/g, '-').toLowerCase() + '"><div class="card-body">' +
         '<div class="card bg-light mb-3" >' +
             '<div class="card-element card-header">' +
                 event.name +
@@ -149,7 +150,7 @@ function displayEvent(event) {
                 "</p>" +
                 "</div>" +
             "</div>" +
-        "</div>"
+        "</div></a>"
     );
 }
 

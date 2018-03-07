@@ -1,10 +1,12 @@
+
+from datetime import datetime
 import os
 from django.db import models
 from groups.models import SportsGroup
 from django.utils.translation import gettext_lazy as _
 from django.utils import translation
 from accounts.models import User
-
+from django.core.urlresolvers import reverse
 
 class Tag(models.Model):
     """Add tags to models to make searchig easier"""
@@ -33,8 +35,9 @@ class Restriction(models.Model):
 
 
 class Event(models.Model):
-    """Creates a model for events, with start date, end date, priority, host group and ntnui as host.
-    If ntnui is host, is_host_ntnui is true, otherwise false.
+    """
+      Creates a model for events, with start date, end date, priority, host group and ntnui as host.
+      If ntnui is host, is_host_ntnui is true, otherwise false.
     """
 
     class Meta:
@@ -52,7 +55,6 @@ class Event(models.Model):
     restriction = models.ForeignKey(Restriction, verbose_name=_('restriction'), default=0)
     priority = models.BooleanField(_('priority'), default=False)
     is_host_ntnui = models.BooleanField(_('hosted by NTNUI'), default=False)
-    attending_members = models.ManyToManyField(User, verbose_name=_('attending members'), blank=True)
     sports_groups = models.ManyToManyField(SportsGroup, blank=True, verbose_name=_('hosted by'))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     cover_photo = models.ImageField(upload_to=get_cover_upload_to, default='cover_photo/ntnui-volleyball.png')
@@ -77,6 +79,19 @@ class Event(models.Model):
         for group in self.sports_groups.all():
             groups.append(group.name)
         return groups
+
+    """Returnes the list of attendees for the event"""
+    def get_attendees(self):
+        return EventRegistration.objects.filter(event = self)
+
+    """Add attendee to the event"""
+    def add_attendee_to_attendees_list(self, user):
+        EventRegistration.objects.create(user = user, event = self, registration_time = datetime.now())
+
+    """Remove attendee from the event"""
+    def remove_attendee_from_attendees_list(self, user):
+        registration = EventRegistration.objects.get(user = user, event = self)
+        registration.delete()
 
     def __str__(self):
         return self.name()
@@ -143,3 +158,21 @@ class SubEventDescription(models.Model):
 
     def __str__(self):
         return self.name
+
+
+"""Model for handling event registration"""
+class EventRegistration(models.Model):
+
+    class Meta:
+        verbose_name = _('Attendee for event')
+        verbose_name_plural = _('Attendees for events')
+        unique_together = ('event', 'attendee')
+
+    event = models.ForeignKey(Event, verbose_name = 'Event')
+    attendee = models.ForeignKey(User, verbose_name = 'Attendee')
+    registration_time = models.DateTimeField(_('Registered for Event at Time'))
+
+    def __str__(self):
+        return self.event.name(self) + ' / ' + self.attendee.email
+
+

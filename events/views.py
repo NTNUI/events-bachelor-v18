@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.translation import gettext as _
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 from .models import Event, EventDescription
@@ -21,6 +23,15 @@ def get_main_page(request):
         'groups': groups,
     })
 
+def get_event_details(request, id):
+
+    event = get_object_or_404(Event, id = id)
+    context = {
+        "event": event,
+    }
+    return render(request, 'events/event_details.html', context)
+
+
 
 @login_required
 def get_events_request(request):
@@ -31,8 +42,7 @@ def get_events_request(request):
 def create_event_request(request):
     """Creates a new event with the given data"""
     return create_event.create_event(request)
-
-
+  
 @login_required
 def get_create_event_page(request):
     """Returns the page where events are created"""
@@ -86,3 +96,45 @@ def get_groups_user_can_create_events_for(user):
 
 def user_is_in_mainboard(user):
     return MainBoardMembership.objects.filter(person_id=user).exists()
+
+
+"""Checks if a given user is in board"""
+
+
+def user_is_in_board(board, user):
+    return board.president == user or board.vice_president == user or board.cashier == user
+
+
+"""Checks that a description is not empyt"""
+
+
+def event_has_description_and_name(description, name):
+    if description is None or description.replace(' ', '') == "":
+        return False, 'Event must have description'
+    elif name is None or name.replace(' ', '') == "":
+        return False, _('Event must have a name')
+    return True, None
+
+
+"""Returnes json with the given format"""
+
+
+def get_json(code, message):
+    return JsonResponse({
+        'message': message},
+        status=code)
+
+def event_add_attendance(request):
+    if request.POST:
+        id = request.POST.get('id')
+        event = Event.objects.get(id = id)
+        Event.objects.add_attendee_to_attendees_list(event, request.user)
+
+    return redirect('event_details', id = id)
+
+def event_cancel_attendance(request, id):
+
+    event = Event.objects.get(id=id)
+    event.remove_user_from_list_of_attendees(request.user)
+
+    return redirect('event_details', id=id)
