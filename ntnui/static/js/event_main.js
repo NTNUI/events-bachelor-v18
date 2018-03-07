@@ -13,6 +13,7 @@ $(() => {
     // Sets the sort by filed to the same sort by that is in the url
     $("#sorted-list").val(searchParams.has("sort-by") ? searchParams.get("sort-by") : "start_date")
 
+    $("#sorted-list").val() != null && !searchParams.has("sort-by") ? history.replaceState('test', 'test', '?sort-by=' + $("#sorted-list").val() ): ""
     const hostedBy = searchParams.has("filter-host") ? searchParams.get("filter-host") : ""
     const hostedBy_list = hostedBy.split("-")
 
