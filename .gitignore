@@ -6,3 +6,5 @@ geckodriver.log
 .coverage
 .env
 *.pyc
+cover/
+events/migration/
