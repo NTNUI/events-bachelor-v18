@@ -55,7 +55,8 @@ def get_filtered_on_search_events(search):
         # serach for the word in descriptions and name
         return Event.objects.filter(Q(eventdescription__language=translation.get_language()) &
                                       (Q(eventdescription__name__icontains=search) |
-                                       Q(eventdescription__description_text__icontains=search)))
+                                       Q(eventdescription__description_text__icontains=search) |
+                                       Q(tags__name__icontains=search)))
     else:
         # if not search return all event objects
         return Event.objects.filter(eventdescription__language=translation.get_language())
@@ -107,6 +108,7 @@ def get_events_json(events):
         return_events.append({
             'id': event.id,
             'name': event.name(),
+            'place': event.place,
             'description': event.description(),
             'start_date': event.start_date,
             'end_date': event.end_date,
