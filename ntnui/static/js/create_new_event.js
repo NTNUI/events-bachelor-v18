@@ -96,6 +96,7 @@ function validateStart_date(){
             $("#start-date-alerter").show();
     }
     else{
+        start_date.setCustomValidity("");
         document.getElementById("start_date_message").innerHTML = "";
         $("#start-date-alerter").hide();
     }
@@ -123,6 +124,7 @@ function validateEnd_date(){
         $("#end-date-alerter").show();
     }
     else{
+        end_date.setCustomValidity("");
         document.getElementById("end_date_message").innerHTML = "";
         $("#end-date-alerter").hide();
     }
