@@ -25,6 +25,12 @@
     width:80%;
 }
 
+#headingOne {
+    background-color: white;
+}
+.checkbox-label  {
+    padding-left:1rem;
+}
 .create-event {
     grid-column: 3;
     grid-row: 1;
