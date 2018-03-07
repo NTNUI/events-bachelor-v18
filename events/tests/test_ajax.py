@@ -47,9 +47,3 @@ class TestLoadEvents(TestCase):
                                                    'priority': 'false',
                                                    'host': 'NTNUI'
                                                    }, follow=True)
-        print(response)
-        self.assertEquals(response.status_code, 201)
-
-        translation.activate('nb')
-        print(Event.objects.all())
-        self.assertIsNotNone(Event.objects.get(eventdescription__name='norsk navn'))
