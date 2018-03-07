@@ -11,7 +11,7 @@
     <div id="container">
 
 
-        <img id="image-centered" src="{% static 'img/groups/ntnui-volleyball.png' %}" alt="Event Image"/>
+        <img id="image-centered" src=" /static/{{ event.cover_photo }}" alt="Event Image"/>
 
         <div id="header">
             {{ event.name }}
@@ -46,11 +46,13 @@
                     <div id="event-infos">
 
                         <div class="info">
-                            {% trans 'Gløshaugen Idrettsbygg' %}
+                            {{ event.place }}
                         </div>
 
                         <div class="info">
-                            {% if event.groups %} {{ event.host }} {% else %} NTNUI {% endif %}
+                            {% for host in event.get_host %}
+                                {{ host }}
+                            {% endfor %}
                         </div>
 
                         <div class="info">
@@ -101,7 +103,7 @@
                                             <div>{{ sub_event }}</div>
                                         </div>
                                         <div class="sub-event-item">
-                                            <button type="submit" class="btn btn-success" name="mybtn">
+                                            <button class="join-subevent-button btn btn-success" type="button" value="{{ sub_event.id }}" name="mybtn">
                                                 {% trans 'Sign up for event' %}
                                             </button>
                                         </div>

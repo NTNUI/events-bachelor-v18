@@ -139,13 +139,27 @@ def get_json(code, message):
         'message': message},
         status=code)
 
-def event_add_attendance(request):
+def event_add_attendance_event(request):
     if request.POST:
         id = request.POST.get('id')
         event = Event.objects.get(id=int(id))
         EventRegistration.objects.create(event=event, attendee=request.user, registration_time=datetime.now())
 
     return redirect('event_details', id = id)
+
+def event_add_attendance_subevent(request):
+    if request.POST:
+        try:
+            id = request.POST.get('id')
+            print(id)
+            subevent = SubEvent.objects.get(id=int(id))
+            subevent.attending_members.add(request.user)
+            subevent.save()
+            return get_json(201, 'Success')
+        except:
+            return get_json(404, 'Could not join event')
+    return get_json(404, 'request is not post')
+
 
 def event_cancel_attendance(request, id):
 

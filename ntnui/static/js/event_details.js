@@ -2,6 +2,28 @@
  * When the document have loaded, add listener to attend-event-button and send ajax.
  */
 $(() => {
+
+    $(".join-subevent-button").click( () => {
+        const csrftoken = getCookie('csrftoken');
+        const button = event.target
+        $.ajax({
+            type: 'POST',
+            data: {
+                csrfmiddlewaretoken: csrftoken,
+                id: button.value
+            },
+            url: '/ajax/events/attend-sub-event',
+            success: (data) => {
+                button.innerHTML = "Meld meg av"
+                button.setAttribute("class", "btn btn-danger")
+
+            }, error: (data) => {
+                 alert(data.message)
+            }
+        })
+    })
+
+
     $("#attend-event-button").click(() => {
         const csrftoken = getCookie('csrftoken');
         const pathArray = window.location.pathname.split( '/' );
@@ -21,6 +43,7 @@ $(() => {
         })
     })
 })
+
 
 // from django website https://docs.djangoproject.com/en/2.0/ref/csrf/
 function getCookie(name) {
