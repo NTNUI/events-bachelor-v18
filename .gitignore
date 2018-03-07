@@ -7,4 +7,3 @@ geckodriver.log
 .env
 *.pyc
 cover/
-events/migration/
