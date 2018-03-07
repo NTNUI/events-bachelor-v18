@@ -25,6 +25,12 @@
     width:80%;
 }
 
+#headingOne {
+    background-color: white;
+}
+.checkbox-label  {
+    padding-left:1rem;
+}
 .create-event {
     grid-column: 3;
     grid-row: 1;
@@ -123,6 +129,14 @@ label.custom-control.custom-checkbox:checked + label::before {
 
 .checkbox-success input[type="checkbox"]:checked + label::after {
   color: #000;
+}
+.card-element {
+    background-color: white;
+    display:flex;
+
+}
+.card-element-container {
+
 }
 
 @media only screen and (max-width: 700px) {
