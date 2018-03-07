@@ -27,6 +27,17 @@
                     <option value="3">Three</option>
                 </select>
             </div>
+        <div class="filter-element input-group" id="from-date">
+                    <span class="input-group-addon" id="basic-addon1">
+                        {% trans 'From date' %}
+                    </span>
+                <select class="form-control-select">
+                    <option selected>{% trans 'Choose...' %}</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
             <div class="filter-element input-group" id="to-date">
                     <span class="input-group-addon" id="basic-addon1">
                         {% trans 'To date' %}
@@ -38,6 +49,17 @@
                     <option value="3">Three</option>
                 </select>
             </div>
+        <div class="filter-element input-group" id="to-date">
+            <span class="input-group-addon" id="basic-addon1">
+                        {% trans 'Sort by' %}
+                    </span>
+            <select id="sorted-list" class="form-control-select">
+                <option value="start_date">{% trans 'Start date (ascending)' %}</option>
+                <option value="-start_date">{% trans 'Start date (descending)' %}</option>
+                <option value="name">{% trans 'Name' %}</option>
+                <option value="description">{% trans 'Description'%}</option>
+            </select>
+        </div>
         <div id="accordion" role="tablist" aria-multiselectable="true">
 
         <div class="card">
@@ -51,16 +73,22 @@
 
           <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" style="background-color: white;" >
             <div class="card-block">
-                <label class="custom-control custom-checkbox">
-                    <input type="checkbox" name="group"  value="NTNUI" class="custom-control-input">
-                    <span class="custom-control-indicator"></span>
-                    <span class="custom-control-description">NTNUI</span>
-              </label><br>
-                <label class="custom-control custom-checkbox">
-                    <input type="checkbox" name="group" value="svømming" class="custom-control-input">
-                    <span class="custom-control-indicator"></span>
-                    <span class="custom-control-description">Svømming</span>
-              </label>
+                <div>
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" name="group"  value="NTNUI" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">NTNUI</span>
+                        </label><br>
+                    </div>
+                {% for group in groups %}
+                    <div>
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" name="group"  value={{ group.id }} class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">{{ group.name }}</span>
+                        </label><br>
+                    </div>
+                {% endfor %}
             </div>
           </div>
         </div>
@@ -133,8 +161,11 @@
           </div>
         </div>
       </div>
+
+
       </div>
     </div>
+
 
         <div class="create-event">
             {% if can_create_event %}
