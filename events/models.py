@@ -115,6 +115,9 @@ class Category(models.Model):
     event = models.ForeignKey(Event, verbose_name=_('event'))
 
 
+    def __str__(self):
+        return CategoryDescription.objects.get(category=self, language=translation.get_language()).name
+
 class CategoryDescription(models.Model):
     """Add name to a given subevent."""
     class Meta:
@@ -141,6 +144,8 @@ class SubEvent(models.Model):
     category = models.ForeignKey(Category, verbose_name=_('category'))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
 
+    def __str__(self):
+        return SubEventDescription.objects.get(sub_event=self, language=translation.get_language()).name
 
 class SubEventDescription(models.Model):
     """Add name to a given subevent."""

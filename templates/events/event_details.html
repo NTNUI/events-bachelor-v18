@@ -8,76 +8,114 @@
 
 {% block content %}
 
-<div id="container">
+    <div id="container">
 
 
+        <img id="image-centered" src="{% static 'img/groups/ntnui-volleyball.png' %}" alt="Event Image"/>
 
-    <img id="image-centered" src="{% static 'img/groups/ntnui-volleyball.png' %}" alt="Event Image"/>
-
-    <div id="header">
-        {{event.name}}
-    </div>
-
-    <div id="content-container">
-
-        <div id="event-info-container">
-
-            <div id="labels-infos">
-
-                <div id="event-labels">
-
-                    <div class="label">
-                        {% trans 'Location' %}
-                    </div>
-
-                    <div class="label">
-                        {% trans 'Host' %}
-                    </div>
-
-                    <div class="label">
-                        {% trans 'Start date' %}
-                    </div>
-
-                    <div class="label">
-                        {% trans 'End date' %}
-                    </div>
-
-                </div>
-
-                <div id="event-infos">
-
-                    <div class="info">
-                        {% trans 'Gløshaugen Idrettsbygg' %}
-                    </div>
-
-                    <div class="info">
-                        {% if event.groups %} {{ event.host }} {% else %} NTNUI {% endif %}
-                    </div>
-
-                    <div class="info">
-                        {{ event.start_date }}
-                    </div>
-
-                    <div class="info">
-                        {{ event.end_date }}
-                    </div>
-                </div>
-            </div>
-
-            <div id="event-sign-up">
-                <form> {% csrf_token %}
-                    <button id="attend-event-button" type="submit" class="btn btn-success" name="mybtn">
-                        {% trans 'Sign up for event' %}
-                    </button>
-                </form>
-            </div>
+        <div id="header">
+            {{ event.name }}
         </div>
 
-        <div id="event-description">
-            {{ event.description}}
+        <div id="content-container">
+
+            <div id="event-info-container">
+
+                <div id="labels-infos">
+
+                    <div id="event-labels">
+
+                        <div class="label">
+                            {% trans 'Location' %}
+                        </div>
+
+                        <div class="label">
+                            {% trans 'Host' %}
+                        </div>
+
+                        <div class="label">
+                            {% trans 'Start date' %}
+                        </div>
+
+                        <div class="label">
+                            {% trans 'End date' %}
+                        </div>
+
+                    </div>
+
+                    <div id="event-infos">
+
+                        <div class="info">
+                            {% trans 'Gløshaugen Idrettsbygg' %}
+                        </div>
+
+                        <div class="info">
+                            {% if event.groups %} {{ event.host }} {% else %} NTNUI {% endif %}
+                        </div>
+
+                        <div class="info">
+                            {{ event.start_date }}
+                        </div>
+
+                        <div class="info">
+                            {{ event.end_date }}
+                        </div>
+                    </div>
+                </div>
+                {% if not sub_event_list %}
+                <div id="event-sign-up">
+                    <form> {% csrf_token %}
+                        <button id="attend-event-button" type="submit" class="btn btn-success" name="mybtn">
+                            {% trans 'Sign up for event' %}
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+            </div>
+
+            <div id="event-description">
+                {{ event.description }}
+            </div>
+        </div>
+        <div class="events-section">
+            <div class="category-card-container">
+                {% for category, sub_events in sub_event_list %}
+                <div class="category-card" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="category-card card">
+                        <div class="card-header-category card-header" role="tab" id="headingOne"
+                             aria-controls="collapseOne"
+                             data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true">
+                            <h5 class="mb-0">
+                                <a>
+                                    <h3>{{ category }}</h3>
+                                </a>
+                            </h5>
+                        </div>
+                        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne"
+                             style="background-color: white;">
+                            {% for sub_event in sub_events %}
+                            <div class="card-block">
+                                <div class="card">
+                                    <div class="sub-event-container card-body">
+                                        <div class="sub-event-item">
+                                            <div>{{ sub_event }}</div>
+                                        </div>
+                                        <div class="sub-event-item">
+                                            <button type="submit" class="btn btn-success" name="mybtn">
+                                                {% trans 'Sign up for event' %}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
 
 {% block script %}

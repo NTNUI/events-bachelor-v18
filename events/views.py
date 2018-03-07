@@ -1,12 +1,12 @@
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
-from .models import Event, EventDescription, EventRegistration
+from .models import Event, EventDescription, EventRegistration, Category, SubEvent
 from . import create_event, get_events
 
 
@@ -27,9 +27,22 @@ def get_main_page(request):
 
 def get_event_details(request, id):
 
-    event = get_object_or_404(Event, id = id)
+    try:
+        sub_event_list = []
+        event = Event.objects.get(id=int(id))
+        print(Category.objects.filter(event=event))
+        if Category.objects.filter(event=event).exists():
+            categories = Category.objects.filter(event=event)
+            for category in categories:
+                print(category)
+                sub_event_list.append((category ,SubEvent.objects.filter(category=category)))
+
+    except:
+        return HttpResponseNotFound('<h1>Error, could not load page </h1>')
+
     context = {
         "event": event,
+        "sub_event_list": sub_event_list
     }
     return render(request, 'events/event_details.html', context)
 
