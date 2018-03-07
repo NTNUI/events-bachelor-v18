@@ -4,46 +4,50 @@
 
 {% block table_content %}
 
-
   <div class="download-field">
-      {% if show_new_invitation %}
-      <a href="{% url 'group_invite_member' slug=slug %}" class="add-new-member">
-        <div class="add-new-button">+</div>
+    {% if show_new_invitation %}
+      <a class="add-new-member" href="{% url 'group_invite_member' slug=slug %}">
+        <img class="add-new-member-icon" src="{% static 'img/invite-icon.svg' %}" alt="Invite member"/>
         <div class="add-new-text">Invite new member</div>
       </a>
-      {% endif %}
-      <a href="{% url 'download_members' slug=slug %}" class="download-members-button">
-        <div class="download-button">⇩</div>
+    {% endif %}
+    {% if show_download %}
+      <a class="download-members-button" href="{% url 'download_members' slug=slug %}">
+        <img class="download-icon" src="{% static 'img/download-icon.svg' %}" alt="Download members"/>
         <div class="add-new-text">Download members list</div>
       </a>
+    {% endif %}
   </div>
-
 
 {% if show_members %}
   <div class="members-header">
-    <div class="group-member-name-header">Name</div>
-    <div class="group-member-phone-header">Phone</div>
-    <div class="group-member-email-header">E-mail</div>
-    <div class="group-member-info-header"></div>
-    <div class="group-member-paid-header"></div>
+    <div class="group-column-20">Name</div>
+    <div class="group-column-20">Phone</div>
+    <div class="group-column-40">E-mail</div>
+    <div class="group-column-5">Info</div>
+    <div class="group-column-5">Edit</div>
   </div>
 
 
   {% for member in members %}
   <div class="group-table-row">
-    <div class="group-member-name">{{ member.person.first_name }} {{ member.person.last_name }}</div>
-    <div class="group-member-phone">{{ member.person.phone }}</div>
-    <div class="group-member-email">{{ member.person.email }}</div>
-    <div class="group-member-info open-modal" href="/groups/{{ slug }}/ajax/member/{{ member.pk }}">ℹ</div>
-    <div class="group-member-settings">
-      <a href="{% url 'group_member_settings' slug=slug member_id=member.pk %}">⚙</a>
+    <div class="group-column-20">{{ member.person.first_name }} {{ member.person.last_name }}</div>
+    <div class="group-column-20">{{ member.person.phone }}</div>
+    <div class="group-column-40">{{ member.person.email }}</div>
+    <div class="group-column-5 group-member-settings open-modal" href="/groups/{{ slug }}/ajax/member/{{ member.pk }}">
+      <img src="{% static 'img/info-icon.svg' %}" alt="Info"/>
+    </div>
+    <div class="group-column-5 group-member-settings">
+      <a href="{% url 'group_member_settings' slug=slug member_id=member.pk %}">
+        <img src="{% static 'img/settings-icon.svg' %}" alt="Member settings"/>
+      </a>
     </div>
   </div>
   {% endfor %}
 
   <div id="modal-container"></div>
 
-{% endif %}
+  {% endif %}
 
 {% endblock %}
 

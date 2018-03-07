@@ -13,7 +13,7 @@ class TestPresidentFormCreation(TestCase):
 
     def test_can_see_form(self):
         self.assertContains(
-            self.response, '<button type="submit" class="form-button btn btn-success" name="openForm" value="Board Change Form"')
+            self.response, '<button type="submit" class="group-settings-public-check btn btn-success')
 
 
 class TestMemberFormList(TestCase):

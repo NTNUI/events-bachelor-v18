@@ -43,8 +43,8 @@ class VolleyballGroupTest(SettingsLoggedInTest):
         self.assertContains(self.response, '<input type="submit"', 1)
         self.assertContains(self.response, 'Change settings', 1)
 
-    def test_checkbox_exists(self):
-        self.assertContains(self.response, '<input type="checkbox"', 1)
+    def test_radio_buttons_exists(self):
+        self.assertContains(self.response, '<input type="radio"', 2)
 
     def test_image_input_exists(self):
         self.assertContains(self.response, '<input type="file" name="thumbnail', 1)

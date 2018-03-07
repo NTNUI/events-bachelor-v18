@@ -11,7 +11,7 @@ class InvitationFormTest(TestCase):
 
     def setUp(self):
         self.USER_WITH_RIGHTS = User.objects.get(email='todd.packer@online.com')
-        self.USER_WITHOUT_RIGHTS = User.objects.get(email='frankela@steinberg.org')
+        self.USER_WITHOUT_RIGHTS = User.objects.get(email='michael.scott@dundermifflin.com')
 
     def test_form_has_right_fields(self):
         form = NewInvitationForm(slug='volleyball', user=self.USER_WITH_RIGHTS)
@@ -62,7 +62,7 @@ class InvitationFormTest(TestCase):
         self.assertEqual(invitation.group, group)
         self.assertEqual(invitation.date_issued, now().date())
 
-    def test_should_throw_if_you_have_no_invite_rights(self):
+    def test_should_throw_if_no_invite_rights(self):
         form = NewInvitationForm(
             data={'email': 'meredith.palmer@dundermifflin.com'}, slug='volleyball', user=self.USER_WITHOUT_RIGHTS
         )

@@ -44,5 +44,3 @@ class MyGroupTest(ListGroupsLoggedInTest):
 
     def test_group_number(self):
         self.assertContains(self.response, '<div class="group-card-all-groups', 3)
-
-    # TODO: write more tests..

@@ -1,13 +1,14 @@
-import csv
 from django.contrib.auth.decorators import login_required
 from django.http import StreamingHttpResponse
-from .models import Membership, SportsGroup
-from accounts.models import Contract
 from django.shortcuts import get_object_or_404
 from datetime import date
+import csv
+from .models import Membership, SportsGroup
+from accounts.models import Contract
+from ntnui.decorators import is_board
 
-YEAR_MEMBERSHIP = 10
-HALF_YEAR_MEMBERSHIP = 20
+YEAR_MEMBERSHIPS = [10, 359, 483]
+HALF_YEAR_MEMBERSHIPS = [20, 485]
 
 
 class Echo(object):
@@ -21,6 +22,7 @@ class Echo(object):
 
 
 @login_required
+@is_board
 def download_members(request, slug):
     """A view that streams a large CSV file."""
     if request:  # dummy method, to use request, to pass travis tests
@@ -60,6 +62,7 @@ def download_members(request, slug):
 
 
 @login_required
+@is_board
 def download_yearly_group_members(request, slug):
     if request.method == "POST":
         year = request.POST.get("year", "2000")
@@ -72,12 +75,12 @@ def download_yearly_group_members(request, slug):
         person__membership__group=group.pk,
         expiry_date__year=year + 1,
         expiry_date__month=8,
-        contract_type=YEAR_MEMBERSHIP) | Contract.objects.filter(
+        contract_type__in=YEAR_MEMBERSHIPS) | Contract.objects.filter(
             person__membership__group=group.pk,
             expiry_date__range=(start_date, end_date)
     )
 
-    formatted_members = []
+    formatted_members = [][:]
     header = ['FIRST NAME', 'SECOND NAME', 'EMAIL', 'PHONE', 'EXP DATE',
               'CONTRACT TYPE']
 
@@ -93,11 +96,14 @@ def download_yearly_group_members(request, slug):
 
     sorted_formatted_members = sorted(formatted_members, key=lambda e: e[1])
 
-    for i in range(1, len(sorted_formatted_members)):
+    # Remove duplicate entries of members
+    # with more than one contract within a year
+    no_dupes_sorted_members = sorted_formatted_members[:]
+    for i in range(1, len(formatted_members)):
         if sorted_formatted_members[i][2] == sorted_formatted_members[i - 1][2]:
-            sorted_formatted_members.remove(sorted_formatted_members[i])
+            no_dupes_sorted_members.remove(sorted_formatted_members[i])
 
-    rows = [header] + sorted_formatted_members
+    rows = [header] + no_dupes_sorted_members
     response = list_to_csv_http_response(rows)
     response['Content-Disposition'] = 'attachment; filename=""' + \
         slug + '"members""' + str(year) + '".csv"'

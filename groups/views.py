@@ -10,6 +10,8 @@ from datetime import date
 from accounts.models import Contract
 from ntnui.decorators import is_board
 
+YEAR_MEMBERSHIPS = ["10", "359", "483"]
+
 
 def get_base_group_info(request, slug):
     group = get_object_or_404(SportsGroup, slug=slug)
@@ -32,6 +34,7 @@ def get_base_group_info(request, slug):
         'show_group_settings': request.user.has_perm('groups.can_see_group_settings', group),
         'show_leave_button': request.user.has_perm('groups.can_leave_group', group),
         'show_forms': request.user.has_perm('groups.can_see_forms', group),
+        'show_download': request.user.has_perm('groups.can_download', group)
     }
 
 
@@ -110,7 +113,6 @@ def members(request, slug):
 def member_info(request, slug, member_id):
     group = get_object_or_404(SportsGroup, slug=slug)
     can_see_members = request.user.has_perm('groups.can_see_members', group)
-    # TODO: sjekke om man faktisk har tilgang til å se medlemmer, basert på gruppe. Utrygt endepunkt
     try:
         member = Membership.objects.get(pk=member_id)
     except Membership.DoesNotExist:
@@ -119,7 +121,7 @@ def member_info(request, slug, member_id):
         'role': get_group_role(request.user, group),
         'group': group,
         'slug': slug,
-        'show_members': request.user.has_perm('groups.can_see_members', group),
+        'show_members': can_see_members,
         'member': member,
     })
 
@@ -195,13 +197,14 @@ def requests(request, slug):
     if request.method == 'POST':
         requestID = request.POST.get("request_id", "")
         result = request.POST.get("result", "")
+        joinRequest = Request.objects.get(pk=requestID)
         if result == "Yes":
-            joinRequest = Request.objects.get(pk=requestID)
             Membership.objects.create(
                 person=joinRequest.person, group=joinRequest.group)
+            messages.success(request, joinRequest.person.email + ' is now a member of your group')
             joinRequest.delete()
         elif result == "No":
-            joinRequest = Request.objects.get(pk=requestID)
+            messages.warning(request, 'You declined the request from ' + joinRequest.person.email)
             joinRequest.delete()
         else:
             raise Http404("Request does not exist")
@@ -213,7 +216,8 @@ def requests(request, slug):
 
 
 @login_required
-def download_members(request, slug):  # TODO: add permissions
+@is_board
+def download_members(request, slug):
     if request:
         pass
 
@@ -228,7 +232,7 @@ def download_members(request, slug):  # TODO: add permissions
     current_year = date.today().year
     first_contract_year = current_year
     for contract in contracts:
-        if (contract.contract_type == "10" and
+        if (contract.contract_type in YEAR_MEMBERSHIPS and
             contract.expiry_date.year - 1 < first_contract_year) or \
             (contract.expiry_date.month == 1 and
              contract.expiry_date.year - 1 < first_contract_year):
