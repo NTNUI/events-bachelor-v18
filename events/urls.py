@@ -9,7 +9,7 @@ from .views import (
 
 
 urlpatterns = [
-    url(r'^$', get_event_page, name='list_groups'),
+    url(r'^$', get_main_page, name='list_groups'),
     url(r'^create-event$', get_create_event_page, name='create_event_page'),
     url(r'^(?P<id>\d+)/', get_event_details, name='event_details'),
     

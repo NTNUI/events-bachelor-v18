@@ -10,7 +10,7 @@ from .views import (
 
 
 urlpatterns = [
-    url(r'^add-event$', create_event, name='create_event'),
-    url(r'^get-events', get_events, name='get_events'),
+    url(r'^add-event$', create_event_request, name='create_event'),
+    url(r'^get-events', get_events_request, name='get_events'),
     url(r'^attend-event$', event_add_attendance, name='attend_event')
 ]

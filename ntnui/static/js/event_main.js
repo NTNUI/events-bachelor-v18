@@ -14,8 +14,16 @@ $(() => {
     $("#sorted-list").val(searchParams.has("sort-by") ? searchParams.get("sort-by") : "start_date")
 
     $("#sorted-list").val() != null && !searchParams.has("sort-by") ? history.replaceState('test', 'test', '?sort-by=' + $("#sorted-list").val() ): ""
+    const hostedBy = searchParams.has("filter-host") ? searchParams.get("filter-host") : ""
+    const hostedBy_list = hostedBy.split("-")
 
 
+    $(".host-checkbox").each( (i, checkbox) => {
+        if(hostedBy_list.includes(checkbox.value)){
+            console.log("here")
+            checkbox.checked = true
+            }
+        })
 
     // Load the first page
     loadEvents(1);
@@ -25,13 +33,31 @@ $(() => {
         getNextPage();
     });
 
+
+    $(".host-checkbox").change( () => {
+        let filterHost = []
+        $(".host-checkbox").each( (i, checkbox) => {
+            if(checkbox.checked){
+                filterHost.push(checkbox.value)
+        }
+        })
+        // update parms
+        let updateString = filterHost.join()
+        updateString = updateString.replace(",", "-")
+        searchParams.set('filter-host', updateString)
+        //update current url
+        history.replaceState({}, 'filter', '?' + searchParams)
+        // Load events
+        loadEvents(1)
+    })
+
     // on change in the search field
     $("#search").on('input',() => {
 
         // update parms
         searchParams.set('search', $("#search-field").val());
         //update current url
-        history.replaceState('test', 'test', '?' + searchParams)
+        history.replaceState({}, 'search', '?' + searchParams)
         // Load events
         loadEvents(1)
 
@@ -42,7 +68,7 @@ $(() => {
         searchParams.set('sort-by', $("#sorted-list").val())
         //update current url
 
-        history.replaceState('test', 'test', '?' + searchParams)
+        history.replaceState({}, 'sort-by', '?' + searchParams)
         // Load events
         loadEvents(1)
     })
@@ -60,16 +86,17 @@ function loadEvents(page) {
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
     const sortBy = searchParams.has("sort-by") ? searchParams.get("sort-by") : "";
-    const filterBy = searchParams.has("filter_by") ? searchParams.get("filter_by") : "";
+    const filterHost = searchParams.has("filter-host") ? searchParams.get("filter-host") : "";
+
 
     $.ajax({
         dataType: "json",
         url: GET_URL,
         data: {
-            page: page,
-            search: search,
-            sort_by: sortBy,
-            filter_by: filterBy
+            'page': page,
+            'search': search,
+            'sort-by': sortBy,
+            'filter-host': filterHost
         },
         success: data => {
             console.log(data);
@@ -100,23 +127,30 @@ function displayEvents(events, reload) {
 // display one event
 function displayEvent(event) {
 
+    let start_date = new Date(event.start_date)
+    let printeble_date = start_date.getDate() + "." + ((start_date.getMonth())+1) + "." + start_date.getFullYear()
+    let hosts = event.host
+    console.log(printeble_date)
+
     $("#event-container").append(
-        '<div class="card bg-light mb-3">' +
-            '<div class="card-header">' +
-            event.host +
-            "</div>"  +
-            '<a href="/events/' + event.id + '/' + event.name.replace(/\s+/g, '-').toLowerCase() + '"><div class="card-body">' +
-            '<h5 class="card-title">' +
-            event.name +
-            " | " +
-            event.start_date.substr(0, 10) +
-            "</h5>" +
-            '<p class="card-text">' +
-            event.description.substr(0, 100) +
-            "..." +
-            "</p>" +
-            "</div></a>" +
-            "</div>"
+      '<a href="/events/' + event.id + '/' + event.name.replace(/\s+/g, '-').toLowerCase() + '"><div class="card-body">' +
+        '<div class="card bg-light mb-3" >' +
+            '<div class="card-element card-header">' +
+                event.name +
+            "</div>" +
+            '<div class="card-element card-body">' +
+            '<div class="card-element-container">' +
+                '<h6 class="card-title">' +
+                     event.description.substr(0, 100) + (event.description.length > 100 ? '...' : '') +
+                    ' </h6>' +
+                    '<b>Sted</b>: Gløshaugen </br>' +
+                    '<b> Dato: </b>' + printeble_date +
+                '</br> <p class="card-text"> <b>Arrangert av: </b> ' +
+                    hosts +
+                "</p>" +
+                "</div>" +
+            "</div>" +
+        "</div></a>"
     );
 }
 
