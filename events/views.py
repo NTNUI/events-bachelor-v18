@@ -25,7 +25,7 @@ def get_event_page(request):
 
 def get_event_details(request, id):
 
-    event = get_object_or_404(Event, id=id)
+    event = get_object_or_404(Event, id = id)
     context = {
         "event": event,
     }
@@ -111,7 +111,8 @@ def get_event_json(events):
             'start_date': str(event.start_date),
             'end_date': str(event.end_date),
             'priority': str(event.priority),
-            'host': str(event.get_host())
+            'host': str(event.get_host()),
+            'id': str(event.id),
         })
     return return_events
 
@@ -311,14 +312,17 @@ def get_json(code, message):
         'message': message},
         status=code)
 
+def event_add_attendance(request, id):
 
-def event_add_attendance(request, pk):
-    this_event = Event.objects.get(pk=pk)
-    this_event.add_user_to_list_of_attendees(user=request.user)
-    return redirect('detail', pk=pk)
+    event = Event.objects.get(id = id)
+    event.add_attendee_to_attendees_list(user = request.user)
 
-def event_cancel_attendance(request, pk):
-    this_event = Event.objects.get(pk=pk)
-    this_event.remove_user_from_list_of_attendees(request.user)
-    return redirect('detail', pk=pk)
+    return redirect('event_details', id = id)
+
+def event_cancel_attendance(request, id):
+
+    event = Event.objects.get(id=id)
+    event.remove_user_from_list_of_attendees(request.user)
+
+    return redirect('event_details', id=id)
 

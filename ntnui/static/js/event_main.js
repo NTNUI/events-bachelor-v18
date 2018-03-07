@@ -84,8 +84,8 @@ function displayEvent(event) {
         '<div class="card bg-light mb-3">' +
             '<div class="card-header">' +
             event.host +
-            "</div>" +
-            '<a href=""><div class="card-body">' +
+            "</div>"  +
+            '<a href="/events/' + event.id + '/' + event.name.replace(/\s+/g, '-').toLowerCase() + '"><div class="card-body">' +
             '<h5 class="card-title">' +
             event.name +
             " | " +
