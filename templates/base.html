@@ -39,21 +39,21 @@
             <li>
               <a class="link-with-icon" href="/hs">
                 <img src="{% static 'img/crown-icon.png' %}" alt="hs-icon" />
-                <p>Main Board</p>
+                <p>{% trans 'Main Board' %}</p>
               </a>
             </li>
           {% endif %}
           <li>
             <a class="link-with-icon" href="/groups">
                 <img src="{% static 'img/organization.svg' %}" alt="groups icon" />
-                <p>Groups</p>
+                <p>{% trans 'Groups' %}</p>
             </a>
           </li>
             <li>
             <a class="link-with-icon" href="/events">
                 <span class="oi oi-person"></span>
                 <img src="{% static 'img/calendar.svg' %}" alt="events icon" />
-                <p>Events</p>
+                <p>{% trans 'Events' %}</p>
             </a>
           </li>
           <li class="nav-item dropdown">
@@ -65,7 +65,7 @@
               aria-haspopup="true"
               aria-expanded="false">
               <img src="{% static 'img/person.svg' %}" alt="groups icon" />
-              <p>Account</p>
+              <p>{% trans 'Account' %}</p>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
               <!--<a class="dropdown-item" href="#">My account</a>-->
@@ -82,7 +82,7 @@
     </div>
   </nav>
 
-  <div class="content">
+  <div class="content"w>
 
     <!--<ol class="breadcrumb my-4">
       {% block breadcrumb %}

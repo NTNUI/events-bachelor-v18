@@ -10,7 +10,7 @@ class EventDescriptionInline(admin.TabularInline):
 
 class EventAdmin(admin.ModelAdmin):
     # Sets the attributes  to be listed
-    list_display = ['name', 'description', 'start_date', 'end_date', 'priority','is_host_ntnui']
+    list_display = ['id', 'name', 'description', 'start_date', 'end_date', 'priority','is_host_ntnui']
     # displays the eventdescription in the create event window
     inlines = [EventDescriptionInline,
                ]
