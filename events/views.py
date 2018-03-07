@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
@@ -312,10 +312,11 @@ def get_json(code, message):
         'message': message},
         status=code)
 
-def event_add_attendance(request, id):
-
-    event = Event.objects.get(id = id)
-    event.add_attendee_to_attendees_list(user = request.user)
+def event_add_attendance(request):
+    if request.POST:
+        id = request.POST.get('id')
+        event = Event.objects.get(id = id)
+        Event.objects.add_attendee_to_attendees_list(event, request.user)
 
     return redirect('event_details', id = id)
 

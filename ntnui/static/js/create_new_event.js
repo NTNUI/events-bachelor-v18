@@ -4,6 +4,7 @@
 $(() => {
     $("#create-event-button").click(() => {
         const postData = $('#create-event-form').serialize()
+        console.log(postData)
         $.ajax({
             type: 'POST',
             url: '/ajax/events/add-event',
