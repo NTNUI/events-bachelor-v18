@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from events.models import Event, EventDescription, Category, SubEvent, CategoryDescription, SubEventDescription, Tag, \
-    Restriction
+    Restriction, EventRegistration
 
 
 class CategoryDescroptionInline(admin.TabularInline):
@@ -37,6 +37,11 @@ class SubEventAdmin(admin.ModelAdmin):
     inlines = [SubEventDescriptionInline,
                ]
 
+class EvenetRegistrationInline(admin.TabularInline):
+    model = EventRegistration
+    # Setting extra to 0, the admin site wont show any extra descriptions (default is 3)
+    extra = 0
+
 """The description and name for an Event"""
 class EventDescriptionInline(admin.TabularInline):
     model = EventDescription
@@ -48,6 +53,7 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'description', 'start_date', 'end_date', 'priority','is_host_ntnui']
     # displays the eventdescription in the create event window
     inlines = [EventDescriptionInline,
+               EvenetRegistrationInline
                ]
 
 

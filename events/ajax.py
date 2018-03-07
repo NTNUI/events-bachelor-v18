@@ -1,10 +1,9 @@
 from django.conf.urls import url
 from . import views
 from .views import (
-    create_event,
-    get_events,
+    create_event_request,
     event_add_attendance,
-    event_cancel_attendance
+    get_events_request
 )
 
 

@@ -84,10 +84,6 @@ class Event(models.Model):
     def get_attendees(self):
         return EventRegistration.objects.filter(event = self)
 
-    """Add attendee to the event"""
-    def add_attendee_to_attendees_list(self, user):
-        EventRegistration.objects.create(user = user, event = self, registration_time = datetime.now())
-
     """Remove attendee from the event"""
     def remove_attendee_from_attendees_list(self, user):
         registration = EventRegistration.objects.get(user = user, event = self)
@@ -173,6 +169,6 @@ class EventRegistration(models.Model):
     registration_time = models.DateTimeField(_('Registered for Event at Time'))
 
     def __str__(self):
-        return self.event.name(self) + ' / ' + self.attendee.email
+        return self.event.name() + ' / ' + self.attendee.email
 
 

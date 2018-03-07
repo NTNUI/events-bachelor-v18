@@ -105,6 +105,7 @@ def get_events_json(events):
     return_events = []
     for event in events:
         return_events.append({
+            'id': event.id,
             'name': event.name(),
             'description': event.description(),
             'start_date': event.start_date,
