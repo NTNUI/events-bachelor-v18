@@ -27,11 +27,16 @@ def get_main_page(request):
 
 def get_event_details(request, id):
     sub_event_list = []
+    # get the event from db
     event = Event.objects.get(id=int(id))
+    # check that the event got one or more categories
     if Category.objects.filter(event=event).exists():
         categories = Category.objects.filter(event=event)
+        # for every category do:
         for i in range(len(categories)):
+            # get all the subevents for that category
             sub_event = SubEvent.objects.filter(category=categories[i])
+            # add the category and map each sub_event to a dic
             sub_event_list.append((categories[i], list(map(lambda item: {
                 'start_date': item.start_date,
                 'end_date': item.end_date,
