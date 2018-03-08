@@ -26,19 +26,19 @@ def get_main_page(request):
     })
 
 def get_event_details(request, id):
-
-    try:
-        sub_event_list = []
-        event = Event.objects.get(id=int(id))
-        if Category.objects.filter(event=event).exists():
-            categories = Category.objects.filter(event=event)
-            for category in categories:
-                print(category)
-                sub_event_list.append((category ,SubEvent.objects.filter(category=category)))
-
-    except:
-        return HttpResponseNotFound('<h1>Error, could not load page </h1>')
-
+    sub_event_list = []
+    event = Event.objects.get(id=int(id))
+    if Category.objects.filter(event=event).exists():
+        categories = Category.objects.filter(event=event)
+        for i in range(len(categories)):
+            sub_event = SubEvent.objects.filter(category=categories[i])
+            sub_event_list.append((categories[i], list(map(lambda item: {
+                'start_date': item.start_date,
+                'end_date': item.end_date,
+                'attends': item.attends(request.user),
+                'name': str(item),
+                'id': item.id
+            }, sub_event))))
     context = {
         "event": event,
         "sub_event_list": sub_event_list

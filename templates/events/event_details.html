@@ -101,18 +101,18 @@
                                 <div class="card">
                                     <div class="sub-event-container card-body">
                                         <div class="sub-event-item">
-                                            <div>{{ sub_event }}</div>
+                                            <div>{{ sub_event.name }}</div>
                                         </div>
                                         <div class="sub-event-item">
-                                            <button class="join-subevent-button btn btn-success" type="button" value="{{ sub_event.id }}" name="mybtn">
-                                                {% trans 'Sign up for event' %}
+                                            <button class="join-subevent-button {% if sub_event.attends %}btn btn-danger {% else %} btn btn-success {% endif %}"
+                                                    type="button" value="{{ sub_event.id }}" name="mybtn">
+                                                {% if sub_event.attends %}{% trans 'Sign off event' %}{% else %}{% trans 'Sign up for event' %}{% endif %}
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             {% endfor %}
                             </div>
-
                         </div>
                     </div>
                 </div>

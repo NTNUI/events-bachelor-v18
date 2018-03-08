@@ -89,6 +89,7 @@ class Event(models.Model):
         registration = EventRegistration.objects.get(user = user, event = self)
         registration.delete()
 
+
     def __str__(self):
         return self.name()
 
@@ -146,6 +147,11 @@ class SubEvent(models.Model):
 
     def __str__(self):
         return SubEventDescription.objects.get(sub_event=self, language=translation.get_language()).name
+
+    def attends(self, user):
+        if user in self.attending_members.all():
+            return True
+        return False
 
 class SubEventDescription(models.Model):
     """Add name to a given subevent."""
