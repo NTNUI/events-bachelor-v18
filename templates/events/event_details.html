@@ -81,19 +81,20 @@
         </div>
         <div class="events-section">
             <div class="category-card-container">
-                {% for category, sub_events in sub_event_list %}
+
                 <div class="category-card" id="accordion" role="tablist" aria-multiselectable="true">
+                    {% for category, sub_events in sub_event_list %}
                     <div class="category-card card">
                         <div class="card-header-category card-header" role="tab" id="headingOne"
                              aria-controls="collapseOne"
-                             data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true">
+                             data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ category }}" aria-expanded="true">
                             <h5 class="mb-0">
                                 <a>
                                     <h3>{{ category }}</h3>
                                 </a>
                             </h5>
                         </div>
-                        <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne"
+                        <div id="collapse-{{ category }}" class="collapse show" role="tabpanel" aria-labelledby="headingOne"
                              style="background-color: white;">
                             {% for sub_event in sub_events %}
                             <div class="card-block">
@@ -109,8 +110,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             {% endfor %}
+                            </div>
+
                         </div>
                     </div>
                 </div>
