@@ -6,6 +6,15 @@ $(() => {
     $(".join-subevent-button").click( () => {
         const csrftoken = getCookie('csrftoken');
         const button = event.target
+        if(button.value[0] === "-") {
+            button.value = button.value.substring(1,)
+            removeAttendSubEvent(button, csrftoken)
+        }else {
+            attendSubEvent(button, csrftoken)
+        }
+    })
+
+    function attendSubEvent(button, csrftoken) {
         $.ajax({
             type: 'POST',
             data: {
@@ -18,10 +27,31 @@ $(() => {
                 button.setAttribute("class", "btn btn-danger")
 
             }, error: (data) => {
-                 alert(data.message)
+                printMessage('Error', data.responseJSON.message)
+                slideUpAlert()
             }
         })
-    })
+    }
+
+    function removeAttendSubEvent(button, csrftoken) {
+        $.ajax({
+            type: 'POST',
+            data: {
+                csrfmiddlewaretoken: csrftoken,
+                id: button.value
+            },
+            url: '/ajax/events/remove-attend-sub-event',
+            success: (data) => {
+                button.innerHTML = "Meld meg på"
+                button.value = "-"+button.value
+                button.setAttribute("class", "btn btn-success")
+
+            }, error: (data) => {
+                printMessage('Error', data.responseJSON.message)
+                slideUpAlert()
+            }
+        })
+    }
 
 
     $("#attend-event-button").click(() => {

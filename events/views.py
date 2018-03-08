@@ -156,6 +156,20 @@ def event_add_attendance_event(request):
         return get_json(400, 'You are already attending this event')
     return get_json(400, 'Request must be post')
 
+
+def event_remove_attendance_subevent(request):
+    if request.POST:
+        try:
+            id = request.POST.get('id')
+            subevent = SubEvent.objects.get(id=int(id))
+            subevent.attending_members.remove(request.user)
+            subevent.save()
+            return get_json(201, 'Success')
+        except:
+            return get_json(400, 'Could not remove attendence')
+    return get_json(400, 'request is not post')
+
+
 def event_add_attendance_subevent(request):
     if request.POST:
         try:
