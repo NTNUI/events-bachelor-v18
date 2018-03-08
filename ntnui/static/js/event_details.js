@@ -35,10 +35,14 @@ $(() => {
                 id:id
             },
             url: '/ajax/events/attend-event',
-            success: (data) => {
-
-            }, error: (data) => {
-
+            success: data => {
+                button  = $("#attend-event-button")
+                button.html( () => "Meld meg av")
+                 $("#attend-event-button").removeClass("btn-success" )
+                $("#attend-event-button").addClass("btn-danger" )
+            }, error: data => {
+                printMessage('Error', data.responseJSON.message)
+                slideUpAlert()
             }
         })
     })
@@ -60,5 +64,42 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+/**
+ * Prints message to screen, using a dialog box
+ * @param msgType
+ * @param msg
+ */
+function printMessage(msgType, msg) {
+
+    //checks the msgType, to get the right color for the alert
+    let type = ''
+    switch (msgType){
+        case 'Error':
+            type = 'danger'
+            break
+        case 'Success':
+            type = 'success'
+            break
+    }
+    //print message to screen
+    $(".alert-message-container").html(() => {
+        return "<div class=\"alert alert-"+type+" show fade \" role=\"alert\"> <strong>"+ msgType + ":</strong>" +
+            " "+ msg +  "</div>"
+    })
+}
+
+/**
+ * Slides up the alert, if redirect set, the user will be returned to last page.
+ * @param redirect
+ */
+function slideUpAlert() {
+
+    //set timeout
+    setTimeout(() => {
+        //slide up the alert
+    $(".alert").slideUp()
+    //sets the amount of ms before the alert is closed
+    }, 2000)
 }
 

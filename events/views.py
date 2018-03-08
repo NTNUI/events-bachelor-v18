@@ -30,7 +30,6 @@ def get_event_details(request, id):
     try:
         sub_event_list = []
         event = Event.objects.get(id=int(id))
-        print(Category.objects.filter(event=event))
         if Category.objects.filter(event=event).exists():
             categories = Category.objects.filter(event=event)
             for category in categories:
@@ -143,22 +142,26 @@ def event_add_attendance_event(request):
     if request.POST:
         id = request.POST.get('id')
         event = Event.objects.get(id=int(id))
-        EventRegistration.objects.create(event=event, attendee=request.user, registration_time=datetime.now())
-
-    return redirect('event_details', id = id)
+        if not EventRegistration.objects.filter(event=event, attendee=request.user).exists():
+            try:
+                EventRegistration.objects.create(event=event, attendee=request.user, registration_time=datetime.now())
+                return get_json(201, 'You are now attending this event')
+            except:
+                return get_json(400, 'Could not add you to this event')
+        return get_json(400, 'You are already attending this event')
+    return get_json(400, 'Request must be post')
 
 def event_add_attendance_subevent(request):
     if request.POST:
         try:
             id = request.POST.get('id')
-            print(id)
             subevent = SubEvent.objects.get(id=int(id))
             subevent.attending_members.add(request.user)
             subevent.save()
             return get_json(201, 'Success')
         except:
-            return get_json(404, 'Could not join event')
-    return get_json(404, 'request is not post')
+            return get_json(400, 'Could not join event')
+    return get_json(400, 'request is not post')
 
 
 def event_cancel_attendance(request, id):

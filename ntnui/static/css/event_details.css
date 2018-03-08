@@ -5,6 +5,21 @@
     padding-bottom: 5rem;
 }
 
+
+.alert-danger {
+  margin-top: 2%;
+  float: left;
+  height: 10%;
+  margin-bottom: -20%;
+}
+
+.alert-danger p {
+  margin-top: -10px;
+}
+
+.alert-message-container {
+    z-index: 100;
+}
 #image-centered {
     margin: auto;
     max-width: 80%;
@@ -88,7 +103,6 @@
 
 #attend-event-button {
     margin-bottom: 20px;
-    background-color: #008000;
 }
 .events-section {
     width:100%;

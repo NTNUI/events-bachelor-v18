@@ -7,7 +7,9 @@
 {% endblock %}
 
 {% block content %}
+    <div class="alert-message-container">
 
+    </div>
     <div id="container">
 
 
@@ -66,11 +68,9 @@
                 </div>
                 {% if not sub_event_list %}
                 <div id="event-sign-up">
-                    <form> {% csrf_token %}
-                        <button id="attend-event-button" type="submit" class="btn btn-success" name="mybtn">
+                        <button id="attend-event-button" type="button" class="btn btn-success" name="mybtn">
                             {% trans 'Sign up for event' %}
                         </button>
-                    </form>
                 </div>
             {% endif %}
             </div>
