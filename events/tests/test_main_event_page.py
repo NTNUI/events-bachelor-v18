@@ -39,9 +39,5 @@ class TestLoadEvents(TestCase):
         c.login(email='testuser@test.com', password='4epape?Huf+V')
 
         # Checks if the request return 200, follow is set to true, since it is redirected from  /events to en/events etc
-        request = c.get(reverse('list_events'), follow=True)
+        request = c.get(reverse('get_events'), follow=True)
         self.assertEquals(request.status_code, 200)
-
-
-
-
