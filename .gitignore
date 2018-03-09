@@ -7,3 +7,4 @@ geckodriver.log
 .env
 *.pyc
 cover/
+ntnui/static/cover_photo/

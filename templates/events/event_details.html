@@ -68,12 +68,17 @@
                 </div>
                 {% if not sub_event_list %}
                     <div id="event-sign-up">
-                        <button id="attend-event-button" type="button"
-                                value="{% if event.attends %}-{% endif %}{{ event.id }}" %}
-                                name="mybtn" class="{% if event.attends %}btn btn-danger {% else %} btn btn-success {% endif %}">
-                            {% if event.attends %}{% trans 'Do not attend event' %}{% else %}
-                                {% trans 'Attend event' %}{% endif %}
-                        </button>
+                        {% if event.attends %}
+                            <button id="attend-event-button" type="button" value="-{{ event.id }}" name="mybtn"
+                                    class="btn btn-danger">
+                                {% trans 'Do not attend event' %}
+                            </button>
+                        {% else %}
+                            <button id="attend-event-button" type="button" value="{{ event.id }}" name="mybtn"
+                                    class="btn btn-success">
+                                {% trans 'Attend event' %}
+                            </button>
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>
@@ -109,14 +114,18 @@
                                                 <div>{{ sub_event.name }}</div>
                                             </div>
                                             <div class="sub-event-item">
-                                                <button class="join-subevent-button {% if sub_event.attends %}btn btn-danger {% else %} btn btn-success {% endif %}"
-                                                        type="button"
-                                                        value="{% if sub_event.attends %}-{% endif %}{{ sub_event.id }}"
-                                                        name="mybtn">
-                                                    {% if sub_event.attends %}
-                                                        {% trans 'Do not attend event' %}{% else %}
-                                                        {% trans 'Attend event' %}{% endif %}
-                                                </button>
+                                                {% if sub_event.attends %}
+                                                    <button class="join-subevent-button btn btn-danger" type="button"
+                                                            value="-{{ sub_event.id }}" name="mybtn">
+                                                        {% trans 'Do not attend event' %}
+                                                    </button>
+                                                {% else %}
+                                                    <button class="join-subevent-button btn btn-success "
+                                                            type="button"
+                                                            value="{{ sub_event.id }}" name="mybtn">
+                                                        {% trans 'Attend event' %}
+                                                    </button>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>

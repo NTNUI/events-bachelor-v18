@@ -47,7 +47,7 @@ class Event(models.Model):
     def get_cover_upload_to(instance, filename):
         name = EventDescription.objects.get(event=instance, language=translation.get_language()).name
         return os.path.join(
-            "cover_photo/{}".format(name.replace(" ", "-")), filename)
+            "cover_photo/events/{}".format(name.replace(" ", "-")), filename)
 
     start_date = models.DateTimeField(_('start date'))
     end_date = models.DateTimeField(_('end date'))

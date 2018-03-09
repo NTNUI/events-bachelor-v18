@@ -25,6 +25,7 @@ def get_main_page(request):
         'groups': groups,
     })
 
+
 def get_event_details(request, id):
     sub_event_list = []
     # get the event from db
@@ -65,7 +66,6 @@ def get_event_details(request, id):
     return render(request, 'events/event_details.html', context)
 
 
-
 @login_required
 def get_events_request(request):
     return get_events.get_events(request)
@@ -75,7 +75,8 @@ def get_events_request(request):
 def create_event_request(request):
     """Creates a new event with the given data"""
     return create_event.create_event(request)
-  
+
+
 @login_required
 def get_create_event_page(request):
     """Returns the page where events are created"""
@@ -157,12 +158,17 @@ def get_json(code, message):
         'message': message},
         status=code)
 
+
+@login_required
 def event_add_attendance_event(request):
+    """Adds attendance to the given event for the given user"""
     if request.POST:
         id = request.POST.get('id')
         event = Event.objects.get(id=int(id))
+        # Checks that the user is not already attending
         if not EventRegistration.objects.filter(event=event, attendee=request.user).exists():
             try:
+                # Try to create a enry
                 EventRegistration.objects.create(event=event, attendee=request.user, registration_time=datetime.now())
                 return get_json(201, 'You are now attending this event')
             except:
@@ -171,20 +177,25 @@ def event_add_attendance_event(request):
     return get_json(400, 'Request must be post')
 
 
-def event_remove_attendance_subevent(request):
+@login_required
+def event_remove_attendance_event(request):
+    """Remove the user from attending the given event """
     if request.POST:
         try:
             id = request.POST.get('id')
-            subevent = SubEvent.objects.get(id=int(id))
-            subevent.attending_members.remove(request.user)
-            subevent.save()
-            return get_json(201, 'Success')
+            if EventRegistration.objects.filter(event__id=int(id), attendee=request.user).exists():
+                registration = EventRegistration.objects.get(event__id=int(id), attendee=request.user)
+                registration.delete()
+                return get_json(201, 'Success')
+            return get_json(400, 'Attendance dose not exists')
         except:
             return get_json(400, 'Could not remove attendence')
     return get_json(400, 'request is not post')
 
 
+@login_required
 def event_add_attendance_subevent(request):
+    """Add a user to the given subevent"""
     if request.POST:
         try:
             id = request.POST.get('id')
@@ -197,15 +208,17 @@ def event_add_attendance_subevent(request):
     return get_json(400, 'request is not post')
 
 
-def event_remove_attendance_event(request):
+@login_required
+def event_remove_attendance_subevent(request):
+    """Removes the given user from the given subevent"""
     if request.POST:
         try:
             id = request.POST.get('id')
-            if EventRegistration.objects.filter(event__id = int(id), attendee=request.user).exists():
-                registration = EventRegistration.objects.get(event__id= int(id), attendee=request.user)
-                registration.delete()
-                return get_json(201, 'Success')
-            return get_json(400, 'Attendance dose not exists')
+            subevent = SubEvent.objects.get(id=int(id))
+            # find the subevent and remove the user from that sub event
+            subevent.attending_members.remove(request.user)
+            subevent.save()
+            return get_json(201, 'Success')
         except:
             return get_json(400, 'Could not remove attendence')
     return get_json(400, 'request is not post')
