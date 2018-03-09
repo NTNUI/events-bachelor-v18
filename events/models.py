@@ -8,9 +8,9 @@ from django.utils import translation
 from accounts.models import User
 from django.core.urlresolvers import reverse
 
+
 class Tag(models.Model):
     """Add tags to models to make searchig easier"""
-
     class Meta:
         verbose_name = _('tag')
         verbose_name_plural = _('tags')
@@ -59,15 +59,14 @@ class Event(models.Model):
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     cover_photo = models.ImageField(upload_to=get_cover_upload_to, default='cover_photo/ntnui-volleyball.png')
 
-
     # Returnes the name of the given event, in the given language
     def name(self):
         if EventDescription.objects.filter(event=self, language=translation.get_language()).exists():
-            return EventDescription.objects.get(event=self, language=translation.get_language()).name
+            return EventDescription.objects.filter(event=self, language=translation.get_language())[0].name
         elif EventDescription.objects.filter(event=self, language='en').exists():
-            return EventDescription.objects.get(event=self, language='en').name
+            return EventDescription.objects.filter(event=self, language='en')[0].name
         elif EventDescription.objects.filter(event=self).exists():
-            return EventDescription.objects.get(event=self).name
+            return EventDescription.objects.filter(event=self)[0].name
         else:
             return 'No name given'
 
@@ -76,11 +75,11 @@ class Event(models.Model):
     # Returnes the description of a given event in a given language
     def description(self):
         if EventDescription.objects.filter(event=self, language=translation.get_language()).exists():
-            return EventDescription.objects.get(event=self, language=translation.get_language()).description_text
+            return EventDescription.objects.filter(event=self, language=translation.get_language())[0].description_text
         elif EventDescription.objects.filter(event=self, language='en').exists():
-            return EventDescription.objects.get(event=self, language='en').description_text
+            return EventDescription.objects.filter(event=self, language='en')[0].description_text
         elif EventDescription.objects.filter(event=self).exists():
-            return EventDescription.objects.get(event=self).description_text
+            return EventDescription.objects.filter(event=self)[0].description_text
         else:
             return 'No description given'
 
@@ -99,17 +98,10 @@ class Event(models.Model):
     def get_attendees(self):
         return EventRegistration.objects.filter(event = self)
 
-    """Remove attendee from the event"""
-    def remove_attendee_from_attendees_list(self, user):
-        registration = EventRegistration.objects.get(user = user, event = self)
-        registration.delete()
-
     def attends(self, user):
         if EventRegistration.objects.filter(attendee=user, event=self).exists():
             return True
         return False
-
-
 
     def __str__(self):
         return self.name()
@@ -136,9 +128,18 @@ class Category(models.Model):
         verbose_name_plural = _('categories')
     event = models.ForeignKey(Event, verbose_name=_('event'))
 
+    def name(self):
+        if CategoryDescription.objects.filter(category=self, language=translation.get_language()).exists():
+            return CategoryDescription.objects.filter(category=self, language=translation.get_language())[0].name
+        elif CategoryDescription.objects.filter(category=self, language='en').exists():
+            return CategoryDescription.objects.filter(category=self, language='en')[0].name
+        elif CategoryDescription.objects.filter(category=self).exists():
+            return CategoryDescription.objects.filter(category=self)[0].name
+        else:
+            return 'No name given'
 
     def __str__(self):
-        return CategoryDescription.objects.get(category=self, language=translation.get_language()).name
+        return self.name()
 
 class CategoryDescription(models.Model):
     """Add name to a given subevent."""
@@ -166,13 +167,26 @@ class SubEvent(models.Model):
     category = models.ForeignKey(Category, verbose_name=_('category'))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
 
+    # Returnes the name of the given event, in the given language
+    def name(self):
+        if SubEventDescription.objects.filter(sub_event=self, language=translation.get_language()).exists():
+            return SubEventDescription.objects.filter(sub_event=self, language=translation.get_language())[0].name
+        elif SubEventDescription.objects.filter(sub_event=self, language='en').exists():
+            return SubEventDescription.objects.filter(sub_event=self, language='en')[0].name
+        elif SubEventDescription.objects.filter(sub_event=self).exists():
+            return SubEventDescription.objects.filter(sub_event=self)[0].name
+        else:
+            return 'No name given'
+
     def __str__(self):
-        return SubEventDescription.objects.get(sub_event=self, language=translation.get_language()).name
+        return self.name()
+
 
     def attends(self, user):
         if user in self.attending_members.all():
             return True
         return False
+
 
 class SubEventDescription(models.Model):
     """Add name to a given subevent."""
