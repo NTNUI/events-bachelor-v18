@@ -62,12 +62,27 @@ class Event(models.Model):
 
     # Returnes the name of the given event, in the given language
     def name(self):
-        return EventDescription.objects.get(event=self, language=translation.get_language()).name
+        if EventDescription.objects.filter(event=self, language=translation.get_language()).exists():
+            return EventDescription.objects.get(event=self, language=translation.get_language()).name
+        elif EventDescription.objects.filter(event=self, language='en').exists():
+            return EventDescription.objects.get(event=self, language='en').name
+        elif EventDescription.objects.filter(event=self).exists():
+            return EventDescription.objects.get(event=self).name
+        else:
+            return 'No name given'
+
     name.short_description = _('name')
 
     # Returnes the description of a given event in a given language
     def description(self):
-        return EventDescription.objects.get(event=self, language=translation.get_language()).description_text
+        if EventDescription.objects.filter(event=self, language=translation.get_language()).exists():
+            return EventDescription.objects.get(event=self, language=translation.get_language()).description_text
+        elif EventDescription.objects.filter(event=self, language='en').exists():
+            return EventDescription.objects.get(event=self, language='en').description_text
+        elif EventDescription.objects.filter(event=self).exists():
+            return EventDescription.objects.get(event=self).description_text
+        else:
+            return 'No description given'
 
     description.short_description = _('description')
 

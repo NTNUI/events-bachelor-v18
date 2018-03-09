@@ -3,13 +3,15 @@
  */
 $(() => {
 
-    $(".join-subevent-button").click( () => {
+    $(".join-subevent-button").click(() => {
         const csrftoken = getCookie('csrftoken');
         const button = event.target
-        if(button.value[0] === "-") {
+
+        // IF the first sign is a - we want to remove attending event
+        if (button.value[0] === "-") {
             button.value = button.value.substring(1,)
             removeAttendSubEvent(button, csrftoken)
-        }else {
+        } else {
             attendSubEvent(button, csrftoken)
         }
     })
@@ -23,7 +25,9 @@ $(() => {
             },
             url: '/ajax/events/attend-sub-event',
             success: (data) => {
-                button.innerHTML = "Meld meg av"
+
+                button.innerHTML = gettext("Do not attend event")
+                button.value = '-' + button.value
                 button.setAttribute("class", "btn btn-danger")
 
             }, error: (data) => {
@@ -33,6 +37,12 @@ $(() => {
         })
     }
 
+
+    /**
+     * Sends a remove attended request to the server
+     * @param button
+     * @param csrftoken
+     */
     function removeAttendSubEvent(button, csrftoken) {
         $.ajax({
             type: 'POST',
@@ -42,8 +52,7 @@ $(() => {
             },
             url: '/ajax/events/remove-attend-sub-event',
             success: (data) => {
-                button.innerHTML = "Meld meg på"
-                button.value = "-"+button.value
+                button.innerHTML = gettext("Attend event")
                 button.setAttribute("class", "btn btn-success")
 
             }, error: (data) => {
@@ -53,23 +62,25 @@ $(() => {
         })
     }
 
-
+    /**
+     * Sends a attend event request to the server
+     */
     $("#attend-event-button").click(() => {
         const csrftoken = getCookie('csrftoken');
-        const pathArray = window.location.pathname.split( '/' );
+        const pathArray = window.location.pathname.split('/');
         const id = pathArray[3]
         $.ajax({
             type: 'POST',
             data: {
                 csrfmiddlewaretoken: csrftoken,
-                id:id
+                id: id
             },
             url: '/ajax/events/attend-event',
             success: data => {
-                button  = $("#attend-event-button")
-                button.html( () => "Meld meg av")
-                 $("#attend-event-button").removeClass("btn-success" )
-                $("#attend-event-button").addClass("btn-danger" )
+                button = $("#attend-event-button")
+                button.html(() => "Meld meg av")
+                $("#attend-event-button").removeClass("btn-success")
+                $("#attend-event-button").addClass("btn-danger")
             }, error: data => {
                 printMessage('Error', data.responseJSON.message)
                 slideUpAlert()
@@ -95,6 +106,7 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
 /**
  * Prints message to screen, using a dialog box
  * @param msgType
@@ -104,7 +116,7 @@ function printMessage(msgType, msg) {
 
     //checks the msgType, to get the right color for the alert
     let type = ''
-    switch (msgType){
+    switch (msgType) {
         case 'Error':
             type = 'danger'
             break
@@ -114,8 +126,8 @@ function printMessage(msgType, msg) {
     }
     //print message to screen
     $(".alert-message-container").html(() => {
-        return "<div class=\"alert alert-"+type+" show fade \" role=\"alert\"> <strong>"+ msgType + ":</strong>" +
-            " "+ msg +  "</div>"
+        return "<div class=\"alert alert-" + type + " show fade \" role=\"alert\"> <strong>" + msgType + ":</strong>" +
+            " " + msg + "</div>"
     })
 }
 
@@ -128,8 +140,8 @@ function slideUpAlert() {
     //set timeout
     setTimeout(() => {
         //slide up the alert
-    $(".alert").slideUp()
-    //sets the amount of ms before the alert is closed
+        $(".alert").slideUp()
+        //sets the amount of ms before the alert is closed
     }, 2000)
 }
 
