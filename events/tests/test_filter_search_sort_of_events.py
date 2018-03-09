@@ -7,7 +7,6 @@ from groups.models import SportsGroup
 from datetime import date
 from accounts.models import User
 
-
 class TestFilterSearchSortEvents(TestCase):
 
     def setUp(self):
@@ -30,6 +29,9 @@ class TestFilterSearchSortEvents(TestCase):
 
         # Add a sports group
         event4.sports_groups.add(SportsGroup.objects.create(name='Test Group', description='this is a test group'))
+
+        # Add a sports group
+        event.sports_groups.add(SportsGroup.objects.create(name='Test Group', description='this is a test group'))
 
         # add norwegian and english description to the name and the description for the first event
         EventDescription.objects.create(name='Søppelplukking', description_text='Her plukker vi søppel.', language='nb', event=event)
