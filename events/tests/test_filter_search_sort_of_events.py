@@ -1,4 +1,11 @@
 from django.test import TestCase
+from django.test import Client
+from django.urls import reverse
+
+from events.models import Event, EventDescription
+from groups.models import SportsGroup
+from datetime import date
+from accounts.models import User
 
 
 class TestFilterSearchSortEvents(TestCase):
@@ -26,7 +33,10 @@ class TestFilterSearchSortEvents(TestCase):
         EventDescription.objects.create(name='test engelsk', description_text='test engelsk', language='en',
                                         event=event)
 
+
     def test_filtering(self):
         c = Client()
         # login
         c.login(email='testuser@test.com', password='4epape?Huf+V')
+
+    def test_searching(self):
