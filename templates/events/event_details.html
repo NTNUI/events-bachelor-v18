@@ -52,7 +52,7 @@
                         </div>
 
                         <div class="info">
-                            {% for host in event.get_host %}
+                            {% for host in event.host %}
                                 {{ host }}
                             {% endfor %}
                         </div>
@@ -67,12 +67,15 @@
                     </div>
                 </div>
                 {% if not sub_event_list %}
-                <div id="event-sign-up">
-                        <button id="attend-event-button" type="button" class="btn btn-success" name="mybtn">
-                            {% trans 'Sign up for event' %}
+                    <div id="event-sign-up">
+                        <button id="attend-event-button" type="button"
+                                value="{% if event.attends %}-{% endif %}{{ event.id }}" %}
+                                name="mybtn" class="{% if event.attends %}btn btn-danger {% else %} btn btn-success {% endif %}">
+                            {% if event.attends %}{% trans 'Do not attend event' %}{% else %}
+                                {% trans 'Attend event' %}{% endif %}
                         </button>
-                </div>
-            {% endif %}
+                    </div>
+                {% endif %}
             </div>
 
             <div id="event-description">
@@ -84,39 +87,45 @@
 
                 <div class="category-card" id="accordion" role="tablist" aria-multiselectable="true">
                     {% for category, sub_events in sub_event_list %}
-                    <div class="category-card card">
-                        <div class="card-header-category card-header" role="tab" id="headingOne"
-                             aria-controls="collapseOne"
-                             data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ category }}" aria-expanded="true">
-                            <h5 class="mb-0">
-                                <a>
-                                    <h3>{{ category }}</h3>
-                                </a>
-                            </h5>
-                        </div>
-                        <div id="collapse-{{ category }}" class="collapse show" role="tabpanel" aria-labelledby="headingOne"
-                             style="background-color: white;">
-                            {% for sub_event in sub_events %}
-                            <div class="card-block">
-                                <div class="card">
-                                    <div class="sub-event-container card-body">
-                                        <div class="sub-event-item">
-                                            <div>{{ sub_event.name }}</div>
-                                        </div>
-                                        <div class="sub-event-item">
-                                            <button class="join-subevent-button {% if sub_event.attends %}btn btn-danger {% else %} btn btn-success {% endif %}"
-                                                    type="button" value="{% if sub_event.attends %}-{% endif %}{{ sub_event.id }}" name="mybtn">
-                                                {% if sub_event.attends %}{% trans 'Do not attend event' %}{% else %}{% trans 'Attend event' %}{% endif %}
-                                            </button>
+                        <div class="category-card card">
+                            <div class="card-header-category card-header" role="tab" id="headingOne"
+                                 aria-controls="collapseOne"
+                                 data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ category }}"
+                                 aria-expanded="true">
+                                <h5 class="mb-0">
+                                    <a>
+                                        <h3>{{ category }}</h3>
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapse-{{ category }}" class="collapse show" role="tabpanel"
+                                 aria-labelledby="headingOne"
+                                 style="background-color: white;">
+                                {% for sub_event in sub_events %}
+                                    <div class="card-block">
+                                    <div class="card">
+                                        <div class="sub-event-container card-body">
+                                            <div class="sub-event-item">
+                                                <div>{{ sub_event.name }}</div>
+                                            </div>
+                                            <div class="sub-event-item">
+                                                <button class="join-subevent-button {% if sub_event.attends %}btn btn-danger {% else %} btn btn-success {% endif %}"
+                                                        type="button"
+                                                        value="{% if sub_event.attends %}-{% endif %}{{ sub_event.id }}"
+                                                        name="mybtn">
+                                                    {% if sub_event.attends %}
+                                                        {% trans 'Do not attend event' %}{% else %}
+                                                        {% trans 'Attend event' %}{% endif %}
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
+                                {% endfor %}
                                 </div>
-                            {% endfor %}
                             </div>
                         </div>
-                    </div>
-                </div>
-                {% endfor %}
+                        </div>
+                    {% endfor %}
             </div>
         </div>
     </div>

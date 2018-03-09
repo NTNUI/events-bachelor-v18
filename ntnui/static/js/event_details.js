@@ -2,7 +2,9 @@
  * When the document have loaded, add listener to attend-event-button and send ajax.
  */
 $(() => {
-
+    /**
+     * Sends a attend subevet request
+     */
     $(".join-subevent-button").click(() => {
         const csrftoken = getCookie('csrftoken');
         const button = event.target
@@ -10,20 +12,39 @@ $(() => {
         // IF the first sign is a - we want to remove attending event
         if (button.value[0] === "-") {
             button.value = button.value.substring(1,)
-            removeAttendSubEvent(button, csrftoken)
+            const URL = '/ajax/events/remove-attend-sub-event'
+            removeAttendEvent(button, csrftoken, URL)
         } else {
-            attendSubEvent(button, csrftoken)
+            const URL = '/ajax/events/attend-sub-event'
+            attendEvent(button, csrftoken, URL)
         }
     })
 
-    function attendSubEvent(button, csrftoken) {
+    /**
+     * Sends a attend event request to the server
+     */
+    $("#attend-event-button").click(() => {
+        const csrftoken = getCookie('csrftoken');
+        const pathArray = window.location.pathname.split('/');
+        const button = event.target
+        if (button.value[0]  === "-") {
+            button.value = button.value.substring(1,)
+            const URL = '/ajax/events/remove-attend-event'
+            removeAttendEvent(button, csrftoken, URL)
+        } else {
+            const URL = '/ajax/events/attend-event'
+            attendEvent(button, csrftoken, URL)
+        }
+    })
+
+    function attendEvent(button, csrftoken, URL) {
         $.ajax({
             type: 'POST',
             data: {
                 csrfmiddlewaretoken: csrftoken,
                 id: button.value
             },
-            url: '/ajax/events/attend-sub-event',
+            url: URL,
             success: (data) => {
 
                 button.innerHTML = gettext("Do not attend event")
@@ -36,21 +57,19 @@ $(() => {
             }
         })
     }
-
-
     /**
      * Sends a remove attended request to the server
      * @param button
      * @param csrftoken
      */
-    function removeAttendSubEvent(button, csrftoken) {
+    function removeAttendEvent(button, csrftoken, URL) {
         $.ajax({
             type: 'POST',
             data: {
                 csrfmiddlewaretoken: csrftoken,
                 id: button.value
             },
-            url: '/ajax/events/remove-attend-sub-event',
+            url: URL,
             success: (data) => {
                 button.innerHTML = gettext("Attend event")
                 button.setAttribute("class", "btn btn-success")
@@ -62,31 +81,7 @@ $(() => {
         })
     }
 
-    /**
-     * Sends a attend event request to the server
-     */
-    $("#attend-event-button").click(() => {
-        const csrftoken = getCookie('csrftoken');
-        const pathArray = window.location.pathname.split('/');
-        const id = pathArray[3]
-        $.ajax({
-            type: 'POST',
-            data: {
-                csrfmiddlewaretoken: csrftoken,
-                id: id
-            },
-            url: '/ajax/events/attend-event',
-            success: data => {
-                button = $("#attend-event-button")
-                button.html(() => "Meld meg av")
-                $("#attend-event-button").removeClass("btn-success")
-                $("#attend-event-button").addClass("btn-danger")
-            }, error: data => {
-                printMessage('Error', data.responseJSON.message)
-                slideUpAlert()
-            }
-        })
-    })
+
 })
 
 

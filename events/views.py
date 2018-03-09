@@ -44,10 +44,24 @@ def get_event_details(request, id):
                 'name': str(item),
                 'id': item.id
             }, sub_event))))
+
+    event = {
+        'name': event.name(),
+        'description': event.description(),
+        'start_date': event.start_date,
+        'end_date': event.end_date,
+        'cover_photo': event.cover_photo,
+        'attends': event.attends(request.user),
+        'id': event.id,
+        'host': event.get_host(),
+        'place': event.place
+    }
+
     context = {
         "event": event,
         "sub_event_list": sub_event_list
     }
+
     return render(request, 'events/event_details.html', context)
 
 
@@ -183,9 +197,15 @@ def event_add_attendance_subevent(request):
     return get_json(400, 'request is not post')
 
 
-def event_cancel_attendance(request, id):
-
-    event = Event.objects.get(id=id)
-    event.remove_user_from_list_of_attendees(request.user)
-
-    return redirect('event_details', id=id)
+def event_remove_attendance_event(request):
+    if request.POST:
+        try:
+            id = request.POST.get('id')
+            if EventRegistration.objects.filter(event__id = int(id), attendee=request.user).exists():
+                registration = EventRegistration.objects.get(event__id= int(id), attendee=request.user)
+                registration.delete()
+                return get_json(201, 'Success')
+            return get_json(400, 'Attendance dose not exists')
+        except:
+            return get_json(400, 'Could not remove attendence')
+    return get_json(400, 'request is not post')

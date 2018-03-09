@@ -104,6 +104,12 @@ class Event(models.Model):
         registration = EventRegistration.objects.get(user = user, event = self)
         registration.delete()
 
+    def attends(self, user):
+        if EventRegistration.objects.filter(attendee=user, event=self).exists():
+            return True
+        return False
+
+
 
     def __str__(self):
         return self.name()
