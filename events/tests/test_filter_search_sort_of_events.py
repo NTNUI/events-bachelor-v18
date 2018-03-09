@@ -7,7 +7,6 @@ from groups.models import SportsGroup
 from datetime import date
 from accounts.models import User
 
-
 class TestFilterSearchSortEvents(TestCase):
 
     def setUp(self):
@@ -38,5 +37,7 @@ class TestFilterSearchSortEvents(TestCase):
         c = Client()
         # login
         c.login(email='testuser@test.com', password='4epape?Huf+V')
+
+
 
     def test_searching(self):
