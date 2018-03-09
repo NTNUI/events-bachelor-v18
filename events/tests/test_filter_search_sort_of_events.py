@@ -13,9 +13,6 @@ class TestFilterSearchSortEvents(TestCase):
     def setUp(self):
         User.objects.create(email='testuser@test.com', password='4epape?Huf+V')
 
-        # Add a sports group
-        event.sports_groups.add(SportsGroup.objects.create(name='Test Group', description='this is a test group'))
-
         # Create a new event with NTNUI as host
         event = Event.objects.create(start_date=date.today(), end_date=date.today(),
                                      priority=True, is_host_ntnui=True)
@@ -29,7 +26,10 @@ class TestFilterSearchSortEvents(TestCase):
 
         # Create a new event where NTNUI is not host
         event4 = Event.objects.create(start_date=date.today(), end_date=date.today(),
-        priority=True, host="Test Group")
+        priority=True)
+
+        # Add a sports group
+        event4.sports_groups.add(SportsGroup.objects.create(name='Test Group', description='this is a test group'))
 
         # add norwegian and english description to the name and the description for the first event
         EventDescription.objects.create(name='Søppelplukking', description_text='Her plukker vi søppel.', language='nb', event=event)
@@ -55,10 +55,11 @@ class TestFilterSearchSortEvents(TestCase):
     def test_searching(self):
         c = Client()
         c.login(email='testuser@test.com', password='4epape?Huf+V')
-
+        response = c.get(reverse('list_groups'), follow = True)
+        self.assertEqual(response.status_code, 200)
         #get events
         #search for given events
-        #check if sorted
+        #check if correct response
 
     def test_filtering(self):
         c = Client()
