@@ -59,3 +59,8 @@ class TestFilterSearchSortEvents(TestCase):
         #get events
         #search for given events
         #check if sorted
+
+    def test_filtering(self):
+        c = Client()
+        # login
+        c.login(email='testuser@test.com', password='4epape?Huf+V')
