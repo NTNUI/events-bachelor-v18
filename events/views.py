@@ -168,7 +168,7 @@ def add_attendance_to_event(request):
         # Checks that the user is not already attending
         if not EventRegistration.objects.filter(event=event, attendee=request.user).exists():
             try:
-                # Try to create a enry
+                # Try to create a entry
                 EventRegistration.objects.create(event=event, attendee=request.user, registration_time=datetime.now())
                 return get_json(201, 'You are now attending this event')
             except:
@@ -178,7 +178,7 @@ def add_attendance_to_event(request):
 
 
 @login_required
-def event_remove_attendance_event(request):
+def remove_attendance_from_event(request):
     """Remove the user from attending the given event """
     if request.POST:
         try:
@@ -194,7 +194,7 @@ def event_remove_attendance_event(request):
 
 
 @login_required
-def event_add_attendance_subevent(request):
+def add_attendance_from_subevent(request):
     """Add a user to the given subevent"""
     if request.POST:
         try:
@@ -209,7 +209,7 @@ def event_add_attendance_subevent(request):
 
 
 @login_required
-def event_remove_attendance_subevent(request):
+def remove_attendance_from_subevent(request):
     """Removes the given user from the given subevent"""
     if request.POST:
         try:
