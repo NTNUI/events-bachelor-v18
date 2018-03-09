@@ -160,7 +160,7 @@ def get_json(code, message):
 
 
 @login_required
-def event_add_attendance_event(request):
+def add_attendance_to_event(request):
     """Adds attendance to the given event for the given user"""
     if request.POST:
         id = request.POST.get('id')
