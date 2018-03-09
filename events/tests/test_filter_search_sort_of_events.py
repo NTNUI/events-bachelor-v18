@@ -25,3 +25,8 @@ class TestFilterSearchSortEvents(TestCase):
         EventDescription.objects.create(name='test norsk', description_text='test norsk', language='nb', event=event)
         EventDescription.objects.create(name='test engelsk', description_text='test engelsk', language='en',
                                         event=event)
+
+    def test_filtering(self):
+        c = Client()
+        # login
+        c.login(email='testuser@test.com', password='4epape?Huf+V')
