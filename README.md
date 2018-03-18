@@ -116,10 +116,10 @@ All language files are located in the locale folder, with subfolders correspondi
 
 ###Update or create a language
 After you have navigated to you project root directory, you can create or update languages using the following command:
-`python manage.py makemessages -l language_code -i env`
+```python manage.py makemessages -l language_code -i env```
 Where the language_code is the extension for the language you would like to use, for instance nb is norwegian bokmål.
 
 ###Compile messages
 After you have made the translations, you can compile them using the following command.
-`python manage.py compilemessages`
+```python manage.py compilemessages```
 To compile the new translations, and you are good to go.
