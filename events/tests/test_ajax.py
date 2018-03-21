@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
+from events import create_event
 from django.utils import translation
 
 from events.models import Event, EventDescription
