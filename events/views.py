@@ -66,7 +66,6 @@ def get_event_details(request, id):
     return render(request, 'events/event_details.html', context)
 
 
-@login_required
 def get_events_request(request):
     return get_events.get_events(request)
 

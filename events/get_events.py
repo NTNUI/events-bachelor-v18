@@ -8,7 +8,7 @@ from django.utils import translation
 
 def get_events(request):
     """Returnes a set of events filter after the parms in the request"""
-    if request.GET:
+    if request.method == "GET":
         # gets the page from the request, or returns one if page is not given as a parm in the url
         page = request.GET.get('page', 1)
         events = get_filtered_events(request)
@@ -29,15 +29,15 @@ def get_events(request):
     #if not get return 404
     return JsonResponse({
         'message': 'must be get'
-    }, 404)
+    }, status=404)
 
 
 def get_filtered_events(request):
     """Returnes all the events that fits the order_by, search and filter_by"""
 
     # Get filters from parms
-    sort_by = request.GET.get('sort-by')
-    search = request.GET.get('search')
+    sort_by = request.GET.get('sort-by', "")
+    search = request.GET.get('search', "")
     filter_host = request.GET.get('filter-host', "")
 
     # Filter the events
