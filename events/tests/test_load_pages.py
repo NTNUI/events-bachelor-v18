@@ -13,7 +13,7 @@ class TestLoadEvents(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V', customer_number=1)
-        self.user2 = User.objects.create_user(email='testuser1@test.com', password='4epape?Huf+V')
+
         # Create a new event with NTNUI as host
         self.event = Event.objects.create(start_date=date.today(), end_date=date.today(),
                                      priority=True, is_host_ntnui=True)
@@ -88,17 +88,14 @@ class TestLoadEvents(TestCase):
         request = self.client_signed_in.get(reverse('create_event_page'))
         self.assertEquals(request.status_code, 200)
 
-    def test_loading_create_event_page_user(self):
-        client = Client()
-        # login
-        self.client.login(email='testuser1@test.com', password='4epape?Huf+V')
-        """Checks that a user may create a new event"""
-        request = self.client.get(reverse('create_event_page'))
+    def test_loading_event_details_page_user(self):
+        """Checks that a user may see event details"""
+        request = self.client_signed_in.get('/events/'+str(self.event.id)+'/', follow=True)
         self.assertEquals(request.status_code, 200)
 
     def test_loading_event_details_page_user(self):
-        """Checks that a user may create a new event"""
-        request = self.client_signed_in.get('/events/'+str(self.event.id)+'/', follow=True)
+        """Checks that a user may see event details"""
+        request = self.client_anonymous.get('/events/'+str(self.event.id)+'/', follow=True)
         self.assertEquals(request.status_code, 200)
 
 

@@ -29,6 +29,23 @@ def get_main_page(request):
     })
 
 
+def get_sub_event_dic(item, request):
+    # Checks if the user is signed in.
+    if request.user.is_authenticated:
+        attends = item.attends(request.user)
+    else:
+        # Retunes false if not
+        attends = False
+
+    return {
+        'start_date': item.start_date,
+        'end_date': item.end_date,
+        'attends': attends,
+        'name': str(item),
+        'id': item.id
+    }
+
+
 def get_event_details(request, id):
     sub_event_list = []
     # get the event from db
@@ -41,13 +58,14 @@ def get_event_details(request, id):
             # get all the subevents for that category
             sub_event = SubEvent.objects.filter(category=categories[i])
             # add the category and map each sub_event to a dic
-            sub_event_list.append((categories[i], list(map(lambda item: {
-                'start_date': item.start_date,
-                'end_date': item.end_date,
-                'attends': item.attends(request.user),
-                'name': str(item),
-                'id': item.id
-            }, sub_event))))
+            sub_event_list.append((categories[i], list(map(lambda item : get_sub_event_dic(item, request), sub_event))))
+
+    # Checks if the user is sign in.
+    if request.user.is_authenticated:
+        attends = event.attends(request.user)
+    else:
+        # Retunes false if not
+        attends = False
 
     event = {
         'name': event.name(),
@@ -55,7 +73,7 @@ def get_event_details(request, id):
         'start_date': event.start_date,
         'end_date': event.end_date,
         'cover_photo': event.cover_photo,
-        'attends': event.attends(request.user),
+        'attends': attends,
         'id': event.id,
         'host': event.get_host(),
         'place': event.place
@@ -97,10 +115,7 @@ def user_can_create_event(user):
         return True
 
     # Checks if the user is in any active board
-    for board in Q(Board.objects.filter(president=user)) | \
-                 Q(Board.objects.filter(vice_president=user)) | \
-                 Q(Board.objects.filter(cashier=user)):
-
+    for board in (Board.objects.filter(Q(president=user) | Q(vice_president=user) | Q(cashier=user))):
         # Checks that the board is active
         if SportsGroup.objects.filter(active_board=board).exists():
             return True
