@@ -77,7 +77,7 @@ class TestEventModel(TestCase):
 
         # Tests that the given event is hosted by ntnui
         event = Event.objects.get(eventdescription__name='Norsk')
-        self.assertEquals(event.get_host(), 'NTNUI')
+        self.assertEquals(event.get_host(), ['NTNUI'])
 
         # Checks that the right group is host for test event
         event = Event.objects.get(eventdescription__name='test norsk')

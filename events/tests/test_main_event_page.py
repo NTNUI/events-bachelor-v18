@@ -30,8 +30,7 @@ class TestLoadEvents(TestCase):
 
         # add norwegian and english description to the name and the description
         EventDescription.objects.create(name='test norsk', description_text='test norsk', language='nb', event=event)
-        EventDescription.objects.create(name='test engelsk', description_text='test engelsk', language='en',
-                                        event=event)
+        EventDescription.objects.create(name='test engelsk', description_text='test engelsk', language='en', event=event)
 
     def test_loading_events(self):
         c = Client()
@@ -39,9 +38,5 @@ class TestLoadEvents(TestCase):
         c.login(email='testuser@test.com', password='4epape?Huf+V')
 
         # Checks if the request return 200, follow is set to true, since it is redirected from  /events to en/events etc
-        request = c.get(reverse('list_events'), follow=True)
+        request = c.get(reverse('get_events'), follow=True)
         self.assertEquals(request.status_code, 200)
-
-
-
-
