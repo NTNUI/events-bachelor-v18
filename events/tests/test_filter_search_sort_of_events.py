@@ -188,6 +188,18 @@ class TestFilterSearchSortEvents(TestCase):
           'page_number': 1})
 
 
+    def test_search_no_content(self):
+
+        # Results for search on nothing
+        search_response = self.c.get(reverse('get_events'), {'search': ''})
+        self.assertJSONEqual(search_response.content, {'events': [self.trash_collection,
+             self.theatre,
+             self.rock_ring_tournament,
+             self.camping_in_the_woods],
+          'page_count': 1,
+          'page_number': 1})
+
+
     def test_filtering_NTNUI(self):
 
         # Check the filtered content for NTNUI events
@@ -197,6 +209,19 @@ class TestFilterSearchSortEvents(TestCase):
              self.rock_ring_tournament],
           'page_count': 1,
           'page_number': 1})
+
+
+    def test_filtering_two_parameters(self):
+
+        # Check the filtered content for NTNUI and 'Test group' (id='1') events
+        response = self.c.get(reverse('get_events'), {'filter-host': 'NTNUI-1'})
+        self.assertJSONEqual(response.content, {'events': [self.trash_collection,
+             self.theatre,
+             self.rock_ring_tournament,
+             self.camping_in_the_woods],
+          'page_count': 1,
+          'page_number': 1})
+
 
     def test_filtering_group(self):
 
