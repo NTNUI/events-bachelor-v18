@@ -17,6 +17,9 @@
 #main {
     grid-column: 2;
 }
+.card-container {
+    padding:0;
+}
 #accordion {
     grid-row: 1;
     grid-column: 1;

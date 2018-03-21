@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-07 14:50+0100\n"
+"POT-Creation-Date: 2018-03-09 11:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,135 +62,145 @@ msgstr "bruker"
 msgid "users"
 msgstr "brukere"
 
-#: .\events\create_event.py:29
+#: .\events\create_event.py:30
 msgid "New event successfully created!"
 msgstr "Nytt arrangement opprettet"
 
-#: .\events\create_event.py:34
+#: .\events\create_event.py:35
 msgid "Failed to create event!"
 msgstr "Kunne ikke opprette arrangement"
 
-#: .\events\create_event.py:81
+#: .\events\create_event.py:82
 msgid "could not create description"
 msgstr "Kunne ikke lage beskrivelse"
 
-#: .\events\create_event.py:122
+#: .\events\create_event.py:123 .\events\views.py:134
 msgid "Event must have a name"
 msgstr "Arrangemnt må ha et navn"
 
-#: .\events\models.py:13
+#: .\events\models.py:15
 msgid "tag"
 msgstr ""
 
-#: .\events\models.py:14 .\events\models.py:57 .\events\models.py:131
+#: .\events\models.py:16 .\events\models.py:59 .\events\models.py:146
 msgid "tags"
 msgstr ""
 
-#: .\events\models.py:16 .\events\models.py:29 .\events\models.py:64
-#: .\events\models.py:91 .\events\models.py:113 .\events\models.py:140
+#: .\events\models.py:18 .\events\models.py:31 .\events\models.py:66
+#: .\events\models.py:103 .\events\models.py:128 .\events\models.py:162
 msgid "name"
 msgstr "navn"
 
-#: .\events\models.py:26
+#: .\events\models.py:28
 msgid "restricton"
 msgstr ""
 
-#: .\events\models.py:27
-#, fuzzy
-#| msgid "description"
+#: .\events\models.py:29
 msgid "restrictions"
-msgstr "beskrivelse"
+msgstr "begrensninger"
 
-#: .\events\models.py:41 .\events\models.py:94 .\events\models.py:104
+#: .\events\models.py:44 .\events\models.py:106 .\events\models.py:116
 msgid "event"
 msgstr "arrangement"
 
-#: .\events\models.py:42
+#: .\events\models.py:45
 msgid "events"
 msgstr "arrangement"
 
-#: .\events\models.py:49 .\events\models.py:127
+#: .\events\models.py:52 .\events\models.py:142
 msgid "start date"
 msgstr "start dato"
 
-#: .\events\models.py:50 .\events\models.py:128
+#: .\events\models.py:53 .\events\models.py:143
 msgid "end date"
 msgstr "sluttdato"
 
-#: .\events\models.py:51
+#: .\events\models.py:54
 #, fuzzy
 #| msgid "Place"
 msgid "place"
 msgstr "Sted"
 
-#: .\events\models.py:52
-#, fuzzy
-#| msgid "description"
+#: .\events\models.py:55
 msgid "restriction"
-msgstr "beskrivelse"
+msgstr "begrensning"
 
-#: .\events\models.py:53
+#: .\events\models.py:56
 msgid "priority"
 msgstr "prioritet"
 
-#: .\events\models.py:54
+#: .\events\models.py:57
 msgid "hosted by NTNUI"
 msgstr "arrangert av NTNUI"
 
-#: .\events\models.py:55 .\events\models.py:129
-msgid "attending members"
-msgstr "deltagende medlemmer"
-
-#: .\events\models.py:56
+#: .\events\models.py:58
 msgid "hosted by"
 msgstr "arrangert av"
 
-#: .\events\models.py:70 .\events\models.py:92 .\events\models.py:110
-#: .\events\models.py:137
+#: .\events\models.py:72 .\events\models.py:104 .\events\models.py:125
+#: .\events\models.py:159
 msgid "description"
 msgstr "beskrivelse"
 
-#: .\events\models.py:88
+#: .\events\models.py:100
 msgid "event description"
 msgstr "arrangementsbeskrivelse"
 
-#: .\events\models.py:89
+#: .\events\models.py:101
 msgid "event descriptions"
 msgstr "arrangementsbeskrivelser"
 
-#: .\events\models.py:93 .\events\models.py:114 .\events\models.py:141
+#: .\events\models.py:105 .\events\models.py:129 .\events\models.py:163
 msgid "language"
 msgstr "språk"
 
-#: .\events\models.py:102 .\events\models.py:115 .\events\models.py:130
+#: .\events\models.py:114 .\events\models.py:130 .\events\models.py:145
 msgid "category"
 msgstr ""
 
-#: .\events\models.py:103
+#: .\events\models.py:115
 msgid "categories"
 msgstr ""
 
-#: .\events\models.py:111 .\events\models.py:138
+#: .\events\models.py:126 .\events\models.py:160
 #, fuzzy
 #| msgid "description"
 msgid "descriptions"
 msgstr "beskrivelse"
 
-#: .\events\models.py:124
+#: .\events\models.py:139
 msgid "subEvnet"
 msgstr ""
 
-#: .\events\models.py:125
+#: .\events\models.py:140
 #, fuzzy
 #| msgid "Events"
 msgid "subEvents"
 msgstr "Arrangement"
 
-#: .\events\models.py:142
+#: .\events\models.py:144
+msgid "attending members"
+msgstr "deltagende medlemmer"
+
+#: .\events\models.py:164
 #, fuzzy
 #| msgid "event"
 msgid "subevent"
 msgstr "arrangement"
+
+#: .\events\models.py:174
+msgid "Attendee for event"
+msgstr ""
+
+#: .\events\models.py:175
+#, fuzzy
+#| msgid "Load more events"
+msgid "Attendees for events"
+msgstr "Last flere arrangement"
+
+#: .\events\models.py:180
+msgid "Registered for Event at Time"
+msgstr ""
 
 #: .\forms\forms.py:37
 msgid "Group does not exist"
@@ -240,49 +250,75 @@ msgstr "Arrangement"
 msgid "Account"
 msgstr "Konto"
 
-#: .\templates\events\create_new_event.html:10
+#: .\templates\events\create_new_event.html:12
 msgid "Create new event:"
 msgstr "Lag nytt arrangement"
 
-#: .\templates\events\create_new_event.html:13
+#: .\templates\events\create_new_event.html:17
 msgid "Name norwegian"
 msgstr "Navn norsk"
 
-#: .\templates\events\create_new_event.html:19
+#: .\templates\events\create_new_event.html:27
 msgid "Name english"
 msgstr "Navn engelsk"
 
-#: .\templates\events\create_new_event.html:25
-msgid "Host"
-msgstr "Arrangør"
-
-#: .\templates\events\create_new_event.html:35
-msgid "Start date:"
-msgstr "Start dato"
-
-#: .\templates\events\create_new_event.html:41
-msgid "To date:"
-msgstr "Til dato"
-
-#: .\templates\events\create_new_event.html:49
-msgid "Priority"
-msgstr "Prioritet"
-
-#: .\templates\events\create_new_event.html:53
+#: .\templates\events\create_new_event.html:37
 msgid "Description norwegian"
 msgstr "Beskrivelse norsk"
 
-#: .\templates\events\create_new_event.html:59
+#: .\templates\events\create_new_event.html:47
 msgid "Description english"
 msgstr "Beskrivelse engelsk"
 
-#: .\templates\events\create_new_event.html:64
+#: .\templates\events\create_new_event.html:63
+#: .\templates\events\event_details.html:35
+msgid "Host"
+msgstr "Arrangør"
+
+#: .\templates\events\create_new_event.html:73
+msgid "Start date:"
+msgstr "Start dato"
+
+#: .\templates\events\create_new_event.html:83
+msgid "To date:"
+msgstr "Til dato"
+
+#: .\templates\events\create_new_event.html:95
+msgid "Priority"
+msgstr "Prioritet"
+
+#: .\templates\events\create_new_event.html:105
 #: .\templates\events\events_main_page.html:80
 msgid "Create event"
 msgstr "Opprett nytt arrangement"
 
+#: .\templates\events\event_details.html:31
+msgid "Location"
+msgstr ""
+
+#: .\templates\events\event_details.html:39
+msgid "Start date"
+msgstr "Start dato"
+
+#: .\templates\events\event_details.html:43
+msgid "End date"
+msgstr "sluttdato"
+
+#: .\templates\events\event_details.html:72
+#, fuzzy
+#| msgid "My events"
+msgid "Sign up for event"
+msgstr "Mine arrangementer"
+
+#: .\templates\events\event_details.html:109
+msgid "Do not attend event"
+msgstr "Meld meg av"
+
+#: .\templates\events\event_details.html:109
+msgid "Attend event"
+msgstr "Meld meg på"
+
 #: .\templates\events\events_main_page.html:17
-#| msgid "Search"
 msgid "Search"
 msgstr "Søk"
 
@@ -326,6 +362,11 @@ msgstr "Håndtere arrangement"
 msgid "Load more events"
 msgstr "Last flere arrangement"
 
+#, fuzzy
+#~| msgid "My events"
+#~ msgid "Sign off event"
+#~ msgstr "Mine arrangementer"
+
 #~ msgid "From date"
 #~ msgstr "Fra dato"
 
@@ -334,11 +375,6 @@ msgstr "Last flere arrangement"
 
 #~ msgid "To date"
 #~ msgstr "Til dato"
-
-#, fuzzy
-#~| msgid "My events"
-#~ msgid "Type of event"
-#~ msgstr "Mine arrangementer"
 
 #, fuzzy
 #~| msgid "My options"

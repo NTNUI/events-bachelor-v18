@@ -1,8 +1,4 @@
 from django.test import TestCase
-from events.models import Event, EventDescription
-from accounts.models import User
-from datetime import date
-from django.test import Client
 
 class Event_add(TestCase):
 
@@ -22,5 +18,3 @@ class Event_add(TestCase):
 
     def test_verify_data_for_event(self):
         return self.assertEqual(self.event.start_date, date.today())
-
-

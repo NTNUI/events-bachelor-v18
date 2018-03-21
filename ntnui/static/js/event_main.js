@@ -134,17 +134,17 @@ function displayEvent(event) {
 
     $("#event-container").append(
       '<a href="/events/' + event.id + '/' + event.name.replace(/\s+/g, '-').toLowerCase() + '"><div class="card-body">' +
-        '<div class="card bg-light mb-3" >' +
-            '<div class="card-element card-header">' +
+        '<div class=" card bg-light mb-3" >' +
+            '<div class="card-element card-header"> <h5>' +
                 event.name +
-            "</div>" +
+            "</h5> </div>" +
             '<div class="card-element card-body">' +
             '<div class="card-element-container">' +
                 '<h6 class="card-title">' +
                      event.description.substr(0, 100) + (event.description.length > 100 ? '...' : '') +
                     ' </h6>' +
-                    '<b>Sted</b>: Gløshaugen </br>' +
-                    '<b> Dato: </b>' + printeble_date +
+                    '<b>Sted: </b>' + event.place + '</br>' +
+                    '<b> Dato: </b> ' + printeble_date +
                 '</br> <p class="card-text"> <b>Arrangert av: </b> ' +
                     hosts +
                 "</p>" +

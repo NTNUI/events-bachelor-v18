@@ -1,12 +1,12 @@
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
-from .models import Event, EventDescription, EventRegistration
+from .models import Event, EventDescription, EventRegistration, Category, SubEvent
 from . import create_event, get_events
 
 
@@ -25,17 +25,47 @@ def get_main_page(request):
         'groups': groups,
     })
 
-def get_event_details(request, id):
 
-    event = get_object_or_404(Event, id = id)
+def get_event_details(request, id):
+    sub_event_list = []
+    # get the event from db
+    event = Event.objects.get(id=int(id))
+    # check that the event got one or more categories
+    if Category.objects.filter(event=event).exists():
+        categories = Category.objects.filter(event=event)
+        # for every category do:
+        for i in range(len(categories)):
+            # get all the subevents for that category
+            sub_event = SubEvent.objects.filter(category=categories[i])
+            # add the category and map each sub_event to a dic
+            sub_event_list.append((categories[i], list(map(lambda item: {
+                'start_date': item.start_date,
+                'end_date': item.end_date,
+                'attends': item.attends(request.user),
+                'name': str(item),
+                'id': item.id
+            }, sub_event))))
+
+    event = {
+        'name': event.name(),
+        'description': event.description(),
+        'start_date': event.start_date,
+        'end_date': event.end_date,
+        'cover_photo': event.cover_photo,
+        'attends': event.attends(request.user),
+        'id': event.id,
+        'host': event.get_host(),
+        'place': event.place
+    }
+
     context = {
         "event": event,
+        "sub_event_list": sub_event_list
     }
+
     return render(request, 'events/event_details.html', context)
 
 
-
-@login_required
 def get_events_request(request):
     return get_events.get_events(request)
 
@@ -44,7 +74,8 @@ def get_events_request(request):
 def create_event_request(request):
     """Creates a new event with the given data"""
     return create_event.create_event(request)
-  
+
+
 @login_required
 def get_create_event_page(request):
     """Returns the page where events are created"""
@@ -126,17 +157,67 @@ def get_json(code, message):
         'message': message},
         status=code)
 
-def event_add_attendance(request):
+
+@login_required
+def add_attendance_to_event(request):
+    """Adds attendance to the given event for the given user"""
     if request.POST:
         id = request.POST.get('id')
         event = Event.objects.get(id=int(id))
-        EventRegistration.objects.create(event=event, attendee=request.user, registration_time=datetime.now())
+        # Checks that the user is not already attending
+        if not EventRegistration.objects.filter(event=event, attendee=request.user).exists():
+            try:
+                # Try to create a entry
+                EventRegistration.objects.create(event=event, attendee=request.user, registration_time=datetime.now())
+                return get_json(201, 'You are now attending this event')
+            except:
+                return get_json(400, 'Could not add you to this event')
+        return get_json(400, 'You are already attending this event')
+    return get_json(400, 'Request must be post')
 
-    return redirect('event_details', id = id)
 
-def event_cancel_attendance(request, id):
+@login_required
+def remove_attendance_from_event(request):
+    """Remove the user from attending the given event """
+    if request.POST:
+        try:
+            id = request.POST.get('id')
+            if EventRegistration.objects.filter(event__id=int(id), attendee=request.user).exists():
+                registration = EventRegistration.objects.get(event__id=int(id), attendee=request.user)
+                registration.delete()
+                return get_json(201, 'Success')
+            return get_json(400, 'Attendance dose not exists')
+        except:
+            return get_json(400, 'Could not remove attendence')
+    return get_json(400, 'request is not post')
 
-    event = Event.objects.get(id=id)
-    event.remove_user_from_list_of_attendees(request.user)
 
-    return redirect('event_details', id=id)
+@login_required
+def add_attendance_from_subevent(request):
+    """Add a user to the given subevent"""
+    if request.POST:
+        try:
+            id = request.POST.get('id')
+            subevent = SubEvent.objects.get(id=int(id))
+            subevent.attending_members.add(request.user)
+            subevent.save()
+            return get_json(201, 'Success')
+        except:
+            return get_json(400, 'Could not join event')
+    return get_json(400, 'request is not post')
+
+
+@login_required
+def remove_attendance_from_subevent(request):
+    """Removes the given user from the given subevent"""
+    if request.POST:
+        try:
+            id = request.POST.get('id')
+            subevent = SubEvent.objects.get(id=int(id))
+            # find the subevent and remove the user from that sub event
+            subevent.attending_members.remove(request.user)
+            subevent.save()
+            return get_json(201, 'Success')
+        except:
+            return get_json(400, 'Could not remove attendence')
+    return get_json(400, 'request is not post')
