@@ -10,12 +10,14 @@ from .models import Event, EventDescription, EventRegistration, Category, SubEve
 from . import create_event, get_events
 
 
-@login_required
 def get_main_page(request):
     """Returns the main page for events"""
 
     # Used to find out if the create-event button shall be rendered or not
-    can_create_event = user_can_create_event(request.user)
+    if request.user.is_authenticated():
+        can_create_event = user_can_create_event(request.user)
+    else:
+        can_create_event = False
 
     # Get groups that are hosting events
     groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
@@ -68,7 +70,6 @@ def get_event_details(request, id):
 
 def get_events_request(request):
     return get_events.get_events(request)
-
 
 @login_required
 def create_event_request(request):

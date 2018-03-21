@@ -32,14 +32,22 @@ class TestLoadEvents(TestCase):
         EventDescription.objects.create(name='test norsk', description_text='test norsk', language='nb', event=event)
         EventDescription.objects.create(name='test engelsk', description_text='test engelsk', language='en', event=event)
 
-    def test_loading_events(self):
+    def test_loading_main_event_page_user(self):
         c = Client()
         # login
         c.login(email='testuser@test.com', password='4epape?Huf+V')
 
         # Checks if the request return 200, follow is set to true, since it is redirected from  /events to en/events etc
-        request = c.get(reverse('get_events'), follow=True)
+        request = c.get(reverse('get_main_page'), follow=True)
         self.assertEquals(request.status_code, 200)
+
+    def test_loading_main_event_page_guest(self):
+        c = Client()
+
+        # Checks if the request return 200, follow is set to true, since it is redirected from  /events to en/events etc
+        request = c.get(reverse('get_main_page'), follow=True)
+        self.assertEquals(request.status_code, 200)
+
 
 
 
