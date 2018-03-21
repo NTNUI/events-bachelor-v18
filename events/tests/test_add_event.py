@@ -1,4 +1,8 @@
 from django.test import TestCase
+from events.models import Event, EventDescription
+from accounts.models import User
+from datetime import date
+from django.test import Client
 
 class Event_add(TestCase):
 

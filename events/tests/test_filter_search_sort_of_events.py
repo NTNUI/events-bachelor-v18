@@ -1,6 +1,9 @@
 from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
+from django.utils.encoding import force_text
+
+from django.utils import translation
 
 from events.models import Event, EventDescription
 from groups.models import SportsGroup
@@ -10,7 +13,7 @@ from accounts.models import User
 class TestFilterSearchSortEvents(TestCase):
 
     def setUp(self):
-        User.objects.create(email='testuser@test.com', password='4epape?Huf+V')
+        User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V')
 
         # Create a new event with NTNUI as host
         event = Event.objects.create(start_date=date.today(), end_date=date.today(),
@@ -57,8 +60,51 @@ class TestFilterSearchSortEvents(TestCase):
     def test_searching(self):
         c = Client()
         c.login(email='testuser@test.com', password='4epape?Huf+V')
-        response = c.get(reverse('list_groups'), follow = True)
+        response = c.get(reverse('get_events'))
+        translation.activate('en')
+        self.maxDiff = None
         self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {'events': [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'Come and pick up trash with us.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 1,
+              'name': 'Trash collection',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We are gathering you for test play to our '
+                             'theatre.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 2,
+              'name': 'Theatre',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We will see who is best at rocking the rock ring.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 3,
+              'name': 'Rock ring tournament',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We will take you camping in the deep woods of '
+                             'Norway.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['Test Group'],
+              'id': 4,
+              'name': 'Camping in the woods',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'}],
+  'page_count': 1,
+  'page_number': 1})
+
         #get events
         #search for given events
         #check if correct response
