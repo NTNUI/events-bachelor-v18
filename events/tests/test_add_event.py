@@ -8,38 +8,41 @@ from groups.models import SportsGroup, Membership, Board
 from events.models import Event, EventDescription
 
 
-
 class Event_add(TestCase):
     def setUp(self):
         # Create dummy user
         User.objects.create(email='testuser@test.com', password='4epape?Huf+V')
 
     def setUp(self):
-
         # Create dummy user
         User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V')
-        self.boardpresident = User.objects.create_user(email='boardpresident@test.com', password='12345', customer_number='20')
+        self.boardpresident = User.objects.create_user(email='boardpresident@test.com', password='12345',
+                                                       customer_number='20')
         self.boardvice = User.objects.create_user(email='boardvice@test.com', password='23456', customer_number='21')
-        self.boardcashier = User.objects.create_user(email='boardcashier@test.com', password='34567', customer_number='22')
+        self.boardcashier = User.objects.create_user(email='boardcashier@test.com', password='34567',
+                                                     customer_number='22')
 
-        #create sports group/main board
+        # create sports group/main board
         self.swimminggroup = SportsGroup.objects.create(name='Swimming', slug='slug',
                                                         description='Swimming events and tournaments',
                                                         )
         self.swimmingboard = Board.objects.create(president=self.boardpresident, vice_president=self.boardvice,
-                                              cashier=self.boardcashier, sports_group=self.swimminggroup)
+                                                  cashier=self.boardcashier, sports_group=self.swimminggroup)
         self.swimminggroup.active_board = self.swimmingboard
         self.swimminggroup.save()
 
-        #put user into mainboard
-        self.boardpresident_swimminggroup = Membership.objects.create(person=self.boardpresident, group=self.swimminggroup)
+        # put user into mainboard
+        self.boardpresident_swimminggroup = Membership.objects.create(person=self.boardpresident,
+                                                                      group=self.swimminggroup)
         # Create a new event with NTNUI as host
-        self.event = Event.objects.create(start_date= date.today(), end_date= date.today(),
-                                     priority=True, is_host_ntnui=True)
+        self.event = Event.objects.create(start_date=date.today(), end_date=date.today(),
+                                          priority=True, is_host_ntnui=True)
 
         # add norwegian and english description to the name and the description
-        EventDescription.objects.create(name='Norsk', description_text='Norsk beskrivelse', language='nb', event=self.event)
-        EventDescription.objects.create(name='Engelsk', description_text='Engelsk beskrivelse', language='en', event=self.event)
+        EventDescription.objects.create(name='Norsk', description_text='Norsk beskrivelse', language='nb',
+                                        event=self.event)
+        EventDescription.objects.create(name='Engelsk', description_text='Engelsk beskrivelse', language='en',
+                                        event=self.event)
 
     def test_create_event_with_no_description(self):
         c = Client()
@@ -102,7 +105,6 @@ class Event_add(TestCase):
                                                     'description_text_no': 'norsk beskrivelse',
                                                     }, follow=True)
 
-
         return self.assertEqual(response.status_code, 201)
 
     def test_create_event_with_no_norwegian_description(self):
@@ -122,6 +124,5 @@ class Event_add(TestCase):
                                                     'description_text_en': 'engelsk beskrivelse',
                                                     'description_text_no': '',
                                                     }, follow=True)
-
 
         return self.assertEqual(response.status_code, 400)
