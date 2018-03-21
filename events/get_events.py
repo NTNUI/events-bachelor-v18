@@ -84,7 +84,7 @@ def get_sorted_events(sort_by, events):
         type = ''
         if sort_by[0] == '-':
             type = '-'
-            order_by = sort_by[1:]
+            sort_by = sort_by[1:]
 
         # if the sort by is not in the event table we need to find the filed by merging
         if sort_by == 'name':
@@ -118,5 +118,3 @@ def get_events_json(events):
             'cover_photo': str(event.cover_photo)
         })
     return return_events
-
-
