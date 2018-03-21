@@ -102,8 +102,22 @@ class TestFilterSearchSortEvents(TestCase):
               'place': '',
               'priority': True,
               'start_date': '2018-03-21T00:00:00Z'}],
-  'page_count': 1,
-  'page_number': 1})
+          'page_count': 1,
+          'page_number': 1})
+
+        search_response = c.get(reverse('get_events'), {'search': 'Rock'})
+        self.assertJSONEqual(search_response.content, {'events': [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We will see who is best at rocking the rock ring.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 3,
+              'name': 'Rock ring tournament',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'}],
+          'page_count': 1,
+          'page_number': 1})
+
 
         #get events
         #search for given events
@@ -111,5 +125,170 @@ class TestFilterSearchSortEvents(TestCase):
 
     def test_filtering(self):
         c = Client()
-        # login
         c.login(email='testuser@test.com', password='4epape?Huf+V')
+        response = c.get(reverse('get_events'))
+        translation.activate('en')
+        self.maxDiff = None
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {'events': [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'Come and pick up trash with us.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 1,
+              'name': 'Trash collection',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We are gathering you for test play to our '
+                             'theatre.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 2,
+              'name': 'Theatre',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We will see who is best at rocking the rock ring.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 3,
+              'name': 'Rock ring tournament',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We will take you camping in the deep woods of '
+                             'Norway.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['Test Group'],
+              'id': 4,
+              'name': 'Camping in the woods',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'}],
+          'page_count': 1,
+          'page_number': 1})
+
+        filter_response = c.get(reverse('get_events'), {'filter-host': 'NTNUI'})
+        self.assertJSONEqual(filter_response.content, {'events': [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'Come and pick up trash with us.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 1,
+              'name': 'Trash collection',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We are gathering you for test play to our '
+                             'theatre.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 2,
+              'name': 'Theatre',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We will see who is best at rocking the rock ring.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 3,
+              'name': 'Rock ring tournament',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'}],
+          'page_count': 1,
+          'page_number': 1})
+
+    def test_sorting(self):
+        c = Client()
+        c.login(email='testuser@test.com', password='4epape?Huf+V')
+        response = c.get(reverse('get_events'))
+        translation.activate('en')
+        self.maxDiff = None
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content, {'events': [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'Come and pick up trash with us.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 1,
+              'name': 'Trash collection',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We are gathering you for test play to our '
+                             'theatre.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 2,
+              'name': 'Theatre',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We will see who is best at rocking the rock ring.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 3,
+              'name': 'Rock ring tournament',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We will take you camping in the deep woods of '
+                             'Norway.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['Test Group'],
+              'id': 4,
+              'name': 'Camping in the woods',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'}],
+          'page_count': 1,
+          'page_number': 1})
+
+        sorting_response = c.get(reverse('get_events'), {'sort-by': 'name'})
+        self.assertJSONEqual(sorting_response.content, {'events': [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
+         'description': 'We will take you camping in the deep woods of '
+                        'Norway.',
+         'end_date': '2018-03-21T00:00:00Z',
+         'host': ['Test Group'],
+         'id': 4,
+         'name': 'Camping in the woods',
+         'place': '',
+         'priority': True,
+         'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We will see who is best at rocking the rock ring.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 3,
+              'name': 'Rock ring tournament',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+              'description': 'We are gathering you for test play to our '
+                             'theatre.',
+              'end_date': '2018-03-21T00:00:00Z',
+              'host': ['NTNUI'],
+              'id': 2,
+              'name': 'Theatre',
+              'place': '',
+              'priority': True,
+              'start_date': '2018-03-21T00:00:00Z'},
+             {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                'description': 'Come and pick up trash with us.',
+                'end_date': '2018-03-21T00:00:00Z',
+                'host': ['NTNUI'],
+                'id': 1,
+                'name': 'Trash collection',
+                'place': '',
+                'priority': True,
+                'start_date': '2018-03-21T00:00:00Z'}],
+          'page_count': 1,
+          'page_number': 1})
