@@ -34,22 +34,6 @@ class TestLoadEvents(TestCase):
         response = c.get(reverse('get_main_page'), follow=True)
         self.assertEquals(response.status_code, 200)
 
-    def test_create_events(self):
-        c = Client()
-
-        # login
-        c.login(email='testuser@test.com', password='4epape?Huf+V')
-
-        response = c.post(reverse('create_event'),{'name_en': 'engelsk navn',
-                                                   'name_no': 'norsk navn',
-                                                   'description_text_en': 'engelsk beskrivelse',
-                                                   'description_text_no': 'norsk beskrivelse',
-                                                   'start_date': date.today(),
-                                                   'end_date': date.today(),
-                                                   'priority': 'false',
-                                                   'host': ['NTNUI']
-                                                   }, follow=True)
-        return self.assertEqual(response.get('end_date'), 200)
 
 
 
