@@ -63,7 +63,6 @@ def get_filtered_on_search_events(search):
 
 
 def get_filtered_on_host_events(filter_host, events):
-    print(filter_host)
     if filter_host == "":
         return events
     host_list = filter_host.split("-")
