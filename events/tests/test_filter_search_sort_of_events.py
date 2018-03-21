@@ -63,7 +63,7 @@ class TestFilterSearchSortEvents(TestCase):
         self.c = Client()
         self.c.login(email='testuser@test.com', password='4epape?Huf+V')
 
-        # Trash collection event
+        # Trash collection event JSON
         self.trash_collection = {'cover_photo': 'cover_photo/ntnui-volleyball.png',
               'description': 'Come and pick up trash with us.',
               'end_date': '2018-03-21T00:00:00Z',
@@ -74,7 +74,7 @@ class TestFilterSearchSortEvents(TestCase):
               'priority': True,
               'start_date': '2018-03-21T00:00:00Z'}
 
-        # Theatre event
+        # Theatre event JSON
         self.theatre = {'cover_photo': 'cover_photo/ntnui-volleyball.png',
          'description': 'We are gathering you for test play to our '
                         'theatre.',
@@ -86,7 +86,7 @@ class TestFilterSearchSortEvents(TestCase):
          'priority': True,
          'start_date': '2018-03-21T00:00:00Z'}
 
-        # Rock ring tournament event
+        # Rock ring tournament event JSON
         self.rock_ring_tournament = {'cover_photo': 'cover_photo/ntnui-volleyball.png',
          'description': 'We will see who is best at rocking the rock ring.',
          'end_date': '2018-03-21T00:00:00Z',
@@ -97,7 +97,7 @@ class TestFilterSearchSortEvents(TestCase):
          'priority': True,
          'start_date': '2018-03-21T00:00:00Z'}
 
-        # Camping in the woods event
+        # Camping in the woods event JSON
         self.camping_in_the_woods = {'cover_photo': 'cover_photo/ntnui-volleyball.png',
          'description': 'We will take you camping in the deep woods of '
                         'Norway.',
@@ -110,7 +110,7 @@ class TestFilterSearchSortEvents(TestCase):
          'start_date': '2018-03-21T00:00:00Z'}
 
 
-    def test_get_default_content(self):
+    def test_get_default_english_content(self):
 
         # Response for the default page
         response = self.c.get(reverse('get_events'))
@@ -181,22 +181,31 @@ class TestFilterSearchSortEvents(TestCase):
 
     def test_search_content_does_not_exist(self):
 
-        # Results for search on 'ferry'
+        # Results for search on 'ferry', empty array is expected
         response = self.c.get(reverse('get_events'), {'search': 'ferry'})
         self.assertJSONEqual(response.content, {'events': [],
           'page_count': 1,
           'page_number': 1})
 
 
-    def test_filtering(self):
+    def test_filtering_NTNUI(self):
 
-        # Check the filtered content
+        # Check the filtered content for NTNUI events
         response = self.c.get(reverse('get_events'), {'filter-host': 'NTNUI'})
         self.assertJSONEqual(response.content, {'events': [self.trash_collection,
              self.theatre,
              self.rock_ring_tournament],
           'page_count': 1,
           'page_number': 1})
+
+    def test_filtering_group(self):
+
+        # Check the filtered content for 'Test group' (id='1') events
+        response = self.c.get(reverse('get_events'), {'filter-host': '1'})
+        self.assertJSONEqual(response.content, {'events': [self.camping_in_the_woods],
+          'page_count': 1,
+          'page_number': 1})
+
 
     def test_sorting_ascending(self):
 
@@ -212,7 +221,7 @@ class TestFilterSearchSortEvents(TestCase):
 
     def test_sorting_descending(self):
 
-        # Check response for filtered by name (ascending) content
+        # Check response for filtered by name (descending) content
         response = self.c.get(reverse('get_events'), {'sort-by': '-name'})
         self.assertJSONEqual(response.content, {'events': [self.trash_collection,
              self.theatre,
