@@ -14,7 +14,8 @@ class TestLoadEvents(TestCase):
     def setUp(self):
 
         # Create dummy user
-        User.objects.create(email='testuser@test.com', password='4epape?Huf+V')
+        User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V')
+
 
         # Create a new event with NTNUI as host
         event = Event.objects.create(start_date= date.today(), end_date= date.today(),
@@ -46,9 +47,9 @@ class TestLoadEvents(TestCase):
                                                    'start_date': date.today(),
                                                    'end_date': date.today(),
                                                    'priority': 'false',
-                                                   'host': 'NTNUI'
+                                                   'host': '[NTNUI]'
                                                    }, follow=True)
-        return self.assertEqual(response.status_code, 200)
+        return self.assertEqual(response.get('end_date'), 200)
 
 
 
