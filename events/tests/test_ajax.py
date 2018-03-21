@@ -29,7 +29,7 @@ class TestLoadEvents(TestCase):
         # login
         c.login(email='testuser@test.com', password='4epape?Huf+V')
 
-        response = c.get(reverse('get_events'), follow=True)
+        response = c.get(reverse('get_main_page'), follow=True)
         self.assertEquals(response.status_code, 200)
 
     def test_create_events(self):
@@ -47,3 +47,4 @@ class TestLoadEvents(TestCase):
                                                    'priority': 'false',
                                                    'host': 'NTNUI'
                                                    }, follow=True)
+

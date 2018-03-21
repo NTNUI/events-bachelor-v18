@@ -1,5 +1,4 @@
 from django.test import TestCase
-from events.views import create_event_for_group
 
 class Event_add(TestCase):
 
