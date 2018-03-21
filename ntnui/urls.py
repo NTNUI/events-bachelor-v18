@@ -7,13 +7,16 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.views.i18n import JavaScriptCatalog
 
 from accounts import views as accounts_views
 from groups import views as groups_views
+from django.conf.urls.i18n import i18n_patterns
+from django.utils.translation import ugettext_lazy as _
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
     url(r'^ajax/', include('forms.ajax')),
+    url(r'^ajax/events/', include('events.ajax')),
     url(r'^$', groups_views.list_groups, name='home'),
     url(r'^forms/', include('forms.urls')),
     url(r'^groups/', include('groups.urls')),
@@ -52,4 +55,11 @@ urlpatterns = [
         name='add_all_users_from_exeline'),
     url(r'^cron/accounts/lastday$', accounts_views.add_last_week_users_from_exeline,
         name='add_last_week_users_from_exeline'),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
 ]
+urlpatterns += i18n_patterns(
+    url(r'^events/', include('events.urls')),
+    url(r'^jsi18n/$', JavaScriptCatalog.as_view(), name='javascript-catalog'),
+    url(_(r'^admin/'), admin.site.urls),
+
+)
