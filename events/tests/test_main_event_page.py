@@ -9,7 +9,6 @@ from accounts.models import User
 
 
 class TestLoadEvents(TestCase):
-
     def setUp(self):
         User.objects.create(email='testuser@test.com', password='4epape?Huf+V')
 
@@ -30,7 +29,8 @@ class TestLoadEvents(TestCase):
 
         # add norwegian and english description to the name and the description
         EventDescription.objects.create(name='test norsk', description_text='test norsk', language='nb', event=event)
-        EventDescription.objects.create(name='test engelsk', description_text='test engelsk', language='en', event=event)
+        EventDescription.objects.create(name='test engelsk', description_text='test engelsk', language='en',
+                                        event=event)
 
     def test_loading_events(self):
         c = Client()

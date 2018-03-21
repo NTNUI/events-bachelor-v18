@@ -5,33 +5,32 @@ from datetime import date
 from django.utils import translation
 from django.core.urlresolvers import reverse
 
+
 class TestEventModel(TestCase):
-
-
     def setUp(self):
-
         # Create a new event with NTNUI as host
-        event = Event.objects.create(start_date= date.today(), end_date= date.today(),
+        event = Event.objects.create(start_date=date.today(), end_date=date.today(),
                                      priority=True, is_host_ntnui=True)
 
         # add norwegian and english description to the name and the description
         EventDescription.objects.create(name='Norsk', description_text='Norsk beskrivelse', language='nb', event=event)
-        EventDescription.objects.create(name='Engelsk', description_text='Engelsk beskrivelse', language='en', event=event)
+        EventDescription.objects.create(name='Engelsk', description_text='Engelsk beskrivelse', language='en',
+                                        event=event)
 
         # Create a second event with a group
-        event = Event.objects.create(start_date= date.today(), end_date= date.today(),
+        event = Event.objects.create(start_date=date.today(), end_date=date.today(),
                                      priority=True)
         # Add a sports group
-        event.sports_groups.add(SportsGroup.objects.create(name = 'Test Group', description = 'this is a test group'))
+        event.sports_groups.add(SportsGroup.objects.create(name='Test Group', description='this is a test group'))
 
         # add norwegian and english description to the name and the description
         EventDescription.objects.create(name='test norsk', description_text='test norsk', language='nb', event=event)
-        EventDescription.objects.create(name='test engelsk', description_text='test engelsk', language='en', event=event)
-
+        EventDescription.objects.create(name='test engelsk', description_text='test engelsk', language='en',
+                                        event=event)
 
     """Tests the event.name(), event.description() and str functions"""
-    def test_event_eventdescription_norwegian(self):
 
+    def test_event_eventdescription_norwegian(self):
         lang = 'nb'
         # Active the current language
         translation.activate(lang)
@@ -48,11 +47,9 @@ class TestEventModel(TestCase):
         # Checks that the event have the right description in the write language.
         self.assertEquals(event.description(), 'Norsk beskrivelse')
 
-
-
     """Tests the event.name(), event.description() and str functions"""
-    def test_event_eventdescription_english(self):
 
+    def test_event_eventdescription_english(self):
         lang = 'en'
         # Active the current language
         translation.activate(lang)
@@ -68,7 +65,6 @@ class TestEventModel(TestCase):
 
         # Checks that the description is right
         self.assertEquals(event.description(), 'Engelsk beskrivelse')
-
 
     def test_event_groups(self):
         lang = 'nb'

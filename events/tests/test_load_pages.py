@@ -10,16 +10,16 @@ from hs.models import MainBoard, MainBoardMembership
 
 
 class TestLoadEvents(TestCase):
-
     def setUp(self):
         self.user = User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V', customer_number=1)
 
         # Create a new event with NTNUI as host
         self.event = Event.objects.create(start_date=date.today(), end_date=date.today(),
-                                     priority=True, is_host_ntnui=True)
+                                          priority=True, is_host_ntnui=True)
 
         # add norwegian and english description to the name and the description
-        EventDescription.objects.create(name='Norsk', description_text='Norsk beskrivelse', language='nb', event=self.event)
+        EventDescription.objects.create(name='Norsk', description_text='Norsk beskrivelse', language='nb',
+                                        event=self.event)
         EventDescription.objects.create(name='Engelsk', description_text='Engelsk beskrivelse', language='en',
                                         event=self.event)
 
@@ -33,7 +33,7 @@ class TestLoadEvents(TestCase):
         # add norwegian and english description to the name and the description
         SubEventDescription.objects.create(name='Norsk', language='nb', sub_event=sub_event)
         SubEventDescription.objects.create(name='Engelsk', language='en',
-                                        sub_event=sub_event)
+                                           sub_event=sub_event)
 
         # create sports group/main board
         self.swimminggroup = SportsGroup.objects.create(name='Swimming', slug='slug',
@@ -48,9 +48,7 @@ class TestLoadEvents(TestCase):
         Membership.objects.create(person=self.user, group=self.swimminggroup)
 
         hs = MainBoard.objects.create(name="super geir", slug="super-geir")
-        MainBoardMembership.objects.create(person=self.user, role="president", board=hs )
-
-
+        MainBoardMembership.objects.create(person=self.user, role="president", board=hs)
 
         # Create a second event with a group
         event = Event.objects.create(start_date=date.today(), end_date=date.today(),
@@ -60,7 +58,8 @@ class TestLoadEvents(TestCase):
 
         # add norwegian and english description to the name and the description
         EventDescription.objects.create(name='test norsk', description_text='test norsk', language='nb', event=event)
-        EventDescription.objects.create(name='test engelsk', description_text='test engelsk', language='en', event=event)
+        EventDescription.objects.create(name='test engelsk', description_text='test engelsk', language='en',
+                                        event=event)
 
         self.client_signed_in = Client()
         # login
@@ -90,14 +89,10 @@ class TestLoadEvents(TestCase):
 
     def test_loading_event_details_page_user(self):
         """Checks that a user may see event details"""
-        request = self.client_signed_in.get('/events/'+str(self.event.id)+'/', follow=True)
+        request = self.client_signed_in.get('/events/' + str(self.event.id) + '/', follow=True)
         self.assertEquals(request.status_code, 200)
 
     def test_loading_event_details_page_user(self):
         """Checks that a user may see event details"""
-        request = self.client_anonymous.get('/events/'+str(self.event.id)+'/', follow=True)
+        request = self.client_anonymous.get('/events/' + str(self.event.id) + '/', follow=True)
         self.assertEquals(request.status_code, 200)
-
-
-
-
