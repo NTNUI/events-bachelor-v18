@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import JsonResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.translation import gettext as _
@@ -96,12 +97,12 @@ def user_can_create_event(user):
         return True
 
     # Checks if the user is in any active board
-    for board in Board.objects.filter(president=user) | \
-                 Board.objects.filter(vice_president=user) | \
-                 Board.objects.filter(cashier=user):
+    for board in Q(Board.objects.filter(president=user)) | \
+                 Q(Board.objects.filter(vice_president=user)) | \
+                 Q(Board.objects.filter(cashier=user)):
 
         # Checks that the board is active
-        if SportsGroup.objects.filter(active_board=board):
+        if SportsGroup.objects.filter(active_board=board).exists():
             return True
     return False
 

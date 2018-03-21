@@ -15,7 +15,6 @@ from accounts.models import User
 class TestLoadEvents(TestCase):
 
     def setUp(self):
-
         # Create dummy user
         User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V')
 
@@ -27,17 +26,31 @@ class TestLoadEvents(TestCase):
         EventDescription.objects.create(name='Norsk', description_text='Norsk beskrivelse', language='nb', event=event)
         EventDescription.objects.create(name='Engelsk', description_text='Engelsk beskrivelse', language='en', event=event)
 
-    def test_loading_events(self):
-        c = Client()
-
+        self.c = Client()
         # login
-        c.login(email='testuser@test.com', password='4epape?Huf+V')
+        self.c.login(email='testuser@test.com', password='4epape?Huf+V')
 
-        response = c.get(reverse('get_events'), follow=True)
+    def test_loading_events_nb(self):
+        response = self.c.get(reverse('get_events'), HTTP_ACCEPT_LANGUAGE='nb')
 
-        # Active the current language
-        translation.activate('nb')
+        # Checks that the url retunes 200
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(response.content,
+            {'events':
+                 [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                 'description': 'Norsk beskrivelse',
+                 'end_date': '2018-03-21T00:00:00Z',
+                 'host': ['NTNUI'],
+                 'id': 1,
+                 'name': 'Norsk',
+                 'place': '',
+                 'priority': True,
+                 'start_date': '2018-03-21T00:00:00Z'}],
+                 'page_count': 1,
+                 'page_number': 1})
 
+    def test_loading_events_en(self):
+        response = self.c.get(reverse('get_events'), HTTP_ACCEPT_LANGUAGE='en')
 
         # Checks that the url retunes 200
         self.assertEquals(response.status_code, 200)
@@ -53,5 +66,112 @@ class TestLoadEvents(TestCase):
                  'priority': True,
                  'start_date': '2018-03-21T00:00:00Z'}],
                  'page_count': 1,
-                'page_number': 1})
+                 'page_number': 1})
 
+    def test_loading_events_en(self):
+        response = self.c.post(reverse('get_events'))
+        self.assertEquals(404, response.status_code)
+
+
+    def test_loading_events_search(self):
+        response = self.c.get(reverse('get_events'), {'search': 'Norsk'}, HTTP_ACCEPT_LANGUAGE='nb')
+
+        # Checks that the url retunes 200
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(response.content,
+            {'events':
+                 [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                 'description': 'Norsk beskrivelse',
+                 'end_date': '2018-03-21T00:00:00Z',
+                 'host': ['NTNUI'],
+                 'id': 1,
+                 'name': 'Norsk',
+                 'place': '',
+                 'priority': True,
+                 'start_date': '2018-03-21T00:00:00Z'}],
+                 'page_count': 1,
+                 'page_number': 1})
+
+        response = self.c.get(reverse('get_events'), {'search': 'asfkjalskdj'}, HTTP_ACCEPT_LANGUAGE='nb')
+
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(response.content, {'events': [], 'page_count': 1, 'page_number': 1})
+
+    def test_loading_events_filter(self):
+        response = self.c.get(reverse('get_events'), {'filter-host': 'NTNUI'}, HTTP_ACCEPT_LANGUAGE='nb')
+
+        # Checks that the url retunes 200
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(response.content,
+                             {'events':
+                                  [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                                    'description': 'Norsk beskrivelse',
+                                    'end_date': '2018-03-21T00:00:00Z',
+                                    'host': ['NTNUI'],
+                                    'id': 1,
+                                    'name': 'Norsk',
+                                    'place': '',
+                                    'priority': True,
+                                    'start_date': '2018-03-21T00:00:00Z'}],
+                              'page_count': 1,
+                              'page_number': 1})
+
+        response = self.c.get(reverse('get_events'), {'filter-host': '3'}, HTTP_ACCEPT_LANGUAGE='nb')
+
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(response.content, {'events': [], 'page_count': 1, 'page_number': 1})
+
+    def test_loading_events_sort_name(self):
+        response = self.c.get(reverse('get_events'), {'sort-by': '-name'}, HTTP_ACCEPT_LANGUAGE='nb')
+
+        # Checks that the url retunes 200
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(response.content,
+                             {'events':
+                                  [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                                    'description': 'Norsk beskrivelse',
+                                    'end_date': '2018-03-21T00:00:00Z',
+                                    'host': ['NTNUI'],
+                                    'id': 1,
+                                    'name': 'Norsk',
+                                    'place': '',
+                                    'priority': True,
+                                    'start_date': '2018-03-21T00:00:00Z'}],
+                              'page_count': 1,
+                              'page_number': 1})
+
+    def test_loading_events_sort_description(self):
+        response = self.c.get(reverse('get_events'), {'sort-by': 'description'}, HTTP_ACCEPT_LANGUAGE='nb')
+
+        # Checks that the url retunes 200
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(response.content,
+                             {'events':
+                                  [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                                    'description': 'Norsk beskrivelse',
+                                    'end_date': '2018-03-21T00:00:00Z',
+                                    'host': ['NTNUI'],
+                                    'id': 1,
+                                    'name': 'Norsk',
+                                    'place': '',
+                                    'priority': True,
+                                    'start_date': '2018-03-21T00:00:00Z'}],
+                              'page_count': 1,
+                              'page_number': 1})
+
+    def test_loading_events_sort_random(self):
+        response = self.c.get(reverse('get_events'), {'sort-by': 'dsf'}, HTTP_ACCEPT_LANGUAGE='nb')
+
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(response.content,                              {'events':
+                                  [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                                    'description': 'Norsk beskrivelse',
+                                    'end_date': '2018-03-21T00:00:00Z',
+                                    'host': ['NTNUI'],
+                                    'id': 1,
+                                    'name': 'Norsk',
+                                    'place': '',
+                                    'priority': True,
+                                    'start_date': '2018-03-21T00:00:00Z'}],
+                              'page_count': 1,
+                              'page_number': 1})
