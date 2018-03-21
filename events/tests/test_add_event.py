@@ -47,7 +47,7 @@ class Event_add(TestCase):
                                                     'start_date': date.today(),
                                                     'end_date': date.today(),
                                                     'priority': 'false',
-                                                    'host': 'NTNUI'
+                                                    'host': ['NTNUI']
                                                     }, follow=True)
 
         return self.assertEqual(
