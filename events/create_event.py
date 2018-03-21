@@ -47,8 +47,11 @@ def create_and_validate_database_entry(request):
     priority = priority_is_selected(data.get('priority'))
 
     # checks if host is NTNUI, if so check that the user is member of the board
-    if data.get('host') == 'NTNUI' and user_is_in_mainboard(request.user):
-        return create_event_for_group(data, priority, True)
+    if data.get('host') == 'NTNUI':
+        if user_is_in_mainboard(request.user):
+            return create_event_for_group(data, priority, True)
+        else:
+            return (False, 'User is not in mainboard')
 
     # Checks that the sportGroup exists
     if SportsGroup.objects.filter(id=int(data.get('host'))).exists():
@@ -62,7 +65,13 @@ def create_and_validate_database_entry(request):
             # Checks that the user got a position at the board
             if user_is_in_board(active_board, request.user):
                 return create_event_for_group(data, priority, False)
+            else:
+                return (False, "user is not in board")
+        else:
+            return (False, "active_board is None")
 
+    else:
+        return (False, "sportsGroup doesn't exist")
 
 def create_event_for_group(data, priority, is_ntnui):
     """Creates a new event hosted by a group"""
