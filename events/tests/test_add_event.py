@@ -81,7 +81,7 @@ class Event_add(TestCase):
         return self.assertEqual(
             response.status_code, 400)
 
-    def test_create_event_hosted_by_NTNUI(self):
+    def test_create_event_hosted_by_boardmember(self):
         c = Client()
         c.login(email='boardpresident@test.com', password='12345')
 
@@ -101,3 +101,24 @@ class Event_add(TestCase):
 
 
         return self.assertEqual(response.status_code, 201)
+
+    def test_create_event_with_no_norwegian_description(self):
+        c = Client()
+        c.login(email='boardpresident@test.com', password='12345')
+
+        response = c.post(reverse('create_event'), {'start_date': date.today(),
+                                                    'end_date': date.today(),
+                                                    'place': '',
+                                                    'restriction': '0',
+                                                    'priority': 'false',
+                                                    'hosted by NTNUI': 'false',
+                                                    'name_en': 'engelsk navn',
+                                                    'name_no': 'norsk navn',
+                                                    'host': self.swimminggroup.id,
+                                                    'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                                                    'description_text_en': 'engelsk beskrivelse',
+                                                    'description_text_no': '',
+                                                    }, follow=True)
+
+
+        return self.assertEqual(response.status_code, 400)
