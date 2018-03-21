@@ -117,5 +117,3 @@ def get_events_json(events):
             'cover_photo': str(event.cover_photo)
         })
     return return_events
-
-

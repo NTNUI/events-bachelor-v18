@@ -52,6 +52,7 @@ class TestLoadEvents(TestCase):
     def test_loading_events_en(self):
         response = self.c.get(reverse('get_events'), HTTP_ACCEPT_LANGUAGE='en')
 
+
         # Checks that the url retunes 200
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(response.content,
