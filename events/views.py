@@ -58,7 +58,7 @@ def get_event_details(request, id):
             # get all the subevents for that category
             sub_event = SubEvent.objects.filter(category=categories[i])
             # add the category and map each sub_event to a dic
-            sub_event_list.append((categories[i], list(map(lambda item : get_sub_event_dic(item, request), sub_event))))
+            sub_event_list.append((categories[i], list(map(lambda item: get_sub_event_dic(item, request), sub_event))))
 
     # Checks if the user is sign in.
     if request.user.is_authenticated:
@@ -89,6 +89,7 @@ def get_event_details(request, id):
 
 def get_events_request(request):
     return get_events.get_events(request)
+
 
 @login_required
 def create_event_request(request):
@@ -134,8 +135,8 @@ def get_groups_user_can_create_events_for(user):
 
     # Finds all the groups were the user is in the board
     for board in Board.objects.filter(president=user) | \
-                 Board.objects.filter(vice_president=user) | \
-                 Board.objects.filter(cashier=user):
+            Board.objects.filter(vice_president=user) | \
+            Board.objects.filter(cashier=user):
 
         # Checks that the board is active
         for group in SportsGroup.objects.filter(active_board=board):
@@ -145,20 +146,17 @@ def get_groups_user_can_create_events_for(user):
 
 
 def user_is_in_mainboard(user):
+    """Checks if a given user is in mainboard"""
     return MainBoardMembership.objects.filter(person_id=user).exists()
 
 
-"""Checks if a given user is in board"""
-
-
 def user_is_in_board(board, user):
+    """Checks if a given user is in board"""
     return board.president == user or board.vice_president == user or board.cashier == user
 
 
-"""Checks that a description is not empyt"""
-
-
 def event_has_description_and_name(description, name):
+    """Checks that a description is not empyt"""
     if description is None or description.replace(' ', '') == "":
         return False, 'Event must have description'
     elif name is None or name.replace(' ', '') == "":
@@ -166,10 +164,8 @@ def event_has_description_and_name(description, name):
     return True, None
 
 
-"""Returnes json with the given format"""
-
-
 def get_json(code, message):
+    """Returnes json with the given format"""
     return JsonResponse({
         'message': message},
         status=code)

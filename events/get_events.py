@@ -26,7 +26,7 @@ def get_events(request):
             'page_count': p.num_pages}
         )
 
-    #if not get return 404
+    # if not get return 404
     return JsonResponse({
         'message': 'must be get'
     }, status=404)
@@ -54,9 +54,9 @@ def get_filtered_on_search_events(search):
     if search is not None and search != '':
         # serach for the word in descriptions and name
         return Event.objects.filter(Q(eventdescription__language=translation.get_language()) &
-                                      (Q(eventdescription__name__icontains=search) |
-                                       Q(eventdescription__description_text__icontains=search) |
-                                       Q(tags__name__icontains=search)))
+                                    (Q(eventdescription__name__icontains=search) |
+                                     Q(eventdescription__description_text__icontains=search) |
+                                     Q(tags__name__icontains=search)))
     else:
         # if not search return all event objects
         return Event.objects.filter(eventdescription__language=translation.get_language())
@@ -70,8 +70,6 @@ def get_filtered_on_host_events(filter_host, events):
         host_list.remove('NTNUI')
         return events.filter(Q(sports_groups__in=host_list) | Q(is_host_ntnui=True))
     return events.filter(sports_groups__in=host_list)
-
-
 
 
 def get_sorted_events(sort_by, events):
@@ -96,8 +94,6 @@ def get_sorted_events(sort_by, events):
     else:
         # return the result
         return events.order_by('-priority', 'start_date')
-
-
 
 
 def get_events_json(events):

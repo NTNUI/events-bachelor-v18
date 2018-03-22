@@ -22,7 +22,7 @@ class Tag(models.Model):
 
 
 class Restriction(models.Model):
-    """Defines diffrent restrictions for event"""
+    """Defines different restrictions for event"""
 
     class Meta:
         verbose_name = _('restricton')
@@ -94,10 +94,11 @@ class Event(models.Model):
             groups.append(group.name)
         return groups
 
-    """Returnes the list of attendees for the event"""
+    # Returnes the attending users for a given event
     def get_attendees(self):
         return EventRegistration.objects.filter(event = self)
 
+    # Checks if a given user attends a given event
     def attends(self, user):
         if EventRegistration.objects.filter(attendee=user, event=self).exists():
             return True
@@ -202,9 +203,9 @@ class SubEventDescription(models.Model):
         return self.name
 
 
-"""Model for handling event registration"""
-class EventRegistration(models.Model):
 
+class EventRegistration(models.Model):
+    """Model for handling event registration"""
     class Meta:
         verbose_name = _('Attendee for event')
         verbose_name_plural = _('Attendees for events')
