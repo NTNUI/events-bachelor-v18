@@ -1,5 +1,7 @@
 {% load static %}
 {% load hs_template %}
+{% load i18n %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,16 +39,23 @@
               <li>
                 <a class="link-with-icon" href="/hs">
                   <img src="{% static 'img/hs-icon.svg' %}" alt="hs-icon"/>
-                  <p>Main Board</p>
+                  <p>{% trans 'Main Board' %}</p>
                 </a>
               </li>
             {% endif %}
             <li>
               <a class="link-with-icon" href="/groups">
                 <img src="{% static 'img/group-icon.svg' %}" alt="groups icon"/>
-                <p>Groups</p>
+                <p>{% trans 'Groups' %}</p>
               </a>
             </li>
+              <li>
+            <a class="link-with-icon" href="/events">
+                <span class="oi oi-person"></span>
+                <img src="{% static 'img/calendar.svg' %}" alt="events icon" />
+                <p>{% trans 'Events' %}</p>
+            </a>
+          </li>
             <li class="nav-item dropdown">
               <a
                   class="link-with-icon"

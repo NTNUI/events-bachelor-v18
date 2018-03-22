@@ -1,12 +1,14 @@
-from django.test import TestCase
-from django.test import Client
-from django.urls import reverse
-
-from events.models import Event, EventDescription, SubEvent, SubEventDescription, Category, CategoryDescription
-from groups.models import SportsGroup, Board, Membership
 from datetime import date
+
 from accounts.models import User
+from django.test import Client
+from django.test import TestCase
+from django.urls import reverse
+from groups.models import SportsGroup, Board, Membership
 from hs.models import MainBoard, MainBoardMembership
+
+from ntnui.apps.events.models import Event, EventDescription, SubEvent, SubEventDescription, Category, \
+    CategoryDescription
 
 
 class TestLoadEvents(TestCase):

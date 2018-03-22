@@ -2,13 +2,14 @@ from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import JsonResponse, HttpResponseNotFound
-from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
+from django.shortcuts import render
 from django.utils.translation import gettext as _
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
-from .models import Event, EventDescription, EventRegistration, Category, SubEvent
+
 from . import create_event, get_events
+from events.models import Event, EventRegistration, Category, SubEvent
 
 
 def get_main_page(request):

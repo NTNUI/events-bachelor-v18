@@ -1,9 +1,10 @@
-from django.test import TestCase
-from events.models import Event, EventDescription
-from groups.models import SportsGroup
 from datetime import date
+
+from django.test import TestCase
 from django.utils import translation
-from django.core.urlresolvers import reverse
+from groups.models import SportsGroup
+
+from ntnui.apps.events.models import Event, EventDescription
 
 
 class TestEventModel(TestCase):

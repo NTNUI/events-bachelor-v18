@@ -1,5 +1,6 @@
 import os
 import sys
+from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,29 +26,31 @@ DJANGO_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rules.apps.AutodiscoverRulesConfig',
-
     # Admin panel
     'django.contrib.admin',
 ]
 
 THIRD_PARTY_APPS = [
-    'widget_tweaks',
     'django_nose',
+    'widget_tweaks',
 ]
 
 LOCAL_APPS = [
     'accounts',
     'hs',
+    'events',
     'groups',
-    'forms',
+    'forms'
 ]
 
-INSTALLED_APPS  = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
-##### END APP CONFIGURATION #####
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+##### END APP CONFIGURATION ####
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -68,6 +71,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
+                'django.template.context_processors.i18n',
             ],
         },
     },
@@ -133,6 +138,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+LANGUAGES = (
+    ('en', _('English')),
+    ('nb', _('Norwegian (bokmal)')),
+)
+
 ##### STATIC FILE CONFIGURATION #####
 
 STATIC_URL = '/ntnui/static/'
@@ -162,8 +172,11 @@ DUMMY_USER_PASSWORD = 'locoloco'
 # Use nose to run all tests
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-#NOSE_ARGS = [
+# NOSE_ARGS = [
 #    '--with-coverage',
-#    '--cover-package=groups, forms, accounts',
-#]
+#    '--cover-package=groups, forms, accounts, events',
+#    '--cover-html',
+#    '--nocapture',
+#    '--nologcapture',
+# ]
 ##### END TEST CONFIGURATION #####

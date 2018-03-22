@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from events.models import Event, EventDescription, Category, SubEvent, CategoryDescription, SubEventDescription, Tag, \
+from .models import Event, EventDescription, Category, SubEvent, CategoryDescription, \
+    SubEventDescription, \
+    Tag, \
     Restriction, EventRegistration
 
 

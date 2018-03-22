@@ -1,11 +1,13 @@
-from django.test import TestCase
-from django.test import Client
-from django.urls import reverse
-from events import create_event
 from datetime import date
+
 from accounts.models import User
-from groups.models import SportsGroup, Membership, Board
+from django.test import Client
+from django.test import TestCase
+from django.urls import reverse
 from events.models import Event, EventDescription
+from groups.models import SportsGroup, Membership, Board
+
+from ntnui.apps.events import create_event
 
 
 class Event_add(TestCase):

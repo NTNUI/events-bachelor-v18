@@ -1,9 +1,9 @@
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.http import JsonResponse
+from django.utils import translation
 
 from events.models import Event
-from django.db.models import Q
-from django.utils import translation
 
 
 def get_events(request):

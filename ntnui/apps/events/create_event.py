@@ -1,9 +1,9 @@
 from django.http import JsonResponse
-
-from events.models import Event, EventDescription
+from django.utils.translation import gettext_lazy as _
 from groups.models import SportsGroup
 from hs.models import MainBoardMembership
-from django.utils.translation import gettext_lazy as _
+
+from events.models import Event, EventDescription
 
 
 def create_event(request):

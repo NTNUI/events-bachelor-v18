@@ -1,14 +1,12 @@
-from datetime import date, datetime
-from django.test import TestCase
-from django.test import Client
-from django.urls import reverse
-from django.utils.encoding import force_text
+from datetime import datetime
 
-from django.utils import translation
-
-from events.models import Event, EventDescription
-from groups.models import SportsGroup
 from accounts.models import User
+from django.test import Client
+from django.test import TestCase
+from django.urls import reverse
+from groups.models import SportsGroup
+
+from ntnui.apps.events.models import Event, EventDescription
 
 
 class TestFilterSearchSortEvents(TestCase):

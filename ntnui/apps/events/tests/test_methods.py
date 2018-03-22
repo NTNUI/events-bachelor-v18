@@ -1,11 +1,12 @@
 from datetime import date
-from django.test import TestCase
 
 from accounts.models import User
+from django.test import TestCase
 from events.models import Event, EventDescription, CategoryDescription, Category, SubEvent, SubEventDescription
 from groups.models import SportsGroup, Board, Membership
 from hs.models import MainBoard, MainBoardMembership
-from events import views
+
+from ntnui.apps.events import views
 
 
 class TestViewMethods(TestCase):
