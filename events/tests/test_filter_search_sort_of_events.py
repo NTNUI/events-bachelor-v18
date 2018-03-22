@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
@@ -7,27 +8,31 @@ from django.utils import translation
 
 from events.models import Event, EventDescription
 from groups.models import SportsGroup
-from datetime import date
 from accounts.models import User
 
 
 class TestFilterSearchSortEvents(TestCase):
     def setUp(self):
+        
+        self.date = datetime.today()
+        # Format code to match format from json
+        self.date_string = self.date.isoformat()[0:-3] +"Z"
+
         User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V')
 
         # Create a new event with NTNUI as host
-        event = Event.objects.create(start_date=date.today(), end_date=date.today(),
+        event = Event.objects.create(start_date=self.date, end_date=self.date,
                                      priority=True, is_host_ntnui=True)
         # Create a second event with NTNUI as host
-        event2 = Event.objects.create(start_date=date.today(), end_date=date.today(),
+        event2 = Event.objects.create(start_date=self.date, end_date=self.date,
                                       priority=True, is_host_ntnui=True)
 
         # Create a third event with NTNUI as host
-        event3 = Event.objects.create(start_date=date.today(), end_date=date.today(),
+        event3 = Event.objects.create(start_date=self.date, end_date=self.date,
                                       priority=True, is_host_ntnui=True)
 
         # Create a new event where NTNUI is not host
-        event4 = Event.objects.create(start_date=date.today(), end_date=date.today(),
+        event4 = Event.objects.create(start_date=self.date, end_date=self.date,
                                       priority=True)
 
         # Add a sports group
@@ -72,6 +77,7 @@ class TestFilterSearchSortEvents(TestCase):
         # Show more text (for debugging)
         self.maxDiff = None
 
+
         # Login client
         self.c = Client()
         self.c.login(email='testuser@test.com', password='4epape?Huf+V')
@@ -79,48 +85,48 @@ class TestFilterSearchSortEvents(TestCase):
         # Trash collection event JSON
         self.trash_collection = {'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                  'description': 'Come and pick up trash with us.',
-                                 'end_date': '2018-03-21T00:00:00Z',
+                                 'end_date': self.date_string,
                                  'host': ['NTNUI'],
                                  'id': 1,
                                  'name': 'Trash collection',
                                  'place': '',
                                  'priority': True,
-                                 'start_date': '2018-03-21T00:00:00Z'}
+                                 'start_date': self.date_string}
 
         # Theatre event JSON
         self.theatre = {'cover_photo': 'cover_photo/ntnui-volleyball.png',
                         'description': 'We are gathering you for test play to our '
                                        'theatre.',
-                        'end_date': '2018-03-21T00:00:00Z',
+                        'end_date': self.date_string,
                         'host': ['NTNUI'],
                         'id': 2,
                         'name': 'Theatre',
                         'place': '',
                         'priority': True,
-                        'start_date': '2018-03-21T00:00:00Z'}
+                        'start_date': self.date_string}
 
         # Rock ring tournament event JSON
         self.rock_ring_tournament = {'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                      'description': 'We will see who is best at rocking the rock ring.',
-                                     'end_date': '2018-03-21T00:00:00Z',
+                                     'end_date': self.date_string,
                                      'host': ['NTNUI'],
                                      'id': 3,
                                      'name': 'Rock ring tournament',
                                      'place': '',
                                      'priority': True,
-                                     'start_date': '2018-03-21T00:00:00Z'}
+                                     'start_date': self.date_string}
 
         # Camping in the woods event JSON
         self.camping_in_the_woods = {'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                      'description': 'We will take you camping in the deep woods of '
                                                     'Norway.',
-                                     'end_date': '2018-03-21T00:00:00Z',
+                                     'end_date': self.date_string,
                                      'host': ['Test Group'],
                                      'id': 4,
                                      'name': 'Camping in the woods',
                                      'place': '',
                                      'priority': True,
-                                     'start_date': '2018-03-21T00:00:00Z'}
+                                     'start_date': self.date_string}
 
     def test_get_default_english_content(self):
         # Response for the default page
@@ -143,40 +149,40 @@ class TestFilterSearchSortEvents(TestCase):
         # Check the default norwegian response
         self.assertJSONEqual(response.content, {'events': [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                             'description': 'Her plukker vi søppel.',
-                                                            'end_date': '2018-03-21T00:00:00Z',
+                                                            'end_date': self.date_string,
                                                             'host': ['NTNUI'],
                                                             'id': 1,
                                                             'name': 'Søppelplukking',
                                                             'place': '',
                                                             'priority': True,
-                                                            'start_date': '2018-03-21T00:00:00Z'},
+                                                            'start_date': self.date_string},
                                                            {'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                             'description': 'Vi vil prøvespille til vårt teaterlag.',
-                                                            'end_date': '2018-03-21T00:00:00Z',
+                                                            'end_date': self.date_string,
                                                             'host': ['NTNUI'],
                                                             'id': 2,
                                                             'name': 'Teater',
                                                             'place': '',
                                                             'priority': True,
-                                                            'start_date': '2018-03-21T00:00:00Z'},
+                                                            'start_date': self.date_string},
                                                            {'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                             'description': 'Her vil vi kåre årets rokkeringperson.',
-                                                            'end_date': '2018-03-21T00:00:00Z',
+                                                            'end_date': self.date_string,
                                                             'host': ['NTNUI'],
                                                             'id': 3,
                                                             'name': 'Rockeringturnering',
                                                             'place': '',
                                                             'priority': True,
-                                                            'start_date': '2018-03-21T00:00:00Z'},
+                                                            'start_date': self.date_string},
                                                            {'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                             'description': 'Vi vil gjerne ta deg med på campingtur i skogen.',
-                                                            'end_date': '2018-03-21T00:00:00Z',
+                                                            'end_date': self.date_string,
                                                             'host': ['Test Group'],
                                                             'id': 4,
                                                             'name': 'Campingtur i skogen',
                                                             'place': '',
                                                             'priority': True,
-                                                            'start_date': '2018-03-21T00:00:00Z'}],
+                                                            'start_date': self.date_string}],
                                                 'page_count': 1,
                                                 'page_number': 1})
 
