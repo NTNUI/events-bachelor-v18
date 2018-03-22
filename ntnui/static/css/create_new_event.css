@@ -1,0 +1,49 @@
+input:focus:invalid {
+    border: 1px dashed darkred;
+}
+
+input:focus:valid {
+    border: 1px dashed darkgreen;
+}
+
+.alert-danger {
+  margin-top: 2%;
+  float: left;
+  height: 10%;
+  margin-bottom: -20%;
+}
+
+.alert-danger p {
+  margin-top: -10px;
+}
+
+.form-control {
+
+}
+
+.form-group {
+
+}
+
+.col-2 {
+  margin-bottom: 5%;
+}
+
+#cont1 {
+  float: left;
+  width: 50%
+}
+
+#cont2 {
+  float: right;
+  width: 50%
+}
+
+h1 {
+  margin-top: 1%;
+  margin-bottom: 2%;
+}
+
+.btn-success {
+  margin-left: 20%;
+}

@@ -5,3 +5,6 @@ mydatabase
 geckodriver.log
 .coverage
 .env
+*.pyc
+cover/
+ntnui/static/cover_photo/
