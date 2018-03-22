@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from events import views
 from django.views.generic.base import RedirectView
+
 from .views import (
     get_main_page,
     get_create_event_page,
