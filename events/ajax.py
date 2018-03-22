@@ -9,8 +9,6 @@ from .views import (
     get_events_request
 )
 
-
-
 urlpatterns = [
     url(r'^add-event$', create_event_request, name='create_event'),
     url(r'^get-events', get_events_request, name='get_events'),
