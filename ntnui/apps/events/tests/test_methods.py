@@ -6,7 +6,7 @@ from events.models import Event, EventDescription, CategoryDescription, Category
 from groups.models import SportsGroup, Board, Membership
 from hs.models import MainBoard, MainBoardMembership
 
-from ntnui.apps.events import views
+from events import views
 
 
 class TestViewMethods(TestCase):

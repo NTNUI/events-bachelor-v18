@@ -7,7 +7,7 @@ from django.urls import reverse
 from events.models import Event, EventDescription
 from groups.models import SportsGroup, Membership, Board
 
-from ntnui.apps.events import create_event
+from events import create_event
 
 
 class Event_add(TestCase):

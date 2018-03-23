@@ -7,7 +7,7 @@ from django.urls import reverse
 from groups.models import SportsGroup, Board, Membership
 from hs.models import MainBoard, MainBoardMembership
 
-from ntnui.apps.events.models import Event, EventDescription, SubEvent, SubEventDescription, Category, \
+from events.models import Event, EventDescription, SubEvent, SubEventDescription, Category, \
     CategoryDescription
 
 

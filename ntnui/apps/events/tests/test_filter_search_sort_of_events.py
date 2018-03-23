@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.urls import reverse
 from groups.models import SportsGroup
 
-from ntnui.apps.events.models import Event, EventDescription
+from events.models import Event, EventDescription
 
 
 class TestFilterSearchSortEvents(TestCase):
