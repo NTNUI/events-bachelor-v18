@@ -119,9 +119,16 @@ function displayEvents(events, reload) {
         $("#event-container").empty()
     }
 
-    events.map(event => {
-        displayEvent(event);
+    if(events.length > 0) {
+        events.map(event => {
+            displayEvent(event);
     });
+    }else {
+        $("#event-container").append(
+            '<div style="text-align: center"><i>' + gettext('No more events to display!') + '</i></div>'
+        )
+    }
+
 }
 
 // display one event
@@ -143,9 +150,9 @@ function displayEvent(event) {
                 '<h6 class="card-title">' +
                      event.description.substr(0, 100) + (event.description.length > 100 ? '...' : '') +
                     ' </h6>' +
-                    '<b>Sted: </b>' + event.place + '</br>' +
-                    '<b> Dato: </b> ' + printeble_date +
-                '</br> <p class="card-text"> <b>Arrangert av: </b> ' +
+                    '<b>' + gettext('place') + '</b>' + event.place + '</br>' +
+                    '<b>' + gettext('Dato') + '</b> ' + printeble_date +
+                '</br> <p class="card-text"> <b> ' + gettext('hosted by:') + '</b> ' +
                     hosts +
                 "</p>" +
                 "</div>" +

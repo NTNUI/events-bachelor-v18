@@ -103,5 +103,6 @@
 
 
 {% block script %}
-    <script type="text/javascript" src="{% static 'js/event_main.js' %}"></script>
+    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+    <script type="text/javascript" src="{% static 'js/events/event_main.js' %}"></script>
 {% endblock %}
