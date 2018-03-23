@@ -1,7 +1,7 @@
 #---- VARIABLES ----#
 
 APPDIR := $(subst /, , $(subst  ./ntnui/apps/, , $(filter-out ./ntnui/apps/,$(dir $(wildcard ./ntnui/apps/*/)))))
-JSONDATA := users.json groups.json memberships.json boards.json invitations.json forms.json mainboard.json hs-memberships.json contracts.json
+JSONDATA := users.json groups.json memberships.json boards.json invitations.json forms.json mainboard.json hs-memberships.json contracts.json events.json
 JSONDOKKU := users.json groups.json memberships.json boards.json invitations.json forms.json mainboard.json hs-memberships.json
 DATABASE := dev_database.db
 
