@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-23 12:11+0100\n"
+"POT-Creation-Date: 2018-03-23 12:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,13 +54,13 @@ msgid "No more events to display!"
 msgstr "Ingen flere arrangement å vise!"
 
 #: .\ntnui\static\js\events\event_main.js:153
-msgid "place"
-msgstr "sted"
+msgid "Place"
+msgstr "Sted"
 
 #: .\ntnui\static\js\events\event_main.js:154
-msgid "Dato"
+msgid "Date"
 msgstr "Dato"
 
 #: .\ntnui\static\js\events\event_main.js:155
-msgid "hosted by:"
-msgstr "arrangert av:"
+msgid "Hosted by "
+msgstr "Arrangert av "

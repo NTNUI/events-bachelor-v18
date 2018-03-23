@@ -124,7 +124,7 @@ function displayEvents(events, reload) {
             displayEvent(event);
     });
     }else {
-        $("#event-container").append(
+        $("#event-container").html(
             '<div style="text-align: center"><i>' + gettext('No more events to display!') + '</i></div>'
         )
     }
@@ -140,7 +140,7 @@ function displayEvent(event) {
     console.log(printeble_date)
 
     $("#event-container").append(
-      '' + event.id + '<a href="/ntnui/apps/events//"><div class="card-body">' + event.name.replace(/\s+/g, '-').toLowerCase() + '' +
+        '<a href="/events/' + event.id + '/' + event.name.replace(/\s+/g, '-').toLowerCase() + '"><div class="card-body">' +
         '<div class=" card bg-light mb-3" >' +
             '<div class="card-element card-header"> <h5>' +
                 event.name +
@@ -150,9 +150,9 @@ function displayEvent(event) {
                 '<h6 class="card-title">' +
                      event.description.substr(0, 100) + (event.description.length > 100 ? '...' : '') +
                     ' </h6>' +
-                    '<b>' + gettext('place') + '</b>' + event.place + '</br>' +
-                    '<b>' + gettext('Dato') + '</b> ' + printeble_date +
-                '</br> <p class="card-text"> <b> ' + gettext('hosted by:') + '</b> ' +
+                    '<b>' + gettext('Place') + ': ' + '</b>' + event.place + '</br>' +
+                    '<b>' + gettext('Date') +': ' + '</b> ' + printeble_date +
+                '</br> <p class="card-text"> <b> ' + gettext('Hosted by ') + ': ' + '</b> ' +
                     hosts +
                 "</p>" +
                 "</div>" +
