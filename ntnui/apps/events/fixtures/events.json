@@ -1,0 +1,775 @@
+[
+  {
+    "model": "events.tag",
+    "pk": 1,
+    "fields": {
+      "name": "NM"
+    }
+  },
+  {
+    "model": "events.tag",
+    "pk": 2,
+    "fields": {
+      "name": "opptak"
+    }
+  },
+  {
+    "model": "events.restriction",
+    "pk": 1,
+    "fields": {
+      "name": "Everyone"
+    }
+  },
+  {
+    "model": "events.restriction",
+    "pk": 2,
+    "fields": {
+      "name": "NTNUI memebers"
+    }
+  },
+  {
+    "model": "events.restriction",
+    "pk": 3,
+    "fields": {
+      "name": "Group memebers"
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 1,
+    "fields": {
+      "start_date": "2018-06-14T11:42:54Z",
+      "end_date": "2018-06-16T11:42:56Z",
+      "place": "Trondehim",
+      "restriction": 1,
+      "priority": false,
+      "is_host_ntnui": false,
+      "cover_photo": "cover_photo/events/NM-Volleyball/alarm-clock-icon.png",
+      "sports_groups": [
+        1
+      ],
+      "tags": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 2,
+    "fields": {
+      "start_date": "2018-07-09T11:59:18Z",
+      "end_date": "2018-09-08T11:59:41Z",
+      "place": "Trondehim",
+      "restriction": 1,
+      "priority": false,
+      "is_host_ntnui": false,
+      "cover_photo": "cover_photo/events/NM-Friidrett/alarm-clock-icon.png",
+      "sports_groups": [
+        2
+      ],
+      "tags": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 3,
+    "fields": {
+      "start_date": "2018-06-01T12:23:14Z",
+      "end_date": "2018-06-02T12:23:26Z",
+      "place": "Gl\u00f8shaugen",
+      "restriction": 1,
+      "priority": false,
+      "is_host_ntnui": true,
+      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "sports_groups": [],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 4,
+    "fields": {
+      "start_date": "2018-05-17T12:31:10Z",
+      "end_date": "2018-05-17T12:31:17Z",
+      "place": "Trondehim sentrum",
+      "restriction": 1,
+      "priority": false,
+      "is_host_ntnui": true,
+      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "sports_groups": [],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 5,
+    "fields": {
+      "start_date": "2018-05-01T12:34:21Z",
+      "end_date": "2018-05-01T12:34:33Z",
+      "place": "Idrettsbygget",
+      "restriction": 1,
+      "priority": false,
+      "is_host_ntnui": false,
+      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "sports_groups": [
+        4
+      ],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 6,
+    "fields": {
+      "start_date": "2018-05-11T13:52:47Z",
+      "end_date": "2018-05-13T13:52:49Z",
+      "place": "Oslo",
+      "restriction": 1,
+      "priority": false,
+      "is_host_ntnui": false,
+      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "sports_groups": [
+        2,
+        3
+      ],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 7,
+    "fields": {
+      "start_date": "2018-06-21T14:00:00Z",
+      "end_date": "2018-06-21T18:00:00Z",
+      "place": "Trondehim",
+      "restriction": 1,
+      "priority": false,
+      "is_host_ntnui": false,
+      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "sports_groups": [
+        1
+      ],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 8,
+    "fields": {
+      "start_date": "2018-05-10T06:00:00Z",
+      "end_date": "2018-05-10T12:00:00Z",
+      "place": "Trondehim",
+      "restriction": 1,
+      "priority": false,
+      "is_host_ntnui": false,
+      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "sports_groups": [
+        3
+      ],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 9,
+    "fields": {
+      "start_date": "2018-06-13T14:08:24Z",
+      "end_date": "2018-06-13T14:08:35Z",
+      "place": "Trondehim",
+      "restriction": 1,
+      "priority": false,
+      "is_host_ntnui": false,
+      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "sports_groups": [
+        2
+      ],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 10,
+    "fields": {
+      "start_date": "2018-05-01T14:10:00Z",
+      "end_date": "2018-05-01T14:10:06Z",
+      "place": "Trondehim",
+      "restriction": 1,
+      "priority": false,
+      "is_host_ntnui": false,
+      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "sports_groups": [
+        4
+      ],
+      "tags": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 11,
+    "fields": {
+      "start_date": "2018-06-06T14:15:47Z",
+      "end_date": "2018-06-06T14:16:04Z",
+      "place": "Trondehim",
+      "restriction": 1,
+      "priority": false,
+      "is_host_ntnui": false,
+      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "sports_groups": [
+        4
+      ],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 1,
+    "fields": {
+      "name": "NM Volleyball",
+      "description_text": "Kom \u00e5 se p\u00e5 norges beste spillere",
+      "language": "nb",
+      "event": 1
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 2,
+    "fields": {
+      "name": "NM Volley ball",
+      "description_text": "Come see norways best players",
+      "language": "en",
+      "event": 1
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 3,
+    "fields": {
+      "name": "NM Friidrett",
+      "description_text": "Kom \u00e5 se p\u00e5 de beste av de beste",
+      "language": "nb",
+      "event": 2
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 4,
+    "fields": {
+      "name": "NM Athletics",
+      "description_text": "Come watch the best of the best",
+      "language": "en",
+      "event": 2
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 5,
+    "fields": {
+      "name": "Generalforsamling",
+      "description_text": "Hu og hei!  Hovedstyeret \u00f8nsker med dette \u00e5 innkalle alle NTNUI sine medlemmer til generalforsamling.",
+      "language": "nb",
+      "event": 3
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 6,
+    "fields": {
+      "name": "General assembly",
+      "description_text": "Hu and Hei! The main boad would like to welcome all NTNUI memebers to join the most important event of the year",
+      "language": "en",
+      "event": 3
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 7,
+    "fields": {
+      "name": "17. Mai",
+      "description_text": "Ha en fin 17. mai med oss i NTNUI",
+      "language": "nb",
+      "event": 4
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 8,
+    "fields": {
+      "name": "17. May",
+      "description_text": "Come and enjoy the norwegian national day with NTNUI",
+      "language": "en",
+      "event": 4
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 9,
+    "fields": {
+      "name": "Trening",
+      "description_text": "En lang fin dag med trening",
+      "language": "nb",
+      "event": 5
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 10,
+    "fields": {
+      "name": "Sosial Kveld",
+      "description_text": "Bli med p\u00e5 en hyggelig sosial med oss i friidrett  og koiene.",
+      "language": "nb",
+      "event": 6
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 11,
+    "fields": {
+      "name": "Social Evening",
+      "description_text": "Join us for a nice night",
+      "language": "en",
+      "event": 6
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 12,
+    "fields": {
+      "name": "Trening",
+      "description_text": "Vi liker \u00e5 trene",
+      "language": "nb",
+      "event": 7
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 13,
+    "fields": {
+      "name": "Exercise",
+      "description_text": "We like to exercise",
+      "language": "en",
+      "event": 7
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 14,
+    "fields": {
+      "name": "exercise",
+      "description_text": "exercise ftw",
+      "language": "en",
+      "event": 5
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 15,
+    "fields": {
+      "name": "Oppgradering",
+      "description_text": "N\u00e5 har vi hatt koiene st\u00e5ende slik de er ganske lenge, og vi f\u00f8ler det er p\u00e5 tide \u00e5 oppgradere de til suitter!",
+      "language": "nb",
+      "event": 8
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 16,
+    "fields": {
+      "name": "Upgrade",
+      "description_text": "Now, the kois have been standing as is for a while, so we feel it's time for an upgrade to suits!",
+      "language": "en",
+      "event": 8
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 17,
+    "fields": {
+      "name": "Trening",
+      "description_text": "trening er g\u00f8y",
+      "language": "nb",
+      "event": 9
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 18,
+    "fields": {
+      "name": "exercise",
+      "description_text": "exercise is fun",
+      "language": "en",
+      "event": 9
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 19,
+    "fields": {
+      "name": "Opptak",
+      "description_text": "Vil du v\u00e6re med i den beste NTNUI gruppa?",
+      "language": "nb",
+      "event": 10
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 20,
+    "fields": {
+      "name": "Admission",
+      "description_text": "Admission for the best NTNUI group",
+      "language": "en",
+      "event": 10
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 21,
+    "fields": {
+      "name": "Trening",
+      "description_text": "Masse trening",
+      "language": "nb",
+      "event": 11
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 22,
+    "fields": {
+      "name": "Exercise",
+      "description_text": "a whole lot of exercise",
+      "language": "en",
+      "event": 11
+    }
+  },
+  {
+    "model": "events.category",
+    "pk": 1,
+    "fields": {
+      "event": 10
+    }
+  },
+  {
+    "model": "events.category",
+    "pk": 2,
+    "fields": {
+      "event": 2
+    }
+  },
+  {
+    "model": "events.category",
+    "pk": 3,
+    "fields": {
+      "event": 1
+    }
+  },
+  {
+    "model": "events.category",
+    "pk": 4,
+    "fields": {
+      "event": 2
+    }
+  },
+  {
+    "model": "events.category",
+    "pk": 5,
+    "fields": {
+      "event": 1
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 1,
+    "fields": {
+      "name": "Velg et tidspunkt:",
+      "language": "nb",
+      "category": 1
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 2,
+    "fields": {
+      "name": "Choose a time:",
+      "language": "en",
+      "category": 1
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 3,
+    "fields": {
+      "name": "Elite",
+      "language": "nb",
+      "category": 2
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 4,
+    "fields": {
+      "name": "Elite",
+      "language": "en",
+      "category": 2
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 5,
+    "fields": {
+      "name": "Elite",
+      "language": "nb",
+      "category": 3
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 6,
+    "fields": {
+      "name": "Elite",
+      "language": "en",
+      "category": 3
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 7,
+    "fields": {
+      "name": "Nybegynner",
+      "language": "nb",
+      "category": 4
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 8,
+    "fields": {
+      "name": "Noob",
+      "language": "en",
+      "category": 4
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 9,
+    "fields": {
+      "name": "Nybegynner",
+      "language": "nb",
+      "category": 5
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 10,
+    "fields": {
+      "name": "Noob",
+      "language": "en",
+      "category": 5
+    }
+  },
+  {
+    "model": "events.subevent",
+    "pk": 1,
+    "fields": {
+      "start_date": "2018-05-01T14:15:00Z",
+      "end_date": "2018-05-01T14:30:00Z",
+      "category": 1,
+      "attending_members": [],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.subevent",
+    "pk": 2,
+    "fields": {
+      "start_date": "2018-05-01T14:30:00Z",
+      "end_date": "2018-05-01T14:45:00Z",
+      "category": 1,
+      "attending_members": [],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.subevent",
+    "pk": 3,
+    "fields": {
+      "start_date": "2018-05-01T14:45:00Z",
+      "end_date": "2018-05-01T15:00:00Z",
+      "category": 1,
+      "attending_members": [],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.subevent",
+    "pk": 4,
+    "fields": {
+      "start_date": "2018-08-09T14:41:52Z",
+      "end_date": "2018-09-09T14:42:06Z",
+      "category": 2,
+      "attending_members": [],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.subevent",
+    "pk": 5,
+    "fields": {
+      "start_date": "2018-09-09T00:00:00Z",
+      "end_date": "2018-05-01T00:00:00Z",
+      "category": 4,
+      "attending_members": [],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.subevent",
+    "pk": 6,
+    "fields": {
+      "start_date": "2018-06-14T18:00:00Z",
+      "end_date": "2018-06-14T12:00:00Z",
+      "category": 3,
+      "attending_members": [],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.subevent",
+    "pk": 7,
+    "fields": {
+      "start_date": "2018-06-14T14:45:09Z",
+      "end_date": "2018-07-14T18:00:00Z",
+      "category": 5,
+      "attending_members": [],
+      "tags": []
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 1,
+    "fields": {
+      "name": "Tidspunkt",
+      "language": "nb",
+      "sub_event": 1
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 2,
+    "fields": {
+      "name": "Time",
+      "language": "en",
+      "sub_event": 1
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 3,
+    "fields": {
+      "name": "Tidspunkt",
+      "language": "nb",
+      "sub_event": 2
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 4,
+    "fields": {
+      "name": "Time",
+      "language": "en",
+      "sub_event": 2
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 5,
+    "fields": {
+      "name": "Tidspunkt",
+      "language": "nb",
+      "sub_event": 3
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 6,
+    "fields": {
+      "name": "Time",
+      "language": "en",
+      "sub_event": 3
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 7,
+    "fields": {
+      "name": "200m",
+      "language": "nb",
+      "sub_event": 4
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 8,
+    "fields": {
+      "name": "200m",
+      "language": "en",
+      "sub_event": 4
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 9,
+    "fields": {
+      "name": "200m",
+      "language": "nb",
+      "sub_event": 5
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 10,
+    "fields": {
+      "name": "200m",
+      "language": "en",
+      "sub_event": 5
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 11,
+    "fields": {
+      "name": "Spille",
+      "language": "nb",
+      "sub_event": 6
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 12,
+    "fields": {
+      "name": "play",
+      "language": "en",
+      "sub_event": 6
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 13,
+    "fields": {
+      "name": "spille",
+      "language": "nb",
+      "sub_event": 7
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 14,
+    "fields": {
+      "name": "play",
+      "language": "en",
+      "sub_event": 7
+    }
+  }
+]
