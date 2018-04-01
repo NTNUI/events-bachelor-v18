@@ -41,16 +41,18 @@ class Event(models.Model):
     restriction = models.ForeignKey(Restriction, verbose_name=_('restriction'), default=0)
     priority = models.BooleanField(_('priority'), default=False)
     is_host_ntnui = models.BooleanField(_('hosted by NTNUI'), default=False)
+    attendance_cap = models.integerField(_('attendance cap'), blank=True)
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
     sports_groups = models.ManyToManyField(SportsGroup, blank=True, verbose_name=_('hosted by'))
+
 
     class Meta:
         verbose_name = _('event')
         verbose_name_plural = _('events')
 
-    def get_cover_upload_to(self, filename):
-        name = EventDescription.objects.get(event=self, language=translation.get_language()).name
+    def get_cover_upload_to(instance, filename):
+        name = EventDescription.objects.get(event=instance, language=translation.get_language()).name
         return os.path.join(
             "cover_photo/events/{}".format(name.replace(" ", "-")), filename)
 
@@ -75,8 +77,7 @@ class Event(models.Model):
 
     # Returns the event's description, in the given language
     def description(self):
-        event_description_get_language = EventDescription.\
-            objects.filter(event=self, language=translation.get_language())
+        event_description_get_language = EventDescription.objects.filter(event=self, language=translation.get_language())
         event_description_english = EventDescription.objects.filter(event=self, language='en')
         event_description = EventDescription.objects.filter(event=self)
 
@@ -102,7 +103,7 @@ class Event(models.Model):
 
     # Returns the event's attendees
     def get_attendees(self):
-        return EventRegistration.objects.filter(event=self)
+        return EventRegistration.objects.filter(event = self)
 
     # Checks a given user attends the event
     def attends(self, user):
@@ -134,8 +135,8 @@ class EventRegistration(models.Model):
     """Contains the relation between a user and an event, to  make a list of attendees"""
 
     registration_time = models.DateTimeField(_('registration time'))
-    event = models.ForeignKey(Event, verbose_name='event')
-    attendee = models.ForeignKey(User, verbose_name='attendee')
+    event = models.ForeignKey(Event, verbose_name = 'event')
+    attendee = models.ForeignKey(User, verbose_name = 'attendee')
 
     class Meta:
         verbose_name = _('attendee for event')
@@ -157,8 +158,7 @@ class Category(models.Model):
 
     # Returns the category's name, in the given language
     def name(self):
-        category_description_get_language = \
-            CategoryDescription.objects.filter(category=self, language=translation.get_language())
+        category_description_get_language = CategoryDescription.objects.filter(category=self, language=translation.get_language())
         category_description_english = CategoryDescription.objects.filter(category=self, language='en')
         category_description = CategoryDescription.objects.filter(category=self)
 
@@ -195,6 +195,7 @@ class SubEvent(models.Model):
 
     start_date = models.DateTimeField(_('start date'))
     end_date = models.DateTimeField(_('end date'))
+    attendance_cap = models.integerField(_('attendance cap'), blank=True)
     category = models.ForeignKey(Category, verbose_name=_('category'))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
@@ -205,8 +206,7 @@ class SubEvent(models.Model):
 
     # Returns the name of the event, in the given language.
     def name(self):
-        sub_event_description_get_language = \
-            SubEventDescription.objects.filter(sub_event=self, language=translation.get_language())
+        sub_event_description_get_language = SubEventDescription.objects.filter(sub_event=self, language=translation.get_language())
         sub_event_description_english = SubEventDescription.objects.filter(sub_event=self, language='en')
         sub_event_description = SubEventDescription.objects.filter(sub_event=self)
 
@@ -247,7 +247,7 @@ class SubEventRegistration(models.Model):
     """Contains the relation between a user and an event, to  make a list of attendees."""
 
     registration_time = models.DateTimeField(_('registration time'))
-    sub_event = models.ForeignKey(SubEvent, verbose_name='sub-event')
+    sub_event = models.ForeignKey(SubEvent, verbose_name ='sub-event')
     attendee = models.ForeignKey(User, verbose_name='attendee')
 
     class Meta:
