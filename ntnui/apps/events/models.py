@@ -41,7 +41,7 @@ class Event(models.Model):
     restriction = models.ForeignKey(Restriction, verbose_name=_('restriction'), default=0)
     priority = models.BooleanField(_('priority'), default=False)
     is_host_ntnui = models.BooleanField(_('hosted by NTNUI'), default=False)
-    attendance_cap = models.IntegerField(_('attendance cap'), blank=True)
+    attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
     sports_groups = models.ManyToManyField(SportsGroup, blank=True, verbose_name=_('hosted by'))
@@ -195,7 +195,7 @@ class SubEvent(models.Model):
 
     start_date = models.DateTimeField(_('start date'))
     end_date = models.DateTimeField(_('end date'))
-    attendance_cap = models.IntegerField(_('attendance cap'), blank=True)
+    attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
     category = models.ForeignKey(Category, verbose_name=_('category'))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
