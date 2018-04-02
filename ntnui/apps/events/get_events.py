@@ -109,7 +109,6 @@ def get_events_json(events):
             'end_date': event.end_date,
             'priority': event.priority,
             'host': event.get_host(),
-            'place': event.place,
             'cover_photo': str(event.cover_photo)
         })
     return return_events

@@ -1,44 +1,51 @@
-
-from datetime import datetime
 import os
-from django.db import models
-from groups.models import SportsGroup
-from django.utils.translation import gettext_lazy as _
 from django.utils import translation
+from django.utils.translation import gettext_lazy as _
+from django.db import models
 from accounts.models import User
-from django.core.urlresolvers import reverse
+from groups.models import SportsGroup
 
 
-class Tag(models.Model):
-    """Add tags to models to make searchig easier"""
-    class Meta:
-        verbose_name = _('tag')
-        verbose_name_plural = _('tags')
+class Restriction(models.Model):
+    """Restrictions makes it possible to create events for specific groups of users."""
 
     name = models.CharField(_('name'), max_length=50)
+
+    class Meta:
+        verbose_name = _('restriction')
+        verbose_name_plural = _('restrictions')
 
     def __str__(self):
         return self.name
 
 
-class Restriction(models.Model):
-    """Defines different restrictions for event"""
-
-    class Meta:
-        verbose_name = _('restricton')
-        verbose_name_plural = _('restrictions')
+class Tag(models.Model):
+    """Tags makes searching for events easier by giving additional searchable elements."""
 
     name = models.CharField(_('name'), max_length=50)
+
+    class Meta:
+        verbose_name = _('tag')
+        verbose_name_plural = _('tags')
 
     def __str__(self):
         return self.name
 
 
 class Event(models.Model):
-    """
-      Creates a model for events, with start date, end date, priority, host group and ntnui as host.
-      If ntnui is host, is_host_ntnui is true, otherwise false.
-    """
+    """Event is the main object, which gets complemented by the rest of the models in different aspects."""
+
+    start_date = models.DateTimeField(_('start date'))
+    end_date = models.DateTimeField(_('end date'))
+    place = models.CharField(_('place'), max_length=50, blank=True)
+    restriction = models.ForeignKey(Restriction, verbose_name=_('restriction'), default=0)
+    attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
+    priority = models.BooleanField(_('priority'), default=False)
+    is_host_ntnui = models.BooleanField(_('hosted by NTNUI'), default=False)
+    tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
+    waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
+    sports_groups = models.ManyToManyField(SportsGroup, blank=True, verbose_name=_('hosted by'))
+
 
     class Meta:
         verbose_name = _('event')
@@ -49,56 +56,56 @@ class Event(models.Model):
         return os.path.join(
             "cover_photo/events/{}".format(name.replace(" ", "-")), filename)
 
-    start_date = models.DateTimeField(_('start date'))
-    end_date = models.DateTimeField(_('end date'))
-    place = models.CharField(_('place'), max_length=50, blank=True)
-    restriction = models.ForeignKey(Restriction, verbose_name=_('restriction'), default=0)
-    priority = models.BooleanField(_('priority'), default=False)
-    is_host_ntnui = models.BooleanField(_('hosted by NTNUI'), default=False)
-    sports_groups = models.ManyToManyField(SportsGroup, blank=True, verbose_name=_('hosted by'))
-    tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     cover_photo = models.ImageField(upload_to=get_cover_upload_to, default='cover_photo/ntnui-volleyball.png')
 
-    # Returnes the name of the given event, in the given language
+    # Returns the event's name, in the given language
     def name(self):
-        if EventDescription.objects.filter(event=self, language=translation.get_language()).exists():
-            return EventDescription.objects.filter(event=self, language=translation.get_language())[0].name
-        elif EventDescription.objects.filter(event=self, language='en').exists():
-            return EventDescription.objects.filter(event=self, language='en')[0].name
-        elif EventDescription.objects.filter(event=self).exists():
-            return EventDescription.objects.filter(event=self)[0].name
+        event_name_get_language = EventDescription.objects.filter(event=self, language=translation.get_language())
+        event_name_english = EventDescription.objects.filter(event=self, language='en')
+        event_name = EventDescription.objects.filter(event=self)
+
+        if event_name_get_language.exists():
+            return event_name_get_language[0].name
+        elif event_name_english.exists():
+            return event_name_english[0].name
+        elif event_name.exists():
+            return event_name[0].name
         else:
             return 'No name given'
 
     name.short_description = _('name')
 
-    # Returnes the description of a given event in a given language
+    # Returns the event's description, in the given language
     def description(self):
-        if EventDescription.objects.filter(event=self, language=translation.get_language()).exists():
-            return EventDescription.objects.filter(event=self, language=translation.get_language())[0].description_text
-        elif EventDescription.objects.filter(event=self, language='en').exists():
-            return EventDescription.objects.filter(event=self, language='en')[0].description_text
-        elif EventDescription.objects.filter(event=self).exists():
-            return EventDescription.objects.filter(event=self)[0].description_text
+        event_description_get_language = EventDescription.objects.filter(event=self, language=translation.get_language())
+        event_description_english = EventDescription.objects.filter(event=self, language='en')
+        event_description = EventDescription.objects.filter(event=self)
+
+        if event_description_get_language.exists():
+            return event_description_get_language[0].description_text
+        elif event_description_english.exists():
+            return event_description_english[0].description_text
+        elif event_description.exists():
+            return event_description[0].description_text
         else:
             return 'No description given'
 
     description.short_description = _('description')
 
-    # Retunes a list of host or ntnui
+    # Returns the event's host(s) as a list
     def get_host(self):
-        if (self.is_host_ntnui):
+        if self.is_host_ntnui:
             return ['NTNUI']
         groups = []
         for group in self.sports_groups.all():
             groups.append(group.name)
         return groups
 
-    # Returnes the attending users for a given event
+    # Returns the event's attendees
     def get_attendees(self):
         return EventRegistration.objects.filter(event = self)
 
-    # Checks if a given user attends a given event
+    # Checks a given user attends the event
     def attends(self, user):
         if EventRegistration.objects.filter(attendee=user, event=self).exists():
             return True
@@ -109,113 +116,144 @@ class Event(models.Model):
 
 
 class EventDescription(models.Model):
-    """Add description and name to event, this way an event can have name and description in different languages."""
-    class Meta:
-        verbose_name = _('event description')
-        verbose_name_plural = _('event descriptions')
+    """Created to support multiple languages for each event's name and description."""
 
     name = models.CharField(_('name'), max_length=100)
     description_text = models.CharField(_('description'), max_length=500)
     language = models.CharField(_('language'), max_length=30)
     event = models.ForeignKey(Event, verbose_name=_('event'))
 
+    class Meta:
+        verbose_name = _('event description')
+        verbose_name_plural = _('event descriptions')
+
     def __str__(self):
         return self.name
 
 
+class EventRegistration(models.Model):
+    """Contains the relation between a user and an event, to  make a list of attendees"""
+
+    registration_time = models.DateTimeField(_('registration time'))
+    event = models.ForeignKey(Event, verbose_name = 'event')
+    attendee = models.ForeignKey(User, verbose_name = 'attendee')
+
+    class Meta:
+        verbose_name = _('attendee for event')
+        verbose_name_plural = _('attendees for event')
+        unique_together = ('event', 'attendee')
+
+    def __str__(self):
+        return self.event.name() + ' - ' + self.attendee.email
+
+
 class Category(models.Model):
+    """Sub-events get divided into categories (e.g. based on different skill levels)."""
+
+    event = models.ForeignKey(Event, verbose_name=_('event'))
+
     class Meta:
         verbose_name = _('category')
         verbose_name_plural = _('categories')
-    event = models.ForeignKey(Event, verbose_name=_('event'))
 
+    # Returns the category's name, in the given language
     def name(self):
-        if CategoryDescription.objects.filter(category=self, language=translation.get_language()).exists():
-            return CategoryDescription.objects.filter(category=self, language=translation.get_language())[0].name
-        elif CategoryDescription.objects.filter(category=self, language='en').exists():
-            return CategoryDescription.objects.filter(category=self, language='en')[0].name
-        elif CategoryDescription.objects.filter(category=self).exists():
-            return CategoryDescription.objects.filter(category=self)[0].name
+        category_description_get_language = CategoryDescription.objects.filter(category=self, language=translation.get_language())
+        category_description_english = CategoryDescription.objects.filter(category=self, language='en')
+        category_description = CategoryDescription.objects.filter(category=self)
+
+        if category_description_get_language.exists():
+            return category_description_get_language[0].name
+        elif category_description_english.exists():
+            return category_description_english[0].name
+        elif category_description.exists():
+            return category_description[0].name
         else:
             return 'No name given'
 
     def __str__(self):
         return self.name()
 
+
 class CategoryDescription(models.Model):
-    """Add name to a given subevent."""
-    class Meta:
-        verbose_name = _('description')
-        verbose_name_plural = _('descriptions')
+    """Created to support multiple languages for each category's name and description."""
 
     name = models.CharField(_('name'), max_length=100)
     language = models.CharField(_('language'), max_length=30)
     category = models.ForeignKey(Category, verbose_name=_('category'))
+
+    class Meta:
+        verbose_name = _('description')
+        verbose_name_plural = _('descriptions')
 
     def __str__(self):
         return self.name
 
 
 class SubEvent(models.Model):
-    """Any category may contain subEvents"""
-    class Meta:
-        verbose_name = _('subEvnet')
-        verbose_name_plural = _('subEvents')
+    """Makes it possible to divide an event into multiple sub-events (e.g. multiple disciplines)."""
 
     start_date = models.DateTimeField(_('start date'))
     end_date = models.DateTimeField(_('end date'))
-    attending_members = models.ManyToManyField(User, verbose_name=_('attending members'), blank=True)
+    attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
     category = models.ForeignKey(Category, verbose_name=_('category'))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
+    waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
 
-    # Returnes the name of the given event, in the given language
+    class Meta:
+        verbose_name = _('sub-event')
+        verbose_name_plural = _('sub-events')
+
+    # Returns the name of the event, in the given language.
     def name(self):
-        if SubEventDescription.objects.filter(sub_event=self, language=translation.get_language()).exists():
-            return SubEventDescription.objects.filter(sub_event=self, language=translation.get_language())[0].name
-        elif SubEventDescription.objects.filter(sub_event=self, language='en').exists():
-            return SubEventDescription.objects.filter(sub_event=self, language='en')[0].name
-        elif SubEventDescription.objects.filter(sub_event=self).exists():
-            return SubEventDescription.objects.filter(sub_event=self)[0].name
+        sub_event_description_get_language = SubEventDescription.objects.filter(sub_event=self, language=translation.get_language())
+        sub_event_description_english = SubEventDescription.objects.filter(sub_event=self, language='en')
+        sub_event_description = SubEventDescription.objects.filter(sub_event=self)
+
+        if sub_event_description_get_language.exists():
+            return sub_event_description_get_language[0].name
+        elif sub_event_description_english.exists():
+            return sub_event_description_english[0].name
+        elif sub_event_description.exists():
+            return sub_event_description[0].name
         else:
             return 'No name given'
+
+    def attends(self, user):
+        if SubEventRegistration.objects.filter(sub_event=self, attendee=user).exists():
+            return True
+        return False
 
     def __str__(self):
         return self.name()
 
 
-    def attends(self, user):
-        if user in self.attending_members.all():
-            return True
-        return False
-
-
 class SubEventDescription(models.Model):
-    """Add name to a given subevent."""
-    class Meta:
-        verbose_name = _('description')
-        verbose_name_plural = _('descriptions')
+    """Created to support multiple languages for each sub-event's name and description."""
 
     name = models.CharField(_('name'), max_length=100)
     language = models.CharField(_('language'), max_length=30)
-    sub_event = models.ForeignKey(SubEvent, verbose_name=_('subevent'))
+    sub_event = models.ForeignKey(SubEvent, verbose_name=_('sub-event'))
+
+    class Meta:
+        verbose_name = _('description')
+        verbose_name_plural = _('descriptions')
 
     def __str__(self):
         return self.name
 
 
+class SubEventRegistration(models.Model):
+    """Contains the relation between a user and an event, to  make a list of attendees."""
 
-class EventRegistration(models.Model):
-    """Model for handling event registration"""
+    registration_time = models.DateTimeField(_('registration time'))
+    sub_event = models.ForeignKey(SubEvent, verbose_name ='sub-event')
+    attendee = models.ForeignKey(User, verbose_name='attendee')
+
     class Meta:
-        verbose_name = _('Attendee for event')
-        verbose_name_plural = _('Attendees for events')
-        unique_together = ('event', 'attendee')
-
-    event = models.ForeignKey(Event, verbose_name = 'Event')
-    attendee = models.ForeignKey(User, verbose_name = 'Attendee')
-    registration_time = models.DateTimeField(_('Registered for Event at Time'))
+        verbose_name = _('attendee for sub-event')
+        verbose_name_plural = _('attendees for sub-event')
+        unique_together = ('sub_event', 'attendee')
 
     def __str__(self):
-        return self.event.name() + ' / ' + self.attendee.email
-
-
+        return self.sub_event.name() + ' - ' + self.attendee.email
