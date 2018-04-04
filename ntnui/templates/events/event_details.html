@@ -76,13 +76,14 @@
                         {% else %}
                             <div class="stripe-button-container">
                                 <!-- this data-key must be changed to the stripe accounts real data-key -->
-                                <form action="your-server-side-code" method="POST">
+                                <form action="/events" method="POST">
                                     <script
                                       src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                       data-key="pk_test_6pRNASCoBOKtIshFeQd4XMUh"
                                       data-amount="999"
-                                      data-name="Stripe.com"
-                                      data-description="Test charge"
+                                      data-email={{ user.email }}
+                                      data-name="NTNUI"
+                                      data-description={{ event.name }}
                                       data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
                                       data-locale="auto"
                                       data-zip-code="true">
