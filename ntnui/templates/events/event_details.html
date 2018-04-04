@@ -79,10 +79,10 @@
                                 <form action="/events" method="POST">
                                     <script
                                       src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                      data-key="pk_test_6pRNASCoBOKtIshFeQd4XMUh"
-                                      data-amount="999"
+                                      data-key="pk_test_TagT9jGDj7CN9NOQfTnueTxz"
+                                      data-amount={{ event.price }}
                                       data-email={{ user.email }}
-                                      data-name="NTNUI"
+                                      data-name={% for host in event.host %} {{ host }} + ', ' {% endfor %}
                                       data-description={{ event.name }}
                                       data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
                                       data-locale="auto"
