@@ -1,5 +1,15 @@
+.group-content {
+    width: 100%;
+}
+
+@media screen and (min-width: 800px) {
+    .group-content {
+        width: 790px;
+    }
+}
+
 .header {
-    width: 60%;
+    width: 100%;
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
@@ -8,6 +18,8 @@
     height: 16rem;
     position: relative;
     color: white;
+    background-size: cover;
+    background-position: center;
 }
 
 .group-role {
@@ -52,13 +64,18 @@
     align-items: center;
     list-style-type: none;
     height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
 }
 
+.top-menu ul li:nth-child(2n-1) {
+    flex-grow: 1;
+}
+
 .top-menu a {
+    flex-grow: 1;
     height: 52px;
-    width: 160px;
     display: block;
     padding-top: 14px;
     box-sizing: border-box;
@@ -66,8 +83,8 @@
 }
 
 .top-menu a:hover {
-    color: #017402;
-    border-bottom: 4px solid #017402;
+    color: #007D32;
+    border-bottom: 4px solid #007D32;
     opacity: 0.8;
 }
 
@@ -78,13 +95,13 @@
 }
 
 .group-alert {
-    width: 60%;
+    width: 100%;
     margin-bottom: 2rem;
     text-align: center;
 }
 
 .active-item {
-    border-bottom: 4px solid #017402;
+    border-bottom: 4px solid #007D32;
 }
 
 .no-border {
@@ -96,8 +113,8 @@
  */
 
 .content-table {
-    width: 60%;
-    min-height: 6rem;
+    width: 100%;
+    min-height: 3rem;
     background-color: white;
     border: 1px solid #dfdfdf;
     display: flex;
@@ -109,23 +126,57 @@
     border-bottom: 1px solid #979797;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1rem;
+    padding: 0.5rem 1rem;
     display: flex;
-    height: 4rem;
+    min-height: 4rem;
     box-sizing: border-box;
     font-weight: bold;
+    flex-wrap: wrap;
 }
 
 .total-tab-active {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 0.9rem;
     font-weight: bold;
+    height: 36px;
 }
 
 .total-tab {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 36px;
+    text-align: center;
+    font-size: 0.9rem;
     font-weight: lighter;
 }
 
+@media screen and (min-width: 500px) {
+    .total-tab-active {
+        font-size: 1rem;
+    }
+
+    .total-tab {
+        font-size: 1rem;
+    }
+}
+
 #member-search {
-    max-width: 40%;
+    flex-grow: 1;
+    width: 40%;
+    display: inline-block;
+}
+
+#member-search-placeholder{
+    visibility: hidden;
+    flex-grow: 1;
+    width: 40%;
+    display: inline-block;
 }
 
 .download-field {
@@ -133,6 +184,7 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .members-list {
@@ -148,10 +200,23 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     box-sizing: border-box;
     padding: 0 1rem;
+    font-size: 0.8rem;
     border-bottom: 1px solid #f0f0f0;
+}
+
+@media screen and (min-width: 400px) {
+    .group-table-row {
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .group-table-row {
+        font-size: 1rem;
+    }
 }
 
 .members-header {
@@ -159,7 +224,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     height: 48px;
     box-sizing: border-box;
     padding: 0 16px;
@@ -167,73 +232,44 @@
     font-weight: bold;
 }
 
-.group-member-name-header {
-    width: 230px;
+.group-member-settings{
+    display: flex;
+    justify-content: center;
 }
 
-.group-member-phone-header {
-    width: 120px;
+.group-column-5 {
+    width: 5%;
+    word-wrap: break-word;
 }
 
-.group-member-email-header {
-    width: 300px;
+.group-column-10 {
+    width: 10%;
+    word-wrap: break-word;
 }
 
-.group-member-paid-header {
-    width: 80px;
+.group-column-15 {
+    width: 15%;
+    word-wrap: break-word;
 }
 
-.group-member-name {
-    width: 230px;
+.group-column-20 {
+    width: 20%;
+    word-wrap: break-word;
 }
 
-.group-member-phone {
-    width: 120px;
+.group-column-40 {
+    width: 40%;
+    word-wrap: break-word;
 }
 
-.group-member-email {
-    width: 300px;
+.group-column-40 img {
+    width: 24px;
+    height: 24px;
 }
 
-.group-member-info-header {
-    width: 48px;
-}
-
-.group-member-info {
-    text-align: center;
-    width: 48px;
-    height: 48px;
-    line-height: 48px;
-    font-size: 24px;
-}
-
-.group-member-info:hover {
-    border-bottom: 4px solid #017402;
-}
-
-.group-member-paid {
-    text-align: center;
-    width: 48px;
-}
-
-.group-member-settings {
-    font-size: 24px;
-    width: 48px;
-    height: 48px;
-}
-
-.group-member-settings a {
-    display: block;
-    height: 100%;
-    text-align: center;
-    width: 48px;
-    line-height: 48px;
-    box-sizing: border-box;
-}
-
-.group-member-settings a:hover {
-    border-bottom: 4px solid #017402;
-    opacity: 0.7;
+.group-column-50 {
+    width: 50%;
+    word-wrap: break-word;
 }
 
 .add-new-member {
@@ -246,7 +282,6 @@
     height: 48px;
     box-sizing: border-box;
     padding: 0 16px;
-    border-bottom: 1px solid #f0f0f0;
 }
 
 .download-members-button {
@@ -259,7 +294,6 @@
     height: 48px;
     box-sizing: border-box;
     padding: 0 16px;
-    border-bottom: 1px solid #f0f0f0;
 }
 
 .add-new-member:hover {
@@ -270,46 +304,46 @@
     background-color: #f0f0f0;
 }
 
-.add-new-button {
-    background-color: #ffffff;
-    border-radius: 4px;
-    text-align: center;
-    color: #017402;
-    width: 2rem;
-    border: 1px solid #017402;
-    margin-right: 16px;
+.add-new-member-icon {
+    margin-right: 1rem;
+    margin-left: 0.3rem;
 }
 
-.download-button {
-    background-color: #ffffff;
-    border-radius: 4px;
-    text-align: center;
-    color: #017402;
-    width: 2rem;
-    border: 1px solid #017402;
-    margin-right: 16px;
-    padding-left: 2px;
+.download-icon {
+    margin-right: 1rem;
+    margin-left: 0.3rem;
 }
 
 /**
- * DOWLOAD MEMBERS
+ * DOWNLOAD MEMBERS
  */
 
 .download-members {
-  width: 100%;
-  padding: 16px;
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
 .download-members h2 {
-  padding: 16px 0;
+    padding: 16px 0;
+}
+
+.download-members-options {
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
 .download-options-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1rem;
 }
 
 /**
@@ -339,6 +373,7 @@
     text-transform: uppercase;
     font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
+    cursor: pointer;
 }
 
 /**
@@ -346,41 +381,51 @@ REQUEST LIST
  */
 
 .no-btn {
-    width: 100%;
+    width: 40%;
     border-color: red;
 }
 
 .yes-btn {
-    width: 100%;
-    margin-right: 5px;
-    border-color: #017402;
+    width: 40%;
+    margin-right: 0.25rem;
+    border-color: #007D32;
 }
 
 /**
  * SETTINGS
  */
 
-.group-settings {
+.group-settings, .no-settings {
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    height: 60px;
+    min-height: 3.75rem;
     box-sizing: border-box;
-    padding: 0 2rem;
+    padding: 0.75rem 2rem;
     margin-bottom: 0;
     border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
 }
 
-.group-settings-description {
-    height: 130px;
-    padding: 0.5rem 2rem;
+.no-settings {
+    justify-content: center;
+    font-size: 0.9rem;
+    color: #d0d0d0;
 }
 
 .group-settings:active {
     opacity: 0.6;
+}
+
+.group-settings span{
+    width: 80%
+}
+
+.group-settings-description {
+    height: 130px;
+    padding: 0.5rem 2rem;
 }
 
 .group-settings-right {
@@ -396,7 +441,8 @@ REQUEST LIST
 }
 
 .group-settings-header {
-    padding: 0.5rem 2rem;
+    color: #606060;
+    padding: 0.75rem 1rem;
     border-bottom: 1px solid #f0f0f0;
     font-weight: bold;
 }
@@ -493,4 +539,9 @@ REQUEST LIST
 
 .open-modal:hover {
     opacity: 0.7;
+}
+
+.request-buttons {
+    display: flex;
+    flex-direction: row;
 }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-09 11:27+0100\n"
+"POT-Creation-Date: 2018-03-23 12:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,14 +18,341 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\ntnui\settings.py:163
+#: .\ntnui\apps\accounts\models.py:14
+msgid "customer no"
+msgstr "kunde nr"
+
+#: .\ntnui\apps\accounts\models.py:15
+msgid "email address"
+msgstr "epost-adresse"
+
+#: .\ntnui\apps\accounts\models.py:16
+msgid "first name"
+msgstr "fornavn"
+
+#: .\ntnui\apps\accounts\models.py:17
+msgid "last name"
+msgstr "etternavn"
+
+#: .\ntnui\apps\accounts\models.py:18
+msgid "date joined"
+msgstr "medlem siden"
+
+#: .\ntnui\apps\accounts\models.py:19
+msgid "active"
+msgstr "aktivert"
+
+#: .\ntnui\apps\accounts\models.py:20
+msgid "phone number"
+msgstr "mobilnummer"
+
+#: .\ntnui\apps\accounts\models.py:23
+msgid "staff status"
+msgstr "ansatt status"
+
+#: .\ntnui\apps\accounts\models.py:25
+msgid "Designates whether the user can log into this site."
+msgstr "Bestemmer om brukeren kan logge inn på denne siden"
+
+#: .\ntnui\apps\accounts\models.py:37
+msgid "user"
+msgstr "bruker"
+
+#: .\ntnui\apps\accounts\models.py:38
+msgid "users"
+msgstr "brukere"
+
+#: .\ntnui\apps\events\create_event.py:30
+msgid "New event successfully created!"
+msgstr "Nytt arrangement opprettet!"
+
+#: .\ntnui\apps\events\create_event.py:35
+msgid "Failed to create event!"
+msgstr "Klarte ikke opprette arrangement"
+
+#: .\ntnui\apps\events\create_event.py:92
+msgid "could not create description"
+msgstr "kunne ikke lage beskrivelse"
+
+#: .\ntnui\apps\events\create_event.py:133 .\ntnui\apps\events\views.py:164
+msgid "Event must have a name"
+msgstr "Arrangementet må ha et navn"
+
+#: .\ntnui\apps\events\models.py:15
+msgid "tag"
+msgstr "tag"
+
+#: .\ntnui\apps\events\models.py:16 .\ntnui\apps\events\models.py:59
+#: .\ntnui\apps\events\models.py:169
+msgid "tags"
+msgstr "tags"
+
+#: .\ntnui\apps\events\models.py:18 .\ntnui\apps\events\models.py:31
+#: .\ntnui\apps\events\models.py:73 .\ntnui\apps\events\models.py:117
+#: .\ntnui\apps\events\models.py:151 .\ntnui\apps\events\models.py:198
+msgid "name"
+msgstr "navn"
+
+#: .\ntnui\apps\events\models.py:28
+msgid "restricton"
+msgstr "restriksjon"
+
+#: .\ntnui\apps\events\models.py:29
+msgid "restrictions"
+msgstr "restriksjoner"
+
+#: .\ntnui\apps\events\models.py:44 .\ntnui\apps\events\models.py:120
+#: .\ntnui\apps\events\models.py:130
+msgid "event"
+msgstr "arrangement"
+
+#: .\ntnui\apps\events\models.py:45
+msgid "events"
+msgstr "arrangement"
+
+#: .\ntnui\apps\events\models.py:52 .\ntnui\apps\events\models.py:165
+msgid "start date"
+msgstr "start dato"
+
+#: .\ntnui\apps\events\models.py:53 .\ntnui\apps\events\models.py:166
+msgid "end date"
+msgstr "slutt dato"
+
+#: .\ntnui\apps\events\models.py:54
+msgid "place"
+msgstr "sted"
+
+#: .\ntnui\apps\events\models.py:55
+msgid "restriction"
+msgstr "restriksjon"
+
+#: .\ntnui\apps\events\models.py:56
+msgid "priority"
+msgstr "prioritet"
+
+#: .\ntnui\apps\events\models.py:57
+msgid "hosted by NTNUI"
+msgstr "arrangert av NTNUI"
+
+#: .\ntnui\apps\events\models.py:58
+msgid "hosted by"
+msgstr "arrangert av"
+
+#: .\ntnui\apps\events\models.py:86 .\ntnui\apps\events\models.py:118
+#: .\ntnui\apps\events\models.py:148 .\ntnui\apps\events\models.py:195
+msgid "description"
+msgstr "beskrivelse"
+
+#: .\ntnui\apps\events\models.py:114
+msgid "event description"
+msgstr "arrangementsbeskrivelse"
+
+#: .\ntnui\apps\events\models.py:115
+msgid "event descriptions"
+msgstr "arrangementsbeskrivelse"
+
+#: .\ntnui\apps\events\models.py:119 .\ntnui\apps\events\models.py:152
+#: .\ntnui\apps\events\models.py:199
+msgid "language"
+msgstr "språk"
+
+#: .\ntnui\apps\events\models.py:128 .\ntnui\apps\events\models.py:153
+#: .\ntnui\apps\events\models.py:168
+msgid "category"
+msgstr "kategori"
+
+#: .\ntnui\apps\events\models.py:129
+msgid "categories"
+msgstr "kategorier"
+
+#: .\ntnui\apps\events\models.py:149 .\ntnui\apps\events\models.py:196
+msgid "descriptions"
+msgstr "beskrivelser"
+
+#: .\ntnui\apps\events\models.py:162
+msgid "subEvnet"
+msgstr "delarrangement"
+
+#: .\ntnui\apps\events\models.py:163
+msgid "subEvents"
+msgstr "delarrangement"
+
+#: .\ntnui\apps\events\models.py:167
+msgid "attending members"
+msgstr "deltagene medlemmer"
+
+#: .\ntnui\apps\events\models.py:200
+msgid "subevent"
+msgstr "delarrangement"
+
+#: .\ntnui\apps\events\models.py:210
+msgid "Attendee for event"
+msgstr "deltager av arrangement"
+
+#: .\ntnui\apps\events\models.py:211
+msgid "Attendees for events"
+msgstr "deltager av arrangement"
+
+#: .\ntnui\apps\events\models.py:216
+msgid "Registered for Event at Time"
+msgstr "Meldt på kl"
+
+#: .\ntnui\apps\forms\forms.py:37
+msgid "Group does not exist"
+msgstr "Gruppen eksisterer ikke"
+
+#: .\ntnui\apps\forms\forms.py:50
+msgid "{} does not belong to {}"
+msgstr "{} hører ikke til {}"
+
+#: .\ntnui\apps\forms\forms.py:53
+msgid "{} not found"
+msgstr "{} ikke funnet"
+
+#: .\ntnui\apps\forms\forms.py:55
+msgid "This email does not exist in the database"
+msgstr "Denne eposten finnes ikke i vår database"
+
+#: .\ntnui\apps\forms\forms.py:71
+msgid "The president email field is empty"
+msgstr "Presidentens epost er tom"
+
+#: .\ntnui\apps\forms\forms.py:83
+msgid "The vice president email field is empty"
+msgstr "Visepresidentens epost er tom"
+
+#: .\ntnui\apps\forms\forms.py:94
+msgid "The cashier email field is empty"
+msgstr "Kassererens epost er tom"
+
+#: .\ntnui\settings\common.py:142
 msgid "English"
 msgstr "Engelsk"
 
-#: .\ntnui\settings.py:164
+#: .\ntnui\settings\common.py:143
 msgid "Norwegian (bokmal)"
-msgstr "Norsk bokmål"
+msgstr "Norsk (bokmål)"
 
-#: .\ntnui\urls.py:63
-msgid "^admin/"
-msgstr ""
+#: .\ntnui\templates\base.html:42
+msgid "Main Board"
+msgstr "Hovedstyre"
+
+#: .\ntnui\templates\base.html:49
+msgid "Groups"
+msgstr "Grupper"
+
+#: .\ntnui\templates\base.html:56
+msgid "Events"
+msgstr "Arrangement"
+
+#: .\ntnui\templates\base.html:68
+msgid "Account"
+msgstr "Konto"
+
+#: .\ntnui\templates\events\create_new_event.html:12
+msgid "Create new event:"
+msgstr "Opprett nytt arrangemnt"
+
+#: .\ntnui\templates\events\create_new_event.html:17
+msgid "Name norwegian"
+msgstr "Navn norsk"
+
+#: .\ntnui\templates\events\create_new_event.html:27
+msgid "Name english"
+msgstr "Navn engelsk"
+
+#: .\ntnui\templates\events\create_new_event.html:37
+msgid "Description norwegian"
+msgstr "Beskrivelse norsk"
+
+#: .\ntnui\templates\events\create_new_event.html:47
+msgid "Description english"
+msgstr "Beskrivelse engelsk"
+
+#: .\ntnui\templates\events\create_new_event.html:63
+#: .\ntnui\templates\events\event_details.html:35
+msgid "Host"
+msgstr "Vert"
+
+#: .\ntnui\templates\events\create_new_event.html:73
+msgid "Start date:"
+msgstr "Startdato"
+
+#: .\ntnui\templates\events\create_new_event.html:83
+msgid "To date:"
+msgstr "Til dato"
+
+#: .\ntnui\templates\events\create_new_event.html:95
+msgid "Priority"
+msgstr "Prioritet"
+
+#: .\ntnui\templates\events\create_new_event.html:105
+#: .\ntnui\templates\events\events_main_page.html:80
+msgid "Create event"
+msgstr "Opprett arrangement"
+
+#: .\ntnui\templates\events\event_details.html:31
+msgid "Location"
+msgstr "Lokasjon"
+
+#: .\ntnui\templates\events\event_details.html:39
+msgid "Start date"
+msgstr "Startdato"
+
+#: .\ntnui\templates\events\event_details.html:43
+msgid "End date"
+msgstr "Sluttdato"
+
+#: .\ntnui\templates\events\event_details.html:74
+#: .\ntnui\templates\events\event_details.html:120
+msgid "Do not attend event"
+msgstr "Meld meg av"
+
+#: .\ntnui\templates\events\event_details.html:79
+#: .\ntnui\templates\events\event_details.html:126
+msgid "Attend event"
+msgstr "Meld meg på"
+
+#: .\ntnui\templates\events\events_main_page.html:17
+msgid "Search"
+msgstr "Søk"
+
+#: .\ntnui\templates\events\events_main_page.html:22
+msgid "Sort by"
+msgstr "Sorter etter"
+
+#: .\ntnui\templates\events\events_main_page.html:25
+msgid "Start date (ascending)"
+msgstr "Startdato (stigende)"
+
+#: .\ntnui\templates\events\events_main_page.html:26
+msgid "Start date (descending)"
+msgstr "Start dato (synkende)"
+
+#: .\ntnui\templates\events\events_main_page.html:27
+msgid "Name"
+msgstr "Navn"
+
+#: .\ntnui\templates\events\events_main_page.html:28
+msgid "Description"
+msgstr "Beskrivelse"
+
+#: .\ntnui\templates\events\events_main_page.html:38
+msgid "Hosted by"
+msgstr "Arrangert av"
+
+#: .\ntnui\templates\events\events_main_page.html:72
+msgid "My options"
+msgstr "Mine valg"
+
+#: .\ntnui\templates\events\events_main_page.html:75
+msgid "My events"
+msgstr "Mine arrangement"
+
+#: .\ntnui\templates\events\events_main_page.html:85
+msgid "Manage events"
+msgstr "Administrer arrangement"
+
+#: .\ntnui\templates\events\events_main_page.html:95
+msgid "Load more events"
+msgstr "Last flere arrangement"

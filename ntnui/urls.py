@@ -60,6 +60,6 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     url(r'^events/', include('events.urls')),
     url(r'^jsi18n/$', JavaScriptCatalog.as_view(), name='javascript-catalog'),
-    url(_(r'^admin/'), admin.site.urls),
+    url(r'^admin/', admin.site.urls),
 
 )

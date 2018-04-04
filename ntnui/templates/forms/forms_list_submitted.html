@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load form_template %}
+
+{% block stylesheet %}
+  <link rel="stylesheet" href="{% static 'css/list_groups.css' %}" />
+
+{% endblock %}
+
+{% block content %}
+<div class="list-groups">
+  <h1 class="group-header">
+      My forms
+  </h1>
+
+  {% if forms %}
+    {% for form in forms %}
+        {% include "forms/forms_card.html" with form=form %}
+    {% endfor %}
+  {% else %}
+    <a class="group-card-all-groups">
+      <div class="group-card-top-row">
+      <img class="group-card-image" src="{% static 'img/sun.svg' %}"/>
+      <h2>No forms</h2>
+      </div>
+      <div class="group-card-info">
+        <p>You have no forms that needs you approval. Go out and enjoy your day. </p>
+      </div>
+    </a>
+  {% endif %}
+
+  {% if approved %}
+      <h1 class="group-header">
+          Waiting for others' approval
+      </h1>
+
+      {% for form in approved %}
+          {% include "forms/forms_card_approved.html" with form=form %}
+      {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}
