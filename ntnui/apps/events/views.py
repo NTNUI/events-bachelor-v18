@@ -9,7 +9,7 @@ from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 
 from . import create_event, get_events
-from events.models import Event, EventRegistration, Category, SubEvent
+from events.models import Event, EventRegistration, Category, SubEvent, SubEventRegistration
 
 
 def get_main_page(request):
@@ -35,7 +35,7 @@ def get_sub_event_dic(item, request):
     if request.user.is_authenticated:
         attends = item.attends(request.user)
     else:
-        # Retunes false if not
+        # Returns false if not
         attends = False
 
     return {
@@ -56,7 +56,7 @@ def get_event_details(request, id):
         categories = Category.objects.filter(event=event)
         # for every category do:
         for i in range(len(categories)):
-            # get all the subevents for that category
+            # get all the sub-events for that category
             sub_event = SubEvent.objects.filter(category=categories[i])
             # add the category and map each sub_event to a dic
             sub_event_list.append((categories[i], list(map(lambda item: get_sub_event_dic(item, request), sub_event))))
@@ -65,7 +65,7 @@ def get_event_details(request, id):
     if request.user.is_authenticated:
         attends = event.attends(request.user)
     else:
-        # Retunes false if not
+        # Returns false if not
         attends = False
 
     event = {
@@ -105,8 +105,7 @@ def get_create_event_page(request):
     # Checks if a user can create an event
     groups = get_groups_user_can_create_events_for(request.user)
 
-    return render(request, 'events/create_new_event.html',
-                  {'groups': groups})
+    return render(request, 'events/create_new_event.html', {'groups': groups})
 
 
 def user_can_create_event(user):
@@ -178,15 +177,17 @@ def add_attendance_to_event(request):
     if request.POST:
         id = request.POST.get('id')
         event = Event.objects.get(id=int(id))
-        # Checks that the user is not already attending
-        if not EventRegistration.objects.filter(event=event, attendee=request.user).exists():
-            try:
-                # Try to create a entry
-                EventRegistration.objects.create(event=event, attendee=request.user, registration_time=datetime.now())
-                return get_json(201, 'You are now attending this event')
-            except:
-                return get_json(400, 'Could not add you to this event')
-        return get_json(400, 'You are already attending this event')
+        if event.attendance_cap is None or event.attendance_cap > event.get_attendees().count():
+            # Checks that the user is not already attending
+            if not EventRegistration.objects.filter(event=event, attendee=request.user).exists():
+                try:
+                    # Try to create a entry
+                    EventRegistration.objects.create(event=event, attendee=request.user, registration_time=datetime.now())
+                    return get_json(201, 'You are now attending this event')
+                except:
+                    return get_json(400, 'Could not add you to this event')
+            return get_json(400, 'You are already attending this event')
+        return get_json(400, 'Event has reached its maximum number of participants')
     return get_json(400, 'Request must be post')
 
 
@@ -208,30 +209,35 @@ def remove_attendance_from_event(request):
 
 @login_required
 def add_attendance_from_subevent(request):
-    """Add a user to the given subevent"""
+    """Add a user to the given sub-event"""
     if request.POST:
-        try:
-            id = request.POST.get('id')
-            subevent = SubEvent.objects.get(id=int(id))
-            subevent.attending_members.add(request.user)
-            subevent.save()
-            return get_json(201, 'Success')
-        except:
-            return get_json(400, 'Could not join event')
+        id = request.POST.get('id')
+        sub_event = SubEvent.objects.get(id=int(id))
+
+        if sub_event.attendance_cap is None or sub_event.attendance_cap > SubEventRegistration.objects.filter(sub_event=sub_event).count():
+            # Checks that the user is not already attending
+            if not SubEventRegistration.objects.filter(sub_event=sub_event, attendee=request.user).exists():
+                try:
+                    SubEventRegistration.objects.create(sub_event=sub_event, attendee=request.user, registration_time=datetime.now())
+                    return get_json(201, 'Success')
+                except:
+                    return get_json(400, 'Could not join event')
+            return get_json(400, 'You are already attending this event')
+        return get_json(400, 'Event has reached its maximum number of participants')
     return get_json(400, 'request is not post')
 
 
 @login_required
 def remove_attendance_from_subevent(request):
-    """Removes the given user from the given subevent"""
+    """Removes the given user from the given sub-event"""
     if request.POST:
         try:
             id = request.POST.get('id')
-            subevent = SubEvent.objects.get(id=int(id))
-            # find the subevent and remove the user from that sub event
-            subevent.attending_members.remove(request.user)
-            subevent.save()
-            return get_json(201, 'Success')
+            if SubEventRegistration.objects.filter(sub_event__id=int(id), attendee=request.user).exists():
+                registration = SubEventRegistration.objects.get(sub_event__id=int(id), attendee=request.user)
+                registration.delete()
+                return get_json(201, 'Success')
+            return get_json(400, 'Attendance dose not exists')
         except:
             return get_json(400, 'Could not remove attendence')
     return get_json(400, 'request is not post')
