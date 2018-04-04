@@ -47,28 +47,47 @@
               <label class="col-2 col-form-label">{% trans 'Description english' %}</label>
               <div class="col-10">
                   <textarea class="form-control" type="textArea" onblur="return validateDescription_text_en()" name="description_text_en" required></textarea>
-              <div id="description-en-alerter" class="alert alert-danger collapse" role="alert">
-                  <p id="description_en_message"></p>
+                  <div id="description-en-alerter" class="alert alert-danger collapse" role="alert">
+                    <p id="description_en_message"></p>
+                  </div>
               </div>
-              </div>
+            </div>
+                <div class="form-group row">
+                    <label class="col-2 col-form-label">{% trans 'Host' %}</label>
+                    <div class="col-10">
+                        <select class="form-control" name="host" required>
+                            {% for group in groups %}
+                                <option value="{{ group.id }}">{{ group.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
-
-
 
             </div>
             </div>
         <div class="container-fluid" id="cont2">
             <div class="col-sm">
-                              <div class="form-group row">
-                <label class="col-2 col-form-label">{% trans 'Host' %}</label>
-                  <div class="col-10">
-                    <select class="form-control" name="host" required>
-                        {% for group in groups %}
-                            <option value="{{ group.id }}">{{ group.name }}</option>
-                        {% endfor %}
-                    </select>
+                <div class="form-group row">
+              <label class="col-2 col-form-label">{% trans 'Email text norwegian' %}</label>
+              <div class="col-10">
+                  <textarea class="form-control" type="textArea" onblur="return validateEmail_text_no()" name="email_text_no" required></textarea>
+                  <div id="email-text-no-alerter" class="alert alert-danger collapse" role="alert">
+                      <p id="email_no_message"></p>
                   </div>
               </div>
+
+            </div>
+            <div class="form-group row">
+              <label class="col-2 col-form-label">{% trans 'Email text english' %}</label>
+              <div class="col-10">
+                  <textarea class="form-control" type="textArea" onblur="return validateEmail_text_en()" name="email_text_en" required></textarea>
+                  <div id="email-text-en-alerter" class="alert alert-danger collapse" role="alert">
+                    <p id="email_en_message"></p>
+                  </div>
+              </div>
+
+            </div>
+
             <div class="form-group row">
               <label class="col-2 col-form-label">{% trans 'Start date:' %}</label>
               <div class="col-10">
@@ -88,12 +107,6 @@
                     </div>
               </div>
 
-            </div>
-            <div class="form-group row">
-              <label class="form-check-label">
-                <input name="priority" type="checkbox" value="True">
-                {% trans 'Priority' %}
-              </label>
             </div>
 
 
