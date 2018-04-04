@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
-from ..forms import LeaveGroupForm
+from groups.forms import LeaveGroupForm
 from accounts.models import User
-from ..models import SportsGroup
+from groups.models import SportsGroup
 
 
 class LeaveGroupFormTest(TestCase):

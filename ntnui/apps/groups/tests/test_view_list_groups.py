@@ -2,7 +2,6 @@ from django.test import TestCase
 from groups import views as group_views
 from django.core.urlresolvers import reverse
 from django.urls import resolve
-from ..models import Membership
 
 
 class ListGroupLoggedOutTest(TestCase):

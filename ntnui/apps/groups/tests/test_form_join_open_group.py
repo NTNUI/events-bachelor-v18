@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
-from ..forms import JoinOpenGroupForm
+from groups.forms import JoinOpenGroupForm
 from accounts.models import User
-from ..models import SportsGroup, Invitation
+from groups.models import SportsGroup, Invitation
 
 
 class JoinOpenGroupFormTest(TestCase):
