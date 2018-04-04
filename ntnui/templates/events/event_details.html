@@ -42,6 +42,11 @@
                         <div class="label">
                             {% trans 'End date' %}
                         </div>
+                        {% if event.require_payment %}
+                            <div class="label">
+                                {% trans 'Price' %}
+                            </div>
+                        {% endif %}
 
                     </div>
 
@@ -64,6 +69,12 @@
                         <div class="info">
                             {{ event.end_date }}
                         </div>
+
+                        {% if event.require_payment %}
+                            <div class="info">
+                                {{ event.price }},-
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
                 {% if not sub_event_list %}
