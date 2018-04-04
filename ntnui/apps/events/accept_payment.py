@@ -12,7 +12,7 @@ def accept_payment(request):
     # Charge the user's card:
     charge = stripe.Charge.create(
       amount=event.price,
-      currency="nok",
+      currency="NOK",
       description="Example charge",
       source=token,
     )

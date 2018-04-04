@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.translation import gettext as _
+from django.utils import translation
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 
@@ -77,12 +78,13 @@ def get_event_details(request, id):
         'attends': attends,
         'id': event.id,
         'host': event.get_host(),
-        'place': event.place
+        'place': event.place,
+        'language': translation.get_language
     }
 
     context = {
         "event": event,
-        "sub_event_list": sub_event_list
+        "sub_event_list": sub_event_list,
     }
 
     return render(request, 'events/event_details.html', context)

@@ -80,12 +80,22 @@
                                     <script
                                       src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                       data-key="pk_test_TagT9jGDj7CN9NOQfTnueTxz"
-                                      data-amount={{ event.price }}
-                                      data-email={{ user.email }}
+                                      data-amount=999
+                                      data-currency="NOK"
+                                      {% if user.email %}
+                                          data-email={{ user.email }}
+                                      {% else %}
+                                          data-email="Email adress"
+                                      {% endif %}
                                       data-name={% for host in event.host %} {{ host }} + ', ' {% endfor %}
                                       data-description={{ event.name }}
-                                      data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                                      data-locale="auto"
+                                      data-image="/static/img/ntnui2.svg"
+                                      {% if event.language == 'en' %}
+                                          data-locale="auto"
+                                      {% else %}
+                                          data-locale="no"
+                                      {% endif %}
+                                      data-locale="no"
                                       data-zip-code="true">
                                     </script>
                                 </form>
