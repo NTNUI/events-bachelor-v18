@@ -76,6 +76,8 @@ def get_event_details(request, id):
         'cover_photo': event.cover_photo,
         'attends': attends,
         'id': event.id,
+        'price':event.price,
+        'require_payment': event.require_payment(),
         'host': event.get_host(),
         'place': event.place
     }

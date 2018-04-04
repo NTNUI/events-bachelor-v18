@@ -41,6 +41,7 @@ class Event(models.Model):
     restriction = models.ForeignKey(Restriction, verbose_name=_('restriction'), default=0)
     attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
     priority = models.BooleanField(_('priority'), default=False)
+    price = models.IntegerField(_('price'), default=0)
     is_host_ntnui = models.BooleanField(_('hosted by NTNUI'), default=False)
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
@@ -56,6 +57,11 @@ class Event(models.Model):
             "cover_photo/events/{}".format(name.replace(" ", "-")), filename)
 
     cover_photo = models.ImageField(upload_to=get_cover_upload_to, default='cover_photo/ntnui-volleyball.png')
+
+    def require_payment(self):
+        if self.price > 0:
+            return True
+        return False
 
     # Returns the event's name, in the given language
     def name(self):
