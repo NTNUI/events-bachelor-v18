@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
-from ..forms import SettingsForm
-from ..models import SportsGroup
+from groups.forms import SettingsForm
+from groups.models import SportsGroup
 from groups import views as group_views
 from django.core.urlresolvers import reverse
 
