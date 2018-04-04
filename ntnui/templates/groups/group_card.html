@@ -1,0 +1,32 @@
+{% load static %}
+
+{% block card %}
+  {% if group in my_groups %}
+    <a class="group-card-my-groups" href={% url 'group_index' slug=group.slug %}>
+    <img class="group-card-image" src="{% static group.thumbnail %}"/>
+    <div class="group-card-info">
+      <h2>{{ group.name }}</h2>
+    </div>
+    </a>
+  {% else %}
+    <div class="group-card-all-groups">
+      <div class="group-card-top-row">
+        <a href={% url 'group_index' slug=group.slug %}>
+            <img class="group-card-image" src="{% static group.thumbnail %}"/>
+        </a>
+        <a class="group-card-title" href={% url 'group_index' slug=group.slug %}>
+          {{ group.name }}
+        </a>
+        {% if group.public %}
+          <div class="group-card-open">Open</div>
+        {% else %}
+          <div class="group-card-restricted">Restricted</div>
+        {% endif %}
+      </div>
+      <div class="group-card-content">
+        <p class="group-card-description">{{ group.description }}</p>
+        <div class="group-card-read-more group-card-read-more-hidden">Read more</div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

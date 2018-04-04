@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-02 15:44+0100\n"
+"POT-Creation-Date: 2018-03-23 12:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,25 +18,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\ntnui\static\js\create_new_event.js:10
-#: .\ntnui\static\js\create_new_event.js:58
-#: .\ntnui\static\js\create_new_event.js:73
+#: .\ntnui\static\js\events\create_new_event.js:54
+#: .\ntnui\static\js\events\create_new_event.js:67
 msgid "Invalid input!"
-msgstr "Ugyldig inndata!"
+msgstr "Ugyldig input"
 
-#: .\ntnui\static\js\create_new_event.js:94
+#: .\ntnui\static\js\events\create_new_event.js:88
+#: .\ntnui\static\js\events\create_new_event.js:115
 msgid "Invalid date!"
-msgstr "Ugyldig dato!"
+msgstr "Ugyldig dato"
 
-#: .\ntnui\static\js\create_new_event.js:100
+#: .\ntnui\static\js\events\create_new_event.js:94
 msgid "Start date is not before end date!"
 msgstr "Startdato er ikke før sluttdato!"
 
-#: .\ntnui\static\js\create_new_event.js:127
+#: .\ntnui\static\js\events\create_new_event.js:122
 msgid "End date is not after start date!"
 msgstr "Sluttdato er ikke etter startdato!"
 
-#: .\ntnui\static\js\create_new_event.js:140
-#: .\ntnui\static\js\create_new_event.js:153
+#: .\ntnui\static\js\events\create_new_event.js:136
+#: .\ntnui\static\js\events\create_new_event.js:149
 msgid "Empty field!"
 msgstr "Tomt felt!"
+
+#: .\ntnui\static\js\events\event_details.js:50
+msgid "Do not attend event"
+msgstr "Meld meg av"
+
+#: .\ntnui\static\js\events\event_details.js:74
+msgid "Attend event"
+msgstr "Meld meg på"
+
+#: .\ntnui\static\js\events\event_main.js:128
+msgid "No more events to display!"
+msgstr "Ingen flere arrangement å vise!"
+
+#: .\ntnui\static\js\events\event_main.js:153
+msgid "Place"
+msgstr "Sted"
+
+#: .\ntnui\static\js\events\event_main.js:154
+msgid "Date"
+msgstr "Dato"
+
+#: .\ntnui\static\js\events\event_main.js:155
+msgid "Hosted by "
+msgstr "Arrangert av "

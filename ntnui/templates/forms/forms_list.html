@@ -1,0 +1,12 @@
+{% extends 'forms/forms_list_base.html' %}
+
+{% load static %}
+{% load form_template %}
+
+{% block table_row %}
+  <div class="group-settings-header">{{ form.name }}</div>
+  <div class="group-settings">{{ form.description }}
+    <button type="submit" class="group-settings-public-check btn btn-success" name="openForm"
+            value="{{ form.name }}">Open</button>
+  </div>
+{% endblock %}
