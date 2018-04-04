@@ -46,7 +46,6 @@ class Event(models.Model):
     waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
     sports_groups = models.ManyToManyField(SportsGroup, blank=True, verbose_name=_('hosted by'))
 
-
     class Meta:
         verbose_name = _('event')
         verbose_name_plural = _('events')

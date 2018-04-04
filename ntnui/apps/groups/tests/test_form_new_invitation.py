@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.utils.timezone import localtime, now
-from ..forms import NewInvitationForm
+from groups.forms import NewInvitationForm
 from accounts.models import User
-from ..models import SportsGroup, Invitation
+from groups.models import SportsGroup, Invitation
 
 
 class InvitationFormTest(TestCase):
