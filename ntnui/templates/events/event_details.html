@@ -74,10 +74,26 @@
                                 {% trans 'Do not attend event' %}
                             </button>
                         {% else %}
-                            <button id="attend-event-button" type="button" value="{{ event.id }}" name="mybtn"
-                                    class="btn btn-success">
-                                {% trans 'Attend event' %}
-                            </button>
+                            <div class="stripe-button-container">
+                                <!-- this data-key must be changed to the stripe accounts real data-key -->
+                                <form action="/events" method="POST">
+                                    <script
+                                      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                      data-key="pk_test_TagT9jGDj7CN9NOQfTnueTxz"
+                                      data-amount={{ event.price }}
+                                      data-email={{ user.email }}
+                                      data-name={% for host in event.host %} {{ host }} + ', ' {% endfor %}
+                                      data-description={{ event.name }}
+                                      data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                                      data-locale="auto"
+                                      data-zip-code="true">
+                                    </script>
+                                </form>
+                                <button id="attend-event-button" type="button" value="{{ event.id }}" name="mybtn"
+                                        class="btn btn-success">
+                                    {% trans 'Attend event' %}
+                                </button>
+                            </div>
                         {% endif %}
                     </div>
                 {% endif %}
