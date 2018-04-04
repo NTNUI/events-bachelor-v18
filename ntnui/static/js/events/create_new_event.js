@@ -191,7 +191,8 @@ $(document).ready(function() {
     $("#create-event-button").click(function(e) {
         e.preventDefault();
         if (!name_no.validity.valid || !name_en.validity.valid || !start_date.validity.valid || !end_date.validity.valid
-            || !description_text_no.validity.valid || !description_text_en.validity.valid){
+            || !description_text_no.validity.valid || !description_text_en.validity.valid ||
+            !email_text_no.validity.valid || !email_text_en.validity.valid){
         $("div.alert-message-container").html("<p>Please validate all fields</p>");
 
 
