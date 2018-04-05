@@ -263,6 +263,7 @@ def payment_for_event(request, id):
         try:
             event = Event.objects.get(id=int(id))
             token = request.POST.get('stripeToken')
+            email = request.POST.get('stripeEmail')
             stripe.api_key = settings.STRIPE_SECRET_KEY
             amount = event.price*100
             description = event.name()
@@ -273,6 +274,7 @@ def payment_for_event(request, id):
                 currency="NOK",
                 description=description,
                 source=token,
+                receipt_email=email
             )
 
             attend_event(int(id), request.user)
