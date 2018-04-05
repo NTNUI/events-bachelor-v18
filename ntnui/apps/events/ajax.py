@@ -6,7 +6,8 @@ from .views import (
     remove_attendance_from_event,
     add_attendance_from_subevent,
     remove_attendance_from_subevent,
-    get_events_request
+    get_events_request,
+    payment_for_event
 )
 
 urlpatterns = [
@@ -15,5 +16,6 @@ urlpatterns = [
     url(r'^attend-event$', add_attendance_to_event, name='attend_event'),
     url(r'^remove-attend-event$', remove_attendance_from_event, name='attend_event'),
     url(r'^attend-sub-event$', add_attendance_from_subevent, name='attend_event'),
-    url(r'^remove-attend-sub-event$', remove_attendance_from_subevent, name='attend_event')
+    url(r'^remove-attend-sub-event$', remove_attendance_from_subevent, name='attend_event'),
+    url(r'^(?P<id>\d+)/payment$', payment_for_event, name='payment_for_event'),
 ]
