@@ -77,6 +77,8 @@
                         {% endif %}
                     </div>
                 </div>
+                <button id="customButton">Purchase</button>
+
                 {% if not sub_event_list %}
                     <div id="event-sign-up">
                         {% if event.attends %}
@@ -182,4 +184,6 @@
 {% block script %}
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
     <script type="text/javascript" src="{% static 'js/events/event_details.js' %}"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script type="text/javascript" src="{% static 'js/events/stripe_checkout.js' %}"></script>
 {% endblock %}

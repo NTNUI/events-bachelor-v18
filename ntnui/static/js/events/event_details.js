@@ -107,6 +107,7 @@ function getCookie(name) {
  * @param msgType
  * @param msg
  */
+
 function printMessage(msgType, msg) {
 
     //checks the msgType, to get the right color for the alert
