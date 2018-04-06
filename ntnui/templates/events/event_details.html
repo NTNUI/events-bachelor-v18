@@ -98,7 +98,7 @@
                                       {% else %}
                                           data-email="Email adress"
                                       {% endif %}
-                                      data-name={% for host in event.host %} {{ host }}{% endfor %}
+                                      data-name={% for host in event.host %} {{ host }} {% endfor %}
                                       data-description={{ event.name }}
                                       data-image="/static/img/ntnui2.svg"
 
