@@ -119,6 +119,7 @@ class EventDescription(models.Model):
 
     name = models.CharField(_('name'), max_length=100)
     description_text = models.CharField(_('description'), max_length=500)
+    custom_email_text = models.CharField(_('email text'), max_length=250, null=True, blank=True)
     language = models.CharField(_('language'), max_length=30)
     event = models.ForeignKey(Event, verbose_name=_('event'))
 
@@ -232,6 +233,8 @@ class SubEventDescription(models.Model):
 
     name = models.CharField(_('name'), max_length=100)
     language = models.CharField(_('language'), max_length=30)
+    description = models.CharField(_('description'), max_length=500, null=True, blank=True)
+    custom_email_text = models.CharField(_('email text'), max_length=250, null=True, blank=True)
     sub_event = models.ForeignKey(SubEvent, verbose_name=_('sub-event'))
 
     class Meta:
