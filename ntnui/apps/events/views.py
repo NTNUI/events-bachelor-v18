@@ -276,13 +276,14 @@ def payment_for_event(request, id):
         email = request.POST.get('stripeEmail')
         stripe.api_key = settings.STRIPE_SECRET_KEY
         amount = event.price*100
-        description = event.name()
+        name = request.user
+        description = str(event.name()) + " - " + str(name)
 
         # Charge the user's card:
         charge = stripe.Charge.create(
             amount=amount,
             currency="NOK",
-            description=description,
+            description=description ,
             source=token,
             receipt_email=email
         )

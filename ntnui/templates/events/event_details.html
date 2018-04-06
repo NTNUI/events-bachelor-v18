@@ -11,8 +11,6 @@
 
     </div>
     <div id="container">
-
-
         <img id="image-centered" src=" /static/{{ event.cover_photo }}" alt="Event Image"/>
 
         <div id="header">
@@ -71,7 +69,7 @@
                         </div>
 
                         {% if event.require_payment %}
-                            <div class="info">
+                            <div id="price" class="info">
                                 {{ event.price }},-
                             </div>
                         {% endif %}
@@ -179,6 +177,8 @@
             </div>
         </div>
     </div>
+
+
 {% endblock %}
 
 {% block script %}
