@@ -19,6 +19,23 @@
 
         <div id="content-container">
 
+          <!-- Modal -->
+          <div class="modal fade" id="eventModal" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-head">
+                  <p>{% trans 'Are you sure?' %}</p>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-danger" id="attend-event-button" type="button" value="-{{ event.id }} "data-dismiss="modal">
+                      {% trans 'Yes' %}
+                  </button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">No, cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
             <div id="event-info-container">
 
                 <div id="labels-infos">
@@ -80,10 +97,7 @@
                 {% if not sub_event_list %}
                     <div id="event-sign-up">
                         {% if event.attends %}
-                            <button id="attend-event-button" type="button" value="-{{ event.id }}" name="mybtn"
-                                    class="btn btn-danger">
-                                {% trans 'Do not attend event' %}
-                            </button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#eventModal">Unattend from event</button>
                         {% else %}
                             <div class="stripe-button-container">
                             {% if event.require_payment %}
