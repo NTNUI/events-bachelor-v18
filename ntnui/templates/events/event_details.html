@@ -11,8 +11,6 @@
 
     </div>
     <div id="container">
-
-
         <img id="image-centered" src=" /static/{{ event.cover_photo }}" alt="Event Image"/>
 
         <div id="header">
@@ -71,12 +69,14 @@
                         </div>
 
                         {% if event.require_payment %}
-                            <div class="info">
+                            <div id="price" class="info">
                                 {{ event.price }},-
                             </div>
                         {% endif %}
                     </div>
                 </div>
+                <button id="customButton">Purchase</button>
+
                 {% if not sub_event_list %}
                     <div id="event-sign-up">
                         {% if event.attends %}
@@ -86,11 +86,11 @@
                             </button>
                         {% else %}
                             <div class="stripe-button-container">
-                                <!-- this data-key must be changed to the stripe accounts real data-key -->
-                                <form action="/events" method="POST">
+                            {% if event.require_payment %}
+                                <form action="/ajax/events/{{ event.id }}/payment" method="POST"> {% csrf_token %}
                                     <script
                                       src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                      data-key="pk_test_TagT9jGDj7CN9NOQfTnueTxz"
+                                      data-key="{{ STRIPE_KEY }}"
                                       data-amount= {{ event.price }}00
                                       data-currency="NOK"
                                       {% if user.email %}
@@ -110,10 +110,12 @@
                                       data-zip-code="true" >
                                     </script>
                                 </form>
+                                {% else %}
                                 <button id="attend-event-button" type="button" value="{{ event.id }}" name="mybtn"
                                         class="btn btn-success">
                                     {% trans 'Attend event' %}
                                 </button>
+                                {% endif %}
                             </div>
                         {% endif %}
                     </div>
@@ -175,9 +177,13 @@
             </div>
         </div>
     </div>
+
+
 {% endblock %}
 
 {% block script %}
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
     <script type="text/javascript" src="{% static 'js/events/event_details.js' %}"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    <script type="text/javascript" src="{% static 'js/events/stripe_checkout.js' %}"></script>
 {% endblock %}

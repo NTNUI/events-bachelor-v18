@@ -141,6 +141,7 @@ class EventRegistration(models.Model):
 
     registration_time = models.DateTimeField(_('registration time'))
     event = models.ForeignKey(Event, verbose_name = 'event')
+    payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name = 'attendee')
 
     class Meta:

@@ -29,7 +29,7 @@ $(() => {
         const button = event.target
         if (button.value[0]  === "-") {
             button.value = button.value.substring(1,)
-            const URL = '/ajax/events/remove-attend-event'
+            const URL = '/ajax/events/refund'
             removeAttendEvent(button, csrftoken, URL)
         } else {
             const URL = '/ajax/events/attend-event'
@@ -107,6 +107,7 @@ function getCookie(name) {
  * @param msgType
  * @param msg
  */
+
 function printMessage(msgType, msg) {
 
     //checks the msgType, to get the right color for the alert
