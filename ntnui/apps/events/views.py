@@ -177,17 +177,19 @@ def add_attendance_to_event(request):
     if request.POST:
         id = request.POST.get('id')
         event = Event.objects.get(id=int(id))
-        if event.attendance_cap is None or event.attendance_cap > event.get_attendees().count():
-            # Checks that the user is not already attending
-            if not EventRegistration.objects.filter(event=event, attendee=request.user).exists():
-                try:
-                    # Try to create a entry
-                    EventRegistration.objects.create(event=event, attendee=request.user, registration_time=datetime.now())
-                    return get_json(201, 'You are now attending this event')
-                except:
-                    return get_json(400, 'Could not add you to this event')
-            return get_json(400, 'You are already attending this event')
-        return get_json(400, 'Event has reached its maximum number of participants')
+        if event.registration_end_date is None or event.registration_end_date.replace(tzinfo=None) > datetime.now():
+            if event.attendance_cap is None or event.attendance_cap > event.get_attendees().count():
+                # Checks that the user is not already attending
+                if not EventRegistration.objects.filter(event=event, attendee=request.user).exists():
+                    try:
+                        # Try to create a entry
+                        EventRegistration.objects.create(event=event, attendee=request.user, registration_time=datetime.now())
+                        return get_json(201, 'You are now attending this event')
+                    except:
+                        return get_json(400, 'Could not add you to this event')
+                return get_json(400, 'You are already attending this event')
+            return get_json(400, 'Event has reached its maximum number of participants')
+        return get_json(400, 'The registration period has ended')
     return get_json(400, 'Request must be post')
 
 
@@ -213,17 +215,18 @@ def add_attendance_from_subevent(request):
     if request.POST:
         id = request.POST.get('id')
         sub_event = SubEvent.objects.get(id=int(id))
-
-        if sub_event.attendance_cap is None or sub_event.attendance_cap > SubEventRegistration.objects.filter(sub_event=sub_event).count():
-            # Checks that the user is not already attending
-            if not SubEventRegistration.objects.filter(sub_event=sub_event, attendee=request.user).exists():
-                try:
-                    SubEventRegistration.objects.create(sub_event=sub_event, attendee=request.user, registration_time=datetime.now())
-                    return get_json(201, 'Success')
-                except:
-                    return get_json(400, 'Could not join event')
-            return get_json(400, 'You are already attending this event')
-        return get_json(400, 'Event has reached its maximum number of participants')
+        if sub_event.registration_end_date is None or sub_event.registration_end_dateevent.registration_end_date.replace(tzinfo=None) > datetime.now():
+            if sub_event.attendance_cap is None or sub_event.attendance_cap > SubEventRegistration.objects.filter(sub_event=sub_event).count():
+                # Checks that the user is not already attending
+                if not SubEventRegistration.objects.filter(sub_event=sub_event, attendee=request.user).exists():
+                    try:
+                        SubEventRegistration.objects.create(sub_event=sub_event, attendee=request.user, registration_time=datetime.now())
+                        return get_json(201, 'Success')
+                    except:
+                        return get_json(400, 'Could not join event')
+                return get_json(400, 'You are already attending this event')
+            return get_json(400, 'Event has reached its maximum number of participants')
+        return get_json(400, 'The registration period has ended')
     return get_json(400, 'request is not post')
 
 
