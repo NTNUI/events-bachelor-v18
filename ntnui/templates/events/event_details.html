@@ -80,6 +80,12 @@
                             </button>
                         {% endif %}
                     </div>
+                    <div id="event-edit">
+                        {% if can_create_event %}
+                            <button id="edit-event-button" type="button" value="{{ event.id }}" name="myeditbtn"
+                                    class="btn btn-success">Edit</button>
+                        {% endif %}
+                     </div>
                 {% endif %}
             </div>
 

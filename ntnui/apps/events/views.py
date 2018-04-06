@@ -68,6 +68,13 @@ def get_event_details(request, id):
         # Returns false if not
         attends = False
 
+
+    if request.user.is_authenticated():
+        can_create_event = user_can_create_event(request.user)
+    else:
+        can_create_event = False
+
+
     event = {
         'name': event.name(),
         'description': event.description(),
@@ -82,7 +89,8 @@ def get_event_details(request, id):
 
     context = {
         "event": event,
-        "sub_event_list": sub_event_list
+        "sub_event_list": sub_event_list,
+        'can_create_event': can_create_event,
     }
 
     return render(request, 'events/event_details.html', context)
