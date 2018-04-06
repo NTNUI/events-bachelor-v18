@@ -1,19 +1,5 @@
 [
   {
-    "model": "events.tag",
-    "pk": 1,
-    "fields": {
-      "name": "NM"
-    }
-  },
-  {
-    "model": "events.tag",
-    "pk": 2,
-    "fields": {
-      "name": "opptak"
-    }
-  },
-  {
     "model": "events.restriction",
     "pk": 1,
     "fields": {
@@ -35,6 +21,20 @@
     }
   },
   {
+    "model": "events.tag",
+    "pk": 1,
+    "fields": {
+      "name": "NM"
+    }
+  },
+  {
+    "model": "events.tag",
+    "pk": 2,
+    "fields": {
+      "name": "opptak"
+    }
+  },
+  {
     "model": "events.event",
     "pk": 1,
     "fields": {
@@ -42,13 +42,15 @@
       "end_date": "2018-06-16T11:42:56Z",
       "place": "Trondehim",
       "restriction": 1,
+      "attendance_cap": null,
       "priority": false,
       "is_host_ntnui": false,
       "cover_photo": "cover_photo/events/NM-Volleyball/alarm-clock-icon.png",
-      "sports_groups": [
+      "tags": [
         1
       ],
-      "tags": [
+      "waiting_list": [],
+      "sports_groups": [
         1
       ]
     }
@@ -61,14 +63,16 @@
       "end_date": "2018-09-08T11:59:41Z",
       "place": "Trondehim",
       "restriction": 1,
+      "attendance_cap": null,
       "priority": false,
       "is_host_ntnui": false,
       "cover_photo": "cover_photo/events/NM-Friidrett/alarm-clock-icon.png",
-      "sports_groups": [
-        2
-      ],
       "tags": [
         1
+      ],
+      "waiting_list": [],
+      "sports_groups": [
+        2
       ]
     }
   },
@@ -80,11 +84,13 @@
       "end_date": "2018-06-02T12:23:26Z",
       "place": "Gl\u00f8shaugen",
       "restriction": 1,
+      "attendance_cap": null,
       "priority": false,
       "is_host_ntnui": true,
       "cover_photo": "cover_photo/ntnui-volleyball.png",
-      "sports_groups": [],
-      "tags": []
+      "tags": [],
+      "waiting_list": [],
+      "sports_groups": []
     }
   },
   {
@@ -95,11 +101,13 @@
       "end_date": "2018-05-17T12:31:17Z",
       "place": "Trondehim sentrum",
       "restriction": 1,
+      "attendance_cap": null,
       "priority": false,
       "is_host_ntnui": true,
       "cover_photo": "cover_photo/ntnui-volleyball.png",
-      "sports_groups": [],
-      "tags": []
+      "tags": [],
+      "waiting_list": [],
+      "sports_groups": []
     }
   },
   {
@@ -110,13 +118,15 @@
       "end_date": "2018-05-01T12:34:33Z",
       "place": "Idrettsbygget",
       "restriction": 1,
+      "attendance_cap": null,
       "priority": false,
       "is_host_ntnui": false,
       "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "tags": [],
+      "waiting_list": [],
       "sports_groups": [
         4
-      ],
-      "tags": []
+      ]
     }
   },
   {
@@ -127,14 +137,16 @@
       "end_date": "2018-05-13T13:52:49Z",
       "place": "Oslo",
       "restriction": 1,
+      "attendance_cap": null,
       "priority": false,
       "is_host_ntnui": false,
       "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "tags": [],
+      "waiting_list": [],
       "sports_groups": [
         2,
         3
-      ],
-      "tags": []
+      ]
     }
   },
   {
@@ -145,13 +157,15 @@
       "end_date": "2018-06-21T18:00:00Z",
       "place": "Trondehim",
       "restriction": 1,
+      "attendance_cap": null,
       "priority": false,
       "is_host_ntnui": false,
       "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "tags": [],
+      "waiting_list": [],
       "sports_groups": [
         1
-      ],
-      "tags": []
+      ]
     }
   },
   {
@@ -162,13 +176,15 @@
       "end_date": "2018-05-10T12:00:00Z",
       "place": "Trondehim",
       "restriction": 1,
+      "attendance_cap": null,
       "priority": false,
       "is_host_ntnui": false,
       "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "tags": [],
+      "waiting_list": [],
       "sports_groups": [
         3
-      ],
-      "tags": []
+      ]
     }
   },
   {
@@ -179,13 +195,15 @@
       "end_date": "2018-06-13T14:08:35Z",
       "place": "Trondehim",
       "restriction": 1,
+      "attendance_cap": null,
       "priority": false,
       "is_host_ntnui": false,
       "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "tags": [],
+      "waiting_list": [],
       "sports_groups": [
         2
-      ],
-      "tags": []
+      ]
     }
   },
   {
@@ -196,14 +214,16 @@
       "end_date": "2018-05-01T14:10:06Z",
       "place": "Trondehim",
       "restriction": 1,
+      "attendance_cap": null,
       "priority": false,
       "is_host_ntnui": false,
       "cover_photo": "cover_photo/ntnui-volleyball.png",
-      "sports_groups": [
-        4
-      ],
       "tags": [
         2
+      ],
+      "waiting_list": [],
+      "sports_groups": [
+        4
       ]
     }
   },
@@ -215,13 +235,15 @@
       "end_date": "2018-06-06T14:16:04Z",
       "place": "Trondehim",
       "restriction": 1,
+      "attendance_cap": null,
       "priority": false,
       "is_host_ntnui": false,
       "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "tags": [],
+      "waiting_list": [],
       "sports_groups": [
         4
-      ],
-      "tags": []
+      ]
     }
   },
   {
@@ -575,9 +597,10 @@
     "fields": {
       "start_date": "2018-05-01T14:15:00Z",
       "end_date": "2018-05-01T14:30:00Z",
+      "attendance_cap": null,
       "category": 1,
-      "attending_members": [],
-      "tags": []
+      "tags": [],
+      "waiting_list": []
     }
   },
   {
@@ -586,9 +609,10 @@
     "fields": {
       "start_date": "2018-05-01T14:30:00Z",
       "end_date": "2018-05-01T14:45:00Z",
+      "attendance_cap": null,
       "category": 1,
-      "attending_members": [],
-      "tags": []
+      "tags": [],
+      "waiting_list": []
     }
   },
   {
@@ -597,9 +621,10 @@
     "fields": {
       "start_date": "2018-05-01T14:45:00Z",
       "end_date": "2018-05-01T15:00:00Z",
+      "attendance_cap": null,
       "category": 1,
-      "attending_members": [],
-      "tags": []
+      "tags": [],
+      "waiting_list": []
     }
   },
   {
@@ -608,9 +633,10 @@
     "fields": {
       "start_date": "2018-08-09T14:41:52Z",
       "end_date": "2018-09-09T14:42:06Z",
+      "attendance_cap": null,
       "category": 2,
-      "attending_members": [],
-      "tags": []
+      "tags": [],
+      "waiting_list": []
     }
   },
   {
@@ -619,9 +645,10 @@
     "fields": {
       "start_date": "2018-09-09T00:00:00Z",
       "end_date": "2018-05-01T00:00:00Z",
+      "attendance_cap": null,
       "category": 4,
-      "attending_members": [],
-      "tags": []
+      "tags": [],
+      "waiting_list": []
     }
   },
   {
@@ -630,9 +657,10 @@
     "fields": {
       "start_date": "2018-06-14T18:00:00Z",
       "end_date": "2018-06-14T12:00:00Z",
+      "attendance_cap": null,
       "category": 3,
-      "attending_members": [],
-      "tags": []
+      "tags": [],
+      "waiting_list": []
     }
   },
   {
@@ -641,9 +669,10 @@
     "fields": {
       "start_date": "2018-06-14T14:45:09Z",
       "end_date": "2018-07-14T18:00:00Z",
+      "attendance_cap": null,
       "category": 5,
-      "attending_members": [],
-      "tags": []
+      "tags": [],
+      "waiting_list": []
     }
   },
   {

@@ -71,7 +71,6 @@ def create_and_validate_database_entry(request):
             return (False, "active_board is None")
     else:
         return (False, "sportsGroup doesn't exist")
-        
 
 
 
