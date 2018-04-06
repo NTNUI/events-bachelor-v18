@@ -9,7 +9,7 @@ from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 
 from . import create_event, get_events
-from events.models import Event, EventRegistration, Category, SubEvent, SubEventRegistration
+from events.models import Event, EventDescription, EventRegistration, Category, SubEvent, SubEventRegistration
 
 
 def get_main_page(request):
@@ -95,6 +95,33 @@ def get_event_details(request, id):
 
     return render(request, 'events/event_details.html', context)
 
+
+def get_edit_event_page(request, id):
+
+    groups = get_groups_user_can_create_events_for(request.user)
+    event = Event.objects.get(id=int(id))
+    eventdescription_no = EventDescription.objects.get(event=event, language='nb')
+    eventdescription_en = EventDescription.objects.get(event=event, language='en')
+    event = {
+        'name_no': eventdescription_no.name,
+        'name_en': eventdescription_en.name,
+        'description_no': eventdescription_no.description_text,
+        'description_en': eventdescription_en.description_text,
+        'email_text_no': eventdescription_no.custom_email_text,
+        'email_text_en': eventdescription_no.custom_email_text,
+
+        'start_date': event.start_date,
+        'end_date': event.end_date,
+        'id': event.id,
+        'host': event.get_host(),
+        'place': event.place,
+        'groups': groups
+    }
+
+    context = {
+        "event": event,
+    }
+    return render(request, 'events/edit_event_page.html', context)
 
 def get_events_request(request):
     return get_events.get_events(request)

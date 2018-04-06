@@ -82,8 +82,9 @@
                     </div>
                     <div id="event-edit">
                         {% if can_create_event %}
-                            <button id="edit-event-button" type="button" value="{{ event.id }}" name="myeditbtn"
-                                    class="btn btn-success">Edit</button>
+                            <a id="edit-event-button" href="{% url 'edit_event_page' event.id %}">
+                                <button type="button" class="buttons btn btn-success">{% trans 'Edit event' %}</button>
+                            </a>
                         {% endif %}
                      </div>
                 {% endif %}

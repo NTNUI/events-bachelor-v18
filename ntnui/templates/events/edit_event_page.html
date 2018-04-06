@@ -5,18 +5,18 @@
 
   <link rel="stylesheet" href="{% static 'css/create_new_event.css' %}">
 {% endblock %}
-    {% block title %}NTNUI - Create events{% endblock %}
+    {% block title %}NTNUI - Edit events{% endblock %}
 
     {% block content %}
 
-        <h1>{% trans 'Create new event:' %}</h1>
+        <h1>{% trans 'Edit event:' %}</h1>
         <form id="create-event-form" >{% csrf_token %}
             <div class="container-fluid" id="cont1">
             <div class="col-sm">
             <div class="form-group row">
               <label class="col-2 col-form-label">{% trans 'Name norwegian' %}</label>
               <div class="col-10">
-                <input class="form-control" onblur="return validateName_no()" pattern="^[a-zA-ZæøåÆØÅ\-\s]*$" type="text" name="name_no" value=""required>
+                <input class="form-control" onblur="return validateName_no()" pattern="^[a-zA-ZæøåÆØÅ\-\s]*$" type="text" name="name_no" value="{{ event.name_no }}" required>
                 <div id="name-no-alerter" class="alert alert-danger collapse" role="alert">
                     <p id="name_no_message"></p>
                 </div>
@@ -26,7 +26,7 @@
             <div class="form-group row">
               <label class="col-2 col-form-label">{% trans 'Name english' %}</label>
               <div class="col-10">
-                <input class="form-control" onblur="return validateName_en()" pattern="^[a-zA-Z\-\s]*$" type="text" name="name_en" required>
+                <input class="form-control" onblur="return validateName_en()" pattern="^[a-zA-Z\-\s]*$" type="text" name="name_en" value="{{ event.name_en }}" required>
                 <div id="name-en-alerter" class="alert alert-danger collapse" role="alert">
                     <p id="name_en_message"></p>
                 </div>
@@ -36,7 +36,7 @@
             <div class="form-group row">
               <label class="col-2 col-form-label">{% trans 'Description norwegian' %}</label>
               <div class="col-10">
-                  <textarea class="form-control" type="textArea" onblur="return validateDescription_text_no()" name="description_text_no" required></textarea>
+                  <textarea class="form-control" type="textArea" onblur="return validateDescription_text_no()" name="description_text_no" required>{{ event.description_no }}</textarea>
                   <div id="description-no-alerter" class="alert alert-danger collapse" role="alert">
                       <p id="description_no_message"></p>
                   </div>
@@ -46,7 +46,7 @@
             <div class="form-group row">
               <label class="col-2 col-form-label">{% trans 'Description english' %}</label>
               <div class="col-10">
-                  <textarea class="form-control" type="textArea" onblur="return validateDescription_text_en()" name="description_text_en" required></textarea>
+                  <textarea class="form-control" type="textArea" onblur="return validateDescription_text_en()" name="description_text_en" required>{{ event.description_en }}</textarea>
                   <div id="description-en-alerter" class="alert alert-danger collapse" role="alert">
                     <p id="description_en_message"></p>
                   </div>
@@ -70,7 +70,7 @@
                 <div class="form-group row">
               <label class="col-2 col-form-label">{% trans 'Email text norwegian' %}</label>
               <div class="col-10">
-                  <textarea class="form-control" type="textArea" onblur="return validateEmail_text_no()" name="email_text_no" required></textarea>
+                  <textarea class="form-control" type="textArea" onblur="return validateEmail_text_no()" name="email_text_no" required>{{ event.email_text_no }}</textarea>
                   <div id="email-text-no-alerter" class="alert alert-danger collapse" role="alert">
                       <p id="email_no_message"></p>
                   </div>
@@ -80,7 +80,7 @@
             <div class="form-group row">
               <label class="col-2 col-form-label">{% trans 'Email text english' %}</label>
               <div class="col-10">
-                  <textarea class="form-control" type="textArea" onblur="return validateEmail_text_en()" name="email_text_en" required></textarea>
+                  <textarea class="form-control" type="textArea" onblur="return validateEmail_text_en()" name="email_text_en" required>{{ event.email_text_en }}</textarea>
                   <div id="email-text-en-alerter" class="alert alert-danger collapse" role="alert">
                     <p id="email_en_message"></p>
                   </div>
@@ -91,7 +91,7 @@
             <div class="form-group row">
               <label class="col-2 col-form-label">{% trans 'Start date:' %}</label>
               <div class="col-10">
-                   <input class="form-control" type="datetime-local" onblur="return validateStart_date()" name="start_date" required>
+                   <input class="form-control" type="datetime-local" onblur="return validateStart_date()" name="start_date" value="{{ event.start_date }}" required>
                     <div id="start-date-alerter" class="alert alert-danger collapse" role="alert">
                         <p id="start_date_message"></p>
                     </div>
@@ -101,12 +101,21 @@
             <div class="form-group row">
               <label class="col-2 col-form-label">{% trans 'To date:' %}</label>
               <div class="col-10">
-                   <input class="form-control" type="datetime-local" onblur="return validateEnd_date()" name="end_date" required>
+                   <input class="form-control" type="datetime-local" onblur="return validateEnd_date()" name="end_date" value="{{ event.end_date }}" required>
                     <div id="end-date-alerter" class="alert alert-danger collapse" role="alert">
                         <p id="end_date_message"></p>
                     </div>
               </div>
 
+            </div>
+            <div class="form-group row">
+              <label class="col-2 col-form-label">{% trans 'Name english' %}</label>
+              <div class="col-10">
+                <input class="form-control" onblur="return validateName_en()" type="text" name="name_en" value="{{ event.end_date }}" required>
+                <div id="name-en-alerter" class="alert alert-danger collapse" role="alert">
+                    <p id="name_en_message"></p>
+                </div>
+              </div>
             </div>
 
 
