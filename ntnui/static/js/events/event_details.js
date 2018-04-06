@@ -47,7 +47,8 @@ $(() => {
         if (button.value[0] === "-") {
             button.value = button.value.substring(1,)
             const URL = '/ajax/events/remove-attend-sub-event'
-            removeAttendEvent(button, csrftoken, URL)
+            let buttonText = gettext('attend event')
+            removeAttendEvent(button, csrftoken, URL, buttonText)
         } else {
             const URL = '/ajax/events/attend-sub-event'
             attendEvent(button, csrftoken, URL)
