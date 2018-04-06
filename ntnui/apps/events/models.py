@@ -37,6 +37,7 @@ class Event(models.Model):
 
     start_date = models.DateTimeField(_('start date'))
     end_date = models.DateTimeField(_('end date'))
+    registration_end_date = models.DateTimeField(_('registration end date'), blank=True, null=True)
     place = models.CharField(_('place'), max_length=50, blank=True)
     restriction = models.ForeignKey(Restriction, verbose_name=_('restriction'), default=0)
     attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
@@ -196,6 +197,7 @@ class SubEvent(models.Model):
     start_date = models.DateTimeField(_('start date'))
     end_date = models.DateTimeField(_('end date'))
     attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
+    registration_end_date = models.DateTimeField(_('registration end date'), blank=True, null=True)
     category = models.ForeignKey(Category, verbose_name=_('category'))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
