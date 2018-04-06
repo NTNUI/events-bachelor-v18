@@ -190,7 +190,7 @@ def add_attendance_to_event(request):
 def attend_event(id, user, payment_id):
     event = Event.objects.get(id=id)
     if event.attendance_cap is None or event.attendance_cap > event.get_attendees().count():
-        if payment_id is not None and event.require_payment:
+        if payment_id is not None or event.require_payment:
             # Checks that the user is not already attending
             if not EventRegistration.objects.filter(event=event, attendee=user).exists():
                 try:
@@ -215,8 +215,8 @@ def remove_attendance_from_event(request):
     """Remove the user from attending the given event """
     if request.POST:
         id = int(request.POST.get('id'))
-        user = request.id
-        return remove_attendance(user, id)
+        user = request.user
+        return remove_attendance(id, user)
     return get_json(400, 'request is not post')
 
 def remove_attendance(id, user):
@@ -224,7 +224,7 @@ def remove_attendance(id, user):
         if EventRegistration.objects.filter(event__id=id, attendee=user).exists():
             registration = EventRegistration.objects.get(event__id=id, attendee=user)
             registration.delete()
-            return get_json(201, 'Success')
+            return get_json(201, 'You are no longer attedning this event')
         return get_json(400, 'Attendance dose not exists')
     except:
         return get_json(400, 'Could not remove attendence')
@@ -271,49 +271,66 @@ def remove_attendance_from_subevent(request):
 
 def payment_for_event(request, id):
     if request.POST:
-        event = Event.objects.get(id=int(id))
-        token = request.POST.get('stripeToken')
-        email = request.POST.get('stripeEmail')
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-        amount = event.price*100
-        name = request.user
-        description = str(event.name()) + " - " + str(name)
+        try:
+            event = Event.objects.get(id=int(id))
+            token = request.POST.get('stripeToken')
+            email = request.POST.get('stripeEmail')
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            amount = event.price*100
+            name = request.user
+            description = str(event.name()) + " - " + str(name)
 
-        # Charge the user's card:
-        charge = stripe.Charge.create(
-            amount=amount,
-            currency="NOK",
-            description=description ,
-            source=token,
-            receipt_email=email
-        )
-        if charge:
-            attend_event(int(id), request.user, charge.id)
+            # Charge the user's card:
+            charge = stripe.Charge.create(
+                amount=amount,
+                currency="NOK",
+                description=description ,
+                source=token,
+                receipt_email=email
+            )
+            if charge:
+                attend_event(int(id), request.user, charge.id)
+                return get_json(200, 'You are now attending this event')
+        except:
+            return get_json(404, 'Payment not excepted')
+    return get_json(404, 'Request must be post.')
 
-        return render(request, 'events/event_payment_success.html', {
-            'event': event,
-        })
-
-
-    return HttpResponse(status=404)
 
 def refund_event(request):
     if request.POST:
-        id = request.POST.get('id')
+        try:
+            id = request.POST.get('id')
+            event = Event.objects.get(id=int(id))
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+
+            event_registration = EventRegistration.objects.get(attendee=request.user, event=event)
+
+            # refund user
+            refund = stripe.Refund.create(
+                charge = event_registration.payment_id
+            )
+            if refund:
+                remove_attendance(event.id, request.user)
+                return get_json(200, 'Refund accepted')
+        except:
+            return get_json(404, 'Woops, something went wrong')
+    return get_json(404, 'Request must be post!')
+
+
+def get_event(request, id):
+    if Event.objects.filter(id=int(id)).exists():
         event = Event.objects.get(id=int(id))
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-
-        event_registration = EventRegistration.objects.get(attendee=request.user, event=event)
-
-        # refund user
-        refund = stripe.Refund.create(
-            charge = event_registration.payment_id
-        )
-        if refund:
-            remove_attendance(event.id, request.user)
-
-        return render(request, 'events/event_refund_success.html', {
-            'event': event,
+        return JsonResponse({
+            'id': event.id,
+            'name': event.name(),
+            'place': event.place,
+            'description': event.description(),
+            'start_date': event.start_date,
+            'end_date': event.end_date,
+            'priority': event.priority,
+            'price': event.price,
+            'host': event.get_host(),
+            'cover_photo': str(event.cover_photo)
         })
+    return get_json(404, "Event with id: " + id + " dose not exist")
 
-    return HttpResponse(status=404)
