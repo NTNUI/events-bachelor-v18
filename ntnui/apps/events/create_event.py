@@ -73,7 +73,6 @@ def create_and_validate_database_entry(request):
         return (False, "sportsGroup doesn't exist")
 
 
-
 def create_event_for_group(data, priority, is_ntnui):
     """Creates a new event hosted by a group"""
     try:
