@@ -75,8 +75,6 @@
                         {% endif %}
                     </div>
                 </div>
-                <button id="customButton">Purchase</button>
-
                 {% if not sub_event_list %}
                     <div id="event-sign-up">
                         {% if event.attends %}
@@ -85,38 +83,13 @@
                                 {% trans 'Do not attend event' %}
                             </button>
                         {% else %}
-                            <div class="stripe-button-container">
+                            <button id="attend-event-button" type="button" value="{{ event.id }}" name="mybtn" class="btn btn-success">
                             {% if event.require_payment %}
-                                <form action="/ajax/events/{{ event.id }}/payment" method="POST"> {% csrf_token %}
-                                    <script
-                                      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                      data-key="{{ STRIPE_KEY }}"
-                                      data-amount= {{ event.price }}00
-                                      data-currency="NOK"
-                                      {% if user.email %}
-                                          data-email="{{ user.email }}"
-                                      {% else %}
-                                          data-email="Email adress"
-                                      {% endif %}
-                                      data-name={% for host in event.host %} {{ host }}{% endfor %}
-                                      data-description={{ event.name }}
-                                      data-image="/static/img/ntnui2.svg"
-
-                                      {% if event.language == 'nb' %}
-                                          data-locale='no'
-                                      {% else %}
-                                          data-locale="{{ event.language}}"
-                                      {% endif %}
-                                      data-zip-code="true" >
-                                    </script>
-                                </form>
-                                {% else %}
-                                <button id="attend-event-button" type="button" value="{{ event.id }}" name="mybtn"
-                                        class="btn btn-success">
-                                    {% trans 'Attend event' %}
+                                Pay using card
+                            {% else %}
+                                {% trans 'Attend event' %}
                                 </button>
-                                {% endif %}
-                            </div>
+                            {% endif %}
                         {% endif %}
                     </div>
                 {% endif %}
@@ -185,5 +158,4 @@
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
     <script type="text/javascript" src="{% static 'js/events/event_details.js' %}"></script>
     <script src="https://checkout.stripe.com/checkout.js"></script>
-    <script type="text/javascript" src="{% static 'js/events/stripe_checkout.js' %}"></script>
 {% endblock %}
