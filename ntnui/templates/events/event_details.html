@@ -17,25 +17,25 @@
             {{ event.name }}
         </div>
 
-        <div id="content-container">
-
-          <!-- Modal -->
-          <div class="modal fade" id="eventModal" role="dialog">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-head">
-                  <p>{% trans 'Are you sure?' %}</p>
-                </div>
-                <div class="modal-footer">
-                  <button class="btn btn-danger" id="attend-event-button" type="button" value="-{{ event.id }} "data-dismiss="modal">
-                      {% trans 'Yes' %}
-                  </button>
-                  <button type="button" class="btn btn-danger" data-dismiss="modal">No, cancel</button>
-                </div>
+        <!-- Modal -->
+        <div class="modal fade" id="eventModal" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-head">
+                <p>{% trans 'Are you sure?' %}</p>
+              </div>
+              <div class="modal-footer d-flex justify-content-center">
+                <button class="btn btn-danger" id="attend-event-button" style="margin-top: 1.2rem;" type="button" value="-{{ event.id }} "data-dismiss="modal">
+                  {% trans 'Yes' %}
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, cancel</button>
               </div>
             </div>
           </div>
+        </div>
 
+
+          <div id="content-container">
             <div id="event-info-container">
 
                 <div id="labels-infos">

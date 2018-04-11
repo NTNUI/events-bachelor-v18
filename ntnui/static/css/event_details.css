@@ -1,3 +1,9 @@
+* {
+    --NTNUI-green: #008000;
+    --NTNUI-red: #fb0000;
+    --NTNUI-yellow: #ffff00;
+}
+
 #container {
     width: 100%;
     display: flex;
@@ -131,11 +137,28 @@
 
 .modal {
     z-index: 1050;
+    margin: auto;
+    margin-top: -14rem;
+    text-align: center;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
 }
 
 .modal-footer {
     justify-content: center;
     align-items: center;
+}
+
+.btn-secondary {
+    background-color: var(--NTNUI-yellow) !important;
+}
+
+.btn-primary {
+    background-color: var(--NTNUI-green) !important;
+}
+
+.btn-danger {
+    background-color: var(--NTNUI-red) !important;
 }
 
 @media only screen and (max-width: 700px) {
