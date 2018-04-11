@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
+from django.template.loader import get_template, render_to_string
 from django.utils.translation import gettext as _
 from django.utils import translation
 from groups.models import Board, SportsGroup
@@ -13,6 +14,7 @@ from hs.models import MainBoardMembership
 
 from . import create_event, get_events
 from events.models import Event, EventRegistration, Category, SubEvent, SubEventRegistration
+from django.core.mail import send_mail
 
 
 def get_main_page(request):
@@ -201,13 +203,36 @@ def attend_event(id, user, payment_id):
                     else:
                         EventRegistration.objects.create(event=event, attendee=user,
                                                          registration_time=datetime.now())
-                    return get_json(201, 'You are now attending this event')
                 except:
                     return get_json(400, 'Could not add you to this event')
+                event_send_mail(event, user)
+                return get_json(201, 'You are now attending this event')
             return get_json(400, 'You are already attending this event')
         return get_json(400, 'You have to pay for this event')
     return get_json(400, 'Event has reached its maximum number of participants')
 
+
+def event_send_mail(event, user):
+
+    subject = event.name() + " - " + " - ".join(str(item) for item in event.get_host())
+    from_email = 'noreply@mg.ntnui.no'
+    to_email = [user.email]
+
+
+    content = { 'user': user,
+                  'event': event
+                  }
+
+    msg_plain = render_to_string('events/email/event.txt', content)
+    msg_html = render_to_string('events/email/event.html', content)
+
+    send_mail(
+        subject,
+        msg_plain,
+        from_email,
+        to_email,
+        html_message=msg_html,
+    )
 
 
 @login_required
@@ -269,22 +294,24 @@ def remove_attendance_from_subevent(request):
     return get_json(400, 'request is not post')
 
 
+
+
+
 def payment_for_event(request, id):
     if request.POST:
         try:
             event = Event.objects.get(id=int(id))
             token = request.POST.get('stripeToken')
-            email = request.POST.get('stripeEmail')
+            email = request.POST.get('stripEmail')
             stripe.api_key = settings.STRIPE_SECRET_KEY
             amount = event.price*100
             name = request.user
             description = str(event.name()) + " - " + str(name)
-
             # Charge the user's card:
             charge = stripe.Charge.create(
                 amount=amount,
                 currency="NOK",
-                description=description ,
+                description=description,
                 source=token,
                 receipt_email=email
             )
@@ -315,6 +342,8 @@ def refund_event(request):
         except:
             return get_json(404, 'Woops, something went wrong')
     return get_json(404, 'Request must be post!')
+
+
 
 
 def get_event(request, id):

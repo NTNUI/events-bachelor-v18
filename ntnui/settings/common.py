@@ -174,11 +174,22 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
 
 ##### END STATIC FILE CONFIGURATION #####
 
+
+
+##### MAILGUN SETTINGS #####
+
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'postmaster@mg.ntnui.no'
+EMAIL_HOST_PASSWORD = '1bef7f69ce67109201a182d58cac557f'
+EMAIL_USE_TLS = True
+
+
 ##### LOGIN CONFIGURATION #####
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # USER settings
 DUMMY_USER_EMAIL = 'todd.packer@online.com'
@@ -205,3 +216,5 @@ if PRODUCTION and os.environ.get('STRIPE_SECRET_KEY_LIVE'):
     STRIPE_PUBLIC_KEY = 'pk_live_SegObZmdoJnJQBGx0RQpCJcd'
 elif os.environ.get('STRIPE_SECRET_KEY_TEST'):
     STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY_TEST')
+
+
