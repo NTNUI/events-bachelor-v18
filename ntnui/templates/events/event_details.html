@@ -17,7 +17,7 @@
             {{ event.name }}
         </div>
 
-        <!-- Modal -->
+        <!-- Modal event -->
         <div class="modal fade" id="eventModal" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -27,6 +27,24 @@
               <div class="modal-footer d-flex justify-content-center">
                 <button class="btn btn-danger" id="attend-event-button" style="margin-top: 1.2rem;" type="button" value="-{{ event.id }} "data-dismiss="modal">
                   {% trans 'Yes' %}
+                </button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No, cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal subevent -->
+        <div class="modal fade" id="subEventModal" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-head">
+                <p>{% trans 'Are you sure?' %}</p>
+              </div>
+              <div class="modal-footer d-flex justify-content-center">
+                <button class="join-subevent-button btn btn-danger" type="button"
+                        value="-{{ sub_event.id }}" name="mybtn">
+                    {% trans 'Yes' %}
                 </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No, cancel</button>
               </div>
@@ -141,10 +159,7 @@
                                             </div>
                                             <div class="sub-event-item">
                                                 {% if sub_event.attends %}
-                                                    <button class="join-subevent-button btn btn-danger" type="button"
-                                                            value="-{{ sub_event.id }}" name="mybtn">
-                                                        {% trans 'Do not attend event' %}
-                                                    </button>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#subEventModal">Unattend from event</button>
                                                 {% else %}
                                                     <button class="join-subevent-button btn btn-success "
                                                             type="button"
