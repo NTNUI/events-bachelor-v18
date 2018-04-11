@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.utils.translation import gettext as _
 from groups.models import Board, SportsGroup
@@ -113,7 +113,7 @@ def get_edit_event_page(request, id):
         'description_no': eventdescription_no.description_text,
         'description_en': eventdescription_en.description_text,
         'email_text_no': eventdescription_no.custom_email_text,
-        'email_text_en': eventdescription_no.custom_email_text,
+        'email_text_en': eventdescription_en.custom_email_text,
 
         'start_date': start_date,
         'end_date': end_date,
@@ -128,9 +128,62 @@ def get_edit_event_page(request, id):
     }
     return render(request, 'events/edit_event_page.html', context)
 
+def edit_event(request):
+    try:
+        if request.method == 'POST':
+            data = request.POST
+            print(data)
+            event = Event.objects.get(id=int(data['event_id']))
+            name_no=data['name_no']
+            name_en=data['name_en']
+            description_no=data['description_text_no']
+            description_en = data['description_text_en']
+            email_text_no=data['email_text_no']
+            email_text_en=data['email_text_en']
+            start_date=data['start_date']
+            end_date = data['end_date']
+            host = data['host']
+
+            event.start_date = start_date
+            event.end_date = end_date
+            if host == 'NTNUI':
+                event.is_host_ntnui = True
+            else:
+                event.sports_groups = host
+
+            event.save()
+            eventdescription_no = EventDescription.objects.get(event=event, language='nb')
+            eventdescription_en = EventDescription.objects.get(event=event, language='en')
+
+            eventdescription_no.name = name_no
+            eventdescription_en.name = name_en
+            eventdescription_no.description_text = description_no
+            eventdescription_en.description_text = description_en
+            eventdescription_no.custom_email_text = email_text_no
+            eventdescription_en.custom_email_text = email_text_en
+            eventdescription_no.save()
+            eventdescription_en.save()
+            print(event.start_date)
+            print(event.end_date)
+            print(event.is_host_ntnui)
+            print(event.sports_groups)
+            print(eventdescription_no.name)
+            print(eventdescription_en.name)
+            print(eventdescription_en.description_text)
+            print(eventdescription_no.description_text)
+            print(eventdescription_no.custom_email_text)
+            print(eventdescription_en.custom_email_text)
+
+            return HttpResponse("Edit successful")
+    except:
+        return HttpResponse("Edit failed")
+
 def get_events_request(request):
     return get_events.get_events(request)
 
+@login_required
+def edit_event_request(request):
+    return edit_event(request)
 
 @login_required
 def create_event_request(request):

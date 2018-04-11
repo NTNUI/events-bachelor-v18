@@ -201,7 +201,7 @@ $(document).ready(function() {
             const postData = $('#edit-event-form').serialize()
             $.ajax({
                 type: 'POST',
-                url: '/ajax/events/add-event',
+                url: '/ajax/events/edit-event',
                 data: postData,
                 success: (data) => {
                     //show success alert

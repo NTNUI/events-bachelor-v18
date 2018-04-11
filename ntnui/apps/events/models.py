@@ -91,6 +91,23 @@ class Event(models.Model):
 
     description.short_description = _('description')
 
+    # Returns the event's description, in the given language
+    def email_text(self):
+        custom_email_text_get_language = EventDescription.objects.filter(event=self, language=translation.get_language())
+        custom_email_text_english = EventDescription.objects.filter(event=self, language='en')
+        custom_email_text = EventDescription.objects.filter(event=self)
+
+        if custom_email_text_get_language.exists():
+            return custom_email_text_get_language.exists[0].custom_email_text
+        elif custom_email_text_english.exists():
+            return custom_email_text_english[0].custom_email_text
+        elif custom_email_text.exists():
+            return custom_email_text[0].custom_email_text
+        else:
+            return 'No email text given'
+
+    description.short_description = _('email_text')
+
     # Returns the event's host(s) as a list
     def get_host(self):
         if self.is_host_ntnui:

@@ -9,18 +9,21 @@
 
     {% block content %}
 
-        <h1>{% trans 'Edit event:' %}</h1>
+        <div>
+            <h1>{% trans 'Edit event :' %}</h1>
+        </div>
         <form id="edit-event-form" >{% csrf_token %}
             <div class="container-fluid" id="cont1">
             <div class="col-sm">
             <div class="form-group row">
-              <label class="col-2 col-form-label">{% trans 'Name norwegian' %}</label>
-              <div class="col-10">
-                <input class="form-control" onblur="return validateName_no()" pattern="^[a-zA-ZæøåÆØÅ\-\s]*$" type="text" name="name_no" value="{{ event.name_no }}" required>
-                <div id="name-no-alerter" class="alert alert-danger collapse" role="alert">
-                    <p id="name_no_message"></p>
+                <input type="hidden" id="event-id" name="event_id" value="{{ event.id }}">
+                <label class="col-2 col-form-label">{% trans 'Name norwegian' %}</label>
+                <div class="col-10">
+                    <input class="form-control" onblur="return validateName_no()" pattern="^[a-zA-ZæøåÆØÅ\-\s]*$" type="text" name="name_no" value="{{ event.name_no }}" required>
+                    <div id="name-no-alerter" class="alert alert-danger collapse" role="alert">
+                        <p id="name_no_message"></p>
+                    </div>
                 </div>
-              </div>
 
             </div>
             <div class="form-group row">
