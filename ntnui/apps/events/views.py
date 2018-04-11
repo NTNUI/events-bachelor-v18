@@ -102,6 +102,11 @@ def get_edit_event_page(request, id):
     event = Event.objects.get(id=int(id))
     eventdescription_no = EventDescription.objects.get(event=event, language='nb')
     eventdescription_en = EventDescription.objects.get(event=event, language='en')
+    #convert dates to a format that can be put as value in inputtype datetimelocal html form
+    event_start_date = event.start_date
+    event_end_date = event.end_date
+    start_date='{:%Y-%m-%dT%H:%M}'.format(event_start_date)
+    end_date='{:%Y-%m-%dT%H:%M}'.format(event_end_date)
     event = {
         'name_no': eventdescription_no.name,
         'name_en': eventdescription_en.name,
@@ -110,8 +115,8 @@ def get_edit_event_page(request, id):
         'email_text_no': eventdescription_no.custom_email_text,
         'email_text_en': eventdescription_no.custom_email_text,
 
-        'start_date': event.start_date,
-        'end_date': event.end_date,
+        'start_date': start_date,
+        'end_date': end_date,
         'id': event.id,
         'host': event.get_host(),
         'place': event.place,

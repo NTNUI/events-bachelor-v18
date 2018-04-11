@@ -10,7 +10,7 @@
     {% block content %}
 
         <h1>{% trans 'Edit event:' %}</h1>
-        <form id="create-event-form" >{% csrf_token %}
+        <form id="edit-event-form" >{% csrf_token %}
             <div class="container-fluid" id="cont1">
             <div class="col-sm">
             <div class="form-group row">
@@ -55,9 +55,14 @@
                 <div class="form-group row">
                     <label class="col-2 col-form-label">{% trans 'Host' %}</label>
                     <div class="col-10">
-                        <select class="form-control" name="host" required>
-                            {% for group in groups %}
-                                <option value="{{ group.id }}">{{ group.name }}</option>
+                        <select class="form-control" name="host" value="{{ event.host }}" required>
+                            {% for group in event.groups %}
+                                {% if group == event.host %}
+                                    <option selected value="{{ group.id }}">{{ group.name }}</option>
+                                {% else %}
+                                    <option value="{{ group.id }}">{{ group.name }}</option>
+                                {% endif %}
+
                             {% endfor %}
                         </select>
                     </div>
@@ -108,15 +113,6 @@
               </div>
 
             </div>
-            <div class="form-group row">
-              <label class="col-2 col-form-label">{% trans 'Name english' %}</label>
-              <div class="col-10">
-                <input class="form-control" onblur="return validateName_en()" type="text" name="name_en" value="{{ event.end_date }}" required>
-                <div id="name-en-alerter" class="alert alert-danger collapse" role="alert">
-                    <p id="name_en_message"></p>
-                </div>
-              </div>
-            </div>
 
 
              </div>
@@ -124,7 +120,7 @@
         <div class="alert-message-container">
 
         </div>
-            <button id="create-event-button" type="button" class="btn btn-success">{% trans 'Create event' %}</button>
+            <button id="edit-event-button" type="button" class="btn btn-success">{% trans 'Edit event' %}</button>
         </form>
 
     {% endblock %}
@@ -132,5 +128,5 @@
 
 {% block script %}
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
-    <script type="text/javascript" src="{% static 'js/events/create_new_event.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/events/edit_event.js' %}"></script>
 {% endblock %}
