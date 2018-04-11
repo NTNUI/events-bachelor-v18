@@ -42,8 +42,7 @@
                 <p>{% trans 'Are you sure?' %}</p>
               </div>
               <div class="modal-footer d-flex justify-content-center">
-                <button class="join-subevent-button btn btn-danger" type="button"
-                        value="-{{ sub_event.id }}" name="mybtn">
+                <button class="join-subevent-button btn btn-danger" type="button" value="-{{ sub_event.id }}" name="mybtn" data-dismiss="modal">
                     {% trans 'Yes' %}
                 </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No, cancel</button>
