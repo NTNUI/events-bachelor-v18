@@ -324,6 +324,7 @@ def payment_for_event(request, id):
 
 
 def refund_event(request):
+    print(request.POST.get('id'))
     if request.POST:
         try:
             id = request.POST.get('id')

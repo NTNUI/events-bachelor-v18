@@ -1,100 +1,102 @@
+// defines variables that will be used
+let buttonValue
+let button
+let csrftoken
+let url
+let buttonText
+
 /**
  * When the document have loaded, add listener to attend-event-button and send ajax.
  */
-let buttonValue
-
 $(() => {
-    let handler = StripeCheckout.configure({
-    key: 'pk_test_TagT9jGDj7CN9NOQfTnueTxz',
-    image: "/static/img/ntnui2.svg",
-    locale: 'auto',
-    token: (token) => {
-        const csrftoken = getCookie('csrftoken');
-        $.ajax({
-        dataType: "json",
-        type: "POST",
-        url: '/ajax/events/' + buttonValue + '/payment',
-        data: {
-            csrfmiddlewaretoken: csrftoken,
-            stripeToken: token.id,
-            stripEmail:token.email
-        },
-        success: (data) => {
-            button = $("#attend-event-button")
-            printMessage('Success', data.message)
-            button.text(gettext("Do not attend event"))
-            button.val( '-' + button.val())
-            button.attr("class", "btn btn-danger")
-            slideUpAlert()
-        },
-        error: (data) => {
-            printMessage('Error', data.message)
-            slideUpAlert()
-        }
-        });
-    }
-    });
+    csrftoken = getCookie('csrftoken')
 
+    /**
+     * Configure stripe
+     */
+    let handler = StripeCheckout.configure({
+        key: 'pk_test_TagT9jGDj7CN9NOQfTnueTxz',
+        image: "/static/img/ntnui2.svg",
+        locale: 'auto',
+        token: (token) => {
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                url: '/ajax/events/' + buttonValue + '/payment',
+                data: {
+                    csrfmiddlewaretoken: csrftoken,
+                    stripeToken: token.id,
+                    stripEmail: token.email
+                },
+                success: (data) => {
+                    button.innerHTML = gettext("Do not attend event")
+                    button.value = '-' + button.value
+                    button.setAttribute("class", "btn btn-danger")
+                    slideUpAlert()
+                },
+                error: (data) => {
+                    printMessage('Error', data.responseJSON.message)
+                    slideUpAlert()
+                }
+            });
+        }
+    });
 
     /**
      * Sends a attend subevet request
      */
     $(".join-subevent-button").click(() => {
-        const csrftoken = getCookie('csrftoken');
-        const button = event.target
-
+        button = event.target
         // IF the first sign is a - we want to remove attending event
         if (button.value[0] === "-") {
-            button.value = button.value.substring(1,)
-            const URL = '/ajax/events/remove-attend-sub-event'
-            let buttonText = gettext('attend event')
-            removeAttendEvent(button, csrftoken, URL, buttonText)
+            url = '/ajax/events/remove-attend-sub-event'
+            buttonText = gettext('attend event')
+            openModal()
         } else {
-            const URL = '/ajax/events/attend-sub-event'
-            attendEvent(button, csrftoken, URL)
+            url = '/ajax/events/attend-sub-event'
+            attendEvent()
         }
     })
-
     /**
      * Sends a attend event request to the server
      */
     $("#attend-event-button").click((e) => {
-
-        const csrftoken = getCookie('csrftoken')
-
-        const pathArray = window.location.pathname.split('/');
-        const button = event.target
-
+        button = event.target
         if (button.value[0] === "-") {
-            button.value = button.value.substring(1,)
-            let URL = ""
-            let buttonText = gettext('attend event')
+            buttonText = gettext('attend event')
             if ($("#price").length === 0) {
-                URL = '/ajax/events/remove-attend-event'
+                url = '/ajax/events/remove-attend-event'
             } else {
-                URL = '/ajax/events/refund'
+                url = '/ajax/events/refund'
                 buttonText = gettext('Pay using card')
             }
-            removeAttendEvent(button, csrftoken, URL, buttonText)
+            openModal()
         } else {
             if ($("#price").length === 0) {
-                const URL = '/ajax/events/attend-event'
-                console.log("here")
-                attendEvent(button, csrftoken, URL)
+                url = '/ajax/events/attend-event'
+                attendEvent()
             } else {
-                attendPayedEvent(csrftoken, e, button)
+                attendPayedEvent(e)
             }
         }
-})
+    })
 
-    function attendEvent(button, csrftoken, URL) {
+    function openModal() {
+        $("#deleteModal").modal('show')
+    }
+
+    $("#remove-attend-event-button").click(() => {
+        removeAttendEvent()
+    })
+
+    function attendEvent() {
         $.ajax({
             type: 'POST',
             data: {
                 csrfmiddlewaretoken: csrftoken,
                 id: button.value
             },
-            url: URL,
+            url: url,
             success: (data) => {
                 button.innerHTML = gettext("Do not attend event")
                 button.value = '-' + button.value
@@ -103,13 +105,13 @@ $(() => {
                 slideUpAlert()
 
             }, error: (data) => {
-                printMessage('Error', data.message)
+                printMessage('Error', data.responseJSON.message)
                 slideUpAlert()
             }
         })
     }
 
-    function attendPayedEvent(csrftoken, e, button) {
+    function attendPayedEvent(e) {
         const URL = '/ajax/events/' + button.value
         buttonValue = button.value
         $.ajax({
@@ -117,30 +119,30 @@ $(() => {
             url: URL,
             success: event => {
                 $.ajax({
-                dataType: "json",
-                url: '/ajax/accounts',
-                success: user => {
-                    handler.open({
-                    amount: parseInt(event.price)*100,
-                    currency: "nok",
-                    name: event.host,
-                    description: event.name,
-                    email: user.email,
-                    });
+                    dataType: "json",
+                    url: '/ajax/accounts',
+                    success: user => {
+                        handler.open({
+                            amount: parseInt(event.price) * 100,
+                            currency: "nok",
+                            name: event.host,
+                            description: event.name,
+                            email: user.email,
+                        });
 
-                    e.preventDefault();
-                },
-                error: data => {
-                    printMessage('Error', 'Could not get userinfo')
-                    slideUpAlert()
-                }
+                        e.preventDefault();
+                    },
+                    error: data => {
+                        printMessage('Error', gettext('Could not get userinfo'))
+                        slideUpAlert()
+                    }
                 });
             },
             error: data => {
-                printMessage('Error', 'Could not get event info')
+                printMessage('Error', gettext('Could not get event info'))
                 slideUpAlert()
-             }
-            })
+            }
+        })
     }
 
     /**
@@ -148,14 +150,15 @@ $(() => {
      * @param button
      * @param csrftoken
      */
-    function removeAttendEvent(button, csrftoken, URL, buttonText) {
+    function removeAttendEvent() {
+        button.value = button.value.substring(1,)
         $.ajax({
             type: 'POST',
             data: {
                 csrfmiddlewaretoken: csrftoken,
                 id: button.value
             },
-            url: URL,
+            url: url,
             success: (data) => {
                 button.innerHTML = buttonText
                 button.setAttribute("class", "btn btn-success")
@@ -163,7 +166,7 @@ $(() => {
                 slideUpAlert()
 
             }, error: (data) => {
-                printMessage('Error', data.message)
+                printMessage('Error', data.responseJSON.message)
                 slideUpAlert()
             }
         })
@@ -172,13 +175,10 @@ $(() => {
 
 })
 
-
-
 // Close Checkout on page navigation:
 window.addEventListener('popstate', function () {
     handler.close();
 });
-
 
 
 // from django website https://docs.djangoproject.com/en/2.0/ref/csrf/
@@ -205,7 +205,6 @@ function getCookie(name) {
  */
 
 function printMessage(msgType, msg) {
-
     //checks the msgType, to get the right color for the alert
     let type = ''
     switch (msgType) {
@@ -228,7 +227,6 @@ function printMessage(msgType, msg) {
  * @param redirect
  */
 function slideUpAlert() {
-
     //set timeout
     setTimeout(() => {
         //slide up the alert

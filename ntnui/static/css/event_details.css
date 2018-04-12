@@ -135,23 +135,7 @@
     align-items: center;
 }
 
-.modal {
-    z-index: 1050;
-    margin: auto;
-    margin-top: -14rem;
-    text-align: center;
-    padding: 0.75rem 1.25rem;
-    margin-bottom: 0;
-}
 
-.modal-footer {
-    justify-content: center;
-    align-items: center;
-}
-
-.btn-secondary {
-    background-color: var(--NTNUI-yellow) !important;
-}
 
 .btn-primary {
     background-color: var(--NTNUI-green) !important;
