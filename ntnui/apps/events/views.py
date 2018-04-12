@@ -144,8 +144,8 @@ def get_groups_user_can_create_events_for(user):
 
     # Finds all the groups were the user is in the board
     for board in Board.objects.filter(president=user) | \
-            Board.objects.filter(vice_president=user) | \
-            Board.objects.filter(cashier=user):
+                 Board.objects.filter(vice_president=user) | \
+                 Board.objects.filter(cashier=user):
 
         # Checks that the board is active
         for group in SportsGroup.objects.filter(active_board=board):
@@ -213,15 +213,13 @@ def attend_event(id, user, payment_id):
 
 
 def event_send_mail(event, user):
-
     subject = event.name() + " - " + " - ".join(str(item) for item in event.get_host())
     from_email = 'noreply@mg.ntnui.no'
     to_email = [user.email]
 
-
-    content = { 'user': user,
-                  'event': event
-                  }
+    content = {'user': user,
+               'event': event
+               }
 
     msg_plain = render_to_string('events/email/event.txt', content)
     msg_html = render_to_string('events/email/event.html', content)
@@ -244,6 +242,7 @@ def remove_attendance_from_event(request):
         return remove_attendance(id, user)
     return get_json(400, 'request is not post')
 
+
 def remove_attendance(id, user):
     try:
         if EventRegistration.objects.filter(event__id=id, attendee=user).exists():
@@ -255,26 +254,26 @@ def remove_attendance(id, user):
         return get_json(400, 'Could not remove attendence')
 
 
-
 @login_required
 def add_attendance_from_subevent(request):
     """Add a user to the given sub-event"""
     if request.POST:
         id = request.POST.get('id')
         sub_event = SubEvent.objects.get(id=int(id))
-        if sub_event.registration_end_date is None or sub_event.registration_end_dateevent.registration_end_date.replace(tzinfo=None) > datetime.now():
-        if sub_event.attendance_cap is None or sub_event.attendance_cap > SubEventRegistration.objects.filter(
-                sub_event=sub_event).count():
-            # Checks that the user is not already attending
-            if not SubEventRegistration.objects.filter(sub_event=sub_event, attendee=request.user).exists():
-                try:
-                    SubEventRegistration.objects.create(sub_event=sub_event, attendee=request.user,
-                                                        registration_time=datetime.now())
-                    return get_json(201, 'Success')
-                except:
+        if sub_event.registration_end_date is None or sub_event.registration_end_dateevent.registration_end_date.replace(
+                tzinfo=None) > datetime.now():
+            if sub_event.attendance_cap is None or sub_event.attendance_cap > SubEventRegistration.objects.filter(
+                    sub_event=sub_event).count():
+                # Checks that the user is not already attending
+                if not SubEventRegistration.objects.filter(sub_event=sub_event, attendee=request.user).exists():
+                    try:
+                        SubEventRegistration.objects.create(sub_event=sub_event, attendee=request.user,
+                                                            registration_time=datetime.now())
+                        return get_json(201, 'Success')
+                    except:
                         return get_json(400, 'Could not join event')
-                return get_json(400, 'You are already attending this event')
-            return get_json(400, 'Event has reached its maximum number of participants')
+                    return get_json(400, 'You are already attending this event')
+                return get_json(400, 'Event has reached its maximum number of participants')
         return get_json(400, 'The registration period has ended')
     return get_json(400, 'request is not post')
 
@@ -295,9 +294,6 @@ def remove_attendance_from_subevent(request):
     return get_json(400, 'request is not post')
 
 
-
-
-
 def payment_for_event(request, id):
     if request.POST:
         try:
@@ -305,7 +301,7 @@ def payment_for_event(request, id):
             token = request.POST.get('stripeToken')
             email = request.POST.get('stripEmail')
             stripe.api_key = settings.STRIPE_SECRET_KEY
-            amount = event.price*100
+            amount = event.price * 100
             name = request.user
             description = str(event.name()) + " - " + str(name)
             # Charge the user's card:
@@ -336,7 +332,7 @@ def refund_event(request):
 
             # refund user
             refund = stripe.Refund.create(
-                charge = event_registration.payment_id
+                charge=event_registration.payment_id
             )
             if refund:
                 remove_attendance(event.id, request.user)
@@ -344,8 +340,6 @@ def refund_event(request):
         except:
             return get_json(404, 'Woops, something went wrong')
     return get_json(404, 'Request must be post!')
-
-
 
 
 def get_event(request, id):
@@ -364,4 +358,3 @@ def get_event(request, id):
             'cover_photo': str(event.cover_photo)
         })
     return get_json(404, "Event with id: " + id + " dose not exist")
-
