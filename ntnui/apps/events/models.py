@@ -37,6 +37,7 @@ class Event(models.Model):
 
     start_date = models.DateTimeField(_('start date'))
     end_date = models.DateTimeField(_('end date'))
+    registration_end_date = models.DateTimeField(_('registration end date'), blank=True, null=True)
     place = models.CharField(_('place'), max_length=50, blank=True)
     restriction = models.ForeignKey(Restriction, verbose_name=_('restriction'), default=0)
     attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
@@ -125,6 +126,7 @@ class EventDescription(models.Model):
 
     name = models.CharField(_('name'), max_length=100)
     description_text = models.CharField(_('description'), max_length=500)
+    custom_email_text = models.CharField(_('email text'), max_length=250, null=True, blank=True)
     language = models.CharField(_('language'), max_length=30)
     event = models.ForeignKey(Event, verbose_name=_('event'))
 
@@ -202,6 +204,7 @@ class SubEvent(models.Model):
     start_date = models.DateTimeField(_('start date'))
     end_date = models.DateTimeField(_('end date'))
     attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
+    registration_end_date = models.DateTimeField(_('registration end date'), blank=True, null=True)
     category = models.ForeignKey(Category, verbose_name=_('category'))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
@@ -239,6 +242,8 @@ class SubEventDescription(models.Model):
 
     name = models.CharField(_('name'), max_length=100)
     language = models.CharField(_('language'), max_length=30)
+    description = models.CharField(_('description'), max_length=500, null=True, blank=True)
+    custom_email_text = models.CharField(_('email text'), max_length=250, null=True, blank=True)
     sub_event = models.ForeignKey(SubEvent, verbose_name=_('sub-event'))
 
     class Meta:
