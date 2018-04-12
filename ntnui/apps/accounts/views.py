@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+
+from accounts.models import User
 from .forms import SignUpForm
 from django.contrib.auth import login as auth_login
 from django.http import JsonResponse
@@ -44,4 +46,13 @@ def add_last_week_users_from_exeline(request):
     return JsonResponse({
         'message': 'Successfully added members from last day.',
         'members_updated_or_created': added,
+    })
+
+
+def get_user(request):
+    user = request.user
+    return JsonResponse({
+        'first name': user.first_name,
+        'last name': user.last_name,
+        'email': user.email
     })

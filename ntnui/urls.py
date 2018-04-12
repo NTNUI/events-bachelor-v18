@@ -17,6 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 urlpatterns = [
     url(r'^ajax/', include('forms.ajax')),
     url(r'^ajax/events/', include('events.ajax')),
+    url(r'^ajax/accounts/', include('accounts.ajax')),
     url(r'^$', groups_views.list_groups, name='home'),
     url(r'^forms/', include('forms.urls')),
     url(r'^groups/', include('groups.urls')),
