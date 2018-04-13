@@ -208,7 +208,7 @@ $(document).ready(function() {
                 },
                 error: (data) => {
                     //show error alert
-                    printMessage('error', data.responseJSON.message)
+                    printMessage('error', data.message)
                     slideUpAlert(false)
                 }
             })
