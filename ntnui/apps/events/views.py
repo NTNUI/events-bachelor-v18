@@ -249,7 +249,7 @@ def remove_attendance(id, user):
             registration = EventRegistration.objects.get(event__id=id, attendee=user)
             registration.delete()
             return get_json(201, 'You are no longer attedning this event')
-        return get_json(400, 'Attendance dose not exists')
+        return get_json(400, 'Attendance does not exists')
     except:
         return get_json(400, 'Could not remove attendence')
 
