@@ -37,10 +37,12 @@ class Event(models.Model):
 
     start_date = models.DateTimeField(_('start date'))
     end_date = models.DateTimeField(_('end date'))
+    registration_end_date = models.DateTimeField(_('registration end date'), blank=True, null=True)
     place = models.CharField(_('place'), max_length=50, blank=True)
     restriction = models.ForeignKey(Restriction, verbose_name=_('restriction'), default=0)
     attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
     priority = models.BooleanField(_('priority'), default=False)
+    price = models.IntegerField(_('price'), default=0)
     is_host_ntnui = models.BooleanField(_('hosted by NTNUI'), default=False)
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
@@ -56,6 +58,11 @@ class Event(models.Model):
             "cover_photo/events/{}".format(name.replace(" ", "-")), filename)
 
     cover_photo = models.ImageField(upload_to=get_cover_upload_to, default='cover_photo/ntnui-volleyball.png')
+
+    def require_payment(self):
+        if self.price > 0:
+            return True
+        return False
 
     # Returns the event's name, in the given language
     def name(self):
@@ -119,6 +126,7 @@ class EventDescription(models.Model):
 
     name = models.CharField(_('name'), max_length=100)
     description_text = models.CharField(_('description'), max_length=500)
+    custom_email_text = models.CharField(_('email text'), max_length=250, null=True, blank=True)
     language = models.CharField(_('language'), max_length=30)
     event = models.ForeignKey(Event, verbose_name=_('event'))
 
@@ -135,6 +143,7 @@ class EventRegistration(models.Model):
 
     registration_time = models.DateTimeField(_('registration time'))
     event = models.ForeignKey(Event, verbose_name = 'event')
+    payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name = 'attendee')
 
     class Meta:
@@ -195,6 +204,7 @@ class SubEvent(models.Model):
     start_date = models.DateTimeField(_('start date'))
     end_date = models.DateTimeField(_('end date'))
     attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
+    registration_end_date = models.DateTimeField(_('registration end date'), blank=True, null=True)
     category = models.ForeignKey(Category, verbose_name=_('category'))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
@@ -232,6 +242,8 @@ class SubEventDescription(models.Model):
 
     name = models.CharField(_('name'), max_length=100)
     language = models.CharField(_('language'), max_length=30)
+    description = models.CharField(_('description'), max_length=500, null=True, blank=True)
+    custom_email_text = models.CharField(_('email text'), max_length=250, null=True, blank=True)
     sub_event = models.ForeignKey(SubEvent, verbose_name=_('sub-event'))
 
     class Meta:

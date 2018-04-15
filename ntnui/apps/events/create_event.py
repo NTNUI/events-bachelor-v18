@@ -69,9 +69,9 @@ def create_and_validate_database_entry(request):
                 return (False, "user is not in board")
         else:
             return (False, "active_board is None")
-
     else:
         return (False, "sportsGroup doesn't exist")
+
 
 
 def create_event_for_group(data, priority, is_ntnui):
@@ -86,8 +86,8 @@ def create_event_for_group(data, priority, is_ntnui):
             event.sports_groups.add(SportsGroup.objects.get(id=int(data.get('host'))))
 
         # Creates description and checks that it was created
-        if create_description_for_event(event, data.get('description_text_no'), data.get('name_no'), 'nb') and \
-                create_description_for_event(event, data.get('description_text_en'), data.get('name_en'), 'en'):
+        if create_description_for_event(event, data.get('description_text_no'), data.get('email_text_no'), data.get('name_no'), 'nb') and \
+                create_description_for_event(event, data.get('description_text_en'), data.get('email_text_en'), data.get('name_en'), 'en'):
             return True, None
         return False, _('could not create description')
 
@@ -105,10 +105,10 @@ def priority_is_selected(priority):
         return False
 
 
-def create_description_for_event(event, decription, name, lang):
+def create_description_for_event(event, decription, email_text, name, lang):
     """Creates a description for a given event"""
     try:
-        EventDescription.objects.create(name=name, description_text=decription, language=lang, event=event)
+        EventDescription.objects.create(name=name, description_text=decription, custom_email_text=email_text, language=lang, event=event)
         return True
     except Exception as e:
         print(e)

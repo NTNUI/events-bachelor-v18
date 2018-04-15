@@ -20,7 +20,6 @@ $(() => {
 
     $(".host-checkbox").each( (i, checkbox) => {
         if(hostedBy_list.includes(checkbox.value)){
-            console.log("here")
             checkbox.checked = true
             }
         })
@@ -42,8 +41,7 @@ $(() => {
         }
         })
         // update parms
-        let updateString = filterHost.join()
-        updateString = updateString.replace(",", "-")
+        let updateString = filterHost.join("-")
         searchParams.set('filter-host', updateString)
         //update current url
         history.replaceState({}, 'filter', '?' + searchParams)
@@ -60,7 +58,6 @@ $(() => {
         history.replaceState({}, 'search', '?' + searchParams)
         // Load events
         loadEvents(1)
-
     })
 
     $("#sorted-list").on('change', () => {
@@ -99,12 +96,13 @@ function loadEvents(page) {
             'filter-host': filterHost
         },
         success: data => {
-            console.log(data);
             pageNr = parseInt(data.page_number);
             pageCount = data.page_count;
-            displayEvents(data.events, page==1);
+            displayEvents(data.events, page===1);
             if (pageNr === pageCount) {
                 removeButton();
+            }else {
+                showButton();
             }
         },
         error: data => {
@@ -137,7 +135,7 @@ function displayEvent(event) {
     let start_date = new Date(event.start_date)
     let printeble_date = start_date.getDate() + "." + ((start_date.getMonth())+1) + "." + start_date.getFullYear()
     let hosts = event.host
-    console.log(printeble_date)
+
 
     $("#event-container").append(
         '<a href="/events/' + event.id + '/' + event.name.replace(/\s+/g, '-').toLowerCase() + '"><div class="card-body card-body-container">' +
@@ -168,4 +166,7 @@ function displayError(msg) {
 
 function removeButton() {
     $("#load-more").hide();
+}
+function showButton() {
+    $("#load-more").show();
 }

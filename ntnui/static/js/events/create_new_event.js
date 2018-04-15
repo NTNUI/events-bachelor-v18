@@ -46,6 +46,8 @@ var start_date = document.getElementsByName("start_date")[0];
 var end_date = document.getElementsByName("end_date")[0];
 var description_text_no = document.getElementsByName("description_text_no")[0];
 var description_text_en = document.getElementsByName("description_text_en")[0];
+var email_text_no = document.getElementsByName("email_text_no")[0];
+var email_text_en = document.getElementsByName("email_text_en")[0];
 
 //check whether name_no input is valid and make a message pop up if invalid
 function validateName_no() {
@@ -157,16 +159,41 @@ function validateDescription_text_en(){
     }
 }
 
+function validateEmail_text_no() {
+    if (!email_text_no.checkValidity()) {
+        document.getElementById("email_no_message").innerHTML = gettext("Empty field!");
+        $("#email-text-no-alerter").show();
+
+    }
+    else {
+        document.getElementById("email_no_message").innerHTML = "";
+        $("#email-text-no-alerter").hide();
+
+    }
+}
+
+function validateEmail_text_en() {
+    if (!email_text_en.checkValidity()) {
+        document.getElementById("email_en_message").innerHTML = gettext("Empty field!");
+        $("#email-text-en-alerter").show();
+
+    }
+    else {
+        document.getElementById("email_en_message").innerHTML = "";
+        $("#email-text-en-alerter").hide();
+
+    }
+}
+
 //when clicking on create event at the end of the form, check if all fields are valid
 //if they are valid, create the event
 $(document).ready(function() {
     $("#create-event-button").click(function(e) {
         e.preventDefault();
         if (!name_no.validity.valid || !name_en.validity.valid || !start_date.validity.valid || !end_date.validity.valid
-      || !description_text_no.validity.valid || !description_text_en.validity.valid ){
+            || !description_text_no.validity.valid || !description_text_en.validity.valid ||
+            !email_text_no.validity.valid || !email_text_en.validity.valid){
         $("div.alert-message-container").html("<p>Please validate all fields</p>");
-
-
         }
         else{
             const postData = $('#create-event-form').serialize()
@@ -181,7 +208,7 @@ $(document).ready(function() {
                 },
                 error: (data) => {
                     //show error alert
-                    printMessage('error', data.responseJSON.message)
+                    printMessage('error', data.message)
                     slideUpAlert(false)
                 }
             })
