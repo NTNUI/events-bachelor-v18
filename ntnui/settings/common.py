@@ -181,7 +181,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'postmaster@mg.ntnui.no'
-EMAIL_HOST_PASSWORD = '1bef7f69ce67109201a182d58cac557f'
+EMAIL_HOST_PASSWORD = os.environ.get('MAILGUN_PASSWORD')
 EMAIL_USE_TLS = True
 
 
