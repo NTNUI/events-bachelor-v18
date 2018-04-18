@@ -81,6 +81,13 @@ $(() => {
         })
     }
 
+    $("#hide-confirm-delete-div-button").click(() => {
+        $("#confirm-delete").hide()
+    })
+
+    $("#show-confirm-delete-div-button").click(() => {
+        $("#confirm-delete").show()
+    })
 
 })
 

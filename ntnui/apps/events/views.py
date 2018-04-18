@@ -16,7 +16,7 @@ def get_main_page(request):
     """Returns the main page for events"""
 
     # Used to find out if the create-event button shall be rendered or not
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         can_create_event = user_can_create_event(request.user)
     else:
         can_create_event = False
@@ -69,10 +69,33 @@ def get_event_details(request, id):
         attends = False
 
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         can_create_event = user_can_create_event(request.user)
     else:
         can_create_event = False
+
+    if request.user.is_authenticated:
+        if user_is_in_mainboard(request.user):
+            is_in_mainboard = user_is_in_mainboard(request.user)
+        else:
+            is_in_mainboard = False
+
+
+
+        user_boards = get_groups_user_can_create_events_for(request.user)
+        event_hosts = []
+        for group in event.sports_groups.all():
+            event_hosts.append(group)
+
+        is_in_board = False
+        for board in user_boards:
+            if board in event_hosts:
+                is_in_board = True
+
+        if is_in_mainboard or is_in_board:
+            can_edit_and_delete_event = True
+        else:
+            can_edit_and_delete_event = False
 
 
     event = {
@@ -91,9 +114,29 @@ def get_event_details(request, id):
         "event": event,
         "sub_event_list": sub_event_list,
         'can_create_event': can_create_event,
+        'can_edit_and_delete_event': can_edit_and_delete_event,
     }
 
     return render(request, 'events/event_details.html', context)
+
+
+def delete_event(request):
+
+    return get_main_page(request)
+
+
+def get_delete_event(request, id):
+    try:
+        event = Event.objects.get(id=int(id))
+        eventdescription_no = EventDescription.objects.get(event=event, language='nb')
+        eventdescription_en = EventDescription.objects.get(event=event, language='en')
+        event.delete()
+        eventdescription_no.delete()
+        eventdescription_en.delete()
+    except:
+        return HttpResponse("Delete failed")
+
+    return render(request, 'events/delete_event_page.html')
 
 
 def get_edit_event_page(request, id):
@@ -132,8 +175,9 @@ def edit_event(request):
     try:
         if request.method == 'POST':
             data = request.POST
-            print(data)
+
             event = Event.objects.get(id=int(data['event_id']))
+
             name_no=data['name_no']
             name_en=data['name_en']
             description_no=data['description_text_no']
@@ -163,20 +207,11 @@ def edit_event(request):
             eventdescription_en.custom_email_text = email_text_en
             eventdescription_no.save()
             eventdescription_en.save()
-            print(event.start_date)
-            print(event.end_date)
-            print(event.is_host_ntnui)
-            print(event.sports_groups)
-            print(eventdescription_no.name)
-            print(eventdescription_en.name)
-            print(eventdescription_en.description_text)
-            print(eventdescription_no.description_text)
-            print(eventdescription_no.custom_email_text)
-            print(eventdescription_en.custom_email_text)
 
             return HttpResponse("Edit successful")
     except:
         return HttpResponse("Edit failed")
+
 
 def get_events_request(request):
     return get_events.get_events(request)
