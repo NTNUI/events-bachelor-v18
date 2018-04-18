@@ -149,6 +149,7 @@
 
                 <div class="category-card" id="accordion" role="tablist" aria-multiselectable="true">
                     {% for category, sub_events in sub_event_list %}
+
                         <div class="category-card card">
                             <div class="card-header-category card-header" role="tab" id="headingOne"
                                  aria-controls="collapseOne"
@@ -181,6 +182,12 @@
                                                             type="button"
                                                             value="{{ sub_event.id }}" name="mybtn">
                                                         {% trans 'Attend event' %}
+                                                    </button>
+                                                {% endif %}
+                                                {% if can_edit_and_delete_event %}
+                                                    <button type="button" class="delete-subevent-button btn btn-danger"
+                                                            value="{{ sub_event.id }}" >
+                                                        {% trans 'Delete' %}
                                                     </button>
                                                 {% endif %}
                                             </div>

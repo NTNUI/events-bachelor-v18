@@ -1,6 +1,6 @@
 from datetime import datetime
 
-import stripe
+#import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -12,7 +12,7 @@ from django.utils import translation
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 from . import create_event, get_events
-from events.models import Event, EventDescription, EventRegistration, Category, SubEvent, SubEventRegistration
+from events.models import Event, EventDescription, EventRegistration, Category, SubEvent, SubEventRegistration, SubEventDescription
 from django.core.mail import send_mail
 
 
@@ -133,19 +133,42 @@ def delete_event(request):
 
     return get_main_page(request)
 
-
+#Delete event
+#the commented lines are to be uncommented when created events have an eventregistration by default
 def get_delete_event(request, id):
     try:
         event = Event.objects.get(id=int(id))
         eventdescription_no = EventDescription.objects.get(event=event, language='nb')
         eventdescription_en = EventDescription.objects.get(event=event, language='en')
+        #eventregistration = EventRegistration.objects.get(event=event)
+        #if eventregistration.payment_id != '':
+        #    refund_event(request)
         event.delete()
         eventdescription_no.delete()
         eventdescription_en.delete()
+        #eventregistration.delete()
     except:
-        return HttpResponse("Delete failed")
+        return HttpResponse("Event delete failed")
 
     return render(request, 'events/delete_event_page.html')
+
+def delete_subevent(request):
+    try:
+        if request.method == 'POST':
+            data = request.POST
+            subeventid = (data['subeventid'])
+            subevent = SubEvent.objects.get(id=int(subeventid))
+            subeventdescription_no = SubEventDescription.objects.get(sub_event=subevent, language='nb')
+            print(subeventdescription_no.name)
+            subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
+            print(subeventdescription_en.name)
+            #subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
+            subevent.delete()
+            subeventdescription_no.delete()
+            subeventdescription_en.delete()
+            #subeventregistration.delete()
+    except:
+        return HttpResponse("Subevent delete failed")
 
 
 def get_edit_event_page(request, id):
