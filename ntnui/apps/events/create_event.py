@@ -79,7 +79,8 @@ def create_event_for_group(data, priority, is_ntnui):
     try:
         # create the events
         event = Event.objects.create(start_date=data.get('start_date'), end_date=data.get('end_date'),
-                                     priority=priority, is_host_ntnui=is_ntnui)
+                                     priority=priority, is_host_ntnui=is_ntnui, attendance_cap=data.get('attendance_cap'),
+                                     price=data.get('price'))
 
         if not is_ntnui:
             # Add the group as the host
