@@ -119,6 +119,24 @@
                                 {% endif %}
                         {% endif %}
                     </div>
+                    <div id="event-edit">
+                        {% if can_edit_and_delete_event %}
+                            <a id="edit-event-button" href="{% url 'edit_event_page' event.id %}">
+                                <button type="button" class="buttons btn btn-success">{% trans 'Edit event' %}</button>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div id="event-delete">
+                        {% if can_edit_and_delete_event %}
+                                <button id="show-confirm-delete-div-button" type="button" class="buttons btn btn-success">
+                                    {% trans 'Delete event' %}</button>
+                        {% endif %}
+                    </div>
+                    <div id="confirm-delete">
+                    <a id="confirm-button" href="{% url 'get_delete_event' event.id %}">
+                              <button type="button" class="buttons btn btn-success">Confirm</button></a>
+                              <button id="hide-confirm-delete-div-button" type="button" class="btn btn-default">Cancel</button>
+                    </div>
                 {% endif %}
             </div>
 

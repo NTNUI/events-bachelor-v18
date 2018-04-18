@@ -107,6 +107,34 @@
 #attend-event-button {
     margin-bottom: 20px;
 }
+
+#event-edit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#edit-event-button {
+    margin-bottom: 20px;
+}
+
+#event-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#show-confirm-delete-div-button {
+    margin-bottom: 20px;
+}
+
+#confirm-delete {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
 .events-section {
     width: 100%;
     display: flex;
