@@ -2,6 +2,9 @@
 
 {% load static %}
 
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/jquery.modal.min.css' %}"/>
+{% endblock %}
 {% block table_content %}
 
   <div class="download-field">
@@ -52,6 +55,8 @@
 {% endblock %}
 
 {% block script %}
-  <script type="text/javascript" src="{% static 'js/modal.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/search_functions.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/modal.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/search_functions.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.modal.min.js' %}"></script>
+
 {% endblock %}

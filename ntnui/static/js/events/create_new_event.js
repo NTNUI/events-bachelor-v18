@@ -194,8 +194,6 @@ $(document).ready(function() {
             || !description_text_no.validity.valid || !description_text_en.validity.valid ||
             !email_text_no.validity.valid || !email_text_en.validity.valid){
         $("div.alert-message-container").html("<p>Please validate all fields</p>");
-
-
         }
         else{
             const postData = $('#create-event-form').serialize()
@@ -210,7 +208,7 @@ $(document).ready(function() {
                 },
                 error: (data) => {
                     //show error alert
-                    printMessage('error', data.responseJSON.message)
+                    printMessage('error', data.message)
                     slideUpAlert(false)
                 }
             })

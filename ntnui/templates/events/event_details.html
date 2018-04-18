@@ -11,16 +11,33 @@
 
     </div>
     <div id="container">
-
-
         <img id="image-centered" src=" /static/{{ event.cover_photo }}" alt="Event Image"/>
 
         <div id="header">
             {{ event.name }}
         </div>
 
-        <div id="content-container">
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">{% trans 'Are you sure?' %}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
+                        <button type="button" id="remove-attend-event-button"  class="btn btn-danger" data-dismiss="modal">{% trans 'Yes' %}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+
+        <div id="content-container">
             <div id="event-info-container">
 
                 <div id="labels-infos">
@@ -42,6 +59,11 @@
                         <div class="label">
                             {% trans 'End date' %}
                         </div>
+                        {% if event.require_payment %}
+                            <div class="label">
+                                {% trans 'Price' %}
+                            </div>
+                        {% endif %}
 
                     </div>
 
@@ -64,20 +86,37 @@
                         <div class="info">
                             {{ event.end_date }}
                         </div>
+
+                        {% if event.require_payment %}
+                            <div id="price" class="info">
+                                {{ event.price }},-
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
                 {% if not sub_event_list %}
                     <div id="event-sign-up">
                         {% if event.attends %}
-                            <button id="attend-event-button" type="button" value="-{{ event.id }}" name="mybtn"
-                                    class="btn btn-danger">
-                                {% trans 'Do not attend event' %}
+                            <button type="button"
+                                    id="attend-event-button"
+                                    class="btn btn-danger"
+                                    value="-{{ event.id }}"
+                                    data-toggle="modal"
+                                    data-target="#eventModal">
+                                Unattend from event
                             </button>
                         {% else %}
-                            <button id="attend-event-button" type="button" value="{{ event.id }}" name="mybtn"
+                            <button id="attend-event-button"
+                                    type="button"
+                                    value="{{ event.id }}"
+                                    name="mybtn"
                                     class="btn btn-success">
-                                {% trans 'Attend event' %}
-                            </button>
+                                {% if event.require_payment %}
+                                    Pay using card
+                                {% else %}
+                                    {% trans 'Attend event' %}
+                                    </button>
+                                {% endif %}
                         {% endif %}
                     </div>
                     <div id="event-edit">
@@ -133,9 +172,9 @@
                                             </div>
                                             <div class="sub-event-item">
                                                 {% if sub_event.attends %}
-                                                    <button class="join-subevent-button btn btn-danger" type="button"
-                                                            value="-{{ sub_event.id }}" name="mybtn">
-                                                        {% trans 'Do not attend event' %}
+                                                    <button type="button" class="join-subevent-button btn btn-danger"
+                                                            value="-{{ sub_event.id }}">
+                                                        Unattend from event
                                                     </button>
                                                 {% else %}
                                                     <button class="join-subevent-button btn btn-success "
@@ -156,9 +195,12 @@
             </div>
         </div>
     </div>
+
+
 {% endblock %}
 
 {% block script %}
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
     <script type="text/javascript" src="{% static 'js/events/event_details.js' %}"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
 {% endblock %}

@@ -16,7 +16,5 @@ urlpatterns = [
     url(r'^edit/(?P<id>\d+)/', get_edit_event_page, name='edit_event_page'),
     url(r'^delete/(?P<id>\d+)/$', get_delete_event, name='get_delete_event'),
     url(r'^$', delete_event, name='delete_event'),
-    
+
 ]
-
-
