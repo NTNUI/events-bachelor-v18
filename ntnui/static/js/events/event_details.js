@@ -4,6 +4,7 @@ let button
 let csrftoken
 let url
 let buttonText
+let modalType
 
 /**
  * When the document have loaded, add listener to attend-event-button and send ajax.
@@ -51,7 +52,7 @@ $(() => {
         if (button.value[0] === "-") {
             url = '/ajax/events/remove-attend-sub-event'
             buttonText = gettext('attend event')
-            openModal()
+            openModal("removeAttendanceSubEvent")
         } else {
             url = '/ajax/events/attend-sub-event'
             attendEvent()
@@ -70,7 +71,7 @@ $(() => {
                 url = '/ajax/events/refund'
                 buttonText = gettext('Pay using card')
             }
-            openModal()
+            openModal("removeAttendanceEvent")
         } else {
             if ($("#price").length === 0) {
                 url = '/ajax/events/attend-event'
@@ -81,12 +82,39 @@ $(() => {
         }
     })
 
-    function openModal() {
+
+    $("#show-confirm-delete-div-button").click(() => {
+        openModal("deleteEvent");
+    });
+
+    function openModal(type) {
+        $("#modal-content").hide();
+        if (type === "removeAttendanceEvent") {
+            $("#modal-content").text("Are you sure you wanna unattand this event?")
+            $("#modal-content").show();
+            modalType = "removeEventAttendance";
+        } else if (type === "removeAttendanceSubEvent") {
+            $("#modal-content").text("Are you sure you wanna unattand this subevent?")
+            $("#modal-content").show();
+            modalType = "removeEventAttendance";
+        } else if (type === "deleteEvent") {
+            $("#modal-content").text("Are you sure you wanna delete this event, " +
+                "if this is a payed event all attendees will be refunded ?")
+            $("#modal-content").show();
+            modalType = "deleteEvent";
+        }
         $("#deleteModal").modal('show')
     }
 
     $("#remove-attend-event-button").click(() => {
-        removeAttendEvent()
+        if (modalType === "removeEventAttendance") {
+            removeAttendEvent()
+        } else if (modalType === "deleteEvent") {
+            // Get eventID, if event id contains - remove it
+            eventID = $("#attend-event-button").val()
+            eventID = eventID.replace('-', '')
+            window.location.href = '/events/delete/' + eventID;
+        }
     })
 
     function attendEvent() {
@@ -171,14 +199,6 @@ $(() => {
             }
         })
     }
-
-    $("#hide-confirm-delete-div-button").click(() => {
-        $("#confirm-delete").hide()
-    })
-
-    $("#show-confirm-delete-div-button").click(() => {
-        $("#confirm-delete").show()
-    })
 
 })
 

@@ -25,6 +25,7 @@
 .alert-message-container {
     z-index: 100;
 }
+
 #image-centered {
     margin: auto;
     max-width: 80%;
@@ -54,6 +55,7 @@
     width: 75%;
     margin: auto;
 }
+
 
 #event-info-container {
     margin-top: 20px;
@@ -124,10 +126,6 @@
     justify-content: center;
 }
 
-#show-confirm-delete-div-button {
-    margin-bottom: 20px;
-}
-
 #confirm-delete {
     display: none;
     align-items: center;
@@ -141,29 +139,37 @@
     justify-content: center;
 }
 
+.button-div {
+    display: flex;
+    align-content: center;
+    color: white;
+}
+
 .category-card {
     width: 100%;
 }
+
 .category-card-container {
     width: 45%;
 }
+
 .card-header-category {
     background-color: white;
     width: 100%;
 }
+
 .sub-event-container {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 }
+
 .sub-event-item {
     padding: 0.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-
 
 .btn-primary {
     background-color: var(--NTNUI-green) !important;
@@ -177,18 +183,26 @@
     .category-card-container {
         width: 95%;
     }
+
     #content-container {
         width: 95%;
         flex-wrap: wrap;
         margin-top: 1rem;
     }
+
     #event-info-container {
         width: 100%;
         margin: 0;
     }
+
     #event-description {
         width: 100%;
         margin: 0;
         margin-bottom: 1rem;
+    }
+
+    #image-centered {
+        max-width: 95%;
+        max-height: 100%;
     }
 }
