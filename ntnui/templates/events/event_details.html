@@ -133,7 +133,7 @@
                 {{ event.description }}
             </div>
         </div>
-        {% if can_edit_and_delete_event %}
+        {% if can_edit_and_delete_event and not sub_event_list %}
             <div class="events-section">
                 <div class="category-card-container">
                     <div class="category-card" id="accordion" role="tablist" aria-multiselectable="true">
@@ -187,6 +187,7 @@
                 </div>
             </div>
         {% endif %}
+
         <div class="events-section">
             <div class="category-card-container">
 
