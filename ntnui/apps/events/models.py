@@ -268,3 +268,17 @@ class SubEventRegistration(models.Model):
 
     def __str__(self):
         return self.sub_event.name() + ' - ' + self.attendee.email
+
+
+class Guest(models.Model):
+    email = models.EmailField(_('email address'))
+    first_name = models.CharField(_('first name'), max_length=30)
+    last_name = models.CharField(_('last name'), max_length=30)
+    phone_number = models.IntegerField(_('phone number'), max_length=8)
+
+    class Meta:
+        verbose_name = _('guest')
+        verbose_name_plural = _('guests')
+
+    def __str__(self):
+        return '{} {}'.format(self.first_name, self.last_name)
