@@ -99,8 +99,8 @@ def get_event_details(request, id):
 
         if is_in_mainboard or is_in_board:
             can_edit_and_delete_event = True
-        else:
-            can_edit_and_delete_event = False
+    else:
+        can_edit_and_delete_event = False
 
 
     event = {
