@@ -23,7 +23,6 @@ class Event(models.Model):
     price = models.IntegerField(_('price'), default=0)
     is_host_ntnui = models.BooleanField(_('hosted by NTNUI'), default=False)
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
-    waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
     sports_groups = models.ManyToManyField(SportsGroup, blank=True, verbose_name=_('hosted by'))
 
     class Meta:
@@ -110,8 +109,8 @@ class EventDescription(models.Model):
     event = models.ForeignKey(Event, verbose_name=_('event'))
 
     class Meta:
-        verbose_name = _('event description')
-        verbose_name_plural = _('event descriptions')
+        verbose_name = _('description')
+        verbose_name_plural = _('descriptions')
 
     def __str__(self):
         return self.name
@@ -122,12 +121,12 @@ class EventRegistration(models.Model):
 
     registration_time = models.DateTimeField(_('registration time'))
     event = models.ForeignKey(Event, verbose_name='event')
-    payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
+    payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name='attendee')
 
     class Meta:
-        verbose_name = _('attendee for event')
-        verbose_name_plural = _('attendees for event')
+        verbose_name = _('attendee')
+        verbose_name_plural = _('attendees')
         unique_together = ('event', 'attendee')
 
     def __str__(self):
@@ -139,12 +138,12 @@ class EventWaitingListRegistration(models.Model):
 
     registration_time = models.DateTimeField(_('registration time'))
     event = models.ForeignKey(Event, verbose_name='event')
-    payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
+    payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name='attendee')
 
     class Meta:
-        verbose_name = _('attendee for event')
-        verbose_name_plural = _('attendees for event')
+        verbose_name = _('waiting list, user')
+        verbose_name_plural = _('waiting list, users')
         unique_together = ('event', 'attendee')
 
     def __str__(self):
@@ -156,12 +155,12 @@ class EventGuestRegistration(models.Model):
 
     registration_time = models.DateTimeField(_('registration time'))
     event = models.ForeignKey(Event, verbose_name='event')
-    payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
+    payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
 
     class Meta:
-        verbose_name = _('attendee for event')
-        verbose_name_plural = _('attendees for event')
+        verbose_name = _('attendee')
+        verbose_name_plural = _('attendees')
         unique_together = ('event', 'attendee')
 
     def __str__(self):
@@ -173,12 +172,12 @@ class EventGuestWaitingListRegistration(models.Model):
 
     registration_time = models.DateTimeField(_('registration time'))
     event = models.ForeignKey(Event, verbose_name='event')
-    payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
+    payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
 
     class Meta:
-        verbose_name = _('attendee for event')
-        verbose_name_plural = _('attendees for event')
+        verbose_name = _('waiting list, guest')
+        verbose_name_plural = _('waiting list, guests')
         unique_together = ('event', 'attendee')
 
     def __str__(self):
