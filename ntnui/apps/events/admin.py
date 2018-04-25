@@ -1,9 +1,11 @@
 from django.contrib import admin
 from events.models.guest import Guest
 from events.models.tag import Tag
-from events.models.event import Event, EventDescription, EventRegistration, Restriction
+from events.models.restriction import Restriction
+from events.models.event import Event, EventDescription, EventRegistration
 from events.models.sub_event import SubEvent, SubEventDescription, SubEventRegistration
 from events.models.category import Category, CategoryDescription
+
 
 class CategoryDescriptionInline(admin.TabularInline):
     """Creates an inline for the CategoryDescription-model."""
