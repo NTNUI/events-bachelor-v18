@@ -4,22 +4,10 @@ from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 from accounts.models import User
+from groups.models import SportsGroup
 from events.models.tag import Tag
 from events.models.guest import Guest
-from groups.models import SportsGroup
-
-
-class Restriction(models.Model):
-    """Restrictions makes it possible to create events for specific groups of users."""
-
-    name = models.CharField(_('name'), max_length=50)
-
-    class Meta:
-        verbose_name = _('restriction')
-        verbose_name_plural = _('restrictions')
-
-    def __str__(self):
-        return self.name
+from events.models.category import Restriction
 
 
 class Event(models.Model):
@@ -146,7 +134,41 @@ class EventRegistration(models.Model):
         return self.event.name() + ' - ' + self.attendee.email
 
 
-class GuestEventRegistration(models.Model):
+class EventGuestRegistration(models.Model):
+    """Contains the relation between a user and an event, to  make a list of attendees"""
+
+    registration_time = models.DateTimeField(_('registration time'))
+    event = models.ForeignKey(Event, verbose_name='event')
+    payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
+    attendee = models.ForeignKey(Guest, verbose_name='attendee')
+
+    class Meta:
+        verbose_name = _('attendee for event')
+        verbose_name_plural = _('attendees for event')
+        unique_together = ('event', 'attendee')
+
+    def __str__(self):
+        return self.event.name() + ' - ' + self.attendee.email
+
+
+class EventWaitingListRegistration(models.Model):
+    """Contains the relation between a user and an event, to  make a list of attendees"""
+
+    registration_time = models.DateTimeField(_('registration time'))
+    event = models.ForeignKey(Event, verbose_name='event')
+    payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
+    attendee = models.ForeignKey(User, verbose_name='attendee')
+
+    class Meta:
+        verbose_name = _('attendee for event')
+        verbose_name_plural = _('attendees for event')
+        unique_together = ('event', 'attendee')
+
+    def __str__(self):
+        return self.event.name() + ' - ' + self.attendee.email
+
+
+class EventGuestWaitingListRegistration(models.Model):
     """Contains the relation between a user and an event, to  make a list of attendees"""
 
     registration_time = models.DateTimeField(_('registration time'))
