@@ -1,8 +1,8 @@
-from events.models.event import Event
-
 from django.db import models
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
+
+from events.models.event import Event
 
 
 class Category(models.Model):
@@ -16,7 +16,8 @@ class Category(models.Model):
 
     # Returns the category's name, in the given language
     def name(self):
-        category_description_get_language = CategoryDescription.objects.filter(category=self, language=translation.get_language())
+        category_description_get_language = CategoryDescription.objects.filter(category=self,
+                                                                               language=translation.get_language())
         category_description_english = CategoryDescription.objects.filter(category=self, language='en')
         category_description = CategoryDescription.objects.filter(category=self)
 

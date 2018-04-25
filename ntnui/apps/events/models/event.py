@@ -1,12 +1,12 @@
 import os
 from django.db import models
-from accounts.models import User
-from groups.models import SportsGroup
-from events.models.tag import Tag
-from events.models.guest import Guest
-from django.db import models
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
+
+from accounts.models import User
+from events.models.tag import Tag
+from events.models.guest import Guest
+from groups.models import SportsGroup
 
 
 class Restriction(models.Model):
@@ -42,8 +42,8 @@ class Event(models.Model):
         verbose_name = _('event')
         verbose_name_plural = _('events')
 
-    def get_cover_upload_to(instance, filename):
-        name = EventDescription.objects.get(event=instance, language=translation.get_language()).name
+    def get_cover_upload_to(self, filename):
+        name = EventDescription.objects.get(event=self, language=translation.get_language()).name
         return os.path.join(
             "cover_photo/events/{}".format(name.replace(" ", "-")), filename)
 
@@ -73,7 +73,8 @@ class Event(models.Model):
 
     # Returns the event's description, in the given language
     def description(self):
-        event_description_get_language = EventDescription.objects.filter(event=self, language=translation.get_language())
+        event_description_get_language = EventDescription.objects.filter(event=self,
+                                                                         language=translation.get_language())
         event_description_english = EventDescription.objects.filter(event=self, language='en')
         event_description = EventDescription.objects.filter(event=self)
 
@@ -99,7 +100,7 @@ class Event(models.Model):
 
     # Returns the event's attendees
     def get_attendees(self):
-        return EventRegistration.objects.filter(event = self) + self.get_attendees()
+        return EventRegistration.objects.filter(event=self) + self.get_attendees()
 
     # Checks a given user attends the event
     def attends(self, user):
@@ -132,9 +133,9 @@ class EventRegistration(models.Model):
     """Contains the relation between a user and an event, to  make a list of attendees"""
 
     registration_time = models.DateTimeField(_('registration time'))
-    event = models.ForeignKey(Event, verbose_name = 'event')
+    event = models.ForeignKey(Event, verbose_name='event')
     payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
-    attendee = models.ForeignKey(User, verbose_name = 'attendee')
+    attendee = models.ForeignKey(User, verbose_name='attendee')
 
     class Meta:
         verbose_name = _('attendee for event')
@@ -149,9 +150,9 @@ class GuestEventRegistration(models.Model):
     """Contains the relation between a user and an event, to  make a list of attendees"""
 
     registration_time = models.DateTimeField(_('registration time'))
-    event = models.ForeignKey(Event, verbose_name = 'event')
+    event = models.ForeignKey(Event, verbose_name='event')
     payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
-    attendee = models.ForeignKey(Guest, verbose_name = 'attendee')
+    attendee = models.ForeignKey(Guest, verbose_name='attendee')
 
     class Meta:
         verbose_name = _('attendee for event')
@@ -160,4 +161,3 @@ class GuestEventRegistration(models.Model):
 
     def __str__(self):
         return self.event.name() + ' - ' + self.attendee.email
-

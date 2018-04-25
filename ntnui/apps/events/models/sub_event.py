@@ -1,10 +1,11 @@
-from accounts.models import User
-from events.models.tag import Tag
-from events.models.category import Category
 from django.db import models
-from events.models.guest import Guest
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
+
+from accounts.models import User
+from events.models.tag import Tag
+from events.models.guest import Guest
+from events.models.category import Category
 
 
 class SubEvent(models.Model):
@@ -24,7 +25,8 @@ class SubEvent(models.Model):
 
     # Returns the name of the event, in the given language.
     def name(self):
-        sub_event_description_get_language = SubEventDescription.objects.filter(sub_event=self, language=translation.get_language())
+        sub_event_description_get_language = SubEventDescription.objects.filter(sub_event=self,
+                                                                                language=translation.get_language())
         sub_event_description_english = SubEventDescription.objects.filter(sub_event=self, language='en')
         sub_event_description = SubEventDescription.objects.filter(sub_event=self)
 
@@ -67,7 +69,7 @@ class SubEventRegistration(models.Model):
     """Contains the relation between a user and an event, to  make a list of attendees."""
 
     registration_time = models.DateTimeField(_('registration time'))
-    sub_event = models.ForeignKey(SubEvent, verbose_name ='sub-event')
+    sub_event = models.ForeignKey(SubEvent, verbose_name='sub-event')
     payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name='attendee')
 
@@ -84,7 +86,7 @@ class GuestSubEventRegistration(models.Model):
     """Contains the relation between a user and an event, to  make a list of attendees."""
 
     registration_time = models.DateTimeField(_('registration time'))
-    sub_event = models.ForeignKey(SubEvent, verbose_name ='sub-event')
+    sub_event = models.ForeignKey(SubEvent, verbose_name='sub-event')
     payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
 
