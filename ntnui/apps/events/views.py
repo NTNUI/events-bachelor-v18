@@ -225,9 +225,14 @@ def edit_event(request):
             start_date=data['start_date']
             end_date = data['end_date']
             host = data['host']
+            attendance_cap = data['attendance_cap']
+            price = data['price']
 
             event.start_date = start_date
             event.end_date = end_date
+            event.attendance_cap = attendance_cap
+            event.price = price
+
             if host == 'NTNUI':
                 event.is_host_ntnui = True
             else:

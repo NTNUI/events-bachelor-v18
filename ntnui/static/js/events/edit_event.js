@@ -48,7 +48,32 @@ let description_text_no = document.getElementsByName("description_text_no")[0];
 let description_text_en = document.getElementsByName("description_text_en")[0];
 let email_text_no = document.getElementsByName("email_text_no")[0];
 let email_text_en = document.getElementsByName("email_text_en")[0];
+let attendance_cap = document.getElementsByName("attendance_cap")[0];
+let price = document.getElementsByName("price")[0];
 
+function validateAttendance_cap() {
+
+    if (!attendance_cap.checkValidity()) {
+        document.getElementById("attendance_cap_message").innerHTML = gettext("Invalid input!");
+        $("#attendance-cap-alerter").show();
+    }
+    else{
+        document.getElementById("attendance_cap_message").innerHTML = "";
+        $("#attendance-cap-alerter").hide();
+    }
+}
+
+function validatePrice() {
+
+    if (!price.checkValidity()) {
+        document.getElementById("price_message").innerHTML = gettext("Invalid input!");
+        $("#price-alerter").show();
+    }
+    else{
+        document.getElementById("price_message").innerHTML = "";
+        $("#price-alerter").hide();
+    }
+}
 //check whether name_no input is valid and make a message pop up if invalid
 function validateName_no() {
 
@@ -191,8 +216,8 @@ $(document).ready(function() {
     $("#edit-event-button").click(function(e) {
         e.preventDefault();
         if (!name_no.validity.valid || !name_en.validity.valid || !start_date.validity.valid || !end_date.validity.valid
-            || !description_text_no.validity.valid || !description_text_en.validity.valid ||
-            !email_text_no.validity.valid || !email_text_en.validity.valid){
+            || !description_text_no.validity.valid || !description_text_en.validity.valid || !email_text_no.validity.valid
+            || !email_text_en.validity.valid || !attendance_cap.validity.valid || !price.validity.valid){
         $("div.alert-message-container").html("<p>Please validate all fields</p>");
 
 
