@@ -1,6 +1,6 @@
 from datetime import datetime
 
-#import stripe
+import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
