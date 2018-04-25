@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/event_details.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/events/event_details.css' %}"/>
 {% endblock %}
 
 {% block content %}
@@ -28,14 +28,17 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    <div id="modal-content" style="padding:1rem;display:none;">
+                    </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
-                        <button type="button" id="remove-attend-event-button"  class="btn btn-danger" data-dismiss="modal">{% trans 'Yes' %}</button>
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">{% trans 'Close' %}</button>
+                        <button type="button" id="remove-attend-event-button" class="btn btn-danger"
+                                data-dismiss="modal">{% trans 'Yes' %}</button>
                     </div>
                 </div>
             </div>
         </div>
-
 
         <div id="content-container">
             <div id="event-info-container">
@@ -103,7 +106,7 @@
                                     value="-{{ event.id }}"
                                     data-toggle="modal"
                                     data-target="#eventModal">
-                                Unattend from event
+                                {% trans 'Unattend from event' %}
                             </button>
                         {% else %}
                             <button id="attend-event-button"
@@ -112,30 +115,16 @@
                                     name="mybtn"
                                     class="btn btn-success">
                                 {% if event.require_payment %}
-                                    Pay using card
+                                    {% trans 'Pay using card' %}
+                                    {#                                    <div class="button-div">#}
+                                    {#                                        <img src="{% static 'img/credit-card.svg' %}"/>#}
+                                    {#                                        &nbsp;{% trans 'Pay using card' %}#}
+                                    {#                                    </div>#}
                                 {% else %}
                                     {% trans 'Attend event' %}
                                     </button>
                                 {% endif %}
                         {% endif %}
-                    </div>
-                    <div id="event-edit">
-                        {% if can_edit_and_delete_event %}
-                            <a id="edit-event-button" href="{% url 'edit_event_page' event.id %}">
-                                <button type="button" class="buttons btn btn-success">{% trans 'Edit event' %}</button>
-                            </a>
-                        {% endif %}
-                    </div>
-                    <div id="event-delete">
-                        {% if can_edit_and_delete_event %}
-                                <button id="show-confirm-delete-div-button" type="button" class="buttons btn btn-success">
-                                    {% trans 'Delete event' %}</button>
-                        {% endif %}
-                    </div>
-                    <div id="confirm-delete">
-                    <a id="confirm-button" href="{% url 'get_delete_event' event.id %}">
-                              <button type="button" class="buttons btn btn-success">Confirm</button></a>
-                              <button id="hide-confirm-delete-div-button" type="button" class="btn btn-default">Cancel</button>
                     </div>
                 {% endif %}
             </div>
@@ -144,6 +133,61 @@
                 {{ event.description }}
             </div>
         </div>
+        {% if can_edit_and_delete_event and not sub_event_list %}
+            <div class="events-section">
+                <div class="category-card-container">
+                    <div class="category-card" id="accordion" role="tablist" aria-multiselectable="true">
+                        <div class="category-card card">
+                            <div class="card-header-category card-header" role="tab"
+                                 aria-controls="collapseOne"
+                                 data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ category }}"
+                                 aria-expanded="true">
+                                <h5 class="mb-0">
+                                    <a>
+                                        <h3>{% trans 'My executive actions' %}</h3>
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="collapse-my-executive-actions" class="collapse show" role="tabpanel"
+                                 aria-labelledby="headingOne"
+                                 style="background-color: white;">
+                                <div class="card-block">
+                                    <div class="card" style="padding:1rem;">
+                                        <div>
+                                            <a id="edit-event-button" href="{% url 'edit_event_page' event.id %}">
+                                                <button type="button" class="buttons btn btn-warning">
+                                                    <div class="button-div">
+                                                        <img src="{% static 'img/pencil.svg' %}"/>
+                                                        &nbsp;{% trans 'Edit event' %}
+                                                    </div>
+                                                </button>
+                                            </a>
+                                            <button id="show-confirm-delete-div-button" type="button"
+                                                    class="buttons btn btn-danger">
+                                                <div class="button-div">
+                                                    <img src="{% static 'img/x.svg' %}"/>
+                                                    &nbsp;{% trans 'Delete event' %}
+                                                </div>
+                                            </button>
+                                        </div>
+                                        <div id="confirm-delete">
+                                            <a id="confirm-button" href="{% url 'get_delete_event' event.id %}">
+                                                <button type="button" class="buttons btn btn-success">Confirm</button>
+                                            </a>
+                                            <button id="hide-confirm-delete-div-button" type="button"
+                                                    class="btn btn-default">Cancel
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
         <div class="events-section">
             <div class="category-card-container">
 
@@ -202,6 +246,7 @@
             </div>
         </div>
     </div>
+
 
 
 {% endblock %}
