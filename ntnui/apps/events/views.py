@@ -5,16 +5,17 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render, redirect
-from django.template.loader import get_template, render_to_string
+from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.utils.translation import gettext as _
 from django.utils import translation
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 from . import create_event, get_events
-from events.models import Event, EventDescription, EventRegistration, Category, SubEvent, SubEventRegistration
+from events.models.event import Event, EventDescription, EventRegistration
+from events.models.sub_event import SubEvent, SubEventRegistration
+from events.models.category import Category
 from django.core.mail import send_mail
-
 
 
 def get_main_page(request):

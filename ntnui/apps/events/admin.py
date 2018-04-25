@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Event, EventDescription, EventRegistration,\
-    SubEvent, SubEventDescription, SubEventRegistration, \
-    Category, CategoryDescription, \
-    Restriction, Tag
-
+from events.models.guest import Guest
+from events.models.tag import Tag
+from events.models.event import Event, EventDescription, EventRegistration, Restriction
+from events.models.sub_event import SubEvent, SubEventDescription, SubEventRegistration
+from events.models.category import Category, CategoryDescription
 
 class CategoryDescriptionInline(admin.TabularInline):
     """Creates an inline for the CategoryDescription-model."""
@@ -78,6 +78,7 @@ class SubEventAdmin(admin.ModelAdmin):
 
 # adds the views to the admin.
 admin.site.register(Tag)
+admin.site.register(Guest)
 admin.site.register(Restriction)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Event, EventAdmin)
