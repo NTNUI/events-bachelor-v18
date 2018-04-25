@@ -6,6 +6,19 @@ from accounts.models import User
 from groups.models import SportsGroup
 
 
+class Guest(models.Model):
+    email = models.EmailField(_('email address'))
+    first_name = models.CharField(_('first name'), max_length=30)
+    last_name = models.CharField(_('last name'), max_length=30)
+    phone_number = models.IntegerField(_('phone number'), max_length=8)
+
+    class Meta:
+        verbose_name = _('guest')
+        verbose_name_plural = _('guests')
+
+    def __str__(self):
+        return '{} {}'.format(self.first_name, self.last_name)
+
 class Restriction(models.Model):
     """Restrictions makes it possible to create events for specific groups of users."""
 
@@ -109,7 +122,7 @@ class Event(models.Model):
 
     # Returns the event's attendees
     def get_attendees(self):
-        return EventRegistration.objects.filter(event = self)
+        return EventRegistration.objects.filter(event = self) + self.get_attendees()
 
     # Checks a given user attends the event
     def attends(self, user):
@@ -145,6 +158,23 @@ class EventRegistration(models.Model):
     event = models.ForeignKey(Event, verbose_name = 'event')
     payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name = 'attendee')
+
+    class Meta:
+        verbose_name = _('attendee for event')
+        verbose_name_plural = _('attendees for event')
+        unique_together = ('event', 'attendee')
+
+    def __str__(self):
+        return self.event.name() + ' - ' + self.attendee.email
+
+
+class GuestEventRegistration(models.Model):
+    """Contains the relation between a user and an event, to  make a list of attendees"""
+
+    registration_time = models.DateTimeField(_('registration time'))
+    event = models.ForeignKey(Event, verbose_name = 'event')
+    payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
+    attendee = models.ForeignKey(Guest, verbose_name = 'attendee')
 
     class Meta:
         verbose_name = _('attendee for event')
@@ -259,6 +289,7 @@ class SubEventRegistration(models.Model):
 
     registration_time = models.DateTimeField(_('registration time'))
     sub_event = models.ForeignKey(SubEvent, verbose_name ='sub-event')
+    payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name='attendee')
 
     class Meta:
@@ -270,15 +301,18 @@ class SubEventRegistration(models.Model):
         return self.sub_event.name() + ' - ' + self.attendee.email
 
 
-class Guest(models.Model):
-    email = models.EmailField(_('email address'))
-    first_name = models.CharField(_('first name'), max_length=30)
-    last_name = models.CharField(_('last name'), max_length=30)
-    phone_number = models.IntegerField(_('phone number'), max_length=8)
+class GuestSubEventRegistration(models.Model):
+    """Contains the relation between a user and an event, to  make a list of attendees."""
+
+    registration_time = models.DateTimeField(_('registration time'))
+    sub_event = models.ForeignKey(SubEvent, verbose_name ='sub-event')
+    payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
+    attendee = models.ForeignKey(Guest, verbose_name='attendee')
 
     class Meta:
-        verbose_name = _('guest')
-        verbose_name_plural = _('guests')
+        verbose_name = _('attendee for sub-event')
+        verbose_name_plural = _('attendees for sub-event')
+        unique_together = ('sub_event', 'attendee')
 
     def __str__(self):
-        return '{} {}'.format(self.first_name, self.last_name)
+        return self.sub_event.name() + ' - ' + self.attendee.email

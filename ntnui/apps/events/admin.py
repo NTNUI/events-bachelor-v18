@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Event, EventDescription, EventRegistration,\
     SubEvent, SubEventDescription, SubEventRegistration, \
     Category, CategoryDescription, \
-    Restriction, Tag
+    Restriction, Tag, Guest
 
 
 class CategoryDescriptionInline(admin.TabularInline):
@@ -77,6 +77,7 @@ class SubEventAdmin(admin.ModelAdmin):
 
 
 # adds the views to the admin.
+admin.site.register(Guest)
 admin.site.register(Tag)
 admin.site.register(Restriction)
 admin.site.register(Category, CategoryAdmin)
