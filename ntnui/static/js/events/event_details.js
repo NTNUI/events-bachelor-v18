@@ -43,6 +43,30 @@ $(() => {
         }
     });
 
+    $(".delete-subevent-button").click(() =>{
+        button = event.target
+        deleteEvent()
+    })
+
+    function deleteEvent() {
+        $.ajax({
+            type: 'POST',
+            data: {
+                csrfmiddlewaretoken: csrftoken,
+                subeventid: button.value,
+            },
+            url: '/ajax/events/delete-subevent',
+            success: (data) => {
+                button.innerHTML = gettext("Deleted")
+                button.setAttribute("class", "btn btn-alert")
+
+
+            }, error: (data) => {
+                printMessage('Error', data.responseJSON.message)
+
+            }
+        })
+    }
     /**
      * Sends a attend subevet request
      */

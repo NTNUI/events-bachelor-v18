@@ -11,7 +11,8 @@ from .views import (
     refund_event,
     payment_for_event,
     get_events,
-    get_event
+    get_event,
+    delete_subevent
 )
 
 urlpatterns = [
@@ -25,4 +26,5 @@ urlpatterns = [
     url(r'^(?P<id>\d+)/payment$', payment_for_event, name='payment_for_event'),
     url(r'^refund', refund_event, name='refund_event'),
     url(r'^(?P<id>\d+)$', get_event, name='get_event'),
+    url(r'^delete-subevent$', delete_subevent, name='delete_subevent')
 ]

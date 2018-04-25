@@ -12,7 +12,7 @@ from django.utils import translation
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 from . import create_event, get_events
-from events.models import Event, EventDescription, EventRegistration, Category, SubEvent, SubEventRegistration
+from events.models import Event, EventDescription, EventRegistration, Category, SubEvent, SubEventRegistration, SubEventDescription
 from django.core.mail import send_mail
 
 
@@ -101,6 +101,8 @@ def get_event_details(request, id):
             can_edit_and_delete_event = True
         else:
             can_edit_and_delete_event = False
+    else:
+        can_edit_and_delete_event = False
 
 
     event = {
@@ -133,19 +135,42 @@ def delete_event(request):
 
     return get_main_page(request)
 
-
+#Delete event
+#the commented lines are to be uncommented when created events have an eventregistration by default
 def get_delete_event(request, id):
     try:
         event = Event.objects.get(id=int(id))
         eventdescription_no = EventDescription.objects.get(event=event, language='nb')
         eventdescription_en = EventDescription.objects.get(event=event, language='en')
+        #eventregistration = EventRegistration.objects.get(event=event)
+        #if eventregistration.payment_id != '':
+        #    refund_event(request)
         event.delete()
         eventdescription_no.delete()
         eventdescription_en.delete()
+        #eventregistration.delete()
     except:
-        return HttpResponse("Delete failed")
+        return HttpResponse("Event delete failed")
 
     return render(request, 'events/delete_event_page.html')
+
+def delete_subevent(request):
+    try:
+        if request.method == 'POST':
+            data = request.POST
+            subeventid = (data['subeventid'])
+            subevent = SubEvent.objects.get(id=int(subeventid))
+            subeventdescription_no = SubEventDescription.objects.get(sub_event=subevent, language='nb')
+            print(subeventdescription_no.name)
+            subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
+            print(subeventdescription_en.name)
+            #subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
+            subevent.delete()
+            subeventdescription_no.delete()
+            subeventdescription_en.delete()
+            #subeventregistration.delete()
+    except:
+        return HttpResponse("Subevent delete failed")
 
 
 def get_edit_event_page(request, id):
@@ -154,6 +179,8 @@ def get_edit_event_page(request, id):
     event = Event.objects.get(id=int(id))
     eventdescription_no = EventDescription.objects.get(event=event, language='nb')
     eventdescription_en = EventDescription.objects.get(event=event, language='en')
+    attendance_cap = event.attendance_cap
+    price = event.price
     #convert dates to a format that can be put as value in inputtype datetimelocal html form
     event_start_date = event.start_date
     event_end_date = event.end_date
@@ -170,6 +197,8 @@ def get_edit_event_page(request, id):
         'start_date': start_date,
         'end_date': end_date,
         'id': event.id,
+        'attendance_cap': attendance_cap,
+        'price': price,
         'host': event.get_host(),
         'place': event.place,
         'groups': groups
@@ -196,9 +225,14 @@ def edit_event(request):
             start_date=data['start_date']
             end_date = data['end_date']
             host = data['host']
+            attendance_cap = data['attendance_cap']
+            price = data['price']
 
             event.start_date = start_date
             event.end_date = end_date
+            event.attendance_cap = attendance_cap
+            event.price = price
+
             if host == 'NTNUI':
                 event.is_host_ntnui = True
             else:
