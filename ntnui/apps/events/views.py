@@ -401,6 +401,7 @@ def add_attendance_to_event_guest(request):
             return get_json(404, failure_message)
 
         # Create new guest attandance here (request.POST args, id, email, first_name, last_name, phone
+        print(request.POST.get('id'))
 
     return get_json(400, 'Request must be post')
 

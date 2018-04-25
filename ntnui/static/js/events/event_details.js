@@ -67,6 +67,7 @@ $(() => {
      */
     $("#attend-event-button").click((e) => {
         button = event.target
+        buttonValue = button.value
         if (button.value[0] === "-") {
             buttonText = gettext('attend event')
             if ($("#price").length === 0) {
@@ -92,19 +93,24 @@ $(() => {
 
 
     $("#guest-data-form").on('submit', (e) => {
-        $("#guest-data-form").sub
+
+        let postData = $("#guest-data-form").serialize();
+        postData = postData + '&csrfmiddlewaretoken=' + csrftoken;
+        postData = postData + '&id=' + buttonValue;
+        console.log(postData)
         $.ajax({
             type: 'POST',
             url: '/ajax/events/attend-event-guest',
-            data: $("#guest-data-form").serialize() + '&csrfmiddlewaretoken=' + csrftoken,
+            data: postData,
             success: (data) => {
                 printMessage('success', data.message)
                 slideUpAlert(true)
             },
-            error: (data) => {
-                printMessage('error', data.responseJSON.message)
-                slideUpAlert(false)
-            }
+            error:
+                (data) => {
+                    printMessage('error', data.responseJSON.message)
+                    slideUpAlert(false)
+                }
         })
         e.preventDefault();
     })
