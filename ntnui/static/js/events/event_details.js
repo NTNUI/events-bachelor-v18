@@ -91,12 +91,12 @@ $(() => {
     })
 
 
-    $("#attend-event-guest").click((e) => {
-        postData = $("#guest-data-form").serialize();
+    $("#guest-data-form").on('submit', (e) => {
+        $("#guest-data-form").sub
         $.ajax({
             type: 'POST',
             url: '/ajax/events/attend-event-guest',
-            data: postData,
+            data: $("#guest-data-form").serialize() + '&csrfmiddlewaretoken=' + csrftoken,
             success: (data) => {
                 printMessage('success', data.message)
                 slideUpAlert(true)
@@ -106,7 +106,9 @@ $(() => {
                 slideUpAlert(false)
             }
         })
+        e.preventDefault();
     })
+
 
     function openModal() {
         $("#deleteModal").modal('show')

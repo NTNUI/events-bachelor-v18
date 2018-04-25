@@ -51,26 +51,26 @@
                             </button>
                         </div>
                         <div class="container">
-                            <form id="guest-data-form">
+                            <form id="guest-data-form" onsubmit="return attendEventGuest()">
                                 <div class="form-group">
-                                    <label name="email">Email address</label>
-                                    <input type="email" class="form-control"
-                                           placeholder="name@example.com">
+                                    <label>Email address</label>
+                                    <input name="email" type="email" class="form-control"
+                                           placeholder="name@example.com" required>
                                 </div>
                                 <div class="form-group">
-                                    <label name="first_name">First name </label>
-                                    <input type="text" class="form-control"
-                                           placeholder="Ola">
+                                    <label>First name </label>
+                                    <input name="first_name" type="text" class="form-control"
+                                           placeholder="Ola" required>
                                 </div>
                                 <div class="form-group">
-                                    <label name="last_name">Last name</label>
-                                    <input type="text" class="form-control"
-                                           placeholder="Nordmann">
+                                    <label>Last name</label>
+                                    <input name="last_name" type="text" class="form-control"
+                                           placeholder="Nordmann" required>
                                 </div>
                                 <div class="form-group">
-                                    <label name="phone">Phone</label>
-                                    <input type="number" class="form-control"
-                                           placeholder="+47 555 55 555">
+                                    <label>Phone</label>
+                                    <input name="phone" type="number" class="form-control"
+                                           placeholder="+47 555 55 555" required>
                                 </div>
                             </form>
                         </div>
@@ -78,7 +78,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary"
                                     data-dismiss="modal">{% trans 'Close' %}</button>
-                            <button type="button" id="attend-event-guest" class="btn btn-success">
+                            <button type="submit" form="guest-data-form" class="btn btn-success">
                                 {% trans 'Attend event' %}</button>
                         </div>
                     </div>
