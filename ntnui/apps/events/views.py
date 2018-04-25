@@ -99,6 +99,8 @@ def get_event_details(request, id):
 
         if is_in_mainboard or is_in_board:
             can_edit_and_delete_event = True
+        else:
+            can_edit_and_delete_event = False
     else:
         can_edit_and_delete_event = False
 
@@ -177,6 +179,8 @@ def get_edit_event_page(request, id):
     event = Event.objects.get(id=int(id))
     eventdescription_no = EventDescription.objects.get(event=event, language='nb')
     eventdescription_en = EventDescription.objects.get(event=event, language='en')
+    attendance_cap = event.attendance_cap
+    price = event.price
     #convert dates to a format that can be put as value in inputtype datetimelocal html form
     event_start_date = event.start_date
     event_end_date = event.end_date
@@ -193,6 +197,8 @@ def get_edit_event_page(request, id):
         'start_date': start_date,
         'end_date': end_date,
         'id': event.id,
+        'attendance_cap': attendance_cap,
+        'price': price,
         'host': event.get_host(),
         'place': event.place,
         'groups': groups

@@ -70,7 +70,15 @@
                         </select>
                     </div>
                 </div>
-
+                <div class="form-group row">
+                <label class="col-2 col-form-label">{% trans 'Attendance cap' %}</label>
+                <div class="col-10">
+                    <input class="form-control" onblur="return validateAttendance_cap()" type="number" value={{ event.attendance_cap }} name="attendance_cap" required>
+                <div id="attendance-cap-alerter" class="alert alert-danger collapse" role="alert">
+                    <p id="attendance_cap_message"></p>
+                </div>
+                </div>
+                </div>
             </div>
             </div>
         <div class="container-fluid" id="cont2">
@@ -116,7 +124,15 @@
               </div>
 
             </div>
-
+            <div class="form-group row">
+                <label class="col-2 col-form-label">{% trans 'Price (NOK)' %}</label>
+                <div class="col-10">
+                    <input class="form-control" onblur="return validatePrice()" type=number value={{ event.price }} name="price" required>
+                <div id="price-alerter" class="alert alert-danger collapse" role="alert">
+                    <p id="price_message"></p>
+                </div>
+                </div>
+            </div>
 
              </div>
             </div>
