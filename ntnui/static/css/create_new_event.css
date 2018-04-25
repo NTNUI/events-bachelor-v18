@@ -9,21 +9,14 @@ input:focus:valid {
 .alert-danger {
   margin-top: 2%;
   float: left;
-  height: 10%;
-  margin-bottom: -20%;
+  height: 2rem;
+  margin-bottom: -1rem;
 }
 
 .alert-danger p {
   margin-top: -10px;
 }
 
-.form-control {
-
-}
-
-.form-group {
-
-}
 
 .col-2 {
   margin-bottom: 5%;

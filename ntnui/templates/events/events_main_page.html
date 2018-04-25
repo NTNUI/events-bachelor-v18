@@ -71,18 +71,8 @@
             {% if can_create_event %}
                 <h3>{% trans 'My options' %}</h3>
                 <div>
-                    <a id="go-to-create-event" href="/">
-                        <button type="button" class="buttons btn btn-success">{% trans 'My events' %}</button>
-                    </a>
-                </div>
-                <div>
                     <a id="go-to-create-event" href="{% url 'create_event_page' %}">
                         <button type="button" class="buttons btn btn-success">{% trans 'Create event' %}</button>
-                    </a>
-                </div>
-                <div>
-                    <a id="go-to-create-event" href="/">
-                        <button type="button" class="buttons btn btn-success">{% trans 'Manage events' %}</button>
                     </a>
                 </div>
             {% endif %}
