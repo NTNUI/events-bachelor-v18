@@ -66,34 +66,68 @@ class SubEventDescription(models.Model):
 
 
 class SubEventRegistration(models.Model):
-    """Contains the relation between a user and an event, to  make a list of attendees."""
+    """Created to let users sign up for sub-events"""
 
     registration_time = models.DateTimeField(_('registration time'))
-    sub_event = models.ForeignKey(SubEvent, verbose_name='sub-event')
+    event = models.ForeignKey(SubEvent, verbose_name='event')
     payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name='attendee')
 
     class Meta:
-        verbose_name = _('attendee for sub-event')
-        verbose_name_plural = _('attendees for sub-event')
-        unique_together = ('sub_event', 'attendee')
+        verbose_name = _('attendee for event')
+        verbose_name_plural = _('attendees for event')
+        unique_together = ('event', 'attendee')
 
     def __str__(self):
-        return self.sub_event.name() + ' - ' + self.attendee.email
+        return self.event.name() + ' - ' + self.attendee.email
 
 
-class GuestSubEventRegistration(models.Model):
-    """Contains the relation between a user and an event, to  make a list of attendees."""
+class SubEventWaitingListRegistration(models.Model):
+    """Created to let users sign up for the waiting list, when an sub-event is capped out"""
 
     registration_time = models.DateTimeField(_('registration time'))
-    sub_event = models.ForeignKey(SubEvent, verbose_name='sub-event')
+    event = models.ForeignKey(SubEvent, verbose_name='event')
+    payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
+    attendee = models.ForeignKey(User, verbose_name='attendee')
+
+    class Meta:
+        verbose_name = _('attendee for event')
+        verbose_name_plural = _('attendees for event')
+        unique_together = ('event', 'attendee')
+
+    def __str__(self):
+        return self.event.name() + ' - ' + self.attendee.email
+
+
+class EventGuestRegistration(models.Model):
+    """Created to let guests sign up for sub-events"""
+
+    registration_time = models.DateTimeField(_('registration time'))
+    event = models.ForeignKey(SubEvent, verbose_name='event')
     payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
 
     class Meta:
-        verbose_name = _('attendee for sub-event')
-        verbose_name_plural = _('attendees for sub-event')
-        unique_together = ('sub_event', 'attendee')
+        verbose_name = _('attendee for event')
+        verbose_name_plural = _('attendees for event')
+        unique_together = ('event', 'attendee')
 
     def __str__(self):
-        return self.sub_event.name() + ' - ' + self.attendee.email
+        return self.event.name() + ' - ' + self.attendee.email
+
+
+class EventGuestWaitingListRegistration(models.Model):
+    """Created to let guests sign up for the waiting list, when an sub-event is capped out"""
+
+    registration_time = models.DateTimeField(_('registration time'))
+    event = models.ForeignKey(SubEvent, verbose_name='event')
+    payment_id = models.CharField(_('Payment id'), max_length=100, blank=True, null=True)
+    attendee = models.ForeignKey(Guest, verbose_name='attendee')
+
+    class Meta:
+        verbose_name = _('attendee for event')
+        verbose_name_plural = _('attendees for event')
+        unique_together = ('event', 'attendee')
+
+    def __str__(self):
+        return self.event.name() + ' - ' + self.attendee.email
