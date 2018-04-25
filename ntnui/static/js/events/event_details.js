@@ -4,11 +4,16 @@ let button
 let csrftoken
 let url
 let buttonText
+let isGuestUser = false;
 
 /**
  * When the document have loaded, add listener to attend-event-button and send ajax.
  */
 $(() => {
+    if ($('#guestUserModal').length) {
+        isGuestUser = true;
+    }
+
     csrftoken = getCookie('csrftoken')
 
     /**
@@ -72,17 +77,43 @@ $(() => {
             }
             openModal()
         } else {
-            if ($("#price").length === 0) {
-                url = '/ajax/events/attend-event'
-                attendEvent()
+            if (isGuestUser) {
+                showGuestModal();
             } else {
-                attendPayedEvent(e)
+                if ($("#price").length === 0) {
+                    url = '/ajax/events/attend-event'
+                    attendEvent()
+                } else {
+                    attendPayedEvent(e)
+                }
             }
         }
     })
 
+
+    $("#attend-event-guest").click((e) => {
+        postData = $("#guest-data-form").serialize();
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/events/attend-event-guest',
+            data: postData,
+            success: (data) => {
+                printMessage('success', data.message)
+                slideUpAlert(true)
+            },
+            error: (data) => {
+                printMessage('error', data.responseJSON.message)
+                slideUpAlert(false)
+            }
+        })
+    })
+
     function openModal() {
         $("#deleteModal").modal('show')
+    }
+
+    function showGuestModal() {
+        $("#guestUserModal").modal('show')
     }
 
     $("#remove-attend-event-button").click(() => {

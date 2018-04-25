@@ -66,6 +66,7 @@ def get_event_details(request, id):
             # add the category and map each sub_event to a dic
             sub_event_list.append((categories[i], list(map(lambda item: get_sub_event_dic(item, request), sub_event))))
 
+
     # Checks if the user is sign in.
     if request.user.is_authenticated:
         attends = event.attends(request.user)
@@ -90,6 +91,7 @@ def get_event_details(request, id):
 
     context = {
         "event": event,
+        "is_authenticated": request.user.is_authenticated,
         "sub_event_list": sub_event_list,
         "STRIPE_KEY": settings.STRIPE_PUBLIC_KEY
     }

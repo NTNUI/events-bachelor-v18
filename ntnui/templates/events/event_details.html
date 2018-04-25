@@ -17,25 +17,74 @@
             {{ event.name }}
         </div>
 
-        <!-- Modal -->
+        <!-- Waring modal -->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">{% trans 'Are you sure?' %}</h5>
+                        <h5 class="modal-title">{% trans 'Are you sure?' %}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans 'Close' %}</button>
-                        <button type="button" id="remove-attend-event-button"  class="btn btn-danger" data-dismiss="modal">{% trans 'Yes' %}</button>
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">{% trans 'Close' %}</button>
+                        <button type="button" id="remove-attend-event-button" class="btn btn-danger"
+                                data-dismiss="modal">{% trans 'Yes' %}</button>
                     </div>
                 </div>
             </div>
         </div>
 
+        {% if not is_authenticated %}
+            <!-- Guest user modal -->
+            <div class="modal fade" id="guestUserModal" tabindex="-1" role="dialog" aria-labelledby="guestUserModal"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">{% trans 'Please fill in the fields bellow' %}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="container">
+                            <form id="guest-data-form">
+                                <div class="form-group">
+                                    <label name="email">Email address</label>
+                                    <input type="email" class="form-control"
+                                           placeholder="name@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label name="first_name">First name </label>
+                                    <input type="text" class="form-control"
+                                           placeholder="Ola">
+                                </div>
+                                <div class="form-group">
+                                    <label name="last_name">Last name</label>
+                                    <input type="text" class="form-control"
+                                           placeholder="Nordmann">
+                                </div>
+                                <div class="form-group">
+                                    <label name="phone">Phone</label>
+                                    <input type="number" class="form-control"
+                                           placeholder="+47 555 55 555">
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                    data-dismiss="modal">{% trans 'Close' %}</button>
+                            <button type="button" id="attend-event-guest" class="btn btn-success">
+                                {% trans 'Attend event' %}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
 
         <div id="content-container">
             <div id="event-info-container">
