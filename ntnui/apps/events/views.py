@@ -3,6 +3,7 @@ from datetime import datetime
 import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
@@ -12,6 +13,7 @@ from django.utils import translation
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 
+from django.core.validators import validate_email, validate_integer
 from . import create_event, get_events, attend_event
 from events.models import Event, EventRegistration, Category, SubEvent, SubEventRegistration, Guest
 from django.core.mail import send_mail
@@ -390,3 +392,26 @@ def get_event(request, id):
             'cover_photo': str(event.cover_photo)
         })
     return get_json(404, "Event with id: " + id + " dose not exist")
+
+def add_attendance_to_event_guest(request):
+    """Adds attendance to the given event for the given guest"""
+    if request.POST:
+        failure_message = validate_guest_data(request.POST)
+        if failure_message:
+            return get_json(404, failure_message)
+
+        # Create new guest attandance here (request.POST args, id, email, first_name, last_name, phone
+
+    return get_json(400, 'Request must be post')
+
+
+def validate_guest_data(data):
+    try:
+        Event.objects.get(id=data.get('id'))
+        validate_email(data.get('email'))
+        validate_integer(data.get('phone'))
+    except ValidationError as e:
+        return e.message
+    except Event.DoesNotExist:
+        return _("Event dose not exist")
+    return None

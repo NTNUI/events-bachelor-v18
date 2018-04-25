@@ -10,13 +10,15 @@ from .views import (
     refund_event,
     payment_for_event,
     get_events,
-    get_event
+    get_event,
+    add_attendance_to_event_guest
 )
 
 urlpatterns = [
     url(r'^add-event$', create_event_request, name='create_event'),
     url(r'^get-events', get_events_request, name='get_events'),
     url(r'^attend-event$', add_attendance_to_event, name='attend_event'),
+    url(r'^attend-event-guest$', add_attendance_to_event_guest, name='attend_event_guest'),
     url(r'^remove-attend-event$', remove_attendance_from_event, name='attend_event'),
     url(r'^attend-sub-event$', add_attendance_from_subevent, name='attend_event'),
     url(r'^remove-attend-sub-event$', remove_attendance_from_subevent, name='attend_event'),
