@@ -45,8 +45,10 @@ $(() => {
     /**
      * Sends a attend subevet request
      */
-    $(".join-subevent-button").click(() => {
-        button = event.target
+    $(".join-subevent-button").click((e) => {
+        event = e || window.event
+        button = event.target || event.srcElement
+
         // IF the first sign is a - we want to remove attending event
         if (button.value[0] === "-") {
             url = '/ajax/events/remove-attend-sub-event'
@@ -61,7 +63,8 @@ $(() => {
      * Sends a attend event request to the server
      */
     $("#attend-event-button").click((e) => {
-        button = event.target
+        event = e || window.event
+        button = event.target || event.srcElement
         if (button.value[0] === "-") {
             buttonText = gettext('attend event')
             if ($("#price").length === 0) {
