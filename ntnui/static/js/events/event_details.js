@@ -4,7 +4,10 @@ let button
 let csrftoken
 let url
 let buttonText
+
+// used for guest users
 let isGuestUser = false;
+let email, firstName, lastName, phone
 
 /**
  * When the document have loaded, add listener to attend-event-button and send ajax.
@@ -24,14 +27,23 @@ $(() => {
         image: "/static/img/ntnui2.svg",
         locale: 'auto',
         token: (token) => {
+            processStripeToken(token);
+        }
+    });
+
+    function processStripeToken(token) {
+        if (isGuestUser) {
             $.ajax({
                 dataType: "json",
                 type: "POST",
-                url: '/ajax/events/' + buttonValue + '/payment',
+                url: '/ajax/events/' + buttonValue + '/payment-guest',
                 data: {
                     csrfmiddlewaretoken: csrftoken,
                     stripeToken: token.id,
-                    stripEmail: token.email
+                    stripEmail: token.email,
+                    first_name: firstName,
+                    last_name: lastName,
+                    phone: phone,
                 },
                 success: (data) => {
                     button.innerHTML = gettext("Do not attend event")
@@ -44,8 +56,30 @@ $(() => {
                     slideUpAlert()
                 }
             });
+
         }
-    });
+        $.ajax({
+            dataType: "json",
+            type: "POST",
+            url: '/ajax/events/' + buttonValue + '/payment',
+            data: {
+                csrfmiddlewaretoken: csrftoken,
+                stripeToken: token.id,
+                stripEmail: token.email
+            },
+            success: (data) => {
+                button.innerHTML = gettext("Do not attend event")
+                button.value = '-' + button.value
+                button.setAttribute("class", "btn btn-danger")
+                slideUpAlert()
+            },
+            error: (data) => {
+                printMessage('Error', data.responseJSON.message)
+                slideUpAlert()
+            }
+        });
+    }
+
 
     /**
      * Sends a attend subevet request
@@ -93,25 +127,51 @@ $(() => {
 
 
     $("#guest-data-form").on('submit', (e) => {
+        firstName = $("#first-name").val()
+        lastName = $("#last-name").val()
+        phone = $("#phone").val()
+        email = $("#input-email").val()
+        if ($("#price").length > 0) {
+            $.ajax({
+                dataType: "json",
+                url: '/ajax/events/' + button.value,
+                success: event => {
+                    handler.open({
+                        amount: parseInt(event.price) * 100,
+                        currency: "nok",
+                        name: event.host,
+                        description: event.name,
+                        email: email,
+                    });
 
-        let postData = $("#guest-data-form").serialize();
-        postData = postData + '&csrfmiddlewaretoken=' + csrftoken;
-        postData = postData + '&id=' + buttonValue;
-        console.log(postData)
-        $.ajax({
-            type: 'POST',
-            url: '/ajax/events/attend-event-guest',
-            data: postData,
-            success: (data) => {
-                printMessage('success', data.message)
-                slideUpAlert(true)
-            },
-            error:
-                (data) => {
-                    printMessage('error', data.responseJSON.message)
-                    slideUpAlert(false)
+                    e.preventDefault();
+                },
+                error: data => {
+                    printMessage('Error', gettext('Could not get userinfo'))
+                    slideUpAlert()
                 }
-        })
+            });
+        } else {
+            let postData = $("#guest-data-form").serialize();
+            postData = postData + '&csrfmiddlewaretoken=' + csrftoken;
+            postData = postData + '&id=' + buttonValue;
+            $.ajax({
+                type: 'POST',
+                url: '/ajax/events/attend-event-guest',
+                data: postData,
+                success: (data) => {
+                    printMessage('success', data.message)
+                    slideUpAlert(true)
+                    hideGuestModal()
+                },
+                error:
+                    (data) => {
+                        printMessage('error', data.responseJSON.message)
+                        slideUpAlert(false)
+                    }
+            })
+        }
+
         e.preventDefault();
     })
 
@@ -124,6 +184,10 @@ $(() => {
         $("#guestUserModal").modal('show')
     }
 
+    function hideGuestModal() {
+        $("#guestUserModal").modal('hide')
+    }
+
     $("#remove-attend-event-button").click(() => {
         removeAttendEvent()
     })
@@ -133,7 +197,8 @@ $(() => {
             type: 'POST',
             data: {
                 csrfmiddlewaretoken: csrftoken,
-                id: button.value
+                id: button.value,
+                guestId: guestId
             },
             url: url,
             success: (data) => {
