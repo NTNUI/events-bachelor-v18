@@ -3,7 +3,7 @@
 {% load static %}
 {% block stylesheet %}
 
-  <link rel="stylesheet" href="{% static 'css/events/create_new_event.css' %}">
+    <link rel="stylesheet" href="{% static 'css/events/create_new_event.css' %}">
 {% endblock %}
 {% block title %}NTNUI - Create events{% endblock %}
 
@@ -88,6 +88,20 @@
                 <div id="end-date-alerter" class="alert alert-danger collapse" role="alert">
                     <p id="end_date_message"></p>
                 </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>{% trans 'Maximum number of participants' %}</label>
+                <input class="form-control" type="number"
+                          onblur="return validateEmail_text_no()"
+                          name="attendance_cap" >
+            </div>
+            <div class="form-group col-md-6">
+                <label>{% trans 'Price in NOK' %}</label>
+                <input class="form-control" type="number"
+                          onblur="return validateEmail_text_no()"
+                          name="price" >
             </div>
         </div>
         <div class="form-group row">
