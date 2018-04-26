@@ -155,8 +155,8 @@ class EventRegistration(models.Model):
     attendee = models.ForeignKey(User, verbose_name='attendee')
 
     class Meta:
-        verbose_name = _('attendee')
-        verbose_name_plural = _('attendees')
+        verbose_name = _('attendee, user')
+        verbose_name_plural = _('attendees, users')
         unique_together = ('event', 'attendee')
 
     def __str__(self):
@@ -189,8 +189,8 @@ class EventGuestRegistration(models.Model):
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
 
     class Meta:
-        verbose_name = _('attendee')
-        verbose_name_plural = _('attendees')
+        verbose_name = _('attendee, guest')
+        verbose_name_plural = _('attendees, guests')
         unique_together = ('event', 'attendee')
 
     def __str__(self):

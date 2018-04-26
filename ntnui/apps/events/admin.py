@@ -117,7 +117,7 @@ class EventAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'description', 'start_date', 'end_date', 'priority', 'is_host_ntnui']
     # inlines defines which inline classes to be added to the Event's admin page.
     inlines = [EventDescriptionInline, EventRegistrationInline,
-               EventGuestRegistration, EventWaitingListInline, EventGuestWaitingListInline]
+               EventGuestRegistrationInline, EventWaitingListInline, EventGuestWaitingListInline]
 
 
 class SubEventAdmin(admin.ModelAdmin):
@@ -125,13 +125,12 @@ class SubEventAdmin(admin.ModelAdmin):
 
     # inlines defines which inline classes that will be added to the SubEvent's admin page.
     inlines = [SubEventDescriptionInline, SubEventRegistrationInline,
-               SubEventGuestRegistration, SubEventWaitingListInline, SubEventGuestWaitingListInline]
+               SubEventGuestRegistrationInline, SubEventWaitingListInline, SubEventGuestWaitingListInline]
 
 
 # adds the views to the admin.
 admin.site.register(Guest)
 admin.site.register(Tag)
-admin.site.register(Guest)
 admin.site.register(Restriction)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Event, EventAdmin)
