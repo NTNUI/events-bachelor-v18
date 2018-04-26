@@ -83,21 +83,17 @@ function validateDate(button, dispError) {
 
     //check whether start_date is after current date
     if (!(input_Start_date > today)) {
-        console.log("1")
-        if (dispError) {console.log("2")
+        if (dispError) {
             $(button).after(getAlert(gettext("Invalid date!")));
         }
     }
     //if end date is already entered, check whether start date is before it
     else if (!(input_End_date === "") && !(input_End_date > input_Start_date)) {
-        {console.log("3")
-            if (dispError) {console.log("4")
-                $(button).after(getAlert($(button).attr("id") === "start-date" ?
-                    gettext("Start date is not before end date!") : gettext("End date is not after start date!")));
-
-            }
+        if (dispError) {
+            $(button).after(getAlert($(button).attr("id") === "start-date" ?
+                gettext("Start date is not before end date!") : gettext("End date is not after start date!")));
         }
-    } else {console.log("5")
+    } else {
         $(button).next().remove()
     }
 }
@@ -143,4 +139,3 @@ function slideUpAlert(redirect) {
         //sets the amount of ms before the alert is closed
     })
 }
-
