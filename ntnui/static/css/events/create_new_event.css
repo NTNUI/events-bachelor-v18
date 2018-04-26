@@ -6,14 +6,15 @@ input:focus:valid {
     border: 1px dashed darkgreen;
 }
 
-.alert-danger {
+.error-input {
+  display:block;
   margin-top: 2%;
   float: left;
   height: 2rem;
   margin-bottom: -1rem;
 }
 
-.alert-danger p {
+.error-input p {
   margin-top: -10px;
 }
 

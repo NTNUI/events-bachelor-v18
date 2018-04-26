@@ -1,73 +1,93 @@
-let name_no = $("#name_no")[0];
-let name_en = document.getElementsByName("name_en")[0];
-let start_date = document.getElementsByName("start_date")[0];
-let end_date = document.getElementsByName("end_date")[0];
-let description_text_no = document.getElementsByName("description_text_no")[0];
-let description_text_en = document.getElementsByName("description_text_en")[0];
-let email_text_no = document.getElementsByName("email_text_no")[0];
-let email_text_en = document.getElementsByName("email_text_en")[0];
-let attendance_cap = document.getElementsByName("attendance_cap")[0];
-let price = document.getElementsByName("price")[0];
-
-
+// On document ready
 $(() => {
+
+    /**
+     * When clicking the create event button, validate all form fields, if they are not valid show alert, else
+     * send ajax request
+     */
     $("#create-event-button").click(function (e) {
-        if (!name_no.validity.valid || !name_en.validity.valid || !start_date.validity.valid || !end_date.validity.valid
-            || !description_text_no.validity.valid || !description_text_en.validity.valid || !email_text_no.validity.valid
-            || !email_text_en.validity.valid || !attendance_cap.validity.valid || !price.validity.valid) {
-            $("div.alert-message-container").html("<p>Please validate all fields</p>");
-        }
-        else {
-            const postData = $('#create-event-form').serialize()
-            $.ajax({
-                type: 'POST',
-                url: '/ajax/events/add-event',
-                data: postData,
-                success: (data) => {
-                    //show success alert
-                    printMessage('success', data.message)
-                    slideUpAlert(true)
-                },
-                error: (data) => {
-                    //show error alert
-                    printMessage('error', data.message)
+        let inputs = $(".form-input-create-event")
+        for (let i = 0; i < inputs.length; i++) {
+            if (!inputs[i].validity.valid) {
+                    printMessage('error', gettext('Please validate all fields'))
                     slideUpAlert(false)
-                }
-            })
+                return;
+            }
         }
+
+        // Sends request to server to create event
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/events/add-event',
+            data: $('#create-event-form').serialize(),
+            success: (data) => {
+                //show success alert
+                printMessage('success', data.message)
+            },
+            error: (data) => {
+                //show error alert
+                printMessage('error', data.message)
+                slideUpAlert(false)
+            }
+        })
         e.preventDefault();
     })
+
+    // Show the subEvent modal
     $("#add-subEvent-button").click(function (e) {
         $("#subEvent-modal").show();
     });
 
+    // add listener to all the from fields
     $(".form-input-create-event").blur(validateForm);
 
-});
+})
+;
 
+/**
+ * Validate a given input in a form
+ * @param e
+ */
 let validateForm = (e) => {
+    // Get the button that was pressed
     const event = e || window.event
     const button = event.target
+
+    // Use to see if field is displaying error
     const dispError = $(button).next().length === 0;
 
+    // If field is of type datetime-local
     if ($(button).attr("type") === 'datetime-local') {
         validateDate(button, dispError)
     }
+    // if filed is not valid, and error is currently not displayed. Display error
     else if (!button.checkValidity()) {
         if (dispError) {
             $(button).after(getAlert(gettext('invalid input')));
         }
     } else {
+        // If filed is valid, remove error
         $(button).next().remove()
     }
 }
 
+/**
+ * Gives the HTML code for a given error message
+ * @param text
+ * @returns {string}
+ */
 function getAlert(text) {
-    return '<div style="display: block" class="alert alert-danger collapse"> ' +
+    return '<div class="error-input alert alert-danger collapse"> ' +
         '<p>' + text + '</p> ' +
         '</div>';
 }
 
+
+/**
+ * Validates a date inpur
+ * @param button
+ * @param dispError
+ */
 function validateDate(button, dispError) {
     //create date today
     let today = new Date().toISOString();
@@ -94,6 +114,7 @@ function validateDate(button, dispError) {
                 gettext("Start date is not before end date!") : gettext("End date is not after start date!")));
         }
     } else {
+        // remove display error
         $(button).next().remove()
     }
 }
@@ -118,24 +139,14 @@ function printMessage(msgType, msg) {
     }
     //print message to screen
     $(".alert-message-container").html(() => {
-        return "<div class=\"alert alert-" + type + " show fade \" role=\"alert\"> <strong>" + msgType + ":</strong>" +
+        return "<div class=\"slide-up alert alert-" + type + " show fade \" role=\"alert\"> <strong>" + msgType + ":</strong>" +
             " " + msg + "</div>"
     })
-}
-
-/**
- * Slides up the alert, if redirect set, the user will be returned to last page.
- * @param redirect
- */
-function slideUpAlert(redirect) {
 
     //set timeout
     setTimeout(() => {
         //slide up the alert
-        $(".alert")
-        if (redirect) {
-            window.location.href = '/events'
-        }
+        $(".slide-up").slideUp()
         //sets the amount of ms before the alert is closed
-    })
+    }, 2000)
 }
