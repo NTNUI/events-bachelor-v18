@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+{% block stylesheet %}
+
+  <link rel="stylesheet" href="{% static 'css/events/create_new_event.css' %}">
+{% endblock %}
+    {% block title %}NTNUI - Delete event{% endblock %}
+    {% block content %}
+
+        <div>
+            <h1>{% trans 'Event deleted' %}</h1>
+        </div>
+        <div>
+            <a href="{% url 'delete_event' %}"><button type="button" class="buttons btn btn-success">Return</button></a>
+        </div>
+    {% endblock %}

@@ -1,12 +1,22 @@
 from datetime import datetime
+
 import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
-from django.template.loader import get_template, render_to_string
-from events.models import Event, EventRegistration, Category, SubEvent, SubEventRegistration, Guest
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.utils.translation import gettext as _
+from django.utils import translation
+from groups.models import Board, SportsGroup
+from hs.models import MainBoardMembership
+from . import create_event, get_events
+from events.models.event import Event, EventDescription, EventRegistration
+from events.models.sub_event import SubEvent, SubEventRegistration
+from events.models.category import Category
 from django.core.mail import send_mail
-
+from django.core.mail import send_mail
 
 def get_json(code, message):
     """Returnes json with the given format"""
@@ -45,36 +55,6 @@ def attend_event(id, user, payment_id):
             return get_json(400, 'You are already attending this event')
         return get_json(400, 'You have to pay for this event')
     return get_json(400, 'Event has reached its maximum number of participants')
-
-
-def create_guest():
-    return 2
-
-
-def attend_event_guest(id, user, payment_id):
-    event = Event.objects.get(id=id)
-    if event.attendance_cap is None or event.attendance_cap > event.get_attendees().count():
-        if payment_id is not None or event.require_payment:
-            # Checks that the user is not already attending
-            if not EventRegistration.objects.filter(event=event, attendee=user).exists():
-                try:
-                    event.guest_attendees.add(create_guest())
-                    # Try to create a entry
-                    if event.require_payment:
-
-                        EventRegistration.objects.create(event=event, attendee=user, payment_id=payment_id,
-                                                         registration_time=datetime.now())
-                    else:
-                        EventRegistration.objects.create(event=event, attendee=user,
-                                                         registration_time=datetime.now())
-                except:
-                    return get_json(400, 'Could not add you to this event')
-                event_send_mail(event, user)
-                return get_json(201, 'You are now attending this event')
-            return get_json(400, 'You are already attending this event')
-        return get_json(400, 'You have to pay for this event')
-    return get_json(400, 'Event has reached its maximum number of participants')
-
 
 
 def event_send_mail(event, user):

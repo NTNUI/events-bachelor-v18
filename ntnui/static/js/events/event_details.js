@@ -4,6 +4,7 @@ let button
 let csrftoken
 let url
 let buttonText
+let modalType
 
 // used for guest users
 let isGuestUser = false;
@@ -90,7 +91,7 @@ $(() => {
         if (button.value[0] === "-") {
             url = '/ajax/events/remove-attend-sub-event'
             buttonText = gettext('attend event')
-            openModal()
+            openModal("removeAttendanceSubEvent")
         } else {
             url = '/ajax/events/attend-sub-event'
             attendEvent()
@@ -110,7 +111,7 @@ $(() => {
                 url = '/ajax/events/refund'
                 buttonText = gettext('Pay using card')
             }
-            openModal()
+            openModal("removeAttendanceEvent")
         } else {
             if (isGuestUser) {
                 showGuestModal();
@@ -176,107 +177,133 @@ $(() => {
     })
 
 
-    function openModal() {
-        $("#deleteModal").modal('show')
-    }
+    $("#show-confirm-delete-div-button").click(() => {
+        openModal("deleteEvent");
+    });
 
-    function showGuestModal() {
-        $("#guestUserModal").modal('show')
-    }
+    function openModal(type) {
+        $("#modal-content").hide();
+        if (type === "removeAttendanceEvent") {
+            $("#modal-content").text("Are you sure you wanna unattand this event?")
+            $("#modal-content").show();
+            modalType = "removeEventAttendance";
+        } else if (type === "removeAttendanceSubEvent") {
+            $("#modal-content").text("Are you sure you wanna unattand this subevent?")
+            $("#modal-content").show();
+            modalType = "removeEventAttendance";
+        } else if (type === "deleteEvent") {
+            $("#modal-content").text("Are you sure you wanna delete this event, " +
+                "if this is a payed event all attendees will be refunded ?")
+            $("#modal-content").show();
+            modalType = "deleteEvent";
+        }
 
-    function hideGuestModal() {
-        $("#guestUserModal").modal('hide')
-    }
 
-    $("#remove-attend-event-button").click(() => {
-        removeAttendEvent()
-    })
+        function showGuestModal() {
+            $("#guestUserModal").modal('show')
+        }
 
-    function attendEvent() {
-        $.ajax({
-            type: 'POST',
-            data: {
-                csrfmiddlewaretoken: csrftoken,
-                id: button.value,
-            },
-            url: url,
-            success: (data) => {
-                button.innerHTML = gettext("Do not attend event")
-                button.value = '-' + button.value
-                button.setAttribute("class", "btn btn-danger")
-                printMessage('Success', data.message)
-                slideUpAlert()
+        function hideGuestModal() {
+            $("#guestUserModal").modal('hide')
+        }
 
-            }, error: (data) => {
-                printMessage('Error', data.responseJSON.message)
-                slideUpAlert()
+        $("#remove-attend-event-button").click(() => {
+            if (modalType === "removeEventAttendance") {
+                removeAttendEvent()
+            } else if (modalType === "deleteEvent") {
+                // Get eventID, if event id contains - remove it
+                eventID = $("#attend-event-button").val()
+                eventID = eventID.replace('-', '')
+                window.location.href = '/events/delete/' + eventID;
             }
         })
+
+        function attendEvent() {
+            $.ajax({
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: csrftoken,
+                    id: button.value,
+                },
+                url: url,
+                success: (data) => {
+                    button.innerHTML = gettext("Do not attend event")
+                    button.value = '-' + button.value
+                    button.setAttribute("class", "btn btn-danger")
+                    printMessage('Success', data.message)
+                    slideUpAlert()
+
+                }, error: (data) => {
+                    printMessage('Error', data.responseJSON.message)
+                    slideUpAlert()
+                }
+            })
+        }
+
+        function attendPayedEvent(e) {
+            const URL = '/ajax/events/' + button.value
+            buttonValue = button.value
+            $.ajax({
+                dataType: "json",
+                url: URL,
+                success: event => {
+                    $.ajax({
+                        dataType: "json",
+                        url: '/ajax/accounts',
+                        success: user => {
+                            handler.open({
+                                amount: parseInt(event.price) * 100,
+                                currency: "nok",
+                                name: event.host,
+                                description: event.name,
+                                email: user.email,
+                            });
+
+                            e.preventDefault();
+                        },
+                        error: data => {
+                            printMessage('Error', gettext('Could not get userinfo'))
+                            slideUpAlert()
+                        }
+                    });
+                },
+                error: data => {
+                    printMessage('Error', gettext('Could not get event info'))
+                    slideUpAlert()
+                }
+            })
+        }
+
+        /**
+         * Sends a remove attended request to the server
+         * @param button
+         * @param csrftoken
+         */
+        function removeAttendEvent() {
+            button.value = button.value.substring(1,)
+            $.ajax({
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: csrftoken,
+                    id: button.value
+                },
+                url: url,
+                success: (data) => {
+                    button.innerHTML = buttonText
+                    button.setAttribute("class", "btn btn-success")
+                    printMessage('Success', data.message)
+                    slideUpAlert()
+
+                }, error: (data) => {
+                    printMessage('Error', data.responseJSON.message)
+                    slideUpAlert()
+                }
+            })
+        }
+
     }
 
-    function attendPayedEvent(e) {
-        const URL = '/ajax/events/' + button.value
-        buttonValue = button.value
-        $.ajax({
-            dataType: "json",
-            url: URL,
-            success: event => {
-                $.ajax({
-                    dataType: "json",
-                    url: '/ajax/accounts',
-                    success: user => {
-                        handler.open({
-                            amount: parseInt(event.price) * 100,
-                            currency: "nok",
-                            name: event.host,
-                            description: event.name,
-                            email: user.email,
-                        });
-
-                        e.preventDefault();
-                    },
-                    error: data => {
-                        printMessage('Error', gettext('Could not get userinfo'))
-                        slideUpAlert()
-                    }
-                });
-            },
-            error: data => {
-                printMessage('Error', gettext('Could not get event info'))
-                slideUpAlert()
-            }
-        })
-    }
-
-    /**
-     * Sends a remove attended request to the server
-     * @param button
-     * @param csrftoken
-     */
-    function removeAttendEvent() {
-        button.value = button.value.substring(1,)
-        $.ajax({
-            type: 'POST',
-            data: {
-                csrfmiddlewaretoken: csrftoken,
-                id: button.value
-            },
-            url: url,
-            success: (data) => {
-                button.innerHTML = buttonText
-                button.setAttribute("class", "btn btn-success")
-                printMessage('Success', data.message)
-                slideUpAlert()
-
-            }, error: (data) => {
-                printMessage('Error', data.responseJSON.message)
-                slideUpAlert()
-            }
-        })
-    }
-
-
-})
+)
 
 // Close Checkout on page navigation:
 window.addEventListener('popstate', function () {

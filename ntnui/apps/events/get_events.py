@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.utils import translation
 
-from events.models import Event
+from events.models.event import Event
 
 
 def get_events(request):

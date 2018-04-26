@@ -96,7 +96,7 @@ class TestEventModels(TestCase):
     # test: attends, return false; user doesn't attend event
     def test_event_attends_false(self):
         # act
-        result = self.event.attends(self.attendee)
+        result = self.event.user_attends(self.attendee)
 
         # assert
         self.assertFalse(result)
@@ -108,7 +108,7 @@ class TestEventModels(TestCase):
         with patch.object(EventRegistration, 'objects', return_value=self.event_registration):
 
             # act
-            result = self.event.attends(self.attendee)
+            result = self.event.user_attends(self.attendee)
 
             # assert
             self.assertTrue(result)
@@ -189,7 +189,7 @@ class TestEventModels(TestCase):
     # test: attends, return false; user doesn't attend sub-event
     def test_sub_event_attends_false(self):
         # assert
-        self.assertFalse(self.sub_event.attends(self.attendee))
+        self.assertFalse(self.sub_event.user_attends(self.attendee))
 
     # test: attends, return true; user attends sub-event
     def test_sub_event_attends_true(self):
@@ -197,7 +197,7 @@ class TestEventModels(TestCase):
         with patch.object(SubEventRegistration, 'objects', return_value=self.sub_event_registration):
 
             # act
-            result = self.sub_event.attends(self.attendee)
+            result = self.sub_event.user_attends(self.attendee)
 
             # assert
             self.assertTrue(result)
