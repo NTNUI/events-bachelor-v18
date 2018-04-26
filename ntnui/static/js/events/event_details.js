@@ -198,7 +198,6 @@ $(() => {
             data: {
                 csrfmiddlewaretoken: csrftoken,
                 id: button.value,
-                guestId: guestId
             },
             url: url,
             success: (data) => {
