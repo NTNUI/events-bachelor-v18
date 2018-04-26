@@ -186,9 +186,30 @@
                 <button id="add-subEvent-button" class="create-sub-event btn btn-success">Create subEvent</button>
             </div>
 
-            <div id="subEvents" class="collapse show" aria-labelledby="headingOne"
-                 data-parent="#options">
+            <div id="subEvents"  class="testing collapse show" aria-labelledby="headingOne" style="height:20rem;">
 
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header-category card-header" data-toggle="collapse"
+                 aria-expanded="true" aria-controls="options">
+                <div class="sub-event-header">
+                    <h5 style="margin-top: .5rem">
+                        {% trans 'Categories' %}
+                    </h5>
+                </div>
+                <button id="add-category-button" class="create-sub-event btn btn-success">Create new category</button>
+            </div>
+
+            <div id="categories" class="testing collapse show" aria-labelledby="headingOne" style="height:20rem;">
+                <div id="test" class="card" draggable="true">
+                    <div  class="card-header">
+                        Category name
+                    </div>
+                    <div class="card-body">
+                        empty
+                    </div>
+                </div>
             </div>
         </div>
         <div class="form-group row">

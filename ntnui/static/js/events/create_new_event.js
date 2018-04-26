@@ -59,6 +59,23 @@ $(() => {
         subEvents.push(subEvent)
     });
 
+    $(".testing").each((e, container) => {
+        container.addEventListener("dragover", dragover)
+        container.addEventListener("dragenter", dragenter)
+        container.addEventListener("drop", drop)
+    })
+
+    function dragover(e) {
+        e.preventDefault()
+    }
+
+    function dragenter(e) {
+        e.preventDefault()
+    }
+
+    function drop() {
+        this.append($("#test")[0])
+    }
 })
 ;
 
@@ -140,7 +157,7 @@ function validateDate(button, dispError) {
 
 function addSubEvent(subEvent) {
     $("#subEvents").append('' +
-        '<div class="card">\n' +
+        '<div class="card" draggable="true">\n' +
         '    <div class="card-body">\n' +
         subEvent.name_nb +
         '     </div>\n' +
@@ -177,3 +194,5 @@ function printMessage(msgType, msg) {
         //sets the amount of ms before the alert is closed
     }, 2000)
 }
+
+
