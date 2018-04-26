@@ -1,3 +1,9 @@
+// List of subEvents
+let subEvents = [];
+
+// list of categories
+let categories = []
+
 // On document ready
 $(() => {
 
@@ -9,8 +15,8 @@ $(() => {
         let inputs = $(".form-input-create-event")
         for (let i = 0; i < inputs.length; i++) {
             if (!inputs[i].validity.valid) {
-                    printMessage('error', gettext('Please validate all fields'))
-                    slideUpAlert(false)
+                printMessage('error', gettext('Please validate all fields'))
+                slideUpAlert(false)
                 return;
             }
         }
@@ -35,11 +41,23 @@ $(() => {
 
     // Show the subEvent modal
     $("#add-subEvent-button").click(function (e) {
-        $("#subEvent-modal").show();
+        $("#subEvent-modal").modal('show')
     });
 
     // add listener to all the from fields
     $(".form-input-create-event").blur(validateForm);
+
+    $("#submit-sub-event-form").click((e) => {
+        e.preventDefault()
+        let subEvent = {};
+        $('#subEvent-data-form *').filter(':input').each((e, input) => {
+            subEvent[input.name] = input.value;
+
+        });
+        $("#subEvent-modal").modal('hide')
+        addSubEvent(subEvent)
+        subEvents.push(subEvent)
+    });
 
 })
 ;
@@ -119,6 +137,15 @@ function validateDate(button, dispError) {
     }
 }
 
+
+function addSubEvent(subEvent) {
+    $("#subEvents").append('' +
+        '<div class="card">\n' +
+        '    <div class="card-body">\n' +
+        subEvent.name_nb +
+        '     </div>\n' +
+        '</div>')
+}
 
 /**
  * Prints message to screen, using a dialog box

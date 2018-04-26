@@ -1,9 +1,17 @@
-input:focus:invalid {
-    border: 1px dashed darkred;
+input:focus:invalid  {
+    border: 1px solid darkred;
 }
 
 input:focus:valid {
-    border: 1px dashed darkgreen;
+    border: 1px solid darkgreen;
+}
+
+textarea:focus:invalid  {
+    border: 1px solid darkred;
+}
+
+textarea:focus:valid {
+    border: 1px solid darkgreen;
 }
 
 .error-input {
@@ -40,4 +48,14 @@ h1 {
 
 .btn-success {
   margin-left: 20%;
+}
+.card-header-category {
+    background-color: white;
+    width: 100%;
+}
+.create-sub-event{
+    float:right;
+}
+.sub-event-header{
+    float:left;
 }
