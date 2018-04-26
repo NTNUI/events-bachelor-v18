@@ -73,14 +73,10 @@ def get_event_details(request, id):
     # Checks if the user is sign in.
     if request.user.is_authenticated:
         attends = event.user_attends(request.user)
+        can_create_event = user_can_create_event(request.user)
     else:
         # Returns false if not
         attends = False
-
-
-    if request.user.is_authenticated:
-        can_create_event = user_can_create_event(request.user)
-    else:
         can_create_event = False
 
     if request.user.is_authenticated:
@@ -88,8 +84,6 @@ def get_event_details(request, id):
             is_in_mainboard = user_is_in_mainboard(request.user)
         else:
             is_in_mainboard = False
-
-
 
         user_boards = get_groups_user_can_create_events_for(request.user)
         event_hosts = []
@@ -105,7 +99,8 @@ def get_event_details(request, id):
             can_edit_and_delete_event = True
         else:
             can_edit_and_delete_event = False
-
+    else:
+        can_edit_and_delete_event = False
 
     event = {
         'name': event.name(),

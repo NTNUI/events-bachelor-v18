@@ -14,37 +14,59 @@ let email, firstName, lastName, phone
  * When the document have loaded, add listener to attend-event-button and send ajax.
  */
 $(() => {
-    if ($('#guestUserModal').length) {
-        isGuestUser = true;
-    }
-
-    csrftoken = getCookie('csrftoken')
-
-    /**
-     * Configure stripe
-     */
-    let handler = StripeCheckout.configure({
-        key: 'pk_test_TagT9jGDj7CN9NOQfTnueTxz',
-        image: "/static/img/ntnui2.svg",
-        locale: 'auto',
-        token: (token) => {
-            processStripeToken(token);
+        if ($('#guestUserModal').length) {
+            isGuestUser = true;
         }
-    });
 
-    function processStripeToken(token) {
-        if (isGuestUser) {
+        csrftoken = getCookie('csrftoken')
+
+        /**
+         * Configure stripe
+         */
+        let handler = StripeCheckout.configure({
+            key: 'pk_test_TagT9jGDj7CN9NOQfTnueTxz',
+            image: "/static/img/ntnui2.svg",
+            locale: 'auto',
+            token: (token) => {
+                processStripeToken(token);
+            }
+        });
+
+        function processStripeToken(token) {
+            if (isGuestUser) {
+                $.ajax({
+                    dataType: "json",
+                    type: "POST",
+                    url: '/ajax/events/' + buttonValue + '/payment-guest',
+                    data: {
+                        csrfmiddlewaretoken: csrftoken,
+                        stripeToken: token.id,
+                        stripEmail: token.email,
+                        first_name: firstName,
+                        last_name: lastName,
+                        phone: phone,
+                    },
+                    success: (data) => {
+                        button.innerHTML = gettext("Do not attend event")
+                        button.value = '-' + button.value
+                        button.setAttribute("class", "btn btn-danger")
+                        slideUpAlert()
+                    },
+                    error: (data) => {
+                        printMessage('Error', data.responseJSON.message)
+                        slideUpAlert()
+                    }
+                });
+
+            }
             $.ajax({
                 dataType: "json",
                 type: "POST",
-                url: '/ajax/events/' + buttonValue + '/payment-guest',
+                url: '/ajax/events/' + buttonValue + '/payment',
                 data: {
                     csrfmiddlewaretoken: csrftoken,
                     stripeToken: token.id,
-                    stripEmail: token.email,
-                    first_name: firstName,
-                    last_name: lastName,
-                    phone: phone,
+                    stripEmail: token.email
                 },
                 success: (data) => {
                     button.innerHTML = gettext("Do not attend event")
@@ -57,145 +79,124 @@ $(() => {
                     slideUpAlert()
                 }
             });
-
         }
-        $.ajax({
-            dataType: "json",
-            type: "POST",
-            url: '/ajax/events/' + buttonValue + '/payment',
-            data: {
-                csrfmiddlewaretoken: csrftoken,
-                stripeToken: token.id,
-                stripEmail: token.email
-            },
-            success: (data) => {
-                button.innerHTML = gettext("Do not attend event")
-                button.value = '-' + button.value
-                button.setAttribute("class", "btn btn-danger")
-                slideUpAlert()
-            },
-            error: (data) => {
-                printMessage('Error', data.responseJSON.message)
-                slideUpAlert()
-            }
-        });
-    }
 
 
-    /**
-     * Sends a attend subevet request
-     */
-    $(".join-subevent-button").click(() => {
-        button = event.target
-        // IF the first sign is a - we want to remove attending event
-        if (button.value[0] === "-") {
-            url = '/ajax/events/remove-attend-sub-event'
-            buttonText = gettext('attend event')
-            openModal("removeAttendanceSubEvent")
-        } else {
-            url = '/ajax/events/attend-sub-event'
-            attendEvent()
-        }
-    })
-    /**
-     * Sends a attend event request to the server
-     */
-    $("#attend-event-button").click((e) => {
-        button = event.target
-        buttonValue = button.value
-        if (button.value[0] === "-") {
-            buttonText = gettext('attend event')
-            if ($("#price").length === 0) {
-                url = '/ajax/events/remove-attend-event'
+        /**
+         * Sends a attend subevet request
+         */
+        $(".join-subevent-button").click(() => {
+            button = event.target
+            // IF the first sign is a - we want to remove attending event
+            if (button.value[0] === "-") {
+                url = '/ajax/events/remove-attend-sub-event'
+                buttonText = gettext('attend event')
+                openModal("removeAttendanceSubEvent")
             } else {
-                url = '/ajax/events/refund'
-                buttonText = gettext('Pay using card')
+                url = '/ajax/events/attend-sub-event'
+                attendEvent()
             }
-            openModal("removeAttendanceEvent")
-        } else {
-            if (isGuestUser) {
-                showGuestModal();
-            } else {
+        })
+        /**
+         * Sends a attend event request to the server
+         */
+        $("#attend-event-button").click((e) => {
+            button = event.target
+            buttonValue = button.value
+            if (button.value[0] === "-") {
+                buttonText = gettext('attend event')
                 if ($("#price").length === 0) {
-                    url = '/ajax/events/attend-event'
-                    attendEvent()
+                    url = '/ajax/events/remove-attend-event'
                 } else {
-                    attendPayedEvent(e)
+                    url = '/ajax/events/refund'
+                    buttonText = gettext('Pay using card')
+                }
+                openModal("removeAttendanceEvent")
+            } else {
+                if (isGuestUser) {
+                    showGuestModal();
+                } else {
+                    if ($("#price").length === 0) {
+                        url = '/ajax/events/attend-event'
+                        attendEvent()
+                    } else {
+                        attendPayedEvent(e)
+                    }
                 }
             }
-        }
-    })
+        })
 
 
-    $("#guest-data-form").on('submit', (e) => {
-        firstName = $("#first-name").val()
-        lastName = $("#last-name").val()
-        phone = $("#phone").val()
-        email = $("#input-email").val()
-        if ($("#price").length > 0) {
-            $.ajax({
-                dataType: "json",
-                url: '/ajax/events/' + button.value,
-                success: event => {
-                    handler.open({
-                        amount: parseInt(event.price) * 100,
-                        currency: "nok",
-                        name: event.host,
-                        description: event.name,
-                        email: email,
-                    });
+        $("#guest-data-form").on('submit', (e) => {
+            firstName = $("#first-name").val()
+            lastName = $("#last-name").val()
+            phone = $("#phone").val()
+            email = $("#input-email").val()
+            if ($("#price").length > 0) {
+                $.ajax({
+                    dataType: "json",
+                    url: '/ajax/events/' + button.value,
+                    success: event => {
+                        handler.open({
+                            amount: parseInt(event.price) * 100,
+                            currency: "nok",
+                            name: event.host,
+                            description: event.name,
+                            email: email,
+                        });
 
-                    e.preventDefault();
-                },
-                error: data => {
-                    printMessage('Error', gettext('Could not get userinfo'))
-                    slideUpAlert()
-                }
-            });
-        } else {
-            let postData = $("#guest-data-form").serialize();
-            postData = postData + '&csrfmiddlewaretoken=' + csrftoken;
-            postData = postData + '&id=' + buttonValue;
-            $.ajax({
-                type: 'POST',
-                url: '/ajax/events/attend-event-guest',
-                data: postData,
-                success: (data) => {
-                    printMessage('success', data.message)
-                    slideUpAlert(true)
-                    hideGuestModal()
-                },
-                error:
-                    (data) => {
-                        printMessage('error', data.responseJSON.message)
-                        slideUpAlert(false)
+                        e.preventDefault();
+                    },
+                    error: data => {
+                        printMessage('Error', gettext('Could not get userinfo'))
+                        slideUpAlert()
                     }
-            })
-        }
+                });
+            } else {
+                let postData = $("#guest-data-form").serialize();
+                postData = postData + '&csrfmiddlewaretoken=' + csrftoken;
+                postData = postData + '&id=' + buttonValue;
+                $.ajax({
+                    type: 'POST',
+                    url: '/ajax/events/attend-event-guest',
+                    data: postData,
+                    success: (data) => {
+                        printMessage('success', data.message)
+                        slideUpAlert(true)
+                        hideGuestModal()
+                    },
+                    error:
+                        (data) => {
+                            printMessage('error', data.responseJSON.message)
+                            slideUpAlert(false)
+                        }
+                })
+            }
 
-        e.preventDefault();
-    })
+            e.preventDefault();
+        })
 
 
-    $("#show-confirm-delete-div-button").click(() => {
-        openModal("deleteEvent");
-    });
+        $("#show-confirm-delete-div-button").click(() => {
+            openModal("deleteEvent");
+        });
 
-    function openModal(type) {
-        $("#modal-content").hide();
-        if (type === "removeAttendanceEvent") {
-            $("#modal-content").text("Are you sure you wanna unattand this event?")
-            $("#modal-content").show();
-            modalType = "removeEventAttendance";
-        } else if (type === "removeAttendanceSubEvent") {
-            $("#modal-content").text("Are you sure you wanna unattand this subevent?")
-            $("#modal-content").show();
-            modalType = "removeEventAttendance";
-        } else if (type === "deleteEvent") {
-            $("#modal-content").text("Are you sure you wanna delete this event, " +
-                "if this is a payed event all attendees will be refunded ?")
-            $("#modal-content").show();
-            modalType = "deleteEvent";
+        function openModal(type) {
+            $("#modal-content").hide();
+            if (type === "removeAttendanceEvent") {
+                $("#modal-content").text("Are you sure you wanna unattand this event?")
+                $("#modal-content").show();
+                modalType = "removeEventAttendance";
+            } else if (type === "removeAttendanceSubEvent") {
+                $("#modal-content").text("Are you sure you wanna unattand this subevent?")
+                $("#modal-content").show();
+                modalType = "removeEventAttendance";
+            } else if (type === "deleteEvent") {
+                $("#modal-content").text("Are you sure you wanna delete this event, " +
+                    "if this is a payed event all attendees will be refunded ?")
+                $("#modal-content").show();
+                modalType = "deleteEvent";
+            }
         }
 
 
@@ -302,7 +303,6 @@ $(() => {
         }
 
     }
-
 )
 
 // Close Checkout on page navigation:
