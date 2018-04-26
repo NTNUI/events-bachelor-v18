@@ -1,10 +1,10 @@
 from django.contrib import admin
-from events.models.guest import Guest
 from events.models.tag import Tag
+from events.models.guest import Guest
 from events.models.restriction import Restriction
-from events.models.event import Event, EventDescription, EventRegistration
-from events.models.sub_event import SubEvent, SubEventDescription, SubEventRegistration
 from events.models.category import Category, CategoryDescription
+from events.models.event import Event, EventDescription, EventRegistration, EventGuestRegistration, EventWaitingList, EventGuestWaitingList
+from events.models.sub_event import SubEvent, SubEventDescription, SubEventRegistration, SubEventGuestRegistration, SubEventWaitingList, SubEventGuestWaitingList
 
 
 class CategoryDescriptionInline(admin.TabularInline):
@@ -27,6 +27,30 @@ class EventRegistrationInline(admin.TabularInline):
     """Creates an inline for the EventRegistration-model."""
 
     model = EventRegistration
+    # extra defines the inline's number of placeholders shown on the admin page (default = 3).
+    extra = 0
+
+
+class EventGuestRegistrationInline(admin.TabularInline):
+    """Creates an inline for the EventRegistration-model."""
+
+    model = EventGuestRegistration
+    # extra defines the inline's number of placeholders shown on the admin page (default = 3).
+    extra = 0
+
+
+class EventWaitingListInline(admin.TabularInline):
+    """Creates an inline for the EventWaitingList-model."""
+
+    model = EventWaitingList
+    # extra defines the inline's number of placeholders shown on the admin page (default = 3).
+    extra = 0
+
+
+class EventGuestWaitingListInline(admin.TabularInline):
+    """Creates an inline for the EventWaitingList-model."""
+
+    model = EventGuestWaitingList
     # extra defines the inline's number of placeholders shown on the admin page (default = 3).
     extra = 0
 
@@ -55,6 +79,30 @@ class SubEventRegistrationInline(admin.TabularInline):
     extra = 0
 
 
+class SubEventGuestRegistrationInline(admin.TabularInline):
+    """Creates an inline for the SubEventRegistration-model."""
+
+    model = SubEventGuestRegistration
+    # extra defines the inline's number of placeholders shown on the admin page (default = 3).
+    extra = 0
+
+
+class SubEventWaitingListInline(admin.TabularInline):
+    """Creates an inline for the SubEventWaitingList-model."""
+
+    model = SubEventWaitingList
+    # extra defines the inline's number of placeholders shown on the admin page (default = 3).
+    extra = 0
+
+
+class SubEventGuestWaitingListInline(admin.TabularInline):
+    """Creates an inline for the SubEventWaitingList-model."""
+
+    model = SubEventGuestWaitingList
+    # extra defines the inline's number of placeholders shown on the admin page (default = 3).
+    extra = 0
+
+
 class CategoryAdmin(admin.ModelAdmin):
     """Encapsulates the Category-model's related tables."""
 
@@ -68,14 +116,16 @@ class EventAdmin(admin.ModelAdmin):
     # list_display defines which attributes to be listed at the Event's overview admin page.
     list_display = ['id', 'name', 'description', 'start_date', 'end_date', 'priority', 'is_host_ntnui']
     # inlines defines which inline classes to be added to the Event's admin page.
-    inlines = [EventDescriptionInline, EventRegistrationInline]
+    inlines = [EventDescriptionInline, EventRegistrationInline,
+               EventGuestRegistration, EventWaitingListInline, EventGuestWaitingListInline]
 
 
 class SubEventAdmin(admin.ModelAdmin):
     """Encapsulates the SubEvent-model's related tables."""
 
     # inlines defines which inline classes that will be added to the SubEvent's admin page.
-    inlines = [SubEventDescriptionInline, SubEventRegistrationInline]
+    inlines = [SubEventDescriptionInline, SubEventRegistrationInline,
+               SubEventGuestRegistration, SubEventWaitingListInline, SubEventGuestWaitingListInline]
 
 
 # adds the views to the admin.

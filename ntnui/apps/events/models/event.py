@@ -85,15 +85,45 @@ class Event(models.Model):
             groups.append(group.name)
         return groups
 
-    # Returns the event's attendees
-    def get_attendees(self):
-        return EventRegistration.objects.filter(event=self) + self.get_attendees()
-
-    # Checks a given user attends the event
-    def attends(self, user):
+    # Checks whether a given user attends the event
+    def user_attends(self, user):
         if EventRegistration.objects.filter(attendee=user, event=self).exists():
             return True
         return False
+
+    # Checks whether a given guest attends the event
+    def guest_attends(self, guest):
+        if EventGuestRegistration.objects.filter(attendee=guest, event=self).exists():
+            return True
+        return False
+
+    # Returns a complete list of the event's attendees
+    def get_attendees(self):
+        user_attendees = EventRegistration.objects.filter(event=self)
+        guest_attendees = EventGuestRegistration.objects.filter(event=self)
+        attendance_list = user_attendees + guest_attendees
+
+        return attendance_list
+
+    # Checks whether a given user is signed up for the event's waiting list
+    def user_on_waiting_list(self, user):
+        if EventWaitingList.objects.filter(attendee=user, event=self).exists():
+            return True
+        return False
+
+    # Checks whether a given guest is signed up for the event's waiting list
+    def guest_on_waiting_list(self, guest):
+        if EventGuestWaitingList.objects.filter(attendee=guest, event=self).exists():
+            return True
+        return False
+
+    # Returns the event's complete waiting list
+    def get_waiting_list(self):
+        user_waiting_list = EventWaitingList.objects.filter(event=self)
+        guest_waiting_list = EventGuestWaitingList.objects.filter(event=self)
+        waiting_list = user_waiting_list + guest_waiting_list
+
+        return waiting_list
 
     def __str__(self):
         return self.name()
@@ -133,7 +163,7 @@ class EventRegistration(models.Model):
         return self.event.name() + ' - ' + self.attendee.email
 
 
-class EventWaitingListRegistration(models.Model):
+class EventWaitingList(models.Model):
     """Created to let users sign up for the waiting list, when an event is capped out"""
 
     registration_time = models.DateTimeField(_('registration time'))
@@ -167,7 +197,7 @@ class EventGuestRegistration(models.Model):
         return self.event.name() + ' - ' + self.attendee.email
 
 
-class EventGuestWaitingListRegistration(models.Model):
+class EventGuestWaitingList(models.Model):
     """Created to let guests sign up for the waiting list, when an event is capped out"""
 
     registration_time = models.DateTimeField(_('registration time'))

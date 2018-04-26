@@ -17,7 +17,6 @@ class SubEvent(models.Model):
     registration_end_date = models.DateTimeField(_('registration end date'), blank=True, null=True)
     category = models.ForeignKey(Category, verbose_name=_('category'))
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
-    waiting_list = models.ManyToManyField(User, verbose_name=_('waiting list'), blank=True)
 
     class Meta:
         verbose_name = _('sub-event')
@@ -39,10 +38,45 @@ class SubEvent(models.Model):
         else:
             return 'No name given'
 
-    def attends(self, user):
-        if SubEventRegistration.objects.filter(sub_event=self, attendee=user).exists():
+    # Checks whether a given user attends the sub-event
+    def user_attends(self, user):
+        if SubEventRegistration.objects.filter(attendee=user, sub_event=self).exists():
             return True
         return False
+
+    # Checks whether a given guest attends the sub-event
+    def guest_attends(self, guest):
+        if SubEventGuestRegistration.objects.filter(attendee=guest, sub_event=self).exists():
+            return True
+        return False
+
+    # Returns a complete list of the sub-event's attendees
+    def get_attendees(self):
+        user_attendees = SubEventRegistration.objects.filter(sub_event=self)
+        guest_attendees = SubEventGuestRegistration.objects.filter(sub_event=self)
+        attendance_list = user_attendees + guest_attendees
+
+        return attendance_list
+
+    # Checks whether a given user is signed up for the sub-event's waiting list
+    def user_on_waiting_list(self, user):
+        if SubEventWaitingList.objects.filter(attendee=user, sub_event=self).exists():
+            return True
+        return False
+
+    # Checks whether a given guest is signed up for the sub-event's waiting list
+    def guest_on_waiting_list(self, guest):
+        if SubEventGuestWaitingList.objects.filter(attendee=guest, sub_event=self).exists():
+            return True
+        return False
+
+    # Returns the sub-event's complete waiting list
+    def get_waiting_list(self):
+        user_waiting_list = SubEventWaitingList.objects.filter(sub_event=self)
+        guest_waiting_list = SubEventGuestWaitingList.objects.filter(sub_event=self)
+        waiting_list = user_waiting_list + guest_waiting_list
+
+        return waiting_list
 
     def __str__(self):
         return self.name()

@@ -69,7 +69,7 @@ def get_event_details(request, id):
 
     # Checks if the user is sign in.
     if request.user.is_authenticated:
-        attends = event.attends(request.user)
+        attends = event.user_attends(request.user)
     else:
         # Returns false if not
         attends = False
