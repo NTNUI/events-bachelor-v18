@@ -4,6 +4,8 @@ let subEvents = [];
 // list of categories
 let categories = []
 
+// subevent id counter
+let idCounter = 0;
 // On document ready
 $(() => {
 
@@ -52,8 +54,10 @@ $(() => {
         let subEvent = {};
         $('#subEvent-data-form *').filter(':input').each((e, input) => {
             subEvent[input.name] = input.value;
-
         });
+        subEvent.id = idCounter;
+
+
         $("#subEvent-modal").modal('hide')
         addSubEvent(subEvent)
         subEvents.push(subEvent)
@@ -65,6 +69,7 @@ $(() => {
         container.addEventListener("drop", drop)
     })
 
+
     function dragover(e) {
         e.preventDefault()
     }
@@ -74,7 +79,7 @@ $(() => {
     }
 
     function drop() {
-        this.append($("#test")[0])
+        this.append($("#subEvent-element")[0])
     }
 })
 ;
@@ -156,12 +161,28 @@ function validateDate(button, dispError) {
 
 
 function addSubEvent(subEvent) {
-    $("#subEvents").append('' +
-        '<div class="card" draggable="true">\n' +
-        '    <div class="card-body">\n' +
-        subEvent.name_nb +
-        '     </div>\n' +
-        '</div>')
+    $("#subEvents").append(
+        '<div class="subEvent-element" class="card" draggable="true">' +
+        '<div class="sub-event-card-container card-body">' +
+        '    <div class="sub-event-name"><b>' + subEvent.name_nb + '</b></div>' +
+        '        <div class="center-content sub-event-dateime">' +
+        '             <i>' + subEvent.start_date + ' - ' + subEvent.end_date + '</i>' +
+        '        </div>\n' +
+        '         <div class="sub-event-button-container">' +
+        '          <div class="delete-sub-event-button center-content" data-id="' + idCounter + '">' +
+        '             <img class="img-cross" src="/static/img/circle-x.svg" alt="exit"></div>' +
+        '         </div>' +
+        '        </div>' + '</div>');
+
+    idCounter++;
+
+    
+    $(".delete-sub-event-button").click((e) => {
+        const event = e || window.event
+        const value = $(event.target).closest(".delete-sub-event-button").attr('data-id')
+        subEvents = subEvents.filter(item => item.id != value)
+        $(event.target).closest(".subEvent-element").remove()
+    })
 }
 
 /**

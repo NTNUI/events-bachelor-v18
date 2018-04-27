@@ -47,11 +47,11 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label>From date</label>
-                                <input name="from_date" type="datetime-local" class="form-control" required>
+                                <input name="start_date" type="datetime-local" class="form-control" required>
                             </div>
                             <div class="form-group col-md-6">
                                 <label>To date</label>
-                                <input id="phone" name="to_date" type="datetime-local" class="form-control" required>
+                                <input id="phone" name="end_date" type="datetime-local" class="form-control" required>
                             </div>
                         </div>
 
@@ -82,15 +82,13 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
                             data-dismiss="modal">{% trans 'Close' %}</button>
                     <button id="submit-sub-event-form" type="submit" form="subEvent-data-form" class="btn btn-success">
-                        {% trans 'Create subEvent' %}</button>
+                        {% trans 'Create sub-event' %}</button>
                 </div>
             </div>
         </div>
@@ -180,34 +178,24 @@
                  aria-expanded="true" aria-controls="options">
                 <div class="sub-event-header">
                     <h5 style="margin-top: .5rem">
-                        {% trans 'SubEvents' %}
+                        {% trans 'sub-event' %}
                     </h5>
                 </div>
-                <button id="add-subEvent-button" class="create-sub-event btn btn-success">Create subEvent</button>
+                <div id="add-subEvent-button" class="create-sub-event"><img src="{% static 'img/plus.svg' %}"
+                                                                            style="height:1rem" alt="plus-sign"/></div>
             </div>
-
-            <div id="subEvents"  class="testing collapse show" aria-labelledby="headingOne" style="height:20rem;">
-
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header-category card-header" data-toggle="collapse"
-                 aria-expanded="true" aria-controls="options">
-                <div class="sub-event-header">
-                    <h5 style="margin-top: .5rem">
-                        {% trans 'Categories' %}
-                    </h5>
-                </div>
-                <button id="add-category-button" class="create-sub-event btn btn-success">Create new category</button>
-            </div>
-
-            <div id="categories" class="testing collapse show" aria-labelledby="headingOne" style="height:20rem;">
-                <div id="test" class="card" draggable="true">
-                    <div  class="card-header">
+            <div class="card">
+                <div class=" collapse show" aria-labelledby="headingOne">
+                    <!--
+                    <div class="card-header">
                         Category name
                     </div>
-                    <div class="card-body">
-                        empty
+                    <div class="testing card-body" style="text-align: center; border: green dashed 1px;">
+                        Drop sub-event here
+                    </div> -->
+                    <div id="subEvents" class="testing" style="min-height:3rem;">
+
+                        </div>
                     </div>
                 </div>
             </div>

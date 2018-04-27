@@ -54,8 +54,51 @@ h1 {
     width: 100%;
 }
 .create-sub-event{
-    float:right;
+    float: right;
+    height: 3rem;
+    width: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2rem;
+    border: green solid 1px;
 }
 .sub-event-header{
     float:left;
 }
+.center-content {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.sub-event-card-container {
+    display:grid;
+    grid-template-columns: 20% 60% 20%;
+}
+.sub-event-name {
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+.sub-event-dateime {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    text-align: center;
+}
+.sub-event-button-container {
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+
+.delete-sub-event-button{
+    float: right;
+    height: 100%;
+    padding-right:.9rem;
+}
+.img-cross {
+    width:1rem;
+}
+
+
+
+
+
