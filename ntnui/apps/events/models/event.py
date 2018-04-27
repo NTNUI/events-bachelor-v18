@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+
 from django.db import models
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
@@ -36,11 +38,6 @@ class Event(models.Model):
             "cover_photo/events/{}".format(name.replace(" ", "-")), filename)
 
     cover_photo = models.ImageField(upload_to=get_cover_upload_to, default='cover_photo/ntnui-volleyball.png')
-
-    def require_payment(self):
-        if self.price > 0:
-            return True
-        return False
 
     # Returns the event's name, in the given language
     def name(self):
@@ -92,18 +89,33 @@ class Event(models.Model):
             return True
         return False
 
+    def attend_event(self, user, payment_id, registration_time):
+        EventRegistration.objects.create(event=self, attendee=user,
+                                         payment_id=payment_id, registration_time=registration_time)
+
+    def attend_waiting_list(self, user, payment_id, registration_time):
+        EventRegistration.objects.create(event=self, attendee=user,
+                                         payment_id=payment_id, registration_time=registration_time)
     # Checks whether a given guest attends the event
     def guest_attends(self, guest):
         if EventGuestRegistration.objects.filter(attendee=guest, event=self).exists():
             return True
         return False
 
+    def guest_attend_event(self, guest, payment_id, registration_time):
+        EventGuestRegistration.objects.create(event=self, attendee=guest,
+                                              payment_id=payment_id, registration_time=registration_time)
+
+    def guest_attend_waiting_list(self, guest, payment_id, registration_time):
+        EventGuestWaitingList.objects.create(event=self, attendee=guest,
+                                              payment_id=payment_id, registration_time=registration_time)
+
     # Returns a complete list of the event's attendees
     def get_attendees(self):
         user_attendees = EventRegistration.objects.filter(event=self)
         guest_attendees = EventGuestRegistration.objects.filter(event=self)
-        attendance_list = user_attendees + guest_attendees
-        return attendance_list
+
+        return user_attendees + guest_attendees
 
     # Checks whether a given user is signed up for the event's waiting list
     def user_on_waiting_list(self, user):
@@ -117,13 +129,67 @@ class Event(models.Model):
             return True
         return False
 
-    # Returns the event's complete waiting list
-    def get_waiting_list(self):
-        user_waiting_list = EventWaitingList.objects.filter(event=self)
-        guest_waiting_list = EventGuestWaitingList.objects.filter(event=self)
-        waiting_list = user_waiting_list + guest_waiting_list
+    def waiting_list_count(self):
+        users_on_waiting_list = EventWaitingList.objects.filter(event=self).count()
+        guests_on_waiting_list = EventGuestWaitingList.objects.filter(event=self).count()
+        return users_on_waiting_list + guests_on_waiting_list
 
-        return waiting_list
+    def next_on_waiting_list(self):
+
+        if self.waiting_list_count() > 0:
+
+            user_waiting_list = EventWaitingList.objects.filter(event=self)
+            guest_waiting_list = EventGuestWaitingList.objects.filter(event=self)
+
+            waiting_list = list(user_waiting_list) + list(user_waiting_list)
+            sorted_waiting_list = sorted(waiting_list, key=lambda attendee: attendee.registration_time, reverse=True)
+
+            next_on_waiting_list = sorted_waiting_list[0]
+
+            if isinstance(next_on_waiting_list, EventWaitingList):
+                return 'user', next_on_waiting_list.attendee, next_on_waiting_list.payment_id
+            else:
+                return 'guest', next_on_waiting_list.attendee, next_on_waiting_list.payment_id
+
+        else:
+            return None
+
+    # Checks whether the event is capped out.
+    def check_attendance_cap(self):
+
+        # The event has no attendance cap.
+        if self.attendance_cap is None:
+            return True
+        # The event's attendance cap is greater than the amount of attendees.
+        elif self.attendance_cap > self.get_attendees().count():
+            return True
+        # The event's capped out.
+        else:
+            return False
+
+    def payment_required(self, payment_id):
+        """Checks whether the event require payment."""
+
+        # Checks whether the event is free.
+        free_event = self.price == 0
+
+        # The event is not free and there exist an payment ID.
+        if not free_event and payment_id is not None:
+            return True
+        # The event is free.
+        elif free_event:
+            return False
+        # Something went wrong.
+        else:
+            return False
+
+    def check_sign_up_end_date(self):
+        if self.registration_end_date > datetime.now():
+            return True
+        elif self.registration_end_date is None:
+            return True
+        else:
+            return False
 
     def __str__(self):
         return self.name()

@@ -38,6 +38,12 @@ class SubEvent(models.Model):
         else:
             return 'No name given'
 
+    # Checks whether the sub-event is free or not
+    def require_payment(self):
+        if self.price > 0:
+            return True
+        return False
+
     # Checks whether a given user attends the sub-event
     def user_attends(self, user):
         if SubEventRegistration.objects.filter(attendee=user, sub_event=self).exists():
@@ -75,8 +81,36 @@ class SubEvent(models.Model):
         user_waiting_list = SubEventWaitingList.objects.filter(sub_event=self)
         guest_waiting_list = SubEventGuestWaitingList.objects.filter(sub_event=self)
         waiting_list = user_waiting_list + guest_waiting_list
-
         return waiting_list
+
+    # Checks whether the event is capped out.
+    def check_attendance_cap(self):
+
+        # The event has no attendance cap.
+        if self.attendance_cap is None:
+            return True
+        # The event's attendance cap is greater than the amount of attendees.
+        elif self.attendance_cap > self.get_attendees().count():
+            return True
+        # The event's capped out.
+        else:
+            return False
+
+    def payment_required(self, payment_id):
+        """Checks whether the event require payment."""
+
+        # Checks whether the event is free.
+        free_event = self.price == 0
+
+        # The event is not free and there exist an payment ID.
+        if not free_event and payment_id is not None:
+            return True
+        # The event is free.
+        elif free_event:
+            return False
+        # Something went wrong.
+        else:
+            return False
 
     def __str__(self):
         return self.name()

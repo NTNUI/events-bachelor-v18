@@ -12,49 +12,19 @@ from django.utils import translation
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 from . import create_event, get_events
-from events.models.event import Event, EventDescription, EventRegistration
+from events.models.event import Event, EventDescription, EventRegistration, EventWaitingList
 from events.models.sub_event import SubEvent, SubEventRegistration
 from events.models.category import Category
 from django.core.mail import send_mail
 from django.core.mail import send_mail
 
+
 def get_json(code, message):
-    """Returnes json with the given format"""
+    """Returns JSON with the given format."""
+
     return JsonResponse({
         'message': message},
         status=code)
-
-
-@login_required
-def add_attendance_to_event(request):
-    """Adds attendance to the given event for the given user"""
-    if request.POST:
-        id = request.POST.get('id')
-        return attend_event(int(id), request.user, None)
-    return get_json(400, 'Request must be post')
-
-
-def attend_event(id, user, payment_id):
-    event = Event.objects.get(id=id)
-    if event.attendance_cap is None or event.attendance_cap > event.get_attendees().count():
-        if payment_id is not None or event.require_payment:
-            # Checks that the user is not already attending
-            if not EventRegistration.objects.filter(event=event, attendee=user).exists():
-                try:
-                    # Try to create a entry
-                    if event.require_payment:
-                        EventRegistration.objects.create(event=event, attendee=user, payment_id=payment_id,
-                                                         registration_time=datetime.now())
-                    else:
-                        EventRegistration.objects.create(event=event, attendee=user,
-                                                         registration_time=datetime.now())
-                except:
-                    return get_json(400, 'Could not add you to this event')
-                event_send_mail(event, user)
-                return get_json(201, 'You are now attending this event')
-            return get_json(400, 'You are already attending this event')
-        return get_json(400, 'You have to pay for this event')
-    return get_json(400, 'Event has reached its maximum number of participants')
 
 
 def event_send_mail(event, user):
@@ -78,128 +48,231 @@ def event_send_mail(event, user):
     )
 
 
+def attend_event(event_id, user, payment_id):
+    """User: sign up for event."""
+
+    # Get event.
+    event = Event.objects.get(id=event_id)
+
+    # Checks that the user isn't signed up for the event.
+    if not event.user_attends(user=user):
+        # Checks that the event isn't capped out.
+        if event.check_attendance_cap():
+            # Free event.
+            if not event.payment_required(payment_id=payment_id):
+                try:
+                    # Try to sign up for the event, without payment.
+                    event.attend_event(attendee=user, registration_time=datetime.now())
+                except:
+                    # Failure JSON message, couldn't sign up for the event.
+                    return get_json(400, "Couldn't sign up for event.")
+
+            # Priced event.
+            else:
+                try:
+                    # Try to sign up for the event, with payment.
+                    event.attend_event(attendee=user, payment_id=payment_id, registration_time=datetime.now())
+                except:
+                    # Failure JSON message, couldn't sign up for the event.
+                    return get_json(400, "Couldn't sign up for event.")
+
+            # Send mail confirmation after successfully signing up for the event.
+            event_send_mail(event, user)
+            # Success JSON message.
+            return get_json(201, 'You are now attending this event')
+        # Failure JSON message, the event is capped out.
+        return get_json(400, 'The event is capped out.')
+    # Failure JSON message, the user is already signed up for the event.
+    return get_json(400, 'Already signed up for this event.')
+
+
 @login_required
 def remove_attendance_from_event(request):
-    """Remove the user from attending the given event """
+    """User: sign off the event (main)."""
+
+    # Check that the request is POST.
     if request.POST:
-        id = int(request.POST.get('id'))
+        # Get variables to retrieve the user and event.
         user = request.user
-        return remove_attendance(id, user)
-    return get_json(400, 'request is not post')
+        event_id = int(request.POST.get('id'))
+        # Sign off event.
+        return sign_off_event(event_id, user)
+    # Failure JSON message, the request isn't POST.
+    return get_json(400, 'Request is not POST.')
 
 
-def remove_attendance(id, user):
-    try:
-        if EventRegistration.objects.filter(event__id=id, attendee=user).exists():
-            registration = EventRegistration.objects.get(event__id=id, attendee=user)
-            registration.delete()
-            return get_json(201, 'You are no longer attedning this event')
-        return get_json(400, 'Attendance does not exists')
-    except:
-        return get_json(400, 'Could not remove attendence')
+def sign_off_event(event_id, user):
+    """User: sign off the event."""
+
+    # Get event.
+    event = Event.objects.get(id=event_id)
+
+    # Checks that the user is signed up for the event.
+    if event.user_attends(user=user):
+        try:
+            # Try to sign off the event.
+            EventRegistration.objects.get(event=event, attendee=user).delete()
+            return get_json(201, 'You are now signed off the event.')
+        except:
+            # Failure JSON message, couldn't sign off the event.
+            return get_json(400, "Couldn't sign off the event.")
+    return get_json(400, 'You are already signed off the event.')
 
 
-@login_required
-def add_attendance_from_subevent(request):
-    """Add a user to the given sub-event"""
-    if request.POST:
-        id = request.POST.get('id')
-        sub_event = SubEvent.objects.get(id=int(id))
-        if sub_event.registration_end_date is None or sub_event.registration_end_dateevent.registration_end_date.replace(
-                tzinfo=None) > datetime.now():
-            if sub_event.attendance_cap is None or sub_event.attendance_cap > SubEventRegistration.objects.filter(
-                    sub_event=sub_event).count():
-                # Checks that the user is not already attending
-                if not SubEventRegistration.objects.filter(sub_event=sub_event, attendee=request.user).exists():
+def waiting_list_event(event_id, user, payment_id):
+    """User: sign up for the event's waiting list."""
+
+    # Get event.
+    event = Event.objects.get(id=event_id)
+
+    # Checks that the user isn't already signed up for the event.
+    if not event.user_attends(user=user):
+        # Checks that the user isn't already on the event's waiting list.
+        if event.user_on_waiting_list(user=user):
+            # Checks that the event is capped out.
+            if not event.check_attendance_cap():
+                # Free event.
+                if not event.payment_required():
                     try:
-                        SubEventRegistration.objects.create(sub_event=sub_event, attendee=request.user,
-                                                            registration_time=datetime.now())
-                        return get_json(201, 'Success')
+                        # Try to sign up for the event, without payment.
+                        event.attend_waiting_list(attendee=user, registration_time=datetime.now())
                     except:
-                        return get_json(400, 'Could not join event')
-                    return get_json(400, 'You are already attending this event')
-                return get_json(400, 'Event has reached its maximum number of participants')
-        return get_json(400, 'The registration period has ended')
-    return get_json(400, 'request is not post')
+                        # Failure JSON message, couldn't sign up for the event.
+                        return get_json(400, "Couldn't sign up for event.")
+
+                # Priced event.
+                else:
+                    try:
+                        # Try to sign up for the event, without payment.
+                        event.attend_waiting_list(attendee=user, payment_id=payment_id, registration_time=datetime.now())
+                    except:
+                        # Failure JSON message, couldn't sign up for the event.
+                        return get_json(400, "Couldn't sign up for event.")
+
+                # Success JSON message.
+                return get_json(201, 'You are now signed up for the waiting list.')
+            # Failure JSON message, the event is capped out.
+            return get_json(400, 'The event is not capped out.')
+        # Failure JSON message, the user is already on the event's waiting list.
+        return get_json(400, 'Already signed up for the waiting list.')
+    # Failure JSON message, the user is already signed up for the event.
+    return get_json(400, 'Already signed up for this event.')
 
 
 @login_required
-def remove_attendance_from_subevent(request):
-    """Removes the given user from the given sub-event"""
+def sign_off_waiting_list_event(request):
+    """User: sign off the event's waiting list (main)."""
+
+    # Check that the request is POST.
     if request.POST:
+        # Get variables to retrieve the user and event.
+        user = request.user
+        event_id = int(request.POST.get('id'))
+        # Sign off event.
+        return sign_off_waiting_list(event_id, user)
+    # Failure JSON message, the request isn't POST.
+    return get_json(400, 'Request is not POST.')
+
+
+def sign_off_waiting_list(event_id, user):
+    """"User: sign off the event's waiting list."""
+
+    # Get event.
+    event = Event.objects.get(id=event_id)
+
+    # Checks that the user on the event's waiting list.
+    if event.user_on_waiting_list(user=user):
         try:
-            id = request.POST.get('id')
-            if SubEventRegistration.objects.filter(sub_event__id=int(id), attendee=request.user).exists():
-                registration = SubEventRegistration.objects.get(sub_event__id=int(id), attendee=request.user)
-                registration.delete()
-                return get_json(201, 'Success')
-            return get_json(400, 'Attendance dose not exists')
+            # Try to sign off the waiting list.
+            EventWaitingList.objects.get(event=event, attendee=user).delete()
+
+
+            #if event.check_attendance_cap() and EventWaitingList.objects.filter(event=event) > 0:
+
+            return get_json(201, 'You are now signed off the event.')
+
+
         except:
-            return get_json(400, 'Could not remove attendence')
-    return get_json(400, 'request is not post')
+            # Failure JSON message, couldn't sign off the waiting list.
+            return get_json(400, "Couldn't sign off the event.")
+    return get_json(400, 'You are already signed off the event.')
 
 
-def payment_for_event(request, id):
-    if request.POST:
-        try:
-            event = Event.objects.get(id=int(id))
-            token = request.POST.get('stripeToken')
-            email = request.POST.get('stripEmail')
-            stripe.api_key = settings.STRIPE_SECRET_KEY
-            amount = event.price * 100
-            name = request.user
-            description = str(event.name()) + " - " + str(name)
-            # Charge the user's card:
-            charge = stripe.Charge.create(
-                amount=amount,
-                currency="NOK",
-                description=description,
-                source=token,
-                receipt_email=email
-            )
-            if charge:
-                attend_event(int(id), request.user, charge.id)
-                return get_json(200, 'You are now attending this event')
-        except:
-            return get_json(404, 'Payment not excepted')
-    return get_json(404, 'Request must be post.')
+def guest_attend_event(event_id, guest, payment_id):
+    """Guest: sign up for event."""
+
+    # Get event
+    event = Event.objects.get(id=event_id)
+
+    # Checks that the guest isn't signed up for the event.
+    if not event.guest_attends(guest=guest):
+        # Checks that the event isn't capped out.
+        if event.check_attendance_cap():
+            # Free event.
+            if event.payment_required():
+                try:
+                    # Try to sign up for the event, without payment.
+                    event.guest_attend_event(attendee=guest, registration_time=datetime.now())
+                except:
+                    # Failure JSON message, couldn't sign up for the event.
+                    return get_json(400, "Couldn't sign up for event.")
+
+            # Priced event.
+            else:
+                try:
+                    # Try to sign up for the event, with payment.
+                    event.user_attend_event(attendee=guest, payment_id=payment_id, registration_time=datetime.now())
+                except:
+                    # Failure JSON message, couldn't sign up for the event.
+                    return get_json(400, "Couldn't sign up for event.")
+
+            # Send mail confirmation after successfully signing up for the event.
+            event_send_mail(event, guest)
+            # Success JSON message.
+            return get_json(201, 'You are now attending this event')
+        # Failure JSON message, the event is capped out.
+        return get_json(400, 'The event is capped out.')
+    # Failure JSON message, the guest is already signed up for the event.
+    return get_json(400, 'Already signed up for this event.')
 
 
-def refund_event(request):
-    print(request.POST.get('id'))
-    if request.POST:
-        try:
-            id = request.POST.get('id')
-            event = Event.objects.get(id=int(id))
-            stripe.api_key = settings.STRIPE_SECRET_KEY
+def guest_waiting_list_event(event_id, guest, payment_id):
+    """User event waiting list sign up"""
 
-            event_registration = EventRegistration.objects.get(attendee=request.user, event=event)
+    # Get event
+    event = Event.objects.get(id=event_id)
 
-            # refund user
-            refund = stripe.Refund.create(
-                charge=event_registration.payment_id
-            )
-            if refund:
-                remove_attendance(event.id, request.user)
-                return get_json(200, 'Refund accepted')
-        except:
-            return get_json(404, 'Woops, something went wrong')
-    return get_json(404, 'Request must be post!')
+    # Checks that the guest isn't signed up for the event
+    if not event.guest_attends(guest=guest):
+        # Checks that the guest isn't on the event's waiting list
+        if event.user_on_waiting_list(guest=guest):
+            # Checks that the event is capped out.
+            if not event.check_attendance_cap():
+                # Free event.
+                if not event.payment_required():
+                    try:
+                        # Try to sign up for the event, without payment.
+                        event.guest_attend_waiting_list(attendee=guest, registration_time=datetime.now())
+                    except:
+                        # Failure JSON message, couldn't sign up for the event.
+                        return get_json(400, "Couldn't sign up for event.")
+
+                # Priced event.
+                else:
+                    try:
+                        # Try to sign up for the event, with payment.
+                        event.guest_attend_waiting_list(attendee=guest, payment_id=payment_id, registration_time=datetime.now())
+                    except:
+                        # Failure JSON message, couldn't sign up for the event.
+                        return get_json(400, "Couldn't sign up for event.")
+
+                # Success JSON message.
+                return get_json(201, 'You are now signed up for the waiting list.')
+            # Failure JSON message, the event is capped out.
+            return get_json(400, 'The event is not capped out.')
+        # Failure JSON message, the guest is already on the event's waiting list.
+        return get_json(400, 'Already signed up for the waiting list.')
+    # Failure JSON message, the user is already signed up for the event.
+    return get_json(400, 'Already signed up for this event.')
 
 
-def get_event(request, id):
-    if Event.objects.filter(id=int(id)).exists():
-        event = Event.objects.get(id=int(id))
-        return JsonResponse({
-            'id': event.id,
-            'name': event.name(),
-            'place': event.place,
-            'description': event.description(),
-            'start_date': event.start_date,
-            'end_date': event.end_date,
-            'priority': event.priority,
-            'price': event.price,
-            'host': event.get_host(),
-            'cover_photo': str(event.cover_photo)
-        })
-    return get_json(404, "Event with id: " + id + " dose not exist")
