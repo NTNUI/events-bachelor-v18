@@ -46,6 +46,10 @@ $(() => {
         $("#subEvent-modal").modal('show')
     });
 
+    $("#add-category-button").click(function (e) {
+        $("#category-modal").modal('show')
+    });
+
     // add listener to all the from fields
     $(".form-input-create-event").blur(validateForm);
 
@@ -62,6 +66,12 @@ $(() => {
         addSubEvent(subEvent)
         subEvents.push(subEvent)
     });
+
+    $("#submit-category-form").click((e) => {
+        e.preventDefault()
+        $("#category-data-form")[0].checkValidity()
+
+    })
 
     $(".testing").each((e, container) => {
         container.addEventListener("dragover", dragover)
