@@ -181,8 +181,15 @@
                         {% trans 'sub-event' %}
                     </h5>
                 </div>
-                <div id="add-subEvent-button" class="create-sub-event"><img src="{% static 'img/plus.svg' %}"
-                                                                            style="height:1rem" alt="plus-sign"/></div>
+                <div id="add-subEvent-button" class="create-sub-event btn btn-outline-secondary">
+                    <img src="{% static 'img/plus.svg' %}" style="height:1rem; margin-right:0.5rem" alt="plus-sign"/>
+                    <label> Create sub-event</label>
+
+                </div>
+                <div id="add-subEvent-button" class="create-sub-event btn btn-outline-secondary">
+                    <img src="{% static 'img/plus.svg' %}" style="height:1rem; margin-right:0.5rem;" alt="plus-sign"/>
+                    <label> Create category </label>
+                </div>
             </div>
             <div class="card">
                 <div class=" collapse show" aria-labelledby="headingOne">
@@ -195,10 +202,10 @@
                     </div> -->
                     <div id="subEvents" class="testing" style="min-height:3rem;">
 
-                        </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         <div class="form-group row">
             <div style="width:100%; margin-top:1rem; display:flex; align-content:center; justify-content: center;">
