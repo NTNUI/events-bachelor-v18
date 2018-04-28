@@ -92,12 +92,44 @@ $(() => {
 });
 
 function createCategories() {
-    // Do stuff
+    for (let category of categories) {
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/events/add-category',
+            data: category,
+            success: (data) => {
+                category.databaseCategoryId = data.id;
+            },
+            error: (data) => {
+                //show error alert
+                printMessage('error', data.message)
+                slideUpAlert(false)
+                return;
+            }
+        })
+    }
     createSubEvents()
 }
 
 function createSubEvents() {
-    // Do more stuff
+    for (let subEvent of subEvents) {
+        let category = categories.filter((category) => category.id == subEvent.category)
+        subEvent.category = category.databaseCategoryId;
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/events/add-category',
+            data: subEvent,
+            success: (data) => {
+                category.databaseCategoryId = data.id;
+            },
+            error: (data) => {
+                //show error alert
+                printMessage('error', data.message)
+                slideUpAlert(false)
+                return;
+            }
+        })
+    }
 }
 
 /**
