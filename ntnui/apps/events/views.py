@@ -145,7 +145,6 @@ def get_attending_events_page(request):
     sub_event_list=[]
 
     for event in attending_events:
-        if Category.objects.filter(event=event).exists():
             categories = Category.objects.filter(event=event)
             # for every category do:
             for i in range(len(categories)):
@@ -159,6 +158,8 @@ def get_attending_events_page(request):
     context = {
         'attending_events': attending_events,
         'name_attending_events': name_attending_events,
+        'sub_event_list': sub_event_list,
+
 
     }
     print(sub_event_list)

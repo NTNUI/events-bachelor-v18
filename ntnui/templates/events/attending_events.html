@@ -13,20 +13,31 @@
     <h1 style="text-align: center">{% trans 'Attending events:' %}</h1>
 
     <div class="container">
-    <div class="card">
-    {% for name in name_attending_events %}
-    <div class="col-10">
-    <p>{{ name }}</p>
-    </div>
+
+    {% for event in attending_events %}
         <div class="card">
-        {% for name in name_attending_events %}
-        <div class="col-10">
-        <p>{{ name }}</p>
+            <div class="col-10">
+                <p>{{ event.name }}</p>
+            </div>
+
+            {% for category, subevent in sub_event_list %}
+                <div class="carb-body">
+                <div class="card-title"> {{ category }}
+                {% for subevent in subevent %}
+                    <div class="card-text">
+                    {{ subevent }}
+                    </div>
+                {% endfor %}
+                </div>
+                </div>
+            {% endfor %}
+        <div class="card-text">
+        <a href="{% url "event_details" event.id %}" class="btn btn-success">Go to event</a>
         </div>
         </div>
-        {% endfor %}
+
     {% endfor %}
-    </div>
+
     </div>
 
 
