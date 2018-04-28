@@ -35,12 +35,10 @@ $(() => {
                 },
                 error: (data) => {
                     //show error alert
-                    printMessage('error', data.message)
-                    slideUpAlert(false)
+                    printMessage('error', data.responseJSON.message)
                 }
             })
         }
-        e.preventDefault();
     })
 
     // Show the subEvent modal
@@ -102,8 +100,7 @@ function createCategories() {
             },
             error: (data) => {
                 //show error alert
-                printMessage('error', data.message)
-                slideUpAlert(false)
+                printMessage('error', data.responseJSON.message)
                 return;
             }
         })
@@ -124,8 +121,7 @@ function createSubEvents() {
             },
             error: (data) => {
                 //show error alert
-                printMessage('error', data.message)
-                slideUpAlert(false)
+                printMessage('error', data.responseJSON.message)
                 return;
             }
         })
@@ -147,8 +143,10 @@ function validateForm(formElements) {
     if (valid) {
         let element = {};
         formElements.filter(':input').each((e, input) => {
-            element[input.name] = input.value;
-            input.value = "";
+            if (input.name != "csrfmiddlewaretoken") {
+                element[input.name] = input.value;
+                input.value = "";
+            }
         });
         return element
     }
