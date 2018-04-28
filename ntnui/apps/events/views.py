@@ -142,13 +142,26 @@ def get_attending_events_page(request):
     for event in attending_events:
         name_attending_events.append(event.name())
 
+    sub_event_list=[]
+
+    for event in attending_events:
+        if Category.objects.filter(event=event).exists():
+            categories = Category.objects.filter(event=event)
+            # for every category do:
+            for i in range(len(categories)):
+                # get all the sub-events for that category
+                sub_event = SubEvent.objects.filter(category=categories[i])
+                # add the category and map each sub_event to a dic
+                sub_event_list.append(
+                    (categories[i], list(map(lambda item: get_sub_event_dic(item, request), sub_event))))
+
 
     context = {
         'attending_events': attending_events,
         'name_attending_events': name_attending_events,
 
     }
-
+    print(sub_event_list)
 
     return render(request, 'events/attending_events.html', context)
 
@@ -297,6 +310,7 @@ def get_create_event_page(request):
 
     # Checks if a user can create an event
     groups = get_groups_user_can_create_events_for(request.user)
+    print(groups)
 
     return render(request, 'events/create_new_event.html', {'groups': groups})
 

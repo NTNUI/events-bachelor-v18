@@ -6,16 +6,28 @@
     <link rel="stylesheet" href="{% static 'css/events/event_details.css' %}"/>
 {% endblock %}
 
+{% block title %}NTNUI - Attending events{% endblock %}
+
 {% block content %}
-<div class="container">
-<div class="row">
-{% for name in name_attending_events %}
-<div class="col-10">
-<p>{{ name }}</p>
-</div>
-{% endfor %}
-</div>
-</div>
+
+    <h1 style="text-align: center">{% trans 'Attending events:' %}</h1>
+
+    <div class="container">
+    <div class="card">
+    {% for name in name_attending_events %}
+    <div class="col-10">
+    <p>{{ name }}</p>
+    </div>
+        <div class="card">
+        {% for name in name_attending_events %}
+        <div class="col-10">
+        <p>{{ name }}</p>
+        </div>
+        </div>
+        {% endfor %}
+    {% endfor %}
+    </div>
+    </div>
 
 
 {% endblock %}
