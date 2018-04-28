@@ -50,8 +50,11 @@ $(() => {
         $("#category-modal").modal('show')
     });
 
-    // add listener to all the from fields
+    // add listener to all the from event form fields
     $(".form-input-create-event").blur(validateForm);
+
+        // add listener to all the subEvent from fields
+    $(".form-input-create-subEvent").blur(validateForm);
 
     $("#submit-sub-event-form").click((e) => {
         e.preventDefault()
@@ -69,9 +72,14 @@ $(() => {
 
     $("#submit-category-form").click((e) => {
         e.preventDefault()
-        $("#category-data-form")[0].checkValidity()
-
+        $('#category-data-form *').filter(':input').each((e, input) => {
+            if(!input.checkValidity()) {
+                //nada
+            }
+        })
     })
+
+
 
     $(".testing").each((e, container) => {
         container.addEventListener("dragover", dragover)
@@ -144,8 +152,8 @@ function validateDate(button, dispError) {
     //slice seconds and timezone
     today = today.slice(0, -8);
 
-    const startDateInput = $("#start-date")
-    const endDateInput = $("#end-date")
+    const startDateInput = $(button).parent().parent().find(".start-date")
+    const endDateInput = $(button).parent().parent().find(".end-date")
 
     //get end date and start date
     const input_End_date = endDateInput.val();
@@ -186,7 +194,7 @@ function addSubEvent(subEvent) {
 
     idCounter++;
 
-    
+
     $(".delete-sub-event-button").click((e) => {
         const event = e || window.event
         const value = $(event.target).closest(".delete-sub-event-button").attr('data-id')
