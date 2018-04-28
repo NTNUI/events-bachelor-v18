@@ -68,14 +68,21 @@
         </div>
 
         <div class="create-event">
-            {% if can_create_event %}
-                <h3>{% trans 'My options' %}</h3>
+
+            <h3>{% trans 'My options' %}</h3>
+                {% if can_create_event %}
                 <div>
                     <a id="go-to-create-event" href="{% url 'create_event_page' %}">
                         <button type="button" class="buttons btn btn-success">{% trans 'Create event' %}</button>
                     </a>
                 </div>
-            {% endif %}
+                {% endif %}
+                <div>
+                    <a id="go-to-attending-events" href="{% url 'attending_events_page' %}">
+                        <button type="button" class="buttons btn btn-success">{% trans 'Attending events' %}</button>
+                    </a>
+                </div>
+
         </div>
         <div id="main">
             <div id="event-container">

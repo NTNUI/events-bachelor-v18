@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/events/event_details.css' %}"/>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="row">
+{% for name in name_attending_events %}
+<div class="col-10">
+<p>{{ name }}</p>
+</div>
+{% endfor %}
+</div>
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+    <script type="text/javascript" src="{% static 'js/events/event_details.js' %}"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+{% endblock %}

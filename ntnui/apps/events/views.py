@@ -130,6 +130,28 @@ def get_event_details(request, id):
 
     return render(request, 'events/event_details.html', context)
 
+def get_attending_events_page(request):
+    all_events=Event.objects.all()
+    attending_events=[]
+    name_attending_events =[]
+
+    for event in all_events:
+        if event.attends(request.user):
+            attending_events.append(event)
+
+    for event in attending_events:
+        name_attending_events.append(event.name())
+
+
+    context = {
+        'attending_events': attending_events,
+        'name_attending_events': name_attending_events,
+
+    }
+
+
+    return render(request, 'events/attending_events.html', context)
+
 
 def delete_event(request):
 
