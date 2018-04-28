@@ -89,13 +89,14 @@ class Event(models.Model):
             return True
         return False
 
-    def attend_event(self, user, payment_id, registration_time):
+    def user_attend_event(self, user, payment_id, registration_time):
         EventRegistration.objects.create(event=self, attendee=user,
                                          payment_id=payment_id, registration_time=registration_time)
 
     def attend_waiting_list(self, user, payment_id, registration_time):
         EventRegistration.objects.create(event=self, attendee=user,
                                          payment_id=payment_id, registration_time=registration_time)
+
     # Checks whether a given guest attends the event
     def guest_attends(self, guest):
         if EventGuestRegistration.objects.filter(attendee=guest, event=self).exists():
@@ -115,7 +116,9 @@ class Event(models.Model):
         user_attendees = EventRegistration.objects.filter(event=self)
         guest_attendees = EventGuestRegistration.objects.filter(event=self)
 
-        return user_attendees + guest_attendees
+        attendees = list(user_attendees) + list(guest_attendees)
+
+        return attendees
 
     # Checks whether a given user is signed up for the event's waiting list
     def user_on_waiting_list(self, user):
@@ -129,27 +132,29 @@ class Event(models.Model):
             return True
         return False
 
-    def waiting_list_count(self):
-        users_on_waiting_list = EventWaitingList.objects.filter(event=self).count()
-        guests_on_waiting_list = EventGuestWaitingList.objects.filter(event=self).count()
-        return users_on_waiting_list + guests_on_waiting_list
+    def get_waiting_list(self):
 
-    def next_on_waiting_list(self):
+        waiting_list_users = EventWaitingList.objects.filter(event=self)
+        waiting_list_guests = EventGuestWaitingList.objects.filter(event=self)
 
-        if self.waiting_list_count() > 0:
+        waiting_list = list(waiting_list_users) + list(waiting_list_guests)
 
-            user_waiting_list = EventWaitingList.objects.filter(event=self)
-            guest_waiting_list = EventGuestWaitingList.objects.filter(event=self)
+        return waiting_list
 
-            waiting_list = list(user_waiting_list) + list(user_waiting_list)
+    def waiting_list_next(self):
+
+        waiting_list = self.get_waiting_list()
+
+        if len(waiting_list) > 0:
+
             sorted_waiting_list = sorted(waiting_list, key=lambda attendee: attendee.registration_time, reverse=True)
 
             next_on_waiting_list = sorted_waiting_list[0]
 
             if isinstance(next_on_waiting_list, EventWaitingList):
-                return 'user', next_on_waiting_list.attendee, next_on_waiting_list.payment_id
+                return next_on_waiting_list.attendee, next_on_waiting_list.payment_id
             else:
-                return 'guest', next_on_waiting_list.attendee, next_on_waiting_list.payment_id
+                return next_on_waiting_list.attendee, next_on_waiting_list.payment_id
 
         else:
             return None
@@ -161,7 +166,7 @@ class Event(models.Model):
         if self.attendance_cap is None:
             return True
         # The event's attendance cap is greater than the amount of attendees.
-        elif self.attendance_cap > self.get_attendees().count():
+        elif self.attendance_cap > len(self.get_attendees()):
             return True
         # The event's capped out.
         else:
@@ -171,7 +176,10 @@ class Event(models.Model):
         """Checks whether the event require payment."""
 
         # Checks whether the event is free.
-        free_event = self.price == 0
+        if self.price == 0:
+            free_event = True
+        else:
+            free_event = False
 
         # The event is not free and there exist an payment ID.
         if not free_event and payment_id is not None:
@@ -184,12 +192,14 @@ class Event(models.Model):
             return False
 
     def check_sign_up_end_date(self):
-        if self.registration_end_date > datetime.now():
-            return True
-        elif self.registration_end_date is None:
+        if self.registration_end_date is None:
             return True
         else:
-            return False
+            if self.registration_end_date.replace(tzinfo=None) > datetime.now():
+                return True
+            else:
+                return False
+
 
     def __str__(self):
         return self.name()

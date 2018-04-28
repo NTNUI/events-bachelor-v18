@@ -13,9 +13,11 @@ from django.utils import translation
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 from . import create_event, get_events
-from events.models.event import Event, EventDescription, EventRegistration, EventWaitingList, EventGuestWaitingList
+from events.models.event import Event, EventDescription, EventRegistration, EventWaitingList, EventGuestWaitingList, EventGuestRegistration
 from events.models.sub_event import SubEvent, SubEventRegistration
 from events.models.category import Category
+from events.models.guest import Guest
+from accounts.models import User
 from django.core.validators import validate_email, validate_integer
 from django.core.mail import send_mail
 
@@ -403,47 +405,8 @@ def remove_attendance_from_event(request):
 
 
 
-def attend_event(event_id, user, payment_id):
 
-    # Get event.
-    event = Event.objects.get(id=event_id)
 
-    # Checks that the user isn't signed up for the event.
-    if not event.user_attends(user=user):
-        # Checks if the event has an end date for registration, and that it ain't passed.
-        if event.check_sign_up_end_date():
-            # Checks that the event isn't capped out.
-            if event.check_attendance_cap():
-
-                # Free event.
-                if not event.payment_required(payment_id=payment_id):
-                    try:
-                        # Try to sign up for the event, without payment.
-                        event.attend_event(user, payment_id, datetime.now())
-                    except:
-                        # Failure JSON message, couldn't sign up for the event.
-                        return get_json(400, "Couldn't sign up for event.")
-
-                # Priced event.
-                else:
-                    try:
-                        # Try to sign up for the event, with payment.
-                        event.attend_event(attendee=user, payment_id=payment_id, registration_time=datetime.now())
-                    except:
-                        # Failure JSON message, couldn't sign up for the event.
-                        return get_json(400, "Couldn't sign up for event.")
-
-                # Send mail confirmation after successfully signing up for the event.
-                event_send_mail(event, user)
-                # Success JSON message.
-                return get_json(201, 'You are now attending this event')
-
-            # Failure JSON message, the event is capped out.
-            return get_json(400, 'The event is capped out.')
-        # Failure JSON message, the user is already signed up for the event.
-        return get_json(400, 'The event registration has ended.')
-    # Failure JSON message, the user is already signed up for the event.
-    return get_json(400, 'Already signed up for this event.')
 
 
 def waiting_list_event(event_id, user, payment_id):
@@ -490,95 +453,167 @@ def waiting_list_event(event_id, user, payment_id):
     return get_json(400, 'Already signed up for this event.')
 
 
-def guest_attend_event(event_id, guest, payment_id):
 
-    # Get event
+"""
+    if isinstance(attendee, User):
+        # Checks that the user isn't already signed up for the event.
+        if event.user_attends(attendee):
+            return get_json(400, 'Error: already signed up for the event.')
+        # Checks that the user isn't already the event's waiting list.
+        if event.user_on_waiting_list(attendee):
+            return get_json(400, 'Error: already on the waiting list.')
+"""
+
+
+
+
+
+
+
+
+
+def create_guest(event_id, email, first_name, last_name, phone):
+
+    # Get event.
     event = Event.objects.get(id=event_id)
 
-    # Checks that the guest isn't signed up for the event.
-    if not event.guest_attends(guest=guest):
-        # Checks if the event has an end date for registration, and that it ain't passed.
-        if event.check_sign_up_end_date():
-            # Checks that the event isn't capped out.
-            if event.check_attendance_cap():
-                # Free event.
-                if event.payment_required():
-                    try:
-                        # Try to sign up for the event, without payment.
-                        event.guest_attend_event(attendee=guest, registration_time=datetime.now())
-                    except:
-                        # Failure JSON message, couldn't sign up for the event.
-                        return get_json(400, "Couldn't sign up for event.")
+    guest_exists = EventGuestRegistration.objects.filter(event=event, attendee__email=email, attendee__first_name=first_name, attendee__last_name=last_name, attendee__phone_number=phone).exists()
 
-                # Priced event.
-                else:
-                    try:
-                        # Try to sign up for the event, with payment.
-                        event.user_attend_event(attendee=guest, payment_id=payment_id, registration_time=datetime.now())
-                    except:
-                        # Failure JSON message, couldn't sign up for the event.
-                        return get_json(400, "Couldn't sign up for event.")
+    if not guest_exists:
+        return Guest.objects.create(email=email, first_name=first_name, last_name=last_name, phone_number=phone)
+    else:
+        return None
 
-                # Success JSON message.
-                return get_json(201, 'You are now attending this event')
-            # Failure JSON message, the event is capped out.
-            return get_json(400, 'The event is capped out.')
-        # Failure JSON message, the user is already signed up for the event.
+
+
+
+def add_attendance_to_event_guest(request):
+    """Adds attendance to the given event for the given guest"""
+    if request.POST:
+        failure_message = validate_guest_data(request.POST)
+        if failure_message:
+            return get_json(404, failure_message)
+
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        phone = request.POST.get('phone')
+        event_id = request.POST.get('id')
+
+        guest = create_guest(event_id, email, first_name, last_name, phone)
+        if guest is not None:
+            return attend_event(event_id, guest, None)
+        else:
+            return get_json(400, 'Requeeeewfqwrfwregewrgfegqwgrgwrqgst must be post')
+
+    return get_json(400, 'Request must be post')
+
+
+def validate_guest_data(data):
+    try:
+        Event.objects.get(id=data.get('id'))
+        validate_email(data.get('email'))
+        validate_integer(data.get('phone'))
+    except ValidationError as e:
+        return e.message
+    except Event.DoesNotExist:
+        return _("Event dose not exist")
+    return None
+
+
+
+
+
+
+
+
+
+def attend_event(event_id, attendee, payment_id):
+
+    # Get event.
+    event = Event.objects.get(id=event_id)
+
+    # Check whether the event has an end date for registration, and if so, if it's exceeded.
+    if not event.check_sign_up_end_date():
         return get_json(400, 'The event registration has ended.')
-    # Failure JSON message, the guest is already signed up for the event.
-    return get_json(400, 'Already signed up for this event.')
+    # Checks whether the event has an attendance cap, and if so, if it's reached.
+    if not event.check_attendance_cap():
+        return get_json(400, 'The event has reached its attendance cap.')
+
+    try:
+        # Sign-up for event as user.
+        if isinstance(attendee, User):
+            event.user_attend_event(attendee, payment_id, datetime.now())
+        # Sign-up for event as guest.
+        elif isinstance(attendee, Guest):
+            event.guest_attend_event(attendee, payment_id, datetime.now())
+        # Illegal argument, attendee is neither user nor guest.
+        else:
+            return get_json(400, "Attendee is neither user nor guest.")
+    except:
+        # Couldn't sign up for the event.
+        return get_json(400, "Could not sign up for the event.")
+
+    # Sends confirmation mail after successfully signing-up for the event.
+    event_send_mail(event, attendee)
+    return get_json(201, 'Signed-up for the event!')
 
 
-def guest_waiting_list_event(event_id, guest, payment_id):
+def waiting_list_event(event_id, guest, payment_id):
 
     # Get event
     event = Event.objects.get(id=event_id)
 
-    # Checks that the guest isn't signed up for the event
-    if not event.guest_attends(guest=guest):
-        # Checks that the guest isn't on the event's waiting list
-        if event.user_on_waiting_list(guest=guest):
-            # Checks if the event has an end date for registration, and that it ain't passed.
-            if event.check_sign_up_end_date():
-                # Checks that the event is capped out.
-                if not event.check_attendance_cap():
-                    # Free event.
-                    if not event.payment_required():
-                        try:
-                            # Try to sign up for the event, without payment.
-                            event.guest_attend_waiting_list(attendee=guest, registration_time=datetime.now())
-                        except:
-                            # Failure JSON message, couldn't sign up for the event.
-                            return get_json(400, "Couldn't sign up for event.")
+    # Check whether the event has an end date for registration, and if so, if it's exceeded.
+    if not event.check_sign_up_end_date():
+        return get_json(400, 'Error: the event registration has ended.')
+    # Checks whether the event has an attendance cap, and if so, if it's reached.
+    if not event.check_attendance_cap():
+        return get_json(400, 'Error: the event has reached its attendance cap.')
 
-                    # Priced event.
-                    else:
-                        try:
-                            # Try to sign up for the event, with payment.
-                            event.guest_attend_waiting_list(attendee=guest, payment_id=payment_id, registration_time=datetime.now())
-                        except:
-                            # Failure JSON message, couldn't sign up for the event.
-                            return get_json(400, "Couldn't sign up for event.")
 
-                    # Success JSON message.
-                    return get_json(201, 'You are now signed up for the waiting list.')
-                # Failure JSON message, the event is capped out.
-                return get_json(400, 'The event is not capped out.')
-            # Failure JSON message, the user is already signed up for the event.
-            return get_json(400, 'The event registration has ended.')
-        # Failure JSON message, the guest is already on the event's waiting list.
+
         return get_json(400, 'Already signed up for the waiting list.')
-    # Failure JSON message, the user is already signed up for the event.
-    return get_json(400, 'Already signed up for this event.')
+    # Checks if the event has an end date for registration, and that it ain't passed.
+    elif event.check_sign_up_end_date():
+        return get_json(400, 'The event registration has ended.')
+    # Checks that the event is capped out.
+    elif not event.check_attendance_cap():
+        return get_json(400, 'The event is not capped out.')
+
+    # Free event.
+    elif not event.payment_required():
+        try:
+            # Try to sign up for the event, without payment.
+            event.guest_attend_waiting_list(attendee=guest, registration_time=datetime.now())
+            return get_json(201, 'You are now signed up for the waiting list.')
+        except:
+            return get_json(400, "Couldn't sign up for event.")
+
+    # Priced event.
+    else:
+        try:
+            # Try to sign up for the event, with payment.
+            event.guest_attend_waiting_list(attendee=guest, payment_id=payment_id, registration_time=datetime.now())
+            return get_json(201, 'You are now signed up for the waiting list.')
+        except:
+            # Failure JSON message, couldn't sign up for the event.
+            return get_json(400, "Couldn't sign up for event.")
+
+
+"""
+
+# Checks that the guest isn't signed up for the event
+    if event.guest_attends(guest=guest):
+        return get_json(400, 'Already signed up for this event.')
+    # Checks that the guest isn't on the event's waiting list
+    elif event.user_on_waiting_list(guest=guest):
+
+"""
 
 
 
-
-
-
-
-
-
+"""
 def sign_off_event(event_id, user):
 
     # Get event.
@@ -613,7 +648,7 @@ def sign_off_event(event_id, user):
 
     return get_json(400, 'You are already signed off the event.')
 
-
+"""
 
 
 
@@ -659,82 +694,6 @@ def sign_off_waiting_list(event_id, user):
     return get_json(400, 'You are already signed off the event.')
 
 
-def guest_attend_event(event_id, guest, payment_id):
-    """Guest: sign up for event."""
-
-    # Get event
-    event = Event.objects.get(id=event_id)
-
-    # Checks that the guest isn't signed up for the event.
-    if not event.guest_attends(guest=guest):
-        # Checks that the event isn't capped out.
-        if event.check_attendance_cap():
-            # Free event.
-            if event.payment_required():
-                try:
-                    # Try to sign up for the event, without payment.
-                    event.guest_attend_event(attendee=guest, registration_time=datetime.now())
-                except:
-                    # Failure JSON message, couldn't sign up for the event.
-                    return get_json(400, "Couldn't sign up for event.")
-
-            # Priced event.
-            else:
-                try:
-                    # Try to sign up for the event, with payment.
-                    event.user_attend_event(attendee=guest, payment_id=payment_id, registration_time=datetime.now())
-                except:
-                    # Failure JSON message, couldn't sign up for the event.
-                    return get_json(400, "Couldn't sign up for event.")
-
-            # Send mail confirmation after successfully signing up for the event.
-            event_send_mail(event, guest)
-            # Success JSON message.
-            return get_json(201, 'You are now attending this event')
-        # Failure JSON message, the event is capped out.
-        return get_json(400, 'The event is capped out.')
-    # Failure JSON message, the guest is already signed up for the event.
-    return get_json(400, 'Already signed up for this event.')
-
-
-def guest_waiting_list_event(event_id, guest, payment_id):
-    """User event waiting list sign up"""
-
-    # Get event
-    event = Event.objects.get(id=event_id)
-
-    # Checks that the guest isn't signed up for the event
-    if not event.guest_attends(guest=guest):
-        # Checks that the guest isn't on the event's waiting list
-        if event.user_on_waiting_list(guest=guest):
-            # Checks that the event is capped out.
-            if not event.check_attendance_cap():
-                # Free event.
-                if not event.payment_required():
-                    try:
-                        # Try to sign up for the event, without payment.
-                        event.guest_attend_waiting_list(attendee=guest, registration_time=datetime.now())
-                    except:
-                        # Failure JSON message, couldn't sign up for the event.
-                        return get_json(400, "Couldn't sign up for event.")
-
-                # Priced event.
-                else:
-                    try:
-                        # Try to sign up for the event, with payment.
-                        event.guest_attend_waiting_list(attendee=guest, payment_id=payment_id, registration_time=datetime.now())
-                    except:
-                        # Failure JSON message, couldn't sign up for the event.
-                        return get_json(400, "Couldn't sign up for event.")
-
-                # Success JSON message.
-                return get_json(201, 'You are now signed up for the waiting list.')
-            # Failure JSON message, the event is capped out.
-            return get_json(400, 'The event is not capped out.')
-        # Failure JSON message, the guest is already on the event's waiting list.
-        return get_json(400, 'Already signed up for the waiting list.')
-    # Failure JSON message, the user is already signed up for the event.
-    return get_json(400, 'Already signed up for this event.')
 
 
 
@@ -744,12 +703,6 @@ def guest_waiting_list_event(event_id, guest, payment_id):
 
 
 
-
-
-
-
-def create_guest():
-    return 2
 
 
 
@@ -840,7 +793,7 @@ def payment_for_event(request, id):
             )
             if charge:
                 attend_event(int(id), request.user, charge.id)
-                return get_json(200, 'You are now attending this event')
+                return get_json(201, 'Signed-up for the event!')
         except:
             return get_json(404, 'Payment not excepted')
     return get_json(404, 'Request must be post.')
@@ -866,26 +819,4 @@ def get_event(request, id):
         })
     return get_json(404, "Event with id: " + id + " dose not exist")
 
-def add_attendance_to_event_guest(request):
-    """Adds attendance to the given event for the given guest"""
-    if request.POST:
-        failure_message = validate_guest_data(request.POST)
-        if failure_message:
-            return get_json(404, failure_message)
 
-        # Create new guest attandance here (request.POST args, id, email, first_name, last_name, phone
-        print(request.POST.get('id'))
-
-    return get_json(400, 'Request must be post')
-
-
-def validate_guest_data(data):
-    try:
-        Event.objects.get(id=data.get('id'))
-        validate_email(data.get('email'))
-        validate_integer(data.get('phone'))
-    except ValidationError as e:
-        return e.message
-    except Event.DoesNotExist:
-        return _("Event dose not exist")
-    return None
