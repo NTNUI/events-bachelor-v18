@@ -1,19 +1,28 @@
-input:focus:invalid {
-    border: 1px dashed darkred;
+input:focus:invalid  {
+    border: 1px solid darkred;
 }
 
 input:focus:valid {
-    border: 1px dashed darkgreen;
+    border: 1px solid darkgreen;
 }
 
-.alert-danger {
+textarea:focus:invalid  {
+    border: 1px solid darkred;
+}
+
+textarea:focus:valid {
+    border: 1px solid darkgreen;
+}
+
+.error-input {
+  display:block;
   margin-top: 2%;
   float: left;
   height: 2rem;
   margin-bottom: -1rem;
 }
 
-.alert-danger p {
+.error-input p {
   margin-top: -10px;
 }
 
@@ -40,3 +49,77 @@ h1 {
 .btn-success {
   margin-left: 20%;
 }
+.card-header-category {
+    background-color: white;
+    width: 100%;
+    height:4rem;
+}
+.create-sub-event{
+    float: right;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:0.5rem;
+    margin-right:1rem;
+
+
+}
+
+.create-sub-event > img{
+    width:1rem;
+    margin-right:0.5rem;
+    /*border-radius: 3rem;
+    padding:.4rem;
+    border: green solid .1rem;
+*/
+}
+
+.create-sub-event:hover > img{
+    width:1.1rem;
+}
+.create-sub-event:hover {
+    font-size: 1.1rem;
+}
+.create-sub-event >label {
+    margin: 0;
+}
+.sub-event-header{
+    float:left;
+}
+.center-content {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.sub-event-card-container {
+    display:grid;
+    grid-template-columns: 20% 60% 20%;
+}
+.sub-event-name {
+    grid-column-start: 1;
+    grid-column-end: 2;
+}
+.sub-event-dateime {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    text-align: center;
+}
+.sub-event-button-container {
+    grid-column-start: 3;
+    grid-column-end: 4;
+}
+
+.delete-sub-event-button{
+    float: right;
+    height: 100%;
+    padding-right:.9rem;
+}
+.img-cross {
+    width:1rem;
+}
+
+
+
+
+
