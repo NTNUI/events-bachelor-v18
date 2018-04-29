@@ -38,18 +38,6 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label>Email text norwegian</label>
-                                <textarea name="email_nb" type="text" class="form-input-create-subEvent form-control"
-                                          required></textarea>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Email text english </label>
-                                <textarea name="email_en" type="text" class="form-input-create-subEvent form-control"
-                                          required></textarea>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
                                 <label>From date</label>
                                 <input name="start_date" type="datetime-local"
                                        class="start-date form-input-create-subEvent form-control" required>
@@ -64,7 +52,8 @@
                         <div style="margin-top: 1rem" class="card">
                             <div class="card-header" data-toggle="collapse" data-target="#options"
                                  aria-expanded="true" aria-controls="options">
-                                <h5 class="mb-0">
+                                <img style="display: inline;" src="{% static 'img/chevron-bottom.svg' %}" alt="arrow">
+                                <h5 style="display: inline;" class="mb-0">
                                     {% trans 'Extra options' %}
                                 </h5>
                             </div>
@@ -84,6 +73,17 @@
                                         <label>Registration end date</label>
                                         <input name="registration_end_date" type="datetime-local"
                                                class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email text norwegian</label>
+                                        <textarea name="email_nb" type="text"
+                                                  class="form-input-create-subEvent form-control"
+                                        ></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email text english </label>
+                                        <textarea name="email_en" type="text"
+                                                  class="form-input-create-subEvent form-control"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -166,14 +166,17 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label>{% trans 'Email text norwegian' %}</label>
-                <textarea class="form-input-create-event form-control" type="textArea"
-                          name="email_text_no" required></textarea>
+                <label>{% trans 'Host' %}</label>
+                <select class="form-control" name="host" required>
+                    {% for group in groups %}
+                        <option value="{{ group.id }}">{{ group.name }}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="form-group col-md-6">
-                <label>{% trans 'Email text english' %}</label>
-                <textarea class="form-input-create-event form-control" type="textArea"
-                          name="email_text_en" required></textarea>
+                <label>{% trans 'Place' %}</label>
+                <input class="form-control" type="input"
+                       name="place" required>
             </div>
         </div>
         <div class="form-row">
@@ -202,19 +205,24 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
-                <label>{% trans 'Host' %}</label>
-                <select class="form-control" name="host" required>
-                    {% for group in groups %}
-                        <option value="{{ group.id }}">{{ group.name }}</option>
-                    {% endfor %}
-                </select>
+                <label>{% trans 'Email text norwegian' %}</label>
+                <textarea class="form-input-create-event form-control" type="textArea"
+                          name="email_text_no"></textarea>
             </div>
+            <div class="form-group col-md-6">
+                <label>{% trans 'Email text english' %}</label>
+                <textarea class="form-input-create-event form-control" type="textArea"
+                          name="email_text_en"></textarea>
+            </div>
+        </div>
+        <div class="form-row">
             <div class="form-group col-md-6">
                 <label>{% trans 'Registration end date' %}</label>
                 <input class="form-control" type="datetime-local"
                        name="registration_end_date">
             </div>
         </div>
+
         <div class="card">
             <div class="card-header-category card-header" data-toggle="collapse"
                  aria-expanded="true" aria-controls="options">
@@ -234,7 +242,8 @@
                 </div>
             </div>
             <div class="card">
-                <div id="subEvents" class="drag-container" data-id="0" ondrop="drop(event)" ondragover="allowDrop(event)" style="min-height:3rem;">
+                <div id="subEvents" class="drag-container" data-id="0" ondrop="drop(event)"
+                     ondragover="allowDrop(event)" style="min-height:3rem;">
 
                 </div>
             </div>
