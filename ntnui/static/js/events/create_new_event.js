@@ -10,9 +10,14 @@ let idCounterSubEvent = 0;
 // category id counter
 let idCounterCategory = 1;
 
+let csrftoken
+
+let eventID;
+
 // On document ready
 $(() => {
 
+    csrftoken = getCookie('csrftoken')
     /**
      * When clicking the create event button, validate all form fields, if they are not valid show alert, else
      * send ajax request
@@ -21,17 +26,19 @@ $(() => {
         e.preventDefault()
 
         form = $('#create-event-form *')
-        let subEvent = validateForm(form)
-        if (subEvent) {
+        let event = validateForm(form)
+        if (event) {
             // Sends request to server to create event
+            event.csrfmiddlewaretoken = csrftoken;
             $.ajax({
                 type: 'POST',
                 url: '/ajax/events/add-event',
-                data: $('#create-event-form').serialize(),
+                data: event,
                 success: (data) => {
                     //show success alert
-                    printMessage('success', data.message)
-                    createCategories()
+                    // printMessage('success', data.message)
+                    eventID = data.id;
+                    createCategories(data.id)
                 },
                 error: (data) => {
                     //show error alert
@@ -89,42 +96,49 @@ $(() => {
     })
 });
 
-function createCategories() {
-    for (let category of categories) {
-        $.ajax({
-            type: 'POST',
-            url: '/ajax/events/add-category',
-            data: category,
-            success: (data) => {
-                category.databaseCategoryId = data.id;
-            },
-            error: (data) => {
-                //show error alert
-                printMessage('error', data.responseJSON.message)
-                return;
-            }
-        })
-    }
-    createSubEvents()
+async function createCategories(eventID) {
+    categories = await Promise.all(categories.map(async (category) => {
+        category.csrfmiddlewaretoken = csrftoken
+        category.event = eventID
+        try {
+            let data = await $.ajax({
+                type: 'POST',
+                url: '/ajax/events/create-category',
+                data: category
+            })
+            category.databaseCategoryId = data.id;
+            return category
+
+        } catch (error) {
+            //show error alert
+            printMessage('error', data.responseJSON.message)
+            return category
+        }
+    }))
+    createSubEvents(eventID)
 }
 
-function createSubEvents() {
-    for (let subEvent of subEvents) {
+async function createSubEvents(eventID) {
+    subEventsCreated = await Promise.all(subEvents.map(async (subEvent) => {
         let category = categories.filter((category) => category.id == subEvent.category)
-        subEvent.category = category.databaseCategoryId;
-        $.ajax({
-            type: 'POST',
-            url: '/ajax/events/add-category',
-            data: subEvent,
-            success: (data) => {
-                category.databaseCategoryId = data.id;
-            },
-            error: (data) => {
-                //show error alert
-                printMessage('error', data.responseJSON.message)
-                return;
-            }
-        })
+        subEvent.category = category.length ? category[0].databaseCategoryId : ""
+        subEvent.csrfmiddlewaretoken = csrftoken
+        subEvent.event = eventID
+        try {
+            let data = await $.ajax({
+                type: 'POST',
+                url: '/ajax/events/create-sub-event',
+                data: subEvent,
+            })
+            return subEvent
+        } catch (error) {
+            //show error alert
+            printMessage('error', data.responseJSON.message)
+            return subEvent
+        }
+    }))
+    if (subEventsCreated) {
+        window.location.replace("/events/" + eventID +"/");
     }
 }
 
@@ -145,7 +159,7 @@ function validateForm(formElements) {
         formElements.filter(':input').each((e, input) => {
             if (input.name != "csrfmiddlewaretoken") {
                 element[input.name] = input.value;
-                input.value = "";
+                // input.value = "";
             }
         });
         return element
@@ -327,5 +341,22 @@ function drop(ev) {
             element.category = container.attr("data-id");
         }
     })
+}
+
+// from django website https://docs.djangoproject.com/en/2.0/ref/csrf/
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        let cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
 

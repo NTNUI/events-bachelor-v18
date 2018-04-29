@@ -12,11 +12,15 @@ from .views import (
     payment_for_event,
     get_events,
     get_event,
-    delete_subevent
+    delete_subevent,
+    create_category_request,
+    create_sub_event_request,
 )
 
 urlpatterns = [
     url(r'^add-event$', create_event_request, name='create_event'),
+    url(r'^create-category', create_category_request, name='create_category'),
+    url(r'^create-sub-event', create_sub_event_request, name='create_sub_event'),
     url(r'^get-events', get_events_request, name='get_events'),
     url(r'^attend-event$', add_attendance_to_event, name='attend_event'),
     url(r'^remove-attend-event$', remove_attendance_from_event, name='attend_event'),

@@ -27,7 +27,10 @@ def create_event(request):
 
         # if succsess send event created
         if entry_created[0]:
-            return get_json(201, _('New event successfully created!'))
+            return JsonResponse({
+                'id': entry_created[1].id,
+                'message': _('New event successfully created!')},
+                status=201)
         if entry_created[1] is not None:
             return get_json(400, entry_created[1])
 
@@ -73,26 +76,38 @@ def create_and_validate_database_entry(request):
         return (False, "sportsGroup doesn't exist")
 
 
-
 def create_event_for_group(data, priority, is_ntnui):
     """Creates a new event hosted by a group"""
+
+    # If price is not given a value, price is set to 0
+    price = data.get('price')
+    if price == "":
+        price = 0
+
+    # if attendance_cap is "" its set to None
+    attendance_cap = data.get('attendance_cap')
+    if attendance_cap == "":
+        attendance_cap = None
+
     try:
         # create the events
         event = Event.objects.create(start_date=data.get('start_date'), end_date=data.get('end_date'),
-                                     priority=priority, is_host_ntnui=is_ntnui, attendance_cap=data.get('attendance_cap'),
-                                     price=data.get('price'))
+                                     priority=priority, is_host_ntnui=is_ntnui, attendance_cap=attendance_cap,
+                                     price=price)
 
         if not is_ntnui:
             # Add the group as the host
             event.sports_groups.add(SportsGroup.objects.get(id=int(data.get('host'))))
 
         # Creates description and checks that it was created
-        if create_description_for_event(event, data.get('description_text_no'), data.get('email_text_no'), data.get('name_no'), 'nb') and \
-                create_description_for_event(event, data.get('description_text_en'), data.get('email_text_en'), data.get('name_en'), 'en'):
-            return True, None
+        if create_description_for_event(event, data.get('description_text_no'), data.get('email_text_no'),
+                                        data.get('name_no'), 'nb') and \
+                create_description_for_event(event, data.get('description_text_en'), data.get('email_text_en'),
+                                             data.get('name_en'), 'en'):
+            return True, event
         return False, _('could not create description')
 
-    # if something goes worng return false and print error to console
+    # if something goes wrong return false and print error to console
     except Exception as e:
         print(e)
     return False, None
@@ -109,7 +124,8 @@ def priority_is_selected(priority):
 def create_description_for_event(event, decription, email_text, name, lang):
     """Creates a description for a given event"""
     try:
-        EventDescription.objects.create(name=name, description_text=decription, custom_email_text=email_text, language=lang, event=event)
+        EventDescription.objects.create(name=name, description_text=decription, custom_email_text=email_text,
+                                        language=lang, event=event)
         return True
     except Exception as e:
         print(e)
@@ -140,3 +156,4 @@ def get_json(code, message):
     return JsonResponse({
         'message': message},
         status=code)
+
