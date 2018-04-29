@@ -110,7 +110,7 @@
                         <div class="label">
                             {% trans 'End date' %}
                         </div>
-                        {% if event.require_payment %}
+                        {% if event.payment_required %}
                             <div class="label">
                                 {% trans 'Price' %}
                             </div>
@@ -138,7 +138,7 @@
                             {{ event.end_date }}
                         </div>
 
-                        {% if event.require_payment %}
+                        {% if event.payment_required %}
                             <div id="price" class="info">
                                 {{ event.price }},-
                             </div>
@@ -162,7 +162,7 @@
                                     value="{{ event.id }}"
                                     name="mybtn"
                                     class="btn btn-success">
-                                {% if event.require_payment %}
+                                {% if event.payment_required %}
                                     {% trans 'Pay using card' %}
                                     {#                                    <div class="button-div">#}
                                     {#                                        <img src="{% static 'img/credit-card.svg' %}"/>#}

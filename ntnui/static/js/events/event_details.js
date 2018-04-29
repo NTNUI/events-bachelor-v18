@@ -37,10 +37,11 @@ $(() => {
                 $.ajax({
                     dataType: "json",
                     type: "POST",
-                    url: '/ajax/events/' + buttonValue + '/payment-guest',
+                    url: '/ajax/events/' + buttonValue + 'attend_payment_event_guest',
                     data: {
                         csrfmiddlewaretoken: csrftoken,
                         stripeToken: token.id,
+                        id: buttonValue,
                         stripEmail: token.email,
                         first_name: firstName,
                         last_name: lastName,
@@ -50,6 +51,7 @@ $(() => {
                         button.innerHTML = gettext("Do not attend event")
                         button.value = '-' + button.value
                         button.setAttribute("class", "btn btn-danger")
+                        printMessage('Success', data.message)
                         slideUpAlert()
                     },
                     error: (data) => {
@@ -62,7 +64,7 @@ $(() => {
             $.ajax({
                 dataType: "json",
                 type: "POST",
-                url: '/ajax/events/' + buttonValue + '/payment',
+                url: '/ajax/events/' + buttonValue + '/attend_payment_event_user',
                 data: {
                     csrfmiddlewaretoken: csrftoken,
                     stripeToken: token.id,
@@ -72,6 +74,7 @@ $(() => {
                     button.innerHTML = gettext("Do not attend event")
                     button.value = '-' + button.value
                     button.setAttribute("class", "btn btn-danger")
+                    printMessage('Success', data.message)
                     slideUpAlert()
                 },
                 error: (data) => {
@@ -85,7 +88,8 @@ $(() => {
         /**
          * Sends a attend subevet request
          */
-        $(".join-subevent-button").click(() => {
+        $(".join-subevent-button").click((e) => {
+            const event = e || window.event
             button = event.target
             // IF the first sign is a - we want to remove attending event
             if (button.value[0] === "-") {
@@ -101,14 +105,15 @@ $(() => {
          * Sends a attend event request to the server
          */
         $("#attend-event-button").click((e) => {
+            const event = e || window.event
             button = event.target
             buttonValue = button.value
             if (button.value[0] === "-") {
                 buttonText = gettext('attend event')
                 if ($("#price").length === 0) {
-                    url = '/ajax/events/remove-attend-event'
+                    url = '/ajax/events/remove_attendance_event_user'
                 } else {
-                    url = '/ajax/events/refund'
+                    url = '/ajax/events/refund_event'
                     buttonText = gettext('Pay using card')
                 }
                 openModal("removeAttendanceEvent")
@@ -117,7 +122,7 @@ $(() => {
                     showGuestModal();
                 } else {
                     if ($("#price").length === 0) {
-                        url = '/ajax/events/attend-event'
+                        url = '/ajax/events/attend-event-user'
                         attendEvent()
                     } else {
                         attendPayedEvent(e)
@@ -197,6 +202,7 @@ $(() => {
                 $("#modal-content").show();
                 modalType = "deleteEvent";
             }
+            $("#deleteModal").modal("show");
         }
 
 

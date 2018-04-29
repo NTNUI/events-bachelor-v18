@@ -94,7 +94,7 @@ class Event(models.Model):
                                          payment_id=payment_id, registration_time=registration_time)
 
     def attend_waiting_list(self, user, payment_id, registration_time):
-        EventRegistration.objects.create(event=self, attendee=user,
+        EventWaitingList.objects.create(event=self, attendee=user,
                                          payment_id=payment_id, registration_time=registration_time)
 
     # Checks whether a given guest attends the event
@@ -147,7 +147,7 @@ class Event(models.Model):
 
         if len(waiting_list) > 0:
 
-            sorted_waiting_list = sorted(waiting_list, key=lambda attendee: attendee.registration_time, reverse=True)
+            sorted_waiting_list = sorted(waiting_list, key=lambda attendee: attendee.registration_time, reverse=False)
 
             next_on_waiting_list = sorted_waiting_list[0]
 
@@ -172,14 +172,14 @@ class Event(models.Model):
         else:
             return False
 
+    def is_payment_event(self):
+        return self.price != 0
+
     def payment_required(self, payment_id):
         """Checks whether the event require payment."""
 
         # Checks whether the event is free.
-        if self.price == 0:
-            free_event = True
-        else:
-            free_event = False
+        free_event = self.is_payment_event()
 
         # The event is not free and there exist an payment ID.
         if not free_event and payment_id is not None:
