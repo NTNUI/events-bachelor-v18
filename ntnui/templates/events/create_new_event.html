@@ -53,11 +53,11 @@
                             <div class="card-header" data-toggle="collapse" data-target="#options"
                                  aria-expanded="true" aria-controls="options">
                                 <div class="collapse-header-title">
-                                <img  src="{% static 'img/chevron-bottom.svg' %}" alt="arrow">
-                                <h5 style="margin-left:.2rem;" class="mb-0">
-                                    {% trans 'Extra options' %}
-                                </h5>
-                                    </div>
+                                    <img src="{% static 'img/chevron-bottom.svg' %}" alt="arrow">
+                                    <h5 style="margin-left:.2rem;" class="mb-0">
+                                        {% trans 'Extra options' %}
+                                    </h5>
+                                </div>
                             </div>
 
                             <div id="options" class="collapse hide" aria-labelledby="headingOne"
@@ -195,6 +195,28 @@
         </div>
 
         <div class="card">
+
+
+            <!--Image -->
+            <div class="collapse-header card-header " data-toggle="collapse" data-target="#cover-photo-event"
+                 aria-expanded="false" aria-controls="options">
+                <div class="collapse-header-title">
+                    <img src="{% static 'img/chevron-bottom.svg' %}"
+                         alt="arrow">
+                    <h5 style="margin-left:.2rem;" class="mb-0">
+                        {% trans 'Cover photo' %}
+                    </h5>
+                </div>
+            </div>
+            <div id="cover-photo-event" class="collapse hide" aria-labelledby="ExtraOptions">
+                <div class="card-body">
+                    <div class="form-group">
+                        <input class="form-input-create-event form-control" type="file"
+                               name="cover_photo">
+                    </div>
+                </div>
+            </div>
+
             <!--Extra options -->
             <div class="collapse-header card-header " data-toggle="collapse" data-target="#options-event"
                  aria-expanded="false" aria-controls="options">
@@ -206,10 +228,10 @@
                     </h5>
                 </div>
             </div>
-
             <div id="options-event" class="collapse hide" aria-labelledby="ExtraOptions">
                 <div class="alert alert-warning">
-                    <strong>Warning:</strong> {% trans 'Extra options have no effect if sub-events are created' %}</div>
+                    <strong>Warning:</strong> {% trans 'Extra options have no effect if sub-events are created' %}
+                </div>
                 <div class="card-body">
                     <div class="form-row">
                         <div class="form-group col-md-6">

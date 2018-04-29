@@ -89,10 +89,14 @@ def create_event_for_group(data, priority, is_ntnui):
     if attendance_cap == "":
         attendance_cap = None
 
+    registration_end_date = data.get('registration_end_date')
+    if registration_end_date == "":
+        registration_end_date = None;
+
     try:
         # create the events
-        event = Event.objects.create(start_date=data.get('start_date'), end_date=data.get('end_date'),
-                                     priority=priority, is_host_ntnui=is_ntnui, attendance_cap=attendance_cap,
+        event = Event.objects.create(start_date=data.get('start_date'), end_date=data.get('end_date'), registration_end_date = registration_end_date,
+                                     priority=priority, is_host_ntnui=is_ntnui, place=data.get('place'), attendance_cap=attendance_cap,
                                      price=price)
 
         if not is_ntnui:

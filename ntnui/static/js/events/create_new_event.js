@@ -175,7 +175,7 @@ function validateForm(formElements) {
         formElements.filter(':input').each((e, input) => {
             if (input.name != "csrfmiddlewaretoken") {
                 element[input.name] = input.value;
-                // input.value = "";
+                input.value = "";
             }
         });
         return element
