@@ -62,7 +62,8 @@ $(() => {
     $(".card-header").click(function (e) {
         const event = e || window.event
         const button = event.target
-        let img = $(button).find(".collapse-header-title").find('img')
+
+        let img = $(button).closest(".collapse-header").find('img').first()
         if(img.attr("src") == "/static/img/chevron-bottom.svg") {
             img.attr("src", "/static/img/chevron-top.svg")
         }
