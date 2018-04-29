@@ -52,10 +52,12 @@
                         <div style="margin-top: 1rem" class="card">
                             <div class="card-header" data-toggle="collapse" data-target="#options"
                                  aria-expanded="true" aria-controls="options">
-                                <img style="display: inline;" src="{% static 'img/chevron-bottom.svg' %}" alt="arrow">
-                                <h5 style="display: inline;" class="mb-0">
+                                <div class="collapse-header-title">
+                                <img  src="{% static 'img/chevron-bottom.svg' %}" alt="arrow">
+                                <h5 style="margin-left:.2rem;" class="mb-0">
                                     {% trans 'Extra options' %}
                                 </h5>
+                                    </div>
                             </div>
 
                             <div id="options" class="collapse hide" aria-labelledby="headingOne"
@@ -191,70 +193,98 @@
                        name="end_date" required>
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label>{% trans 'Maximum number of participants' %}</label>
-                <input class="form-input-create-event form-control" type="number"
-                       name="attendance_cap">
-            </div>
-            <div class="form-group col-md-6">
-                <label>{% trans 'Price in NOK' %}</label>
-                <input class="form-input-create-event form-control" type="number"
-                       name="price">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label>{% trans 'Email text norwegian' %}</label>
-                <textarea class="form-input-create-event form-control" type="textArea"
-                          name="email_text_no"></textarea>
-            </div>
-            <div class="form-group col-md-6">
-                <label>{% trans 'Email text english' %}</label>
-                <textarea class="form-input-create-event form-control" type="textArea"
-                          name="email_text_en"></textarea>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label>{% trans 'Registration end date' %}</label>
-                <input class="form-control" type="datetime-local"
-                       name="registration_end_date">
-            </div>
-        </div>
 
         <div class="card">
-            <div class="card-header-category card-header" data-toggle="collapse"
-                 aria-expanded="true" aria-controls="options">
-                <div class="sub-event-header">
-                    <h5 style="margin-top: .5rem">
-                        {% trans 'sub-event' %}
+            <!--Extra options -->
+            <div class="collapse-header card-header " data-toggle="collapse" data-target="#options-event"
+                 aria-expanded="false" aria-controls="options">
+                <div class="collapse-header-title">
+                    <img src="{% static 'img/chevron-bottom.svg' %}"
+                         alt="arrow">
+                    <h5 style="margin-left:.2rem;" class="mb-0">
+                        {% trans 'Extra options' %}
                     </h5>
                 </div>
-                <div id="add-subEvent-button" class="create-sub-event">
-                    <img src="{% static 'img/plus.svg' %}" alt="plus-sign"/>
-                    <label> Create sub-event</label>
+            </div>
 
-                </div>
-                <div id="add-category-button" class="create-sub-event">
-                    <img src="{% static 'img/plus.svg' %}" alt="plus-sign"/>
-                    <label> Create category </label>
+            <div id="options-event" class="collapse hide" aria-labelledby="ExtraOptions">
+                <div class="alert alert-warning">
+                    <strong>Warning:</strong> {% trans 'Extra options have no effect if sub-events are created' %}</div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>{% trans 'Maximum number of participants' %}</label>
+                            <input class="form-input-create-event form-control" type="number"
+                                   name="attendance_cap">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>{% trans 'Price in NOK' %}</label>
+                            <input class="form-input-create-event form-control" type="number"
+                                   name="price">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>{% trans 'Email text norwegian' %}</label>
+                            <textarea class="form-input-create-event form-control" type="textArea"
+                                      name="email_text_no"></textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>{% trans 'Email text english' %}</label>
+                            <textarea class="form-input-create-event form-control" type="textArea"
+                                      name="email_text_en"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>{% trans 'Registration end date' %}</label>
+                            <input class="form-control" type="datetime-local"
+                                   name="registration_end_date">
+                        </div>
+                    </div>
+
                 </div>
             </div>
-            <div class="card">
-                <div id="subEvents" class="drag-container" data-id="0" ondrop="drop(event)"
-                     ondragover="allowDrop(event)" style="min-height:3rem;">
 
+            <!--Sub-events -->
+            <div class="collapse-header card-header" data-toggle="collapse" data-target="#subEvent-collapse"
+                 aria-expanded="false" aria-controls="subEventCollapse">
+                <div class="collapse-header-title">
+                    <img src="{% static 'img/chevron-bottom.svg' %}" alt="arrow">
+                    <h5 style="margin-left:.2rem;">
+                        {% trans 'Sub-event(s)' %}
+                    </h5>
+                </div>
+                <div class="sub-event-header-button-container">
+                    <div id="add-subEvent-button" class="create-sub-event">
+                        <img src="{% static 'img/plus.svg' %}" alt="plus-sign"/>
+                        <label> Create sub-event</label>
+
+                    </div>
+                    <div id="add-category-button" class="create-sub-event">
+                        <img src="{% static 'img/plus.svg' %}" alt="plus-sign"/>
+                        <label> Create category </label>
+                    </div>
+                </div>
+            </div>
+            <div id="subEvent-collapse" class="collapse hide" aria-labelledby="subEventCollapse">
+                <div class="card" style="min-height:2rem;">
+                    <div id="subEvents" class="drag-container" data-id="0" ondrop="drop(event)"
+                         ondragover="allowDrop(event)">
+                        <p style="text-align: center; padding:2rem;">Create a category or a sub-event to get
+                            started!</p>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
+
         <div class="form-group row">
             <div style="width:100%; margin-top:1rem; display:flex; align-content:center; justify-content: center;">
                 <button id="create-event-button" type="button" style="margin:0;"
                         class="btn btn-success">{% trans 'Create event' %}</button>
             </div>
         </div>
+
     </form>
 
 

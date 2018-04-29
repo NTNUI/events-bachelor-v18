@@ -50,12 +50,27 @@ $(() => {
 
     // Show the subEvent modal
     $("#add-subEvent-button").click(function (e) {
+        e.stopPropagation();
         $("#subEvent-modal").modal('show')
     });
 
     $("#add-category-button").click(function (e) {
+        e.stopPropagation();
         $("#category-modal").modal('show')
     });
+
+    $(".card-header").click(function (e) {
+        const event = e || window.event
+        const button = event.target
+        let img = $(button).find(".collapse-header-title").find('img')
+        if(img.attr("src") == "/static/img/chevron-bottom.svg") {
+            img.attr("src", "/static/img/chevron-top.svg")
+        }
+        else {
+            img.attr("src", "/static/img/chevron-bottom.svg")
+        }
+    });
+
 
     // add listener to all the from event form fields
     $(".form-input-create-event").blur(validateFormEvent);
