@@ -131,40 +131,20 @@ def get_event_details(request, id):
     return render(request, 'events/event_details.html', context)
 
 def get_attending_events_page(request):
-    all_events=Event.objects.all()
-    attending_events=[]
-    name_attending_events =[]
 
-    for event in all_events:
-        if event.attends(request.user):
-            attending_events.append(event)
+    # Used to find out if the create-event button shall be rendered or not
+    if request.user.is_authenticated:
+        can_create_event = user_can_create_event(request.user)
+    else:
+        can_create_event = False
 
-    for event in attending_events:
-        name_attending_events.append(event.name())
+    # Get groups that are hosting events
+    groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
 
-    sub_event_list=[]
-
-    for event in attending_events:
-            categories = Category.objects.filter(event=event)
-            # for every category do:
-            for i in range(len(categories)):
-                # get all the sub-events for that category
-                sub_event = SubEvent.objects.filter(category=categories[i])
-                # add the category and map each sub_event to a dic
-                sub_event_list.append(
-                    (categories[i], list(map(lambda item: get_sub_event_dic(item, request), sub_event))))
-
-
-    context = {
-        'attending_events': attending_events,
-        'name_attending_events': name_attending_events,
-        'sub_event_list': sub_event_list,
-
-
-    }
-    print(sub_event_list)
-
-    return render(request, 'events/attending_events.html', context)
+    return render(request, 'events/events_attending_page.html', {
+        'can_create_event': can_create_event,
+        'groups': groups,
+    })
 
 
 def delete_event(request):
@@ -190,6 +170,8 @@ def get_delete_event(request, id):
 
     return render(request, 'events/delete_event_page.html')
 
+
+#the commented lines are to be uncommented when created subevents have a subeventregistration by default
 def delete_subevent(request):
     try:
         if request.method == 'POST':
@@ -197,9 +179,7 @@ def delete_subevent(request):
             subeventid = (data['subeventid'])
             subevent = SubEvent.objects.get(id=int(subeventid))
             subeventdescription_no = SubEventDescription.objects.get(sub_event=subevent, language='nb')
-            print(subeventdescription_no.name)
             subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
-            print(subeventdescription_en.name)
             #subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
             subevent.delete()
             subeventdescription_no.delete()
@@ -293,7 +273,11 @@ def edit_event(request):
 
 
 def get_events_request(request):
-    return get_events.get_events(request)
+
+    return get_events.get_events(request, False)
+
+def get_attending_events_request(request):
+    return get_events.get_events(request, True)
 
 @login_required
 def edit_event_request(request):
@@ -311,7 +295,6 @@ def get_create_event_page(request):
 
     # Checks if a user can create an event
     groups = get_groups_user_can_create_events_for(request.user)
-    print(groups)
 
     return render(request, 'events/create_new_event.html', {'groups': groups})
 
@@ -520,7 +503,6 @@ def payment_for_event(request, id):
 
 
 def refund_event(request):
-    print(request.POST.get('id'))
     if request.POST:
         try:
             id = request.POST.get('id')
