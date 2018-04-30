@@ -15,6 +15,10 @@ let csrftoken
 
 let eventID;
 
+
+// used to know what element to edit
+let editContainer = null;
+
 // On document ready
 $(() => {
 
@@ -100,14 +104,29 @@ $(() => {
 
     $("#submit-category-form").click((e) => {
         e.preventDefault()
+
         let form = $('#category-data-form *');
         let category = validateForm(form);
         if (category) {
             $("#category-modal").modal('hide')
-            category.id = idCounterCategory;
-            addCategory(category)
-            idCounterCategory++;
-            categories.push(category)
+            if (editContainer) {
+                let id = editContainer.find('.drag-container').attr('data-id')
+                category.id = id;
+                editContainer.find('.category-title').text(category.name_nb)
+
+                categories = categories.map((item) => {
+                    console.log(item.id)
+                    console.log(id)
+                    return item.id == id ? category : item
+                })
+                editContainer = null;
+            } else {
+                category.id = idCounterCategory;
+                addCategory(category)
+                idCounterCategory++;
+                categories.push(category)
+            }
+
         }
 
     })
@@ -176,7 +195,7 @@ function validateForm(formElements) {
         formElements.filter(':input').each((e, input) => {
             if (input.name != "csrfmiddlewaretoken") {
                 element[input.name] = input.value;
-                // input.value = "";
+                input.value = "";
             }
         });
         return element
@@ -327,6 +346,18 @@ function addCategory(category) {
             container.append('<p style="text-align: center; padding:2rem;">Create a category or a sub-event to get' +
                 '          started!</p>')
         }
+    })
+    $(".edit-category").click((e) => {
+        const event = e || window.event
+        editContainer = $(event.target).closest(".category-card")
+        const value = editContainer.find('.drag-container').attr('data-id')
+        category = categories.filter(item => item.id == value)
+        $("#category-modal").modal('show')
+
+        $('#category-data-form *').filter(':input').each((e, input) => {
+            const value = category[0][input.name]
+            input.value = value;
+        })
     })
 }
 
