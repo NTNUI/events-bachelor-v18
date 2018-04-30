@@ -23,38 +23,15 @@ let editContainer = null;
 $(() => {
 
     csrftoken = getCookie('csrftoken')
-    /**
-     * When clicking the create event button, validate all form fields, if they are not valid show alert, else
-     * send ajax request
-     */
+
+
     $("#create-event-button").click((e) => {
         e.preventDefault()
-
-        form = $('#create-event-form *')
-        let event = validateForm(form)
-        if (event) {
-            // Sends request to server to create event
-            event.csrfmiddlewaretoken = csrftoken;
-            $.ajax({
-                type: 'POST',
-                url: '/ajax/events/add-event',
-                data: event,
-                success: (data) => {
-                    //show success alert
-                    // printMessage('success', data.message)
-                    eventID = data.id;
-                    createCategories(data.id)
-                },
-                error: (data) => {
-                    //show error alert
-                    printMessage('error', data.responseJSON.message)
-                }
-            })
-        }
+        createEvent()
     })
 
-    // Show the subEvent modal
     $("#add-subEvent-button").click(function (e) {
+        console.log(subEvents)
         e.stopPropagation();
         $("#subEvent-modal").modal('show')
     });
@@ -169,6 +146,30 @@ $(() => {
     })
 });
 
+function createEvent() {
+    form = $('#create-event-form *')
+    let event = validateForm(form)
+    if (event) {
+        // Sends request to server to create event
+        event.csrfmiddlewaretoken = csrftoken;
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/events/add-event',
+            data: event,
+            success: (data) => {
+                //show success alert
+                // printMessage('success', data.message)
+                eventID = data.id;
+                createCategories(data.id)
+            },
+            error: (data) => {
+                //show error alert
+                printMessage('error', data.responseJSON.message)
+            }
+        })
+    }
+}
+
 async function createCategories(eventID) {
     categories = await Promise.all(categories.map(async (category) => {
         category.csrfmiddlewaretoken = csrftoken
@@ -192,7 +193,7 @@ async function createCategories(eventID) {
 }
 
 async function createSubEvents(eventID) {
-    subEventsCreated = await Promise.all(subEvents.map(async (subEvent) => {
+    let subEventsCreated = await Promise.all(subEvents.map(async (subEvent) => {
         let category = categories.filter((category) => category.id == subEvent.category)
         subEvent.category = category.length ? category[0].databaseCategoryId : ""
         subEvent.csrfmiddlewaretoken = csrftoken
@@ -222,8 +223,7 @@ async function createSubEvents(eventID) {
 function validateForm(formElements) {
     let valid = true
     formElements.filter(':input').each((e, input) => {
-        if (!input.checkValidity()) {
-            validateInput(input)
+        if (!validateInput(input)) {
             valid = false;
         }
     })
@@ -247,22 +247,23 @@ function validateForm(formElements) {
 let validateFormEvent = (e) => {
     // Get the button that was pressed
     const event = e || window.event
-    const button = event.target
-    validateInput(button)
+    const input = event.target
+    validateInput(input)
 
 }
 
 /**
- * Validates a given input
- * @param button
+ * Validates a given input field
+ * @param input
+ * @returns {boolean}
  */
 function validateInput(input) {
     // Use to see if field is displaying error
     const dispError = $(input).next().length === 0;
 
     // If field is of type datetime-local
-    if ($(input).attr("type") === 'datetime-local') {
-        validateDate(input, dispError)
+    if ($(input).attr("type") === 'datetime-local' && $(input).attr("required") ) {
+        return validateDate(input, dispError)
     }
     // if filed is not valid, and error is currently not displayed. Display error
     else if (!input.checkValidity()) {
@@ -272,8 +273,9 @@ function validateInput(input) {
     } else {
         // If filed is valid, remove error
         $(input).next().remove()
+        return true;
     }
-
+    return false;
 }
 
 /**
@@ -321,7 +323,9 @@ function validateDate(button, dispError) {
     } else {
         // remove display error
         $(button).next().remove()
+        return true;
     }
+    return false;
 }
 
 
