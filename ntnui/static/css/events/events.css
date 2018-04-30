@@ -161,6 +161,10 @@ label.custom-control.custom-checkbox:checked + label::before {
 .card-text {
     margin-left: 2%;
 }
+
+.col-10 {
+    margin-bottom: 2%;
+}
 @media only screen and (max-width: 700px) {
 
     .filter-element .form-control-select  #search .create-event #main .buttons {

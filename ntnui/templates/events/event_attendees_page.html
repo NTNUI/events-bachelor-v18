@@ -14,11 +14,9 @@
 
 
     {% if not subeventsexist %}
-        <div class="col">
-        <div class="card">
-        <div class="card-title">{{ event.name }}</div>
+        <div class="col-10">
+        <div class="list-group">
         <ul class="list-group">
-
             {% for full_name in attendees_list %}
                 <li class="list-group-item">{{ full_name }}</li>
             {% endfor %}
@@ -28,18 +26,14 @@
     {% endif %}
     {% if subeventsexist %}
         {% for list, subeventname in subevents_attendees_and_name_list %}
-        {#% for list in attendees_list %#}
-
-
+        <div class="col-10">
         <ul class="list-group">
-        <li class="list-group-item-heading">{{ subeventname }}</li>
+        <li class="list-group-item"><b>{{ subeventname }}</b></li>
             {% for full_name in list %}
-
                 <li class="list-group-item">{{ full_name }}</li>
             {% endfor %}
         </ul>
-
-        {#% endfor %#}
+        </div>
         {% endfor %}
     {% endif %}
 

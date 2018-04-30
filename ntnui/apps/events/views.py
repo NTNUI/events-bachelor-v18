@@ -290,7 +290,7 @@ def get_event_attendees_page(request, id, numberofsubevents):
     event = Event.objects.get(id=int(id))
     eventname = event.name()
 
-    if numberofsubevents == 0:
+    if int(numberofsubevents)== 0:
         subeventsexist=False
         eventregistrations = EventRegistration.objects.filter(event=event)
 
@@ -300,7 +300,6 @@ def get_event_attendees_page(request, id, numberofsubevents):
             attendees.append(user.get_full_name())
 
         attendees.sort()
-        print(attendees)
 
         context = {
             'subeventsexist': subeventsexist,
@@ -318,14 +317,9 @@ def get_event_attendees_page(request, id, numberofsubevents):
             for subevent in subevents:
                 subeventslist.append(subevent)
 
-        #testing for individual lists of subevent attendees
-
-
         subevents_attendees_and_names_list=[]
-        subevents_attendees_list=[]
-        #subeventnames=[]
+
         for subevent in subeventslist:
-            #subeventnames.append(subevent.name())
             attendees=[]
             users=[]
             subeventregistrations = SubEventRegistration.objects.filter(sub_event=subevent)
@@ -336,42 +330,13 @@ def get_event_attendees_page(request, id, numberofsubevents):
                     user_full_name = user.get_full_name()
                     attendees.append(user_full_name)
 
-            subevents_attendees_list.append(attendees)
             subevents_attendees_and_names_list.append((attendees, subevent.name()))
-
-        print(subevents_attendees_and_names_list)
-        print(subevents_attendees_list)
-
-        #subevents_attendees_and_name_list=zip(subevents_attendees_list, subeventnames)
 
         context = {
                 'subeventsexist': subeventsexist,
                 'eventname': eventname,
-                #'subeventnames': subeventnames,
-                'attendees_list': subevents_attendees_list,
                 'subevents_attendees_and_name_list': subevents_attendees_and_names_list,
             }
-
-
-
-        '''attendees=[]
-        users=[]
-        for subevent in subeventslist:
-            subeventregistrations = SubEventRegistration.objects.filter(sub_event=subevent)
-            for registration in subeventregistrations:
-                user=registration.attendee
-                if user not in users:
-                    users.append(user)
-                    user_full_name=user.get_full_name()
-                    attendees.append(user_full_name)
-
-        attendees.sort()
-
-        context = {
-            'eventname': eventname,
-            'attendees': attendees,
-        }'''
-
 
 
     return render(request, 'events/event_attendees_page.html', context)
