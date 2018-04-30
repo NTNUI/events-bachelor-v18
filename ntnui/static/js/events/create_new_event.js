@@ -93,14 +93,52 @@ $(() => {
         form = $('#subEvent-data-form *')
         let subEvent = validateForm(form)
         if (subEvent) {
-            subEvent.id = idCounterSubEvent;
-            idCounterSubEvent++;
+            if (editContainer) {
+                let id = editContainer.attr('data-id')
+                subEvent.id = id;
+                editContainer.find('.subEvent-title').text(subEvent.name_nb)
+                editContainer.find('.subEvent-date').text(subEvent.start_date + " - " + subEvent.end_date)
+
+                subEvents = subEvents.map((item) => {
+                    return item.id == id ? subEvent : item
+                })
+                editContainer = null
+                $('#submit-sub-event-form').text(gettext("Create sub-event"))
+            } else {
+                subEvent.id = idCounterSubEvent;
+                idCounterSubEvent++;
+                subEvent.category = 0;
+                addSubEvent(subEvent)
+                subEvents.push(subEvent)
+            }
             $("#subEvent-modal").modal('hide')
-            subEvent.category = 0;
-            addSubEvent(subEvent)
-            subEvents.push(subEvent)
         }
     });
+
+
+    $(".close-modal").click((e) => {
+        const event = e || window.event
+        const form = $(event.target).closest(".modal-content").find("form *")
+        form.filter(':input').each((e, input) => {
+            input.value = ""
+        })
+        editContainer = null;
+        $('#submit-category-form').text(gettext("Create category"))
+        $('#submit-sub-event-form').text(gettext("Create sub-event"))
+
+    })
+
+    $(".modal").click((e) => {
+        const event = e || window.event
+        const form = $(event.target).find("form *")
+        form.filter(':input').each((e, input) => {
+            input.value = ""
+        })
+        editContainer = null;
+        $('#submit-category-form').text(gettext("Create category"))
+        $('#submit-sub-event-form').text(gettext("Create sub-event"))
+
+    })
 
     $("#submit-category-form").click((e) => {
         e.preventDefault()
@@ -115,11 +153,10 @@ $(() => {
                 editContainer.find('.category-title').text(category.name_nb)
 
                 categories = categories.map((item) => {
-                    console.log(item.id)
-                    console.log(id)
                     return item.id == id ? category : item
                 })
                 editContainer = null;
+                $('#submit-category-form').text(gettext("Create category"))
             } else {
                 category.id = idCounterCategory;
                 addCategory(category)
@@ -294,9 +331,9 @@ function addSubEvent(subEvent) {
     container.append(
         '<div id="subEvent-' + subEvent.id + '" class="subEvent-element card" data-id="' + subEvent.id + '" class="card" draggable="true" ondragstart="drag(event)">' +
         '<div class="sub-event-card-container card-body">' +
-        '    <div class="sub-event-name"><b>' + subEvent.name_nb + '</b></div>' +
+        '    <div class="sub-event-name"><b class="subEvent-title">' + subEvent.name_nb + '</b></div>' +
         '        <div class="center-content sub-event-dateime">' +
-        '             <i>' + subEvent.start_date + ' - ' + subEvent.end_date + '</i>' +
+        '             <i class="subEvent-date">' + subEvent.start_date + ' - ' + subEvent.end_date + '</i>' +
         '        </div>\n' +
         '         <div class="sub-event-button-container">' +
         '<div class="btn-group" role="group" style="float:right;">' +
@@ -314,6 +351,21 @@ function addSubEvent(subEvent) {
             container.append('<p style="text-align: center; padding:2rem;">Create a category or a sub-event to get' +
                 '            started!</p>')
         }
+    })
+
+    $(".edit-subEvent").click((e) => {
+        const event = e || window.event
+        editContainer = $(event.target).closest(".subEvent-element")
+        const id = editContainer.attr('data-id')
+        subEvent = subEvents.filter(item => item.id == id)
+
+
+        $('#subEvent-data-form *').filter(':input').each((e, input) => {
+            const value = subEvent[0][input.name]
+            input.value = value;
+        })
+        $('#submit-sub-event-form').text(gettext("Save"))
+        $("#subEvent-modal").modal('show')
     })
 
 }
@@ -352,12 +404,16 @@ function addCategory(category) {
         editContainer = $(event.target).closest(".category-card")
         const value = editContainer.find('.drag-container').attr('data-id')
         category = categories.filter(item => item.id == value)
-        $("#category-modal").modal('show')
+
 
         $('#category-data-form *').filter(':input').each((e, input) => {
             const value = category[0][input.name]
             input.value = value;
         })
+
+        $('#submit-category-form').text(gettext("Save"))
+
+        $("#category-modal").modal('show')
     })
 }
 
