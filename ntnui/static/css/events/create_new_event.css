@@ -151,6 +151,32 @@ h1 {
     float: left;
 }
 
+.button-container-right {
+    float: right;
+}
+
+.category-header {
+    height: 4rem;
+}
+
+.category-title {
+    height: 100%;
+    float: left;
+    display: flex;
+    align-items: center;
+}
+
+.drop-example {
+    height: 4rem;
+    width: 100%;
+    border: green dashed 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
 @media only screen and (max-width: 767px) {
     .card-header-category {
         height: auto;
@@ -162,7 +188,7 @@ h1 {
 
     .collapse-header {
         height: auto;
-        min-height:4rem;
+        min-height: 4rem;
     }
 
 }

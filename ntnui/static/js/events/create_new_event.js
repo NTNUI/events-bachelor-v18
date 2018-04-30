@@ -10,6 +10,7 @@ let idCounterSubEvent = 0;
 // category id counter
 let idCounterCategory = 1;
 
+// used for security
 let csrftoken
 
 let eventID;
@@ -64,7 +65,7 @@ $(() => {
         const button = event.target
 
         let img = $(button).closest(".collapse-header").find('img').first()
-        if(img.attr("src") == "/static/img/chevron-bottom.svg") {
+        if (img.attr("src") == "/static/img/chevron-bottom.svg") {
             img.attr("src", "/static/img/chevron-top.svg")
         }
         else {
@@ -154,7 +155,7 @@ async function createSubEvents(eventID) {
         }
     }))
     if (subEventsCreated) {
-        window.location.replace("/events/" + eventID +"/");
+        window.location.replace("/events/" + eventID + "/");
     }
 }
 
@@ -175,7 +176,7 @@ function validateForm(formElements) {
         formElements.filter(':input').each((e, input) => {
             if (input.name != "csrfmiddlewaretoken") {
                 element[input.name] = input.value;
-                input.value = "";
+                // input.value = "";
             }
         });
         return element
@@ -269,7 +270,9 @@ function validateDate(button, dispError) {
 
 
 function addSubEvent(subEvent) {
-    $("#subEvents").append(
+    let container = $("#subEvents")
+    container.find('p').remove()
+    container.append(
         '<div id="subEvent-' + subEvent.id + '" class="subEvent-element card" data-id="' + subEvent.id + '" class="card" draggable="true" ondragstart="drag(event)">' +
         '<div class="sub-event-card-container card-body">' +
         '    <div class="sub-event-name"><b>' + subEvent.name_nb + '</b></div>' +
@@ -277,31 +280,58 @@ function addSubEvent(subEvent) {
         '             <i>' + subEvent.start_date + ' - ' + subEvent.end_date + '</i>' +
         '        </div>\n' +
         '         <div class="sub-event-button-container">' +
-        '          <div class="delete-sub-event-button center-content">' +
-        '             <img class="img-cross" src="/static/img/circle-x.svg" alt="exit"></div>' +
-        '         </div>' +
+        '<div class="btn-group" role="group" style="float:right;">' +
+        '  <button type="button" class="center-content btn btn-warning edit-subEvent"><img class="img-cross" src="/static/img/pencil.svg" alt="edit"></button>\n' +
+        '  <button type="button" class="center-content btn btn-danger delete-sub-event"><img class="img-cross" src="/static/img/x.svg" alt="exit"></button></div>\n' +
+        '</div>' +
         '        </div>' + '</div>');
 
-
-    $(".delete-sub-event-button").click((e) => {
+    $(".delete-sub-event").click((e) => {
         const event = e || window.event
         const value = $(event.target).closest(".subEvent-element").attr('data-id')
         subEvents = subEvents.filter(item => item.id != value)
         $(event.target).closest(".subEvent-element").remove()
+        if (!container.find('div').length) {
+            container.append('<p style="text-align: center; padding:2rem;">Create a category or a sub-event to get' +
+                '            started!</p>')
+        }
     })
 
 }
 
 function addCategory(category) {
-    $("#subEvents").append(
-        '<div class=" collapse show" aria-labelledby="headingOne" >' +
-        '   <div class="card-header">\n' + category.name_nb + '</div>' +
+    let container = $("#subEvents")
+    container.find('p').remove()
+    container.append(
+        '<div class="category-card collapse show" aria-labelledby="headingOne" >' +
+        '   <div class="card-header category-header"><h5 class="category-title">' + category.name_nb +
+        '</h5><div class="button-container-right">' +
+        '<div class="btn-group" role="group">' +
+        '  <button type="button" class="center-content btn btn-warning edit-category"><img class="img-cross" src="/static/img/pencil.svg" alt="edit"></button>' +
+        '  <button type="button" class="center-content btn btn-danger delete-category"><img class="img-cross" src="/static/img/x.svg" alt="exit"></button></div>' + '</div></div>' +
         '   <div class="drag-container card-body" data-id="' + category.id + '" ondrop="drop(event)"' +
-        ' ondragover="allowDrop(event)" style="text-align: center; border: green dashed 1px;">' +
-        '       Drop sub-event here' +
+        ' ondragover="allowDrop(event)" style="text-align: center; border: lightgrey solid 1px;">' +
+        '<div class="drop-example" ><i> Drop sub-event here </i></div>' +
         '   </div>' +
         '     ' +
         '</div>')
+
+
+    $(".delete-category").click((e) => {
+        const event = e || window.event
+        const value = $(event.target).closest(".category-card").find('.drag-container').attr('data-id')
+        categories = categories.filter(item => item.id != value)
+        subEvents = subEvents.filter((subEvent) => subEvent.category != value)
+        $(event.target).closest(".category-card").remove()
+        if (!container.find('div').length) {
+            container.append('<p style="text-align: center; padding:2rem;">Create a category or a sub-event to get' +
+                '          started!</p>')
+        }
+    })
+}
+
+function showSubEventPlaceholder() {
+    return '<div class="drop-example" ><i> Drop sub-event here </i></div>'
 }
 
 
@@ -351,6 +381,7 @@ function drop(ev) {
     const subEventElement = $(("#" + data))
     container.append(subEventElement);
     const dataIDSubEvent = subEventElement.attr("data-id")
+    subEventElement.closest('.drag-container').find('.drop-example').first().remove();
 
     subEvents.map((element) => {
         if (element.id == dataIDSubEvent) {
