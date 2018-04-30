@@ -36,8 +36,26 @@ def create_category_request(request):
 def create_sub_event_request(request):
     if request.POST:
 
+        print(request.POST)
         name_nb = request.POST.get("name_nb")
         name_en = request.POST.get("name_en")
+        email_text_nb = request.POST.get("email_nb")
+        email_text_en = request.POST.get("email_en")
+
+        # If price is not given a value, price is set to 0
+        price = request.POST.get('price')
+        if price == "":
+            price = 0
+
+        # if attendance_cap is "" its set to None
+        attendance_cap = request.POST.get('attendance_cap')
+        if attendance_cap == "":
+            attendance_cap = None
+
+        registration_end_date = request.POST.get('registration_end_date')
+        if registration_end_date == "":
+            registration_end_date = None;
+
 
         category_id =  request.POST.get("category", "")
         print(request.POST)
@@ -55,10 +73,13 @@ def create_sub_event_request(request):
         # validate
         sub_event = SubEvent.objects.create(start_date=request.POST.get("start_date"),
                                             end_date=request.POST.get("end_date"),
+                                            price=price,
+                                            registration_end_date=registration_end_date,
+                                            attendance_cap=attendance_cap,
                                             category=category)
 
-        SubEventDescription.objects.create(sub_event=sub_event, name=name_nb, language='nb')
-        SubEventDescription.objects.create(sub_event=sub_event, name=name_en, language='en')
+        SubEventDescription.objects.create(sub_event=sub_event, name=name_nb, custom_email_text =email_text_nb, language='nb')
+        SubEventDescription.objects.create(sub_event=sub_event, name=name_en, custom_email_text = email_text_en, language='en')
         return JsonResponse({
             'id': sub_event.id,
             'message': _('New sub-event successfully created!')},
