@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/events/events.css' %}"/>
+{% endblock %}
+
+{% block title %}NTNUI - Event attendees{% endblock %}
+
+{% block content %}
+
+    <h1 style="text-align: center">{{ eventname }}{% trans ' attendees' %}</h1>
+
+
+    {% if not subeventsexist %}
+        <div class="col">
+        <div class="card">
+        <div class="card-title">{{ event.name }}</div>
+        <ul class="list-group">
+
+            {% for full_name in attendees_list %}
+                <li class="list-group-item">{{ full_name }}</li>
+            {% endfor %}
+        </ul>
+        </div>
+        </div>
+    {% endif %}
+    {% if subeventsexist %}
+        {% for list, subeventname in subevents_attendees_and_name_list %}
+        {#% for list in attendees_list %#}
+
+
+        <ul class="list-group">
+        <li class="list-group-item-heading">{{ subeventname }}</li>
+            {% for full_name in list %}
+
+                <li class="list-group-item">{{ full_name }}</li>
+            {% endfor %}
+        </ul>
+
+        {#% endfor %#}
+        {% endfor %}
+    {% endif %}
+
+
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+    <script type="text/javascript" src="{% static 'js/events/event_details.js' %}"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+{% endblock %}

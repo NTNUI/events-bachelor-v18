@@ -169,6 +169,14 @@
                                                     &nbsp;{% trans 'Delete event' %}
                                                 </div>
                                             </button>
+                                            <a id="event-attendees-button" href="{% url 'event_attendees' event.id number_of_subevents %}">
+                                                <button type="button" class="buttons btn btn-success">
+                                                    <div class="button-div">
+                                                        <!--<img src="{#% static 'img/pencil.svg' %#}"/>-->
+                                                        &nbsp;{% trans 'See attendees' %}
+                                                    </div>
+                                                </button>
+                                            </a>
                                         </div>
                                         <div id="confirm-delete">
                                             <a id="confirm-button" href="{% url 'get_delete_event' event.id %}">
@@ -189,6 +197,16 @@
         {% endif %}
 
         <div class="events-section">
+        {% if sub_event_list %}
+            <a id="event-attendees-button" href="{% url 'event_attendees' event.id number_of_subevents %}">
+                <button type="button" class="buttons btn btn-success">
+                    <div class="button-div">
+                        <!--<img src="{#% static 'img/pencil.svg' %#}"/>-->
+                        &nbsp;{% trans 'See attendees' %}
+                    </div>
+                </button>
+            </a>
+        {% endif %}
             <div class="category-card-container">
 
                 <div class="category-card" id="accordion" role="tablist" aria-multiselectable="true">

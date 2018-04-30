@@ -6,7 +6,8 @@ from .views import (
     get_event_details,
     get_edit_event_page,
     get_delete_event,
-    get_attending_events_page
+    get_attending_events_page,
+    get_event_attendees_page,
 )
 
 urlpatterns = [
@@ -16,4 +17,5 @@ urlpatterns = [
     url(r'^edit/(?P<id>\d+)/', get_edit_event_page, name='edit_event_page'),
     url(r'^delete/(?P<id>\d+)/$', get_delete_event, name='get_delete_event'),
     url(r'^attending/$', get_attending_events_page, name='attending_events_page'),
+    url(r'^attendees/(?P<id>\d+)/(?P<numberofsubevents>\d+)/', get_event_attendees_page, name='event_attendees'),
 ]

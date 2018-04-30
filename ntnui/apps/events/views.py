@@ -14,6 +14,7 @@ from hs.models import MainBoardMembership
 from . import create_event, get_events
 from events.models import Event, EventDescription, EventRegistration, Category, SubEvent, SubEventRegistration, SubEventDescription
 from django.core.mail import send_mail
+#from events.ntnui.apps.accounts.models import User
 
 
 
@@ -65,6 +66,8 @@ def get_event_details(request, id):
             sub_event = SubEvent.objects.filter(category=categories[i])
             # add the category and map each sub_event to a dic
             sub_event_list.append((categories[i], list(map(lambda item: get_sub_event_dic(item, request), sub_event))))
+
+    number_of_subevents=len(sub_event_list)
 
     # Checks if the user is sign in.
     if request.user.is_authenticated:
@@ -123,6 +126,7 @@ def get_event_details(request, id):
     context = {
         "event": event,
         "sub_event_list": sub_event_list,
+        'number_of_subevents': number_of_subevents,
         'can_create_event': can_create_event,
         'can_edit_and_delete_event': can_edit_and_delete_event,
         "STRIPE_KEY": settings.STRIPE_PUBLIC_KEY
@@ -277,7 +281,100 @@ def get_events_request(request):
     return get_events.get_events(request, False)
 
 def get_attending_events_request(request):
+
     return get_events.get_events(request, True)
+
+
+def get_event_attendees_page(request, id, numberofsubevents):
+
+    event = Event.objects.get(id=int(id))
+    eventname = event.name()
+
+    if numberofsubevents == 0:
+        subeventsexist=False
+        eventregistrations = EventRegistration.objects.filter(event=event)
+
+        attendees = []
+        for registration in eventregistrations:
+            user = registration.attendee
+            attendees.append(user.get_full_name())
+
+        attendees.sort()
+        print(attendees)
+
+        context = {
+            'subeventsexist': subeventsexist,
+            'eventname': eventname,
+            'attendees_list': attendees,
+        }
+
+    else:
+        subeventsexist=True
+        eventcategories=Category.objects.filter(event=event)
+
+        subeventslist=[]
+        for category in eventcategories:
+            subevents=SubEvent.objects.filter(category=category)
+            for subevent in subevents:
+                subeventslist.append(subevent)
+
+        #testing for individual lists of subevent attendees
+
+
+        subevents_attendees_and_names_list=[]
+        subevents_attendees_list=[]
+        #subeventnames=[]
+        for subevent in subeventslist:
+            #subeventnames.append(subevent.name())
+            attendees=[]
+            users=[]
+            subeventregistrations = SubEventRegistration.objects.filter(sub_event=subevent)
+            for registration in subeventregistrations:
+                user = registration.attendee
+                if user not in users:
+                    users.append(user)
+                    user_full_name = user.get_full_name()
+                    attendees.append(user_full_name)
+
+            subevents_attendees_list.append(attendees)
+            subevents_attendees_and_names_list.append((attendees, subevent.name()))
+
+        print(subevents_attendees_and_names_list)
+        print(subevents_attendees_list)
+
+        #subevents_attendees_and_name_list=zip(subevents_attendees_list, subeventnames)
+
+        context = {
+                'subeventsexist': subeventsexist,
+                'eventname': eventname,
+                #'subeventnames': subeventnames,
+                'attendees_list': subevents_attendees_list,
+                'subevents_attendees_and_name_list': subevents_attendees_and_names_list,
+            }
+
+
+
+        '''attendees=[]
+        users=[]
+        for subevent in subeventslist:
+            subeventregistrations = SubEventRegistration.objects.filter(sub_event=subevent)
+            for registration in subeventregistrations:
+                user=registration.attendee
+                if user not in users:
+                    users.append(user)
+                    user_full_name=user.get_full_name()
+                    attendees.append(user_full_name)
+
+        attendees.sort()
+
+        context = {
+            'eventname': eventname,
+            'attendees': attendees,
+        }'''
+
+
+
+    return render(request, 'events/event_attendees_page.html', context)
 
 @login_required
 def edit_event_request(request):
