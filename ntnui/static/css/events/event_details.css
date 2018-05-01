@@ -179,6 +179,7 @@
     background-color: var(--NTNUI-red) !important;
 }
 
+
 @media only screen and (max-width: 700px) {
     .category-card-container {
         width: 95%;

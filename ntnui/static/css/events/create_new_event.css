@@ -1,4 +1,4 @@
-input:focus:invalid  {
+input:focus:invalid {
     border: 1px solid darkred;
 }
 
@@ -6,7 +6,7 @@ input:focus:valid {
     border: 1px solid darkgreen;
 }
 
-textarea:focus:invalid  {
+textarea:focus:invalid {
     border: 1px solid darkred;
 }
 
@@ -15,108 +15,196 @@ textarea:focus:valid {
 }
 
 .error-input {
-  display:block;
-  margin-top: 2%;
-  float: left;
-  height: 2rem;
-  margin-bottom: -1rem;
+    display: block;
+    margin-top: 2%;
+    float: left;
+    height: 2rem;
+    margin-bottom: -1rem;
 }
 
 .error-input p {
-  margin-top: -10px;
+    margin-top: -10px;
 }
 
-
 .col-2 {
-  margin-bottom: 5%;
+    margin-bottom: 5%;
 }
 
 #cont1 {
-  float: left;
-  width: 50%
+    float: left;
+    width: 50%
 }
 
 #cont2 {
-  float: right;
-  width: 50%
+    float: right;
+    width: 50%
 }
 
 h1 {
-  margin-top: 1%;
-  margin-bottom: 2%;
+    margin-top: 1%;
+    margin-bottom: 2%;
 }
 
 .btn-success {
-  margin-left: 20%;
+    margin-left: 20%;
 }
+
 .card-header-category {
-    background-color: white;
     width: 100%;
-    height:4rem;
+    height: 4rem;
+    height: 100%;
 }
-.create-sub-event{
-    float: right;
+
+.create-sub-event {
+    justify-self: flex-end;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding:0.5rem;
-    margin-right:1rem;
-
+    padding: 0.5rem;
+    margin-right: 1rem;
 
 }
 
-.create-sub-event > img{
-    width:1rem;
-    margin-right:0.5rem;
+.event-collapse-header {
+    height: 4rem;
+}
+
+.create-sub-event > img {
+    width: 1rem;
+    margin-right: 0.5rem;
     /*border-radius: 3rem;
     padding:.4rem;
     border: green solid .1rem;
 */
 }
 
-.create-sub-event:hover > img{
-    width:1.1rem;
+.create-sub-event:hover > img {
+    width: 1.1rem;
 }
+
 .create-sub-event:hover {
     font-size: 1.1rem;
 }
-.create-sub-event >label {
+
+.create-sub-event > label {
     margin: 0;
 }
-.sub-event-header{
-    float:left;
+
+.sub-event-header {
+    display: flex;
+    align-items: center;
 }
+
 .center-content {
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .sub-event-card-container {
-    display:grid;
+    display: grid;
     grid-template-columns: 20% 60% 20%;
 }
+
 .sub-event-name {
     grid-column-start: 1;
     grid-column-end: 2;
 }
+
 .sub-event-dateime {
     grid-column-start: 2;
     grid-column-end: 3;
     text-align: center;
 }
+
 .sub-event-button-container {
     grid-column-start: 3;
     grid-column-end: 4;
 }
 
-.delete-sub-event-button{
+.delete-sub-event-button {
     float: right;
     height: 100%;
-    padding-right:.9rem;
+    padding-right: .9rem;
 }
+
 .img-cross {
-    width:1rem;
+    width: 1rem;
+}
+
+.sub-event-header-button-container {
+    float: right;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 25rem;
+    max-width: 100%;
+}
+
+.collapse-header-title {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    float: left;
+}
+
+.button-container-right {
+    float: right;
+}
+
+.category-header {
+    height: 4rem;
+}
+
+.category-title {
+    height: 100%;
+    float: left;
+    display: flex;
+    align-items: center;
+}
+
+.drop-example {
+    height: 4rem;
+    width: 100%;
+    border: green dashed 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#create-event-button-container {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+.placeholder-container-text {
+    text-align: center;
+    padding:2rem;"
+}
+
+
+/*
+    Used to make the page responsive
+ */
+@media only screen and (max-width: 767px) {
+    .card-header-category {
+        height: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .event-collapse-header {
+        height: auto;
+        min-height: 4rem;
+    }
+
 }
 
 

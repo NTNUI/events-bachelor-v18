@@ -12,10 +12,78 @@ from django.utils import translation
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 from . import create_event, get_events
-from events.models import Event, EventDescription, EventRegistration, Category, SubEvent, SubEventRegistration, SubEventDescription
+from events.models import Event, EventDescription, EventRegistration, Category, CategoryDescription, SubEvent, \
+    SubEventRegistration, SubEventDescription
 from django.core.mail import send_mail
 #from events.ntnui.apps.accounts.models import User
 
+
+def create_category_request(request):
+    if request.POST:
+        name_nb = request.POST.get("name_nb")
+        name_en = request.POST.get("name_en")
+
+        # validate
+        category = Category.objects.create(event=Event.objects.get(id=int(request.POST.get("event"))))
+
+        CategoryDescription.objects.create(category=category, name=name_nb, language='nb')
+        CategoryDescription.objects.create(category=category, name=name_en, language='en')
+        return JsonResponse({
+            'id': category.id,
+            'message': _('New category successfully created!')},
+            status=201)
+
+
+def create_sub_event_request(request):
+    if request.POST:
+        print(request.POST)
+        name_nb = request.POST.get("name_nb")
+        name_en = request.POST.get("name_en")
+        email_text_nb = request.POST.get("email_nb")
+        email_text_en = request.POST.get("email_en")
+
+        # If price is not given a value, price is set to 0
+        price = request.POST.get('price')
+        if price == "":
+            price = 0
+
+        # if attendance_cap is "" its set to None
+        attendance_cap = request.POST.get('attendance_cap')
+        if attendance_cap == "":
+            attendance_cap = None
+
+        registration_end_date = request.POST.get('registration_end_date')
+        if registration_end_date == "":
+            registration_end_date = None;
+
+        category_id =  request.POST.get("category", "")
+
+        if category_id == "":
+            event_id = int(request.POST.get("event"))
+            print(Category.objects.filter(event__id=event_id, categorydescription__name='Non categorized').exists())
+            if not Category.objects.filter(event__id=event_id, categorydescription__name='Non categorized').exists():
+                category = Category.objects.create(event=Event.objects.get(id=event_id))
+                CategoryDescription.objects.create(category=category, name="Ikke kategorisert", language='nb')
+                CategoryDescription.objects.create(category=category, name="Non categorized", language='en')
+            else:
+                category = Category.objects.filter(event__id=event_id, categorydescription__name='Non categorized')[0]
+        else:
+            category = Category.objects.get(id=category_id)
+
+        # validate
+        sub_event = SubEvent.objects.create(start_date=request.POST.get("start_date"),
+                                            end_date=request.POST.get("end_date"),
+                                            price=price,
+                                            registration_end_date=registration_end_date,
+                                            attendance_cap=attendance_cap,
+                                            category=category)
+
+        SubEventDescription.objects.create(sub_event=sub_event, name=name_nb, custom_email_text =email_text_nb, language='nb')
+        SubEventDescription.objects.create(sub_event=sub_event, name=name_en, custom_email_text = email_text_en, language='en')
+        return JsonResponse({
+            'id': sub_event.id,
+            'message': _('New sub-event successfully created!')},
+            status=201)
 
 
 def get_main_page(request):
@@ -76,7 +144,6 @@ def get_event_details(request, id):
         # Returns false if not
         attends = False
 
-
     if request.user.is_authenticated:
         can_create_event = user_can_create_event(request.user)
     else:
@@ -87,8 +154,6 @@ def get_event_details(request, id):
             is_in_mainboard = user_is_in_mainboard(request.user)
         else:
             is_in_mainboard = False
-
-
 
         user_boards = get_groups_user_can_create_events_for(request.user)
         event_hosts = []
@@ -106,7 +171,6 @@ def get_event_details(request, id):
             can_edit_and_delete_event = False
     else:
         can_edit_and_delete_event = False
-
 
     event = {
         'name': event.name(),
@@ -152,27 +216,28 @@ def get_attending_events_page(request):
 
 
 def delete_event(request):
-
     return get_main_page(request)
 
-#Delete event
-#the commented lines are to be uncommented when created events have an eventregistration by default
+
+# Delete event
+# the commented lines are to be uncommented when created events have an eventregistration by default
 def get_delete_event(request, id):
     try:
         event = Event.objects.get(id=int(id))
         eventdescription_no = EventDescription.objects.get(event=event, language='nb')
         eventdescription_en = EventDescription.objects.get(event=event, language='en')
-        #eventregistration = EventRegistration.objects.get(event=event)
-        #if eventregistration.payment_id != '':
+        # eventregistration = EventRegistration.objects.get(event=event)
+        # if eventregistration.payment_id != '':
         #    refund_event(request)
         event.delete()
         eventdescription_no.delete()
         eventdescription_en.delete()
-        #eventregistration.delete()
+        # eventregistration.delete()
     except:
         return HttpResponse("Event delete failed")
 
     return render(request, 'events/delete_event_page.html')
+
 
 
 #the commented lines are to be uncommented when created subevents have a subeventregistration by default
@@ -185,27 +250,27 @@ def delete_subevent(request):
             subeventdescription_no = SubEventDescription.objects.get(sub_event=subevent, language='nb')
             subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
             #subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
+            # subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
             subevent.delete()
             subeventdescription_no.delete()
             subeventdescription_en.delete()
-            #subeventregistration.delete()
+            # subeventregistration.delete()
     except:
         return HttpResponse("Subevent delete failed")
 
 
 def get_edit_event_page(request, id):
-
     groups = get_groups_user_can_create_events_for(request.user)
     event = Event.objects.get(id=int(id))
     eventdescription_no = EventDescription.objects.get(event=event, language='nb')
     eventdescription_en = EventDescription.objects.get(event=event, language='en')
     attendance_cap = event.attendance_cap
     price = event.price
-    #convert dates to a format that can be put as value in inputtype datetimelocal html form
+    # convert dates to a format that can be put as value in inputtype datetimelocal html form
     event_start_date = event.start_date
     event_end_date = event.end_date
-    start_date='{:%Y-%m-%dT%H:%M}'.format(event_start_date)
-    end_date='{:%Y-%m-%dT%H:%M}'.format(event_end_date)
+    start_date = '{:%Y-%m-%dT%H:%M}'.format(event_start_date)
+    end_date = '{:%Y-%m-%dT%H:%M}'.format(event_end_date)
     event = {
         'name_no': eventdescription_no.name,
         'name_en': eventdescription_en.name,
@@ -229,6 +294,7 @@ def get_edit_event_page(request, id):
     }
     return render(request, 'events/edit_event_page.html', context)
 
+
 def edit_event(request):
     try:
         if request.method == 'POST':
@@ -236,13 +302,13 @@ def edit_event(request):
 
             event = Event.objects.get(id=int(data['event_id']))
 
-            name_no=data['name_no']
-            name_en=data['name_en']
-            description_no=data['description_text_no']
+            name_no = data['name_no']
+            name_en = data['name_en']
+            description_no = data['description_text_no']
             description_en = data['description_text_en']
-            email_text_no=data['email_text_no']
-            email_text_en=data['email_text_en']
-            start_date=data['start_date']
+            email_text_no = data['email_text_no']
+            email_text_en = data['email_text_en']
+            start_date = data['start_date']
             end_date = data['end_date']
             host = data['host']
             attendance_cap = data['attendance_cap']
@@ -341,9 +407,11 @@ def get_event_attendees_page(request, id, numberofsubevents):
 
     return render(request, 'events/event_attendees_page.html', context)
 
+
 @login_required
 def edit_event_request(request):
     return edit_event(request)
+
 
 @login_required
 def create_event_request(request):

@@ -2,131 +2,369 @@
 let subEvents = [];
 
 // list of categories
-let categories = []
+let categories = [];
 
-// subevent id counter
-let idCounter = 0;
+// sub-event id counter
+let idCounterSubEvent = 0;
+
+// category id counter, set to 1 as 0 is the default category
+let idCounterCategory = 1;
+
+// used for security, required by django in order to accept the request
+let csrftoken;
+
+// The edit container specify, what DOM element is currently being eddied
+let editContainer = null;
+
+// sets the current language
+let lang
+
 // On document ready
 $(() => {
 
-    /**
-     * When clicking the create event button, validate all form fields, if they are not valid show alert, else
-     * send ajax request
-     */
-    $("#create-event-button").click(function (e) {
-        let inputs = $(".form-input-create-event")
-        for (let i = 0; i < inputs.length; i++) {
-            if (!inputs[i].validity.valid) {
-                printMessage('error', gettext('Please validate all fields'))
-                slideUpAlert(false)
-                return;
-            }
-        }
+    // get the language
+    lang = $('html').attr('lang')
 
-        // Sends request to server to create event
-        $.ajax({
-            type: 'POST',
-            url: '/ajax/events/add-event',
-            data: $('#create-event-form').serialize(),
-            success: (data) => {
-                //show success alert
-                printMessage('success', data.message)
-            },
-            error: (data) => {
-                //show error alert
-                printMessage('error', data.message)
-                slideUpAlert(false)
-            }
-        })
-        e.preventDefault();
-    })
+    // Sets the csrftoken
+    csrftoken = getCookie('csrftoken')
 
-    // Show the subEvent modal
+    // Button used to create the event
+    $("#create-event-button").click(sendRequestToCreateEvent);
+
+    // Button to show the sub-event modal
     $("#add-subEvent-button").click(function (e) {
+        e.stopPropagation();
         $("#subEvent-modal").modal('show')
     });
 
+    // Button used to show the category modal
     $("#add-category-button").click(function (e) {
+        e.stopPropagation();
         $("#category-modal").modal('show')
     });
 
-    // add listener to all the from event form fields
-    $(".form-input-create-event").blur(validateForm);
+    // add listener to all the event form fields
+    $(".form-input-create-event").blur(validateInputOnBlur);
 
-        // add listener to all the subEvent from fields
-    $(".form-input-create-subEvent").blur(validateForm);
+    // add listener to all the subEvent form fields
+    $(".form-input-create-subEvent").blur(validateInputOnBlur);
 
-    $("#submit-sub-event-form").click((e) => {
-        e.preventDefault()
-        let subEvent = {};
-        $('#subEvent-data-form *').filter(':input').each((e, input) => {
-            subEvent[input.name] = input.value;
-        });
-        subEvent.id = idCounter;
+    // add listener to all the subEvent form fields
+    $(".form-input-create-category").blur(validateInputOnBlur);
+
+    // OnClick for submit subEvent button
+    $("#submit-sub-event-form").click(validateAndCreateSubEvent);
+
+    // onClick for submit category button
+    $("#submit-category-form").click(validateAndCreateCategory);
+
+    // If the user press the close button on a modal, delete its input values
+    $(".close-modal").click((e) => {
+        const event = e || window.event
+        closeModal($(event.target).closest(".modal-content").find("form *"));
+    })
+
+    // Used to change the arrow on collapsible elements
+    $(".card-header").click(updateArrow);
+
+    // If the user press the x in the right corner, delete the modals content
+    $(".close").click((e) => {
+        const event = e || window.event
+        closeModal($(event.target).closest(".modal-content").find("form *"));
+
+    })
+
+    // If the user presses outside the modal, delete is input content
+    $(".modal").click((e) => {
+        const event = e || window.event
+        if (!$(event.target).closest(".modal-content").length) {
+            closeModal($(event.target).find("form *"));
+        }
+    })
 
 
-        $("#subEvent-modal").modal('hide')
-        addSubEvent(subEvent)
-        subEvents.push(subEvent)
-    });
+});
 
-    $("#submit-category-form").click((e) => {
-        e.preventDefault()
-        $('#category-data-form *').filter(':input').each((e, input) => {
-            if(!input.checkValidity()) {
-                //nada
+let sendRequestToCreateEvent = (e) => {
+    e.preventDefault()
+
+    let form = $('#create-event-form *')
+    let event = validateForm(form)
+    if (event) {
+        // Sends request to server to create event
+        event.csrfmiddlewaretoken = csrftoken;
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/events/add-event',
+            data: event,
+            success: (data) => {
+                createCategories(data.id)
+            },
+            error: (data) => {
+                //show error alert
+                printMessage('error', data.responseJSON.message)
             }
         })
+    }
+}
+
+
+/**
+ * Updates the arrows in the collapsible menus
+ * @param e
+ */
+let updateArrow = (e) => {
+    // set event to e or window.event in order to support most browsers
+    const event = e || window.event;
+
+    // Find the container and the img tag
+    const collapseHeader = $(event.target).closest(".collapse-header");
+    const img = collapseHeader.find('img').first();
+
+    // Set the arrow based on the aria-expanded attribute
+    if (collapseHeader.attr("aria-expanded") === "false") {
+        img.attr("src", "/static/img/chevron-top.svg");
+    }
+    else {
+        img.attr("src", "/static/img/chevron-bottom.svg");
+    }
+}
+
+/**
+ * Takes in the modal form, and deletes its content
+ * The function also replaces all the modal buttons to Create rather then save.
+ * @param formElement
+ */
+function closeModal(formElement) {
+    formElement.filter(':input').each((e, input) => {
+        input.value = ""
     })
-
-
-
-    $(".testing").each((e, container) => {
-        container.addEventListener("dragover", dragover)
-        container.addEventListener("dragenter", dragenter)
-        container.addEventListener("drop", drop)
-    })
-
-
-    function dragover(e) {
-        e.preventDefault()
+    // if the last state was edit( that is the editContainer is not null), change the button text
+    if (editContainer) {
+        $('#submit-category-form').text(gettext("Create category"))
+        $('#submit-sub-event-form').text(gettext("Create sub-event"))
+        editContainer = null;
     }
+}
 
-    function dragenter(e) {
-        e.preventDefault()
-    }
 
-    function drop() {
-        this.append($("#subEvent-element")[0])
+/**
+ * Function used to add a new category to the categories list.
+ * If the category already exists this function will also update it
+ * @param e
+ */
+let validateAndCreateCategory = (e) => {
+    e.preventDefault()
+
+    // Find the form
+    const form = $('#category-data-form *');
+
+    // Validate the form inputs
+    let category = validateForm(form);
+    if (category) {
+        // Check if the user is editing or creating a new category
+        if (editContainer) {
+            // Get the container id, that is the category id
+            const id = editContainer.find('.drag-container').attr('data-id')
+
+            category.id = id;
+            editContainer.find('.category-title').text(lang === 'nb' ? category.name_nb : category.name_en)
+
+            // Find and replace the old category with the new one
+            categories = categories.map((item) => {
+                return item.id == id ? category : item
+            })
+
+            // Reset the exit settings
+            editContainer = null;
+            $('#submit-category-form').text(gettext("Create category"))
+        } else {
+            // set the category id
+            category.id = idCounterCategory;
+
+            // Show the new category
+            showCategory(category)
+
+            // Increment the id counter
+            idCounterCategory++;
+
+            // Push the new category
+            categories.push(category)
+        }
+        // Close the category modal
+        $("#category-modal").modal('hide')
     }
-})
-;
+}
+
+/**
+ * Function used to add a new subEvent to the subEvents list.
+ * If the subEvent already exists this function will also update it
+ * @param e
+ */
+let validateAndCreateSubEvent = (e) => {
+    e.preventDefault()
+    // Get the from and all its elements, thus the *
+    form = $('#subEvent-data-form *')
+    // Validate the form
+    let subEvent = validateForm(form)
+    if (subEvent) {
+
+        // Check if the user is editing or creating a new sub-event
+        if (editContainer) {
+            // Get the container id, that is the sub-event id
+            const id = editContainer.attr('data-id')
+
+            // since we created a new subEvent from the form, we need to set the sub-event id equal to the old
+            subEvent.id = id;
+
+            // Updates the name based on the current language
+            editContainer.find('.subEvent-title').text(lang === 'nb' ? subEvent.name_nb : subEvent.name_en)
+            // Updates the date
+            editContainer.find('.subEvent-date').text(subEvent.start_date + " - " + subEvent.end_date)
+
+            // Find the subEvent with the same id, and replace it with the new one
+            subEvents = subEvents.map((item) => {
+                if(item.id == id) {
+                    subEvent.category = item.category
+                    return subEvent
+                }
+                return item
+            })
+
+            // Reset modal to create
+            editContainer = null
+            $('#submit-sub-event-form').text(gettext("Create sub-event"))
+        } else {
+            // Give the subEvent its unique id
+            subEvent.id = idCounterSubEvent;
+
+            // increment the idCounter
+            idCounterSubEvent++;
+
+            // Sets is category to default
+            subEvent.category = 0;
+
+            // Create the visible subEvent element
+            showSubEvent(subEvent)
+
+            // Add the subEvent to the list of subEvents
+            subEvents.push(subEvent)
+        }
+        // Close the subEvent modal
+        $("#subEvent-modal").modal('hide')
+    }
+}
+
+/**
+ * Sends a ajax request to the server, in order to create the categories
+ * @param eventID
+ * @returns {Promise.<void>}
+ */
+async function createCategories(eventID) {
+    categories = await Promise.all(categories.map(async (category) => {
+        category.csrfmiddlewaretoken = csrftoken
+        category.event = eventID
+        try {
+            let data = await $.ajax({
+                type: 'POST',
+                url: '/ajax/events/create-category',
+                data: category
+            })
+            category.databaseCategoryId = data.id;
+            return category
+
+        } catch (error) {
+            //show error alert
+            printMessage('error', data.responseJSON.message)
+            return category
+        }
+    }))
+    createSubEvents(eventID)
+}
+
+/**
+ * Sends a ajax request to the sever in order to create the subEvents
+ * @param eventID
+ * @returns {Promise.<void>}
+ */
+async function createSubEvents(eventID) {
+    let subEventsCreated = await Promise.all(subEvents.map(async (subEvent) => {
+        let category = categories.filter((category) => category.id == subEvent.category)
+        subEvent.category = category.length ? category[0].databaseCategoryId : ""
+        subEvent.csrfmiddlewaretoken = csrftoken
+        subEvent.event = eventID
+        try {
+            let data = await $.ajax({
+                type: 'POST',
+                url: '/ajax/events/create-sub-event',
+                data: subEvent,
+            })
+            return subEvent
+        } catch (error) {
+            //show error alert
+            printMessage('error', data.responseJSON.message)
+            return subEvent
+        }
+    }))
+    if (subEventsCreated) {
+        window.location.replace("/events/" + eventID + "/");
+    }
+}
 
 /**
  * Validate a given input in a form
  * @param e
  */
-let validateForm = (e) => {
+let validateInputOnBlur = (e) => {
     // Get the button that was pressed
     const event = e || window.event
-    const button = event.target
+    validateInput(event.target)
+}
 
+function validateForm(formElements) {
+    let valid = true
+    formElements.filter(':input').each((e, input) => {
+        if (!validateInput(input)) {
+            valid = false;
+        }
+    })
+    if (valid) {
+        let element = {};
+        formElements.filter(':input').each((e, input) => {
+            if (input.name != "csrfmiddlewaretoken") {
+                element[input.name] = input.value;
+                input.value = "";
+            }
+        });
+        return element
+    }
+    return null
+}
+
+/**
+ * Validates a given input field
+ * @param input
+ * @returns {boolean}
+ */
+function validateInput(input) {
     // Use to see if field is displaying error
-    const dispError = $(button).next().length === 0;
+    const dispError = $(input).next().length === 0;
 
     // If field is of type datetime-local
-    if ($(button).attr("type") === 'datetime-local') {
-        validateDate(button, dispError)
+    if ($(input).attr("type") === 'datetime-local' && $(input).attr("required")) {
+        return validateDate(input, dispError)
     }
     // if filed is not valid, and error is currently not displayed. Display error
-    else if (!button.checkValidity()) {
+    else if (!input.checkValidity()) {
         if (dispError) {
-            $(button).after(getAlert(gettext('invalid input')));
+            $(input).after(getAlert(gettext('invalid input')));
         }
     } else {
         // If filed is valid, remove error
-        $(button).next().remove()
+        $(input).next(".error-input").remove()
+        return true;
     }
+    return false;
 }
 
 /**
@@ -139,7 +377,6 @@ function getAlert(text) {
         '<p>' + text + '</p> ' +
         '</div>';
 }
-
 
 /**
  * Validates a date inpur
@@ -174,33 +411,234 @@ function validateDate(button, dispError) {
     } else {
         // remove display error
         $(button).next().remove()
+        return true;
     }
+    return false;
 }
 
+function showSubEvent(subEvent) {
+    // Find the subEvent container
+    let container = $("#subEvents")
 
-function addSubEvent(subEvent) {
-    $("#subEvents").append(
-        '<div class="subEvent-element" class="card" draggable="true">' +
-        '<div class="sub-event-card-container card-body">' +
-        '    <div class="sub-event-name"><b>' + subEvent.name_nb + '</b></div>' +
+    // If the container contains a example text remove it
+    container.find('p').remove()
+
+    // find the right title
+    const title = lang==='nb' ? subEvent.name_nb : subEvent.name_en
+
+    // Append the container with the sub-event element
+    container.append(
+        '<div id="subEvent-' + subEvent.id + '" class="subEvent-element card" data-id="' + subEvent.id + '" ' +
+        'draggable="true" ondragstart="drag(event)">' +
+        ' <div class="sub-event-card-container card-body">' +
+        '    <div class="sub-event-name"><b class="subEvent-title">' + title + '</b></div>' +
         '        <div class="center-content sub-event-dateime">' +
-        '             <i>' + subEvent.start_date + ' - ' + subEvent.end_date + '</i>' +
+        '             <i class="subEvent-date">' + formatDate(subEvent.start_date) + ' - ' + formatDate(subEvent.end_date) + '</i>' +
         '        </div>\n' +
         '         <div class="sub-event-button-container">' +
-        '          <div class="delete-sub-event-button center-content" data-id="' + idCounter + '">' +
-        '             <img class="img-cross" src="/static/img/circle-x.svg" alt="exit"></div>' +
-        '         </div>' +
-        '        </div>' + '</div>');
+        '  <div class="btn-group" role="group" style="float:right;">' +
+        '    <button type="button" class="center-content btn btn-warning edit-subEvent"><img class="img-cross" src="/static/img/pencil.svg" alt="edit"></button>' +
+        '    <button type="button" class="center-content btn btn-danger delete-sub-event"><img class="img-cross" src="/static/img/x.svg" alt="exit"></button></div>' +
+        '   </div>' +
+        ' </div>' +
+        '</div>');
 
-    idCounter++;
 
-
-    $(".delete-sub-event-button").click((e) => {
+    // onClick for the delete SubEvent button
+    $(".delete-sub-event").click((e) => {
         const event = e || window.event
-        const value = $(event.target).closest(".delete-sub-event-button").attr('data-id')
-        subEvents = subEvents.filter(item => item.id != value)
+
+        // Find the id
+        const id = $(event.target).closest(".subEvent-element").attr('data-id')
+
+        // Remove the given element from the list
+        subEvents = subEvents.filter(item => item.id != id)
+
+        // Remove the element
         $(event.target).closest(".subEvent-element").remove()
+
+        // iF the container contains no elements, put the help text back
+        if (!container.find('div').length) {
+            container.append(getContainerPlaceholder());
+        }
     })
+
+    //onClick for edit subevent
+    $(".edit-subEvent").click((e) => {
+        const event = e || window.event
+
+        // Set the edit container
+        editContainer = $(event.target).closest(".subEvent-element")
+        const id = editContainer.attr('data-id')
+
+        // Find the given subevent
+        subEvent = subEvents.filter(item => item.id == id)
+
+        // Set the form values
+        $('#subEvent-data-form *').filter(':input').each((e, input) => {
+            const value = subEvent[0][input.name]
+            input.value = value;
+        })
+
+        // Update the button and show the form
+        $('#submit-sub-event-form').text(gettext("Save"))
+        $("#subEvent-modal").modal('show')
+    })
+}
+
+function showCategory(category) {
+    // Find the container to be appended
+    let container = $("#subEvents")
+
+    // Remove any help text that may be set
+    container.find('p').remove()
+
+    // find the right title
+    const title = lang==='nb' ? category.name_nb : category.name_en
+
+    // Add the category
+    container.append(
+        '<div class="category-card collapse show" aria-labelledby="headingOne" >' +
+        '   <div class="card-header category-header">' +
+        '       <h5 class="category-title">' + title + '</h5>' +
+        '       <div class="button-container-right">' +
+        '          <div class="btn-group" role="group">' +
+        '             <button type="button" class="center-content btn btn-warning edit-category">' +
+        '                   <img class="img-cross" src="/static/img/pencil.svg" alt="edit"></button>' +
+        '             <button type="button" class="center-content btn btn-danger delete-category">' +
+        '                <img class="img-cross" src="/static/img/x.svg" alt="exit"></button>' +
+        '           </div>' +
+        '       </div>' +
+        '   </div>' +
+        '   <div class="drag-container card-body" data-id="' + category.id + '" ondrop="drop(event)"' +
+        '       ondragover="allowDrop(event)" style="text-align: center; border: lightgrey solid 1px;">' +
+        '       <div class="drop-example" ><i> Drop sub-event here </i>' +
+        '       </div>' +
+        '   </div>' +
+        '</div>')
+
+
+    // onClick for delete category
+    $(".delete-category").click((e) => {
+        const event = e || window.event
+
+        // Find the category id
+        const id = $(event.target).closest(".category-card").find('.drag-container').attr('data-id')
+
+        // Remove the category with the given id
+        categories = categories.filter(item => item.id != id)
+
+        // Delete all subEvents in the category
+        subEvents = subEvents.filter((subEvent) => subEvent.category != id)
+
+        // Remove the visible category
+        $(event.target).closest(".category-card").remove()
+
+        // IF the element no longer contains any elements, show the help text
+        if (!container.find('div').length) {
+            container.append(getContainerPlaceholder())
+        }
+    })
+
+    // onClick for edit category
+    $(".edit-category").click((e) => {
+        const event = e || window.event
+
+        // Set the edit container
+        editContainer = $(event.target).closest(".category-card")
+
+        // Find the category id
+        const id = editContainer.find('.drag-container').attr('data-id')
+        // Find the category with the given id
+        category = categories.filter(item => item.id == id)
+
+        // Place the values in the form
+        $('#category-data-form *').filter(':input').each((e, input) => {
+            const value = category[0][input.name]
+            input.value = value;
+        })
+
+        // Uodate the create button and show the form
+        $('#submit-category-form').text(gettext("Save"))
+        $("#category-modal").modal('show')
+    })
+}
+
+/**
+ * Returnes the placeholder used in the subEvent container
+ * @returns {string}
+ */
+function getContainerPlaceholder() {
+    return '<p class="placeholder-container-text">' + gettext('Create a category or a sub-event to get started') + '</p>'
+}
+
+function formatDate(dateString) {
+    return dateString.replace("T"," ")
+}
+
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+/**
+ * On subEvent drag
+ * @param ev
+ */
+function drag(ev) {
+    ev.dataTransfer.setData("sub-event-id", ev.target.id);
+}
+
+/**
+ * On subEvent drop
+ * @param ev
+ */
+function drop(ev) {
+    ev.stopPropagation()
+    ev.preventDefault();
+
+    const subEventID = ev.dataTransfer.getData("sub-event-id");
+    const container = $(ev.target).closest('.drag-container');
+    const subEventElement = $(("#" + subEventID))
+
+    // Append the subEvent to the new container
+    container.append(subEventElement);
+
+    // Get the subEvent id
+    const dataIDSubEvent = subEventElement.attr("data-id")
+
+    // Remove drop-example
+    subEventElement.closest('.drag-container').find('.drop-example').first().remove();
+
+    console.log(container.attr("data-id"))
+    //Update subEvents, with the new categoryID
+    subEvents = subEvents.map((element) => {
+        if (element.id == dataIDSubEvent) {
+            element.category = container.attr("data-id");
+        }
+        return element;
+    })
+    console.log(subEvents)
+}
+
+/**
+ * from django website https://docs.djangoproject.com/en/2.0/ref/csrf/
+ * @param name
+ * @returns {*}
+ */
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        let cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
 
 /**
@@ -233,5 +671,3 @@ function printMessage(msgType, msg) {
         //sets the amount of ms before the alert is closed
     }, 2000)
 }
-
-
