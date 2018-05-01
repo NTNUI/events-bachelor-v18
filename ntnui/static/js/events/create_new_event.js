@@ -31,7 +31,6 @@ $(() => {
     })
 
     $("#add-subEvent-button").click(function (e) {
-        console.log(subEvents)
         e.stopPropagation();
         $("#subEvent-modal").modal('show')
     });
@@ -147,7 +146,7 @@ $(() => {
 });
 
 function createEvent() {
-    form = $('#create-event-form *')
+    let form = $('#create-event-form *')
     let event = validateForm(form)
     if (event) {
         // Sends request to server to create event
@@ -216,10 +215,7 @@ async function createSubEvents(eventID) {
     }
 }
 
-/**
- * Checks each input in the set of elements
- * @param form
- */
+
 function validateForm(formElements) {
     let valid = true
     formElements.filter(':input').each((e, input) => {
@@ -272,7 +268,7 @@ function validateInput(input) {
         }
     } else {
         // If filed is valid, remove error
-        $(input).next().remove()
+        $(input).next(".error-input").remove()
         return true;
     }
     return false;
@@ -466,18 +462,22 @@ function drag(ev) {
 }
 
 function drop(ev) {
+    ev.stopPropagation()
     ev.preventDefault();
+
     const data = ev.dataTransfer.getData("text");
     const container = $(ev.target).closest('.drag-container');
     const subEventElement = $(("#" + data))
     container.append(subEventElement);
-    const dataIDSubEvent = subEventElement.attr("data-id")
-    subEventElement.closest('.drag-container').find('.drop-example').first().remove();
 
-    subEvents.map((element) => {
+    const dataIDSubEvent = subEventElement.attr("data-id")
+
+    subEventElement.closest('.drag-container').find('.drop-example').first().remove();
+    subEvents = subEvents.map((element) => {
         if (element.id == dataIDSubEvent) {
             element.category = container.attr("data-id");
         }
+        return element;
     })
 }
 
