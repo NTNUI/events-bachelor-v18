@@ -609,7 +609,6 @@ function drop(ev) {
     // Remove drop-example
     subEventElement.closest('.drag-container').find('.drop-example').first().remove();
 
-    console.log(container.attr("data-id"))
     //Update subEvents, with the new categoryID
     subEvents = subEvents.map((element) => {
         if (element.id == dataIDSubEvent) {
@@ -617,7 +616,6 @@ function drop(ev) {
         }
         return element;
     })
-    console.log(subEvents)
 }
 
 /**
