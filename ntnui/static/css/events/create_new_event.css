@@ -66,7 +66,7 @@ h1 {
 
 }
 
-.collapse-header {
+.event-collapse-header {
     height: 4rem;
 }
 
@@ -175,8 +175,22 @@ h1 {
     justify-content: center;
 }
 
+#create-event-button-container {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+.placeholder-container-text {
+    text-align: center;
+    padding:2rem;"
+}
 
 
+/*
+    Used to make the page responsive
+ */
 @media only screen and (max-width: 767px) {
     .card-header-category {
         height: auto;
@@ -186,7 +200,7 @@ h1 {
         align-items: center;
     }
 
-    .collapse-header {
+    .event-collapse-header {
         height: auto;
         min-height: 4rem;
     }

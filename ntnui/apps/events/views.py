@@ -35,7 +35,6 @@ def create_category_request(request):
 
 def create_sub_event_request(request):
     if request.POST:
-
         print(request.POST)
         name_nb = request.POST.get("name_nb")
         name_en = request.POST.get("name_en")
@@ -56,9 +55,8 @@ def create_sub_event_request(request):
         if registration_end_date == "":
             registration_end_date = None;
 
-
         category_id =  request.POST.get("category", "")
-        print(request.POST)
+
         if category_id == "":
             event_id = int(request.POST.get("event"))
             if not Category.objects.filter(event__id=event_id, categorydescription__name='default').exists():
@@ -227,9 +225,7 @@ def delete_subevent(request):
             subeventid = (data['subeventid'])
             subevent = SubEvent.objects.get(id=int(subeventid))
             subeventdescription_no = SubEventDescription.objects.get(sub_event=subevent, language='nb')
-            print(subeventdescription_no.name)
             subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
-            print(subeventdescription_en.name)
             # subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
             subevent.delete()
             subeventdescription_no.delete()
@@ -551,7 +547,6 @@ def payment_for_event(request, id):
 
 
 def refund_event(request):
-    print(request.POST.get('id'))
     if request.POST:
         try:
             id = request.POST.get('id')
