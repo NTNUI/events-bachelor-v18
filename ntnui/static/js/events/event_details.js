@@ -85,62 +85,47 @@ $(() => {
             });
         }
 
-    $(".delete-subevent-button").click(() =>{
-        button = event.target
-        deleteEvent()
-    })
-
-    function deleteEvent() {
-        $.ajax({
-            type: 'POST',
-            data: {
-                csrfmiddlewaretoken: csrftoken,
-                subeventid: button.value,
-            },
-            url: '/ajax/events/delete-subevent',
-            success: (data) => {
-                button.innerHTML = gettext("Deleted")
-                button.setAttribute("class", "btn btn-alert")
-
-
-            }, error: (data) => {
-                printMessage('Error', data.responseJSON.message)
-
-            }
+        $(".delete-subevent-button").click(() => {
+            button = event.target
+            deleteEvent()
         })
-    }
-    /**
-     * Sends a attend subevet request
-     */
-    $(".join-subevent-button").click((e) => {
-        event = e || window.event
-        button = event.target || event.srcElement
 
-        // IF the first sign is a - we want to remove attending event
-        if (button.value[0] === "-") {
-            url = '/ajax/events/remove-attend-sub-event'
-            buttonText = gettext('attend event')
-            openModal("removeAttendanceSubEvent")
-        } else {
-            url = '/ajax/events/attend-sub-event'
-            attendEvent()
+        function deleteEvent() {
+            $.ajax({
+                type: 'POST',
+                data: {
+                    csrfmiddlewaretoken: csrftoken,
+                    subeventid: button.value,
+                },
+                url: '/ajax/events/delete-subevent',
+                success: (data) => {
+                    button.innerHTML = gettext("Deleted")
+                    button.setAttribute("class", "btn btn-alert")
+
+
+                }, error: (data) => {
+                    printMessage('Error', data.responseJSON.message)
+
+                }
+            })
         }
-    })
-    /**
-     * Sends a attend event request to the server
-     */
-    $("#attend-event-button").click((e) => {
-        event = e || window.event
-        button = event.target || event.srcElement
-        if (button.value[0] === "-") {
-            buttonText = gettext('attend event')
-            if ($("#price").length === 0) {
-                url = '/ajax/events/remove-attend-event'
+
+        /**
+         * Sends a attend subevet request
+         */
+        $(".join-subevent-button").click((e) => {
+            const event = e || window.event
+            button = event.target
+            // IF the first sign is a - we want to remove attending event
+            if (button.value[0] === "-") {
+                url = '/ajax/events/user-unattend-sub-event'
+                buttonText = gettext('attend event')
+                openModal("removeAttendanceSubEvent")
             } else {
                 url = '/ajax/events/' + button.value + '/user-attend-sub-event'
                 attendEvent()
             }
-        }})
+        })
 
         /**
          * Sends a attend event request to the server
