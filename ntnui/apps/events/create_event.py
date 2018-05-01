@@ -3,7 +3,8 @@ from django.utils.translation import gettext_lazy as _
 from groups.models import SportsGroup
 from hs.models import MainBoardMembership
 
-from events.models import Event, EventDescription
+from events.models.event import Event, EventDescription
+
 
 
 def create_event(request):
