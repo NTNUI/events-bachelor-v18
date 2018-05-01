@@ -150,7 +150,7 @@ function displayEvent(event) {
                     ' </h6>' +
                     '<b>' + gettext('Place') + ': ' + '</b>' + event.place + '</br>' +
                     '<b>' + gettext('Date') +': ' + '</b> ' + printeble_date +
-                '</br> <p class="card-text"> <b> ' + gettext('Hosted by ') + ': ' + '</b> ' +
+                '</br> <p> <b> ' + gettext('Hosted by ') + ': ' + '</b> ' +
                     hosts +
                 "</p>" +
                 "</div>" +

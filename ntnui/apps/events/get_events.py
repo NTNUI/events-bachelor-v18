@@ -56,7 +56,7 @@ def get_filtered_events(request, attending):
 
         attending_events=[]
         for event in events:
-            if event.attends(request.user):
+            if event.is_user_enrolled(request.user):
                 attending_events.append(event)
 
         return attending_events
