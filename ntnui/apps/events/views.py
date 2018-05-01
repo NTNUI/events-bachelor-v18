@@ -59,12 +59,13 @@ def create_sub_event_request(request):
 
         if category_id == "":
             event_id = int(request.POST.get("event"))
-            if not Category.objects.filter(event__id=event_id, categorydescription__name='default').exists():
+            print(Category.objects.filter(event__id=event_id, categorydescription__name='Non categorized').exists())
+            if not Category.objects.filter(event__id=event_id, categorydescription__name='Non categorized').exists():
                 category = Category.objects.create(event=Event.objects.get(id=event_id))
-                CategoryDescription.objects.create(category=category, name="default", language='nb')
-                CategoryDescription.objects.create(category=category, name="default", language='en')
+                CategoryDescription.objects.create(category=category, name="Ikke kategorisert", language='nb')
+                CategoryDescription.objects.create(category=category, name="Non categorized", language='en')
             else:
-                category = Category.objects.filter(event__id=event_id, categorydescription__name='default')[0]
+                category = Category.objects.filter(event__id=event_id, categorydescription__name='Non categorized')[0]
         else:
             category = Category.objects.get(id=category_id)
 

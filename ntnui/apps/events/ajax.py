@@ -1,5 +1,4 @@
 from django.conf.urls import url
-from . import views
 from .views import (
     create_event_request,
     add_attendance_to_event,

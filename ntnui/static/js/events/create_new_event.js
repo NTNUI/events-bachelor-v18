@@ -433,7 +433,7 @@ function showSubEvent(subEvent) {
         ' <div class="sub-event-card-container card-body">' +
         '    <div class="sub-event-name"><b class="subEvent-title">' + title + '</b></div>' +
         '        <div class="center-content sub-event-dateime">' +
-        '             <i class="subEvent-date">' + subEvent.start_date + ' - ' + subEvent.end_date + '</i>' +
+        '             <i class="subEvent-date">' + formatDate(subEvent.start_date) + ' - ' + formatDate(subEvent.end_date) + '</i>' +
         '        </div>\n' +
         '         <div class="sub-event-button-container">' +
         '  <div class="btn-group" role="group" style="float:right;">' +
@@ -570,6 +570,10 @@ function showCategory(category) {
  */
 function getContainerPlaceholder() {
     return '<p class="placeholder-container-text">' + gettext('Create a category or a sub-event to get started') + '</p>'
+}
+
+function formatDate(dateString) {
+    return dateString.replace("T"," ")
 }
 
 function allowDrop(ev) {
