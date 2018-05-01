@@ -15,6 +15,7 @@ from . import create_event, get_events
 from events.models import Event, EventDescription, EventRegistration, Category, CategoryDescription, SubEvent, \
     SubEventRegistration, SubEventDescription
 from django.core.mail import send_mail
+#from events.ntnui.apps.accounts.models import User
 
 
 def create_category_request(request):
@@ -134,6 +135,8 @@ def get_event_details(request, id):
             # add the category and map each sub_event to a dic
             sub_event_list.append((categories[i], list(map(lambda item: get_sub_event_dic(item, request), sub_event))))
 
+    number_of_subevents=len(sub_event_list)
+
     # Checks if the user is sign in.
     if request.user.is_authenticated:
         attends = event.attends(request.user)
@@ -187,12 +190,29 @@ def get_event_details(request, id):
     context = {
         "event": event,
         "sub_event_list": sub_event_list,
+        'number_of_subevents': number_of_subevents,
         'can_create_event': can_create_event,
         'can_edit_and_delete_event': can_edit_and_delete_event,
         "STRIPE_KEY": settings.STRIPE_PUBLIC_KEY
     }
 
     return render(request, 'events/event_details.html', context)
+
+def get_attending_events_page(request):
+
+    # Used to find out if the create-event button shall be rendered or not
+    if request.user.is_authenticated:
+        can_create_event = user_can_create_event(request.user)
+    else:
+        can_create_event = False
+
+    # Get groups that are hosting events
+    groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
+
+    return render(request, 'events/events_attending_page.html', {
+        'can_create_event': can_create_event,
+        'groups': groups,
+    })
 
 
 def delete_event(request):
@@ -219,6 +239,8 @@ def get_delete_event(request, id):
     return render(request, 'events/delete_event_page.html')
 
 
+
+#the commented lines are to be uncommented when created subevents have a subeventregistration by default
 def delete_subevent(request):
     try:
         if request.method == 'POST':
@@ -227,6 +249,7 @@ def delete_subevent(request):
             subevent = SubEvent.objects.get(id=int(subeventid))
             subeventdescription_no = SubEventDescription.objects.get(sub_event=subevent, language='nb')
             subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
+            #subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
             # subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
             subevent.delete()
             subeventdescription_no.delete()
@@ -320,7 +343,69 @@ def edit_event(request):
 
 
 def get_events_request(request):
-    return get_events.get_events(request)
+
+    return get_events.get_events(request, False)
+
+def get_attending_events_request(request):
+
+    return get_events.get_events(request, True)
+
+
+def get_event_attendees_page(request, id, numberofsubevents):
+
+    event = Event.objects.get(id=int(id))
+    eventname = event.name()
+
+    if int(numberofsubevents)== 0:
+        subeventsexist=False
+        eventregistrations = EventRegistration.objects.filter(event=event)
+
+        attendees = []
+        for registration in eventregistrations:
+            user = registration.attendee
+            attendees.append(user.get_full_name())
+
+        attendees.sort()
+
+        context = {
+            'subeventsexist': subeventsexist,
+            'eventname': eventname,
+            'attendees_list': attendees,
+        }
+
+    else:
+        subeventsexist=True
+        eventcategories=Category.objects.filter(event=event)
+
+        subeventslist=[]
+        for category in eventcategories:
+            subevents=SubEvent.objects.filter(category=category)
+            for subevent in subevents:
+                subeventslist.append(subevent)
+
+        subevents_attendees_and_names_list=[]
+
+        for subevent in subeventslist:
+            attendees=[]
+            users=[]
+            subeventregistrations = SubEventRegistration.objects.filter(sub_event=subevent)
+            for registration in subeventregistrations:
+                user = registration.attendee
+                if user not in users:
+                    users.append(user)
+                    user_full_name = user.get_full_name()
+                    attendees.append(user_full_name)
+
+            subevents_attendees_and_names_list.append((attendees, subevent.name()))
+
+        context = {
+                'subeventsexist': subeventsexist,
+                'eventname': eventname,
+                'subevents_attendees_and_name_list': subevents_attendees_and_names_list,
+            }
+
+
+    return render(request, 'events/event_attendees_page.html', context)
 
 
 @login_required

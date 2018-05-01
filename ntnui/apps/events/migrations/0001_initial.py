@@ -189,3 +189,4 @@ class Migration(migrations.Migration):
             unique_together=set([('event', 'attendee')]),
         ),
     ]
+

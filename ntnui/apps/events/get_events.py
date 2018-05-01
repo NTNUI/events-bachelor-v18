@@ -2,17 +2,21 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
 from django.utils import translation
+from datetime import datetime
 
 from events.models import Event
 
 
-def get_events(request):
+def get_events(request, attending):
     """Returnes a set of events filter after the parms in the request"""
     if request.method == "GET":
         # gets the page from the request, or returns one if page is not given as a parm in the url
         page = request.GET.get('page', 1)
-        events = get_filtered_events(request)
 
+        if not attending:
+            events = get_filtered_events(request, False)
+        else:
+            events = get_filtered_events(request, True)
         # paginate the events, with 10 elements on every page
         p = Paginator(events, 10)
 
@@ -32,34 +36,60 @@ def get_events(request):
     }, status=404)
 
 
-def get_filtered_events(request):
+def get_filtered_events(request, attending):
     """Returnes all the events that fits the order_by, search and filter_by"""
-
     # Get filters from parms
     sort_by = request.GET.get('sort-by', "")
     search = request.GET.get('search', "")
     filter_host = request.GET.get('filter-host', "")
 
-    # Filter the events
-    events = get_filtered_on_search_events(search)
-    events = get_filtered_on_host_events(filter_host, events)
-    events = get_sorted_events(sort_by, events)
+    if not attending:
+        events = get_filtered_on_search_events(search, False)
+        events = get_filtered_on_host_events(filter_host, events)
+        events = get_sorted_events(sort_by, events)
 
-    # return the filtered events
-    return events
+        return events
 
-
-def get_filtered_on_search_events(search):
-    # Checks if search have a value
-    if search is not None and search != '':
-        # serach for the word in descriptions and name
-        return Event.objects.filter(Q(eventdescription__language=translation.get_language()) &
-                                    (Q(eventdescription__name__icontains=search) |
-                                     Q(eventdescription__description_text__icontains=search) |
-                                     Q(tags__name__icontains=search)))
     else:
-        # if not search return all event objects
-        return Event.objects.filter(eventdescription__language=translation.get_language())
+        events = get_filtered_on_search_events(search, True)
+        events = get_filtered_on_host_events(filter_host, events)
+        events = get_sorted_events(sort_by, events)
+
+        attending_events=[]
+        for event in events:
+            if event.attends(request.user):
+                attending_events.append(event)
+
+        return attending_events
+
+
+def get_filtered_on_search_events(search, attending):
+    if not attending:
+        # Checks if search have a value
+        if search is not None and search != '':
+            # serach for the word in descriptions and name
+
+            return Event.objects.filter(Q(eventdescription__language=translation.get_language()) &
+                                        (Q(eventdescription__name__icontains=search) |
+                                         Q(eventdescription__description_text__icontains=search) |
+                                         Q(tags__name__icontains=search)))
+        else:
+            # if not search return all event objects
+            return Event.objects.filter(eventdescription__language=translation.get_language())
+
+    else:
+        today = datetime.now()
+        # Checks if search have a value
+        if search is not None and search != '':
+            # serach for the word in descriptions and name
+
+            return Event.objects.filter(Q(end_date__gte=today) & Q(eventdescription__language=translation.get_language()) &
+                                        (Q(eventdescription__name__icontains=search) |
+                                         Q(eventdescription__description_text__icontains=search) |
+                                         Q(tags__name__icontains=search)))
+        else:
+            # if not search return all event objects
+            return Event.objects.filter(Q(end_date__gte=today) & Q(eventdescription__language=translation.get_language()))
 
 
 def get_filtered_on_host_events(filter_host, events):

@@ -1,4 +1,4 @@
-const GET_URL = "/ajax/events/get-events";
+const GET_URL = "/ajax/events/get-attending-events";
 let pageNr;
 let pageCount;
 let searchParams = new URLSearchParams(window.location.search);

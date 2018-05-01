@@ -169,6 +169,14 @@
                                                     &nbsp;{% trans 'Delete event' %}
                                                 </div>
                                             </button>
+                                            <a id="event-attendees-button" href="{% url 'event_attendees' event.id number_of_subevents %}">
+                                                <button type="button" class="buttons btn btn-success">
+                                                    <div class="button-div">
+                                                        <!--<img src="{#% static 'img/pencil.svg' %#}"/>-->
+                                                        &nbsp;{% trans 'See attendees' %}
+                                                    </div>
+                                                </button>
+                                            </a>
                                         </div>
                                         <div id="confirm-delete">
                                             <a id="confirm-button" href="{% url 'get_delete_event' event.id %}">
@@ -189,8 +197,20 @@
         {% endif %}
 
         <div class="events-section">
-            <div class="category-card-container">
 
+            <div class="category-card-container">
+                {% if sub_event_list and can_edit_and_delete_event %}
+                    <div class="card-header-category card-header" role="tab">
+                        <a id="event-attendees-button" href="{% url 'event_attendees' event.id number_of_subevents %}">
+                            <button type="button" class="buttons btn btn-success">
+                                <div class="button-div">
+                                    <!--<img src="{#% static 'img/pencil.svg' %#}"/>-->
+                                    &nbsp;{% trans 'See attendees' %}
+                                </div>
+                            </button>
+                        </a>
+                    </div>
+                {% endif %}
                 <div class="category-card" id="accordion" role="tablist" aria-multiselectable="true">
                     {% for category, sub_events in sub_event_list %}
 
