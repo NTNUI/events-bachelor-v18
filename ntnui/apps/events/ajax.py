@@ -28,6 +28,7 @@ from .views import (
     get_events_request,
     edit_event_request,
     get_events,
+    get_event,
     delete_subevent,
     get_attending_events_request,
     create_category_request,
@@ -36,15 +37,16 @@ from .views import (
 
 urlpatterns = [
     url(r'^add-event$', create_event_request, name='create_event'),
+    url(r'^get-events', get_events_request, name='get_events'),
+
     url(r'^create-category', create_category_request, name='create_category'),
     url(r'^create-sub-event', create_sub_event_request, name='create_sub_event'),
-    url(r'^get-events', get_events_request, name='get_events'),
     url(r'^get-attending-events', get_attending_events_request, name='get_attending_events'),
 
     url(r'^edit-event$', edit_event_request, name='edit_event'),
-    # url(r'^(?P<id>\d+)$', get_events, name='get_event'),
     url(r'^delete-subevent$', delete_subevent, name='delete_subevent'),
 
+    url(r'^(?P<id>\d+)$', get_event, name='get_event'),
     url(r'^(?P<event_id>\d+)/user-attend-event$', user_attend_event, name='user_attend_event'),
     url(r'^(?P<event_id>\d+)/user-attend-payment-event$', user_attend_payment_event, name='user_attend_payment_event'),
     url(r'^(?P<event_id>\d+)/user-waiting-list-event$', user_waiting_list_event, name='user_waiting_list_event'),

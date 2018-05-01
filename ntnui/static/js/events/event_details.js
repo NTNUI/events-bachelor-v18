@@ -140,7 +140,8 @@ $(() => {
                 url = '/ajax/events/' + button.value + '/user-attend-sub-event'
                 attendEvent()
             }
-        })
+        }})
+
         /**
          * Sends a attend event request to the server
          */

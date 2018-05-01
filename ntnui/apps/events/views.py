@@ -123,6 +123,7 @@ def get_sub_event_dic(item, request):
         'end_date': item.end_date,
         'attends': attends,
         'name': str(item),
+        'price': item.price,
         'id': item.id
     }
 
