@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
@@ -13,16 +14,17 @@ class SubEvent(models.Model):
 
     start_date = models.DateTimeField(_('start date'))
     end_date = models.DateTimeField(_('end date'))
-    attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
     registration_end_date = models.DateTimeField(_('registration end date'), blank=True, null=True)
-    category = models.ForeignKey(Category, verbose_name=_('category'))
+    price = models.IntegerField(_('price'), default=0)
+    attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
     tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
+    category = models.ForeignKey(Category, verbose_name=_('category'))
 
     class Meta:
         verbose_name = _('sub-event')
         verbose_name_plural = _('sub-events')
 
-    # Returns the name of the event, in the given language.
+    # Returns the name of the sub-event, in the given language.
     def name(self):
         sub_event_description_get_language = SubEventDescription.objects.filter(sub_event=self,
                                                                                 language=translation.get_language())
@@ -38,77 +40,114 @@ class SubEvent(models.Model):
         else:
             return 'No name given'
 
-    # Checks whether the sub-event is free or not
-    def require_payment(self):
-        if self.price > 0:
-            return True
-        return False
+    # Returns the sub-event's attendee list consisting of users and guests.
+    def get_attendee_list(self):
+        user_attendee_list = SubEventRegistration.objects.filter(sub_event=self)
+        guest_attendee_list = SubEventGuestRegistration.objects.filter(sub_event=self)
+        attendee_list = list(user_attendee_list) + list(guest_attendee_list)
+        return attendee_list
 
-    # Checks whether a given user attends the sub-event
-    def user_attends(self, user):
+    # Returns the sub-event's waiting list consisting of users and guests.
+    def get_waiting_list(self):
+        users_waiting_list = SubEventWaitingList.objects.filter(sub_event=self)
+        guest_waiting_list = SubEventGuestWaitingList.objects.filter(sub_event=self)
+        waiting_list = list(users_waiting_list) + list(guest_waiting_list)
+        return waiting_list
+
+    # Returns the next user or guest on the sub-event's waiting list.
+    def get_waiting_list_next(self):
+        waiting_list = self.get_waiting_list()
+        # Checks if there are at least one person on the waiting list.
+        if len(waiting_list) > 0:
+            # Sorts the waiting list by registration date and returns the first one.
+            sorted_waiting_list = sorted(waiting_list, key=lambda attendee: attendee.registration_time, reverse=False)
+            next_on_waiting_list = sorted_waiting_list[0]
+            # Returns the attendee and its payment for the sub-event.
+            return next_on_waiting_list.attendee, next_on_waiting_list.payment_id
+        # The waiting list is empty.
+        return None
+
+    # Enrolls a user for an sub-event.
+    def user_attend_sub_event(self, user, payment_id, registration_time):
+        SubEventRegistration.objects.create(sub_event=self, attendee=user, payment_id=payment_id,
+                                            registration_time=registration_time)
+
+    # Enrolls a guest for an sub-event.
+    def guest_attend_sub_event(self, guest, payment_id, registration_time):
+        SubEventGuestRegistration.objects.create(sub_event=self, attendee=guest, payment_id=payment_id,
+                                                 registration_time=registration_time)
+
+    # Enrolls a user for an sub-event's waiting list.
+    def user_attend_waiting_list(self, user, payment_id, registration_time):
+        SubEventWaitingList.objects.create(sub_event=self, attendee=user, payment_id=payment_id,
+                                           registration_time=registration_time)
+
+    # Enrolls a guest for an sub-event's waiting list.
+    def guest_attend_waiting_list(self, guest, payment_id, registration_time):
+        SubEventGuestWaitingList.objects.create(sub_event=self, attendee=guest, payment_id=payment_id,
+                                                registration_time=registration_time)
+
+    # Checks if a user attends the sub-event.
+    def is_user_enrolled(self, user):
         if SubEventRegistration.objects.filter(attendee=user, sub_event=self).exists():
             return True
         return False
 
-    # Checks whether a given guest attends the sub-event
-    def guest_attends(self, guest):
+    # Checks if a guest attends the sub-event.
+    def is_guest_enrolled(self, guest):
         if SubEventGuestRegistration.objects.filter(attendee=guest, sub_event=self).exists():
             return True
         return False
 
-    # Returns a complete list of the sub-event's attendees
-    def get_attendees(self):
-        user_attendees = SubEventRegistration.objects.filter(sub_event=self)
-        guest_attendees = SubEventGuestRegistration.objects.filter(sub_event=self)
-        attendance_list = user_attendees + guest_attendees
-
-        return attendance_list
-
-    # Checks whether a given user is signed up for the sub-event's waiting list
-    def user_on_waiting_list(self, user):
+    # Checks if a user is on the sub-event's waiting list.
+    def is_user_on_waiting_list(self, user):
         if SubEventWaitingList.objects.filter(attendee=user, sub_event=self).exists():
             return True
         return False
 
-    # Checks whether a given guest is signed up for the sub-event's waiting list
-    def guest_on_waiting_list(self, guest):
+    # Checks if a guest is on the sub-event's waiting list.
+    def is_guest_on_waiting_list(self, guest):
         if SubEventGuestWaitingList.objects.filter(attendee=guest, sub_event=self).exists():
             return True
         return False
 
-    # Returns the sub-event's complete waiting list
-    def get_waiting_list(self):
-        user_waiting_list = SubEventWaitingList.objects.filter(sub_event=self)
-        guest_waiting_list = SubEventGuestWaitingList.objects.filter(sub_event=self)
-        waiting_list = user_waiting_list + guest_waiting_list
-        return waiting_list
-
-    # Checks whether the event is capped out.
-    def check_attendance_cap(self):
-
-        # The event has no attendance cap.
+    # Checks if the sub-event's attendance capacity is exceeded.
+    def is_attendance_cap_exceeded(self):
+        # The sub-event has no attendance cap.
         if self.attendance_cap is None:
-            return True
-        # The event's attendance cap is greater than the amount of attendees.
-        elif self.attendance_cap > self.get_attendees().count():
-            return True
-        # The event's capped out.
+            return False
+        # The sub-event's attendance cap is greater than the amount of attendees.
+        elif self.attendance_cap > len(self.get_attendee_list()):
+            return False
+        # The sub-event's attendance cap is exceeded.
         else:
-            return False
-
-    def payment_required(self, payment_id):
-        """Checks whether the event require payment."""
-
-        # Checks whether the event is free.
-        free_event = self.price == 0
-
-        # The event is not free and there exist an payment ID.
-        if not free_event and payment_id is not None:
             return True
-        # The event is free.
-        elif free_event:
+
+    # Checks if the sub-event's registration has ended.
+    def is_registration_ended(self):
+        # The sub-event has no registration end date.
+        if not self.registration_end_date:
             return False
-        # Something went wrong.
+        # The sub-event's registration date hasn't passed.
+        elif self.registration_end_date.replace(tzinfo=None) > datetime.now():
+            return False
+        # The sub-event's registration date has passed.
+        else:
+            return True
+
+    # Checks if the sub-event requires payment.
+    def is_payment_event(self):
+        return self.price > 0
+
+    # Checks if a payment is created and that the sub-event require payment.
+    def is_payment_created(self, payment_id):
+        # The sub-event is not free and there exist an payment ID.
+        if self.is_payment_event() and payment_id is not None:
+            return True
+        # The sub-event is free.
+        elif self.is_payment_event():
+            return False
+        # Payment not created.
         else:
             return False
 

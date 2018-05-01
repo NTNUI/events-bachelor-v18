@@ -37,12 +37,13 @@ $(() => {
                 $.ajax({
                     dataType: "json",
                     type: "POST",
-                    url: '/ajax/events/' + buttonValue + 'attend_payment_event_guest',
+                    url: '/ajax/events/' + buttonValue + '/guest-attend-payment-event',
                     data: {
                         csrfmiddlewaretoken: csrftoken,
                         stripeToken: token.id,
                         id: buttonValue,
                         stripEmail: token.email,
+                        email: email,
                         first_name: firstName,
                         last_name: lastName,
                         phone: phone,
@@ -64,7 +65,7 @@ $(() => {
             $.ajax({
                 dataType: "json",
                 type: "POST",
-                url: '/ajax/events/' + buttonValue + '/attend_payment_event_user',
+                url: '/ajax/events/' + buttonValue + '/user-attend-payment-event',
                 data: {
                     csrfmiddlewaretoken: csrftoken,
                     stripeToken: token.id,
@@ -86,18 +87,18 @@ $(() => {
 
 
         /**
-         * Sends a attend subevet request
+         * Sends a attend sub-event request
          */
         $(".join-subevent-button").click((e) => {
             const event = e || window.event
             button = event.target
             // IF the first sign is a - we want to remove attending event
             if (button.value[0] === "-") {
-                url = '/ajax/events/remove-attend-sub-event'
+                url = '/ajax/events/user-unattend-sub-event'
                 buttonText = gettext('attend event')
                 openModal("removeAttendanceSubEvent")
             } else {
-                url = '/ajax/events/attend-sub-event'
+                url = '/ajax/events/' + button.value + '/user-attend-sub-event'
                 attendEvent()
             }
         })
@@ -111,9 +112,9 @@ $(() => {
             if (button.value[0] === "-") {
                 buttonText = gettext('attend event')
                 if ($("#price").length === 0) {
-                    url = '/ajax/events/remove_attendance_event_user'
+                    url = '/ajax/events/user-unattend-event'
                 } else {
-                    url = '/ajax/events/refund_event'
+                    url = '/ajax/events/user-unattend-payment-event'
                     buttonText = gettext('Pay using card')
                 }
                 openModal("removeAttendanceEvent")
@@ -122,7 +123,7 @@ $(() => {
                     showGuestModal();
                 } else {
                     if ($("#price").length === 0) {
-                        url = '/ajax/events/attend-event-user'
+                        url = '/ajax/events/' + buttonValue + '/user-attend-event'
                         attendEvent()
                     } else {
                         attendPayedEvent(e)
@@ -163,7 +164,7 @@ $(() => {
                 postData = postData + '&id=' + buttonValue;
                 $.ajax({
                     type: 'POST',
-                    url: '/ajax/events/attend-event-guest',
+                    url: '/ajax/events/' + buttonValue + '/guest-attend-event',
                     data: postData,
                     success: (data) => {
                         printMessage('success', data.message)
