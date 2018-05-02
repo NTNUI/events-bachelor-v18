@@ -280,11 +280,13 @@ def get_edit_event_page(request, id):
     event_end_date = event.end_date
     start_date = '{:%Y-%m-%dT%H:%M}'.format(event_start_date)
     end_date = '{:%Y-%m-%dT%H:%M}'.format(event_end_date)
+    registration_end_date = '{:%Y-%m-%dT%H:%M}'.format(event.registration_end_date)
+
     event = {
         'name_no': eventdescription_no.name,
         'name_en': eventdescription_en.name,
-        'description_no': eventdescription_no.description_text,
-        'description_en': eventdescription_en.description_text,
+        'description_text_no': eventdescription_no.description_text,
+        'description_text_en': eventdescription_en.description_text,
         'email_text_no': eventdescription_no.custom_email_text,
         'email_text_en': eventdescription_en.custom_email_text,
 
@@ -292,6 +294,7 @@ def get_edit_event_page(request, id):
         'end_date': end_date,
         'id': event.id,
         'attendance_cap': attendance_cap,
+        'registration_end_date': registration_end_date,
         'price': price,
         'host': event.get_host(),
         'place': event.place,
@@ -305,11 +308,10 @@ def get_edit_event_page(request, id):
 
 
 def edit_event(request):
-    try:
         if request.method == 'POST':
             data = request.POST
 
-            event = Event.objects.get(id=int(data['event_id']))
+            event = Event.objects.get(id=int(data['id']))
 
             name_no = data['name_no']
             name_en = data['name_en']
@@ -346,9 +348,9 @@ def edit_event(request):
             eventdescription_no.save()
             eventdescription_en.save()
 
-            return HttpResponse("Edit successful")
-    except:
-        return HttpResponse("Edit failed")
+            return get_json(200, "Edit successful")
+
+            return get_json(400, "Edit failed")
 
 
 def get_events_request(request):

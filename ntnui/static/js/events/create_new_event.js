@@ -19,8 +19,22 @@ let editContainer = null;
 // sets the current language
 let lang
 
+// If the event already exists it will have a eventID
+let eventID = null;
+
+// URL to update or create event
+let EVENT_URL
+
 // On document ready
 $(() => {
+
+    // If this is a event that is going to be eddited, get the event id
+    eventID = $('#event-id').val()
+    if (eventID) {
+        getEventFromServer();
+    }
+
+    EVENT_URL = eventID ? '/ajax/events/edit-event' : '/ajax/events/add-event';
 
     // get the language
     lang = $('html').attr('lang')
@@ -85,20 +99,43 @@ $(() => {
 
 });
 
+/**
+ * Getts the eventInfo from the server
+ * @returns {null}
+ */
+async function getEventFromServer() {
+    try {
+        let data = await $.ajax({
+            type: 'GET',
+            url: '/ajax/events/' + eventID,
+        })
+
+        subEvents = data.subEvents;
+        categories = data.categories
+
+    } catch (error) {
+        //show error alert
+        printMessage('error', data.responseJSON.message)
+    }
+}
+
+
 let sendRequestToCreateEvent = (e) => {
     e.preventDefault()
 
     let form = $('#create-event-form *')
-    let event = validateForm(form)
+    let event = validateForm(form, true)
     if (event) {
         // Sends request to server to create event
         event.csrfmiddlewaretoken = csrftoken;
         $.ajax({
             type: 'POST',
-            url: '/ajax/events/add-event',
+            url: EVENT_URL,
             data: event,
             success: (data) => {
-                createCategories(data.id)
+                if(!eventID){
+                    createCategories(data.id)
+                }
             },
             error: (data) => {
                 //show error alert
@@ -224,7 +261,7 @@ let validateAndCreateSubEvent = (e) => {
 
             // Find the subEvent with the same id, and replace it with the new one
             subEvents = subEvents.map((item) => {
-                if(item.id == id) {
+                if (item.id == id) {
                     subEvent.category = item.category
                     return subEvent
                 }
@@ -321,7 +358,7 @@ let validateInputOnBlur = (e) => {
     validateInput(event.target)
 }
 
-function validateForm(formElements) {
+function validateForm(formElements, keepData) {
     let valid = true
     formElements.filter(':input').each((e, input) => {
         if (!validateInput(input)) {
@@ -333,7 +370,10 @@ function validateForm(formElements) {
         formElements.filter(':input').each((e, input) => {
             if (input.name != "csrfmiddlewaretoken") {
                 element[input.name] = input.value;
-                input.value = "";
+                if (!keepData) {
+                    input.value = "";
+                }
+
             }
         });
         return element
@@ -424,7 +464,7 @@ function showSubEvent(subEvent) {
     container.find('p').remove()
 
     // find the right title
-    const title = lang==='nb' ? subEvent.name_nb : subEvent.name_en
+    const title = lang === 'nb' ? subEvent.name_nb : subEvent.name_en
 
     // Append the container with the sub-event element
     container.append(
@@ -494,7 +534,7 @@ function showCategory(category) {
     container.find('p').remove()
 
     // find the right title
-    const title = lang==='nb' ? category.name_nb : category.name_en
+    const title = lang === 'nb' ? category.name_nb : category.name_en
 
     // Add the category
     container.append(
@@ -573,7 +613,7 @@ function getContainerPlaceholder() {
 }
 
 function formatDate(dateString) {
-    return dateString.replace("T"," ")
+    return dateString.replace("T", " ")
 }
 
 function allowDrop(ev) {
