@@ -235,37 +235,67 @@ def get_delete_event(request, id):
         event = Event.objects.get(id=int(id))
         eventdescription_no = EventDescription.objects.get(event=event, language='nb')
         eventdescription_en = EventDescription.objects.get(event=event, language='en')
-        # eventregistration = EventRegistration.objects.get(event=event)
-        # if eventregistration.payment_id != '':
+        eventregistration = EventRegistration.objects.get(event=event)
+        eventwaitinglist = EventWaitingList.objects.get(event=event)
+        eventguestwaitinglist = EventGuestWaitingList.objects.get(event=event)
+        eventguestregistration = EventGuestRegistration.objects.get(event=event)
+        for category in Category.objects.filter(event=event):
+            delete_category(request, category.id)
+
+        #if eventregistration.payment_id != '':
         #    refund_event(request)
-        event.delete()
+
+        eventwaitinglist.delete()
+        eventguestregistration.delete()
+        eventregistration.delete()
+        eventguestwaitinglist.delete()
         eventdescription_no.delete()
         eventdescription_en.delete()
-        # eventregistration.delete()
+        event.delete()
     except:
-        return HttpResponse("Event delete failed")
+        return get_json(400, "Could not delete event")
 
     return render(request, 'events/delete_event_page.html')
 
-
-
-#the commented lines are to be uncommented when created subevents have a subeventregistration by default
-def delete_subevent(request):
+def delete_category(request, id):
     try:
-        if request.method == 'POST':
-            data = request.POST
-            subeventid = (data['subeventid'])
-            subevent = SubEvent.objects.get(id=int(subeventid))
-            subeventdescription_no = SubEventDescription.objects.get(sub_event=subevent, language='nb')
-            subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
-            #subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
-            # subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
-            subevent.delete()
-            subeventdescription_no.delete()
-            subeventdescription_en.delete()
-            # subeventregistration.delete()
+        category=Category.objects.get(id=id)
+        categorydescription_nb=CategoryDescription.objects.get(id=id, language='nb')
+        categorydescription_en=CategoryDescription.objects.get(id=id, language='en')
+        if SubEvent.objects.filter(category=category).exists():
+            subevents=SubEvent.objects.filter(category=category)
+            for subevent in subevents:
+                delete_subevent(request, subevent.id)
+        categorydescription_nb.delete()
+        categorydescription_en.delete()
+        category.delete()
+
     except:
-        return HttpResponse("Subevent delete failed")
+        return get_json(400, "Could not delete category")
+
+    return get_json(200, "Category deleted")
+
+def delete_subevent(request, id):
+    try:
+        subevent = SubEvent.objects.get(id=id)
+        subeventdescription_nb = SubEventDescription.objects.get(sub_event=subevent, language='nb')
+        subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
+        subeventregistration = SubEventRegistration.objects.get(sub_event=subevent)
+        subeventwaitinglist = SubEventWaitingList.objects.get(sub_event=subevent)
+        subeventguestregistration = SubEventGuestRegistration.objects.get(sub_event=subevent)
+        subeventguestwaitinglist = SubEventGuestWaitingList.objects.get(sub_event=subevent)
+        subeventdescription_nb.delete()
+        subeventdescription_en.delete()
+        subeventregistration.delete()
+        subeventguestregistration.delete()
+        subeventwaitinglist.delete()
+        subeventguestwaitinglist.delete()
+        subevent.delete()
+    except:
+        return get_json(400, "Could not delete subevent")
+
+    return get_json(200, "Subevent deleted")
+
 
 
 def get_edit_event_page(request, id):
