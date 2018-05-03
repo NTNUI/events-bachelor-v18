@@ -4,12 +4,7 @@
     --NTNUI-yellow: #ffff00;
 }
 
-#container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 5rem;
-}
+
 
 .error-input {
     display: block;
@@ -27,32 +22,23 @@
     z-index: 100;
 }
 
+.img-container {
+    width: 100%;
+    max-height:30rem;
+    overflow: hidden;
+}
 #image-centered {
-    margin: auto;
-    max-width: 80%;
-    max-height: 30rem;
-    padding: 20px;
+    width: 100%;
+    height: auto;
+    z-index: 1;
 }
 
-#header {
-    margin: auto;
-    margin-top: -30px;
-    text-align: center;
-    padding: 0.75rem 1.25rem;
-    margin-bottom: 0;
-    background-color: white;
-    border: 1px solid rgba(0, 0, 0, 0.125);
-    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
-    font-family: "Droid serif", serif;
-    font-size: 36px;
-    font-weight: 700;
-}
 
 #content-container {
     display: flex;
-    flex-direction: row;
+    flex-wrap:wrap;
     justify-content: center;
-    width: 75%;
+    width: 100%;
     margin: auto;
 }
 
@@ -62,7 +48,7 @@
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    width: 30%;
+    width: 50%;
     background-color: white;
 
     border: 1px solid rgba(0, 0, 0, 0.125);
@@ -93,7 +79,7 @@
 #event-description {
     margin-top: 20px;
     margin-bottom: 20px;
-    width: 30%;
+    width: 50%;
     background-color: white;
     padding: 20px 15px 20px 15px;
     border: 1px solid rgba(0, 0, 0, 0.125);
@@ -150,7 +136,7 @@
 }
 
 .category-card-container {
-    width: 45%;
+    width: 100%;
 }
 
 .card-header-category {
@@ -178,6 +164,8 @@
 .btn-danger {
     background-color: var(--NTNUI-red) !important;
 }
+
+
 
 
 @media only screen and (max-width: 700px) {

@@ -4,6 +4,7 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/events/event_details.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/events/events.css' %}"/>
 {% endblock %}
 
 {% block content %}
@@ -11,11 +12,41 @@
     </div>
 
     <div id="container">
-        <img id="image-centered" src=" /static/{{ event.cover_photo }}" alt="Event Image"/>
+        <div class="header-container">
+            {% if can_edit_and_delete_event %}
+            <div class="top-menu" style="margin-bottom: 2rem;">
+                <ul>
+                    <li>
+                        <a class="active-item"> Event </a>
+                    </li>
+                    <li>
+                        <div class="vert-divider"></div>
+                    </li>
+                    <li>
+                        <a href="{% url 'event_attendees' event.id number_of_subevents %}">Attendees</a>
+                    </li>
+                    <li>
+                        <div class="vert-divider"></div>
+                    </li>
+                    <li>
+                        <a href="{% url 'edit_event_page' event.id %}"> Edit event </a>
+                    </li>
 
-        <div id="header">
-            {{ event.name }}
+                </ul>
+            </div>
+            {% endif %}
+
+            <div class="img-container">
+                <img id="image-centered" src=" /static/{{ event.cover_photo }}" alt="Event Image"/>
+                <div style="width: 100%; display: flex; justify-content: center;">
+                    <div id="header">
+                        {{ event.name }}
+                    </div>
+                </div>
+
+            </div>
         </div>
+
 
         <!-- Waring modal -->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -39,6 +70,7 @@
                 </div>
             </div>
         </div>
+
 
         {% if not is_authenticated %}
             <!-- Guest user modal -->
@@ -89,6 +121,7 @@
         {% endif %}
 
         <div id="content-container">
+
             <div id="event-info-container">
 
                 <div id="labels-infos">
@@ -145,6 +178,7 @@
                         {% endif %}
                     </div>
                 </div>
+
                 {% if not sub_event_list %}
                     <div id="event-sign-up">
                         {% if event.attends %}
@@ -184,7 +218,7 @@
         {% if can_edit_and_delete_event and not sub_event_list %}
             <div class="events-section">
                 <div class="category-card-container">
-                    <div class="category-card" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="category-card" role="tablist" aria-multiselectable="true">
                         <div class="category-card card">
                             <div class="card-header-category card-header" role="tab"
                                  aria-controls="collapseOne"
@@ -248,25 +282,13 @@
         <div class="events-section">
 
             <div class="category-card-container">
-                {% if sub_event_list and can_edit_and_delete_event %}
-                    <div class="card-header-category card-header" role="tab">
-                        <a id="event-attendees-button" href="{% url 'event_attendees' event.id number_of_subevents %}">
-                            <button type="button" class="buttons btn btn-success">
-                                <div class="button-div">
-                                    <!--<img src="{#% static 'img/pencil.svg' %#}"/>-->
-                                    &nbsp;{% trans 'See attendees' %}
-                                </div>
-                            </button>
-                        </a>
-                    </div>
-                {% endif %}
-                <div class="category-card" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="category-card" role="tablist" aria-multiselectable="true">
                     {% for category, sub_events in sub_event_list %}
 
                         <div class="category-card card">
                             <div class="card-header-category card-header" role="tab" id="headingOne"
                                  aria-controls="collapseOne"
-                                 data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ category }}"
+                                  href="#collapse-{{ category }}"
                                  aria-expanded="true">
                                 <h5 class="mb-0">
                                     <a>

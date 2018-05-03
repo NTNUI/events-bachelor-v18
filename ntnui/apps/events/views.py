@@ -362,7 +362,6 @@ def get_attending_events_request(request):
 def get_event_attendees_page(request, id, numberofsubevents):
 
     event = Event.objects.get(id=int(id))
-    eventname = event.name()
 
     if int(numberofsubevents)== 0:
         subeventsexist=False
@@ -377,7 +376,7 @@ def get_event_attendees_page(request, id, numberofsubevents):
 
         context = {
             'subeventsexist': subeventsexist,
-            'eventname': eventname,
+            'event': event,
             'attendees_list': attendees,
         }
 
@@ -408,7 +407,7 @@ def get_event_attendees_page(request, id, numberofsubevents):
 
         context = {
                 'subeventsexist': subeventsexist,
-                'eventname': eventname,
+                'event': event,
                 'subevents_attendees_and_name_list': subevents_attendees_and_names_list,
             }
 
