@@ -33,6 +33,8 @@ from .views import (
     get_attending_events_request,
     create_category_request,
     create_sub_event_request,
+    edit_category,
+    edit_subevent,
 )
 
 urlpatterns = [
@@ -40,7 +42,9 @@ urlpatterns = [
     url(r'^get-events', get_events_request, name='get_events'),
 
     url(r'^create-category', create_category_request, name='create_category'),
+    url(r'^edit-category', edit_category, name='edit_category'),
     url(r'^create-sub-event', create_sub_event_request, name='create_sub_event'),
+    url(r'^edit-sub-event', edit_subevent, name='edit_subevent'),
     url(r'^get-attending-events', get_attending_events_request, name='get_attending_events'),
 
     url(r'^edit-event$', edit_event_request, name='edit_event'),
