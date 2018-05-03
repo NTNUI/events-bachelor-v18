@@ -22,8 +22,15 @@ let lang
 // If the event already exists it will have a eventID
 let eventID = null;
 
-// URL to update or create event
-let EVENT_URL
+// define URLS used to create and edit
+const URL_EVENT_CREATE = "/ajax/events/add-event"
+const URL_EVENT_EDIT = "/ajax/events/edit-event"
+
+const URL_SUB_EVENT_CREATE = "/ajax/events/create-sub-event"
+const URL_SUB_EVENT_EDIT = "/ajax/events/edit-sub-event"
+
+const URL_CATEGORY_CREATE = "/ajax/events/create-category"
+const URL_CATEGORY_EDIT = "/ajax/events/edit-category"
 
 // On document ready
 $(() => {
@@ -33,8 +40,6 @@ $(() => {
     if (eventID) {
         getEventFromServer();
     }
-
-    EVENT_URL = eventID ? '/ajax/events/edit-event' : '/ajax/events/add-event';
 
     // get the language
     lang = $('html').attr('lang')
@@ -105,20 +110,65 @@ $(() => {
  */
 async function getEventFromServer() {
     try {
+        // Get all the events data from the server
         let data = await $.ajax({
             type: 'GET',
             url: '/ajax/events/' + eventID,
         })
+        idCounterCategory = 0;
+        // Filter the categories such that they are on the decried format and add them to the categories list
+        categories = data.categories.map((category) => {
+            idCounterCategory++;
+            const norwegianDescription = category.descriptions.filter((description) => description.language === 'nb')[0]
+            const englishDescription = category.descriptions.filter((description) => description.language === 'en')[0]
+            if (norwegianDescription.name === "Ikke kategorisert") {
+                return null
+            }
+            return {
+                serverID: category.id,
+                id: idCounterCategory,
+                name_nb: norwegianDescription.name,
+                name_en: englishDescription.name,
+            }
+        }).filter((category) => category !== null)
 
-        subEvents = data.subEvents;
-        categories = data.categories
+        // filter and add the sub-events to the subevent list
+        for (category of data.categories) {
+            subEvents.push.apply(subEvents, category["sub-events"].map((subEvent) => {
+                subEvent.serverID = subEvent.id
+                subEvent.id = idCounterSubEvent;
+                idCounterSubEvent++;
+                const norwegianDescription = subEvent.descriptions.filter((description) => description.language === 'nb')[0]
+                const englishDescription = subEvent.descriptions.filter((description) => description.language === 'en')[0]
+                subEvent.name_nb = norwegianDescription.name
+                subEvent.email_nb = norwegianDescription.custom_email_text
+                subEvent.name_en = englishDescription.name
+                subEvent.email_en = englishDescription.custom_email_text
+                delete subEvent.descriptions
+                return subEvent
+            }))
+        }
 
-    } catch (error) {
+        setInVisualContent()
+
+    } catch
+        (error) {
         //show error alert
-        printMessage('error', data.responseJSON.message)
+        printMessage('error', error)
     }
+
+
 }
 
+function setInVisualContent() {
+    for (category of categories) {
+        showCategory(category)
+    }
+
+    for (subEvent of subEvents) {
+        showSubEvent(subEvent, true)
+    }
+}
 
 let sendRequestToCreateEvent = (e) => {
     e.preventDefault()
@@ -130,12 +180,10 @@ let sendRequestToCreateEvent = (e) => {
         event.csrfmiddlewaretoken = csrftoken;
         $.ajax({
             type: 'POST',
-            url: EVENT_URL,
+            url: eventID ? URL_EVENT_EDIT : URL_EVENT_CREATE,
             data: event,
             success: (data) => {
-                if(!eventID){
-                    createCategories(data.id)
-                }
+                createCategories(data.id)
             },
             error: (data) => {
                 //show error alert
@@ -257,7 +305,7 @@ let validateAndCreateSubEvent = (e) => {
             // Updates the name based on the current language
             editContainer.find('.subEvent-title').text(lang === 'nb' ? subEvent.name_nb : subEvent.name_en)
             // Updates the date
-            editContainer.find('.subEvent-date').text(subEvent.start_date + " - " + subEvent.end_date)
+            editContainer.find('.subEvent-date').text(formatDate(subEvent.start_date) + " - " + formatDate(subEvent.end_date))
 
             // Find the subEvent with the same id, and replace it with the new one
             subEvents = subEvents.map((item) => {
@@ -304,7 +352,7 @@ async function createCategories(eventID) {
         try {
             let data = await $.ajax({
                 type: 'POST',
-                url: '/ajax/events/create-category',
+                url: category.serverID ? URL_CATEGORY_EDIT : URL_CATEGORY_CREATE,
                 data: category
             })
             category.databaseCategoryId = data.id;
@@ -318,6 +366,7 @@ async function createCategories(eventID) {
     }))
     createSubEvents(eventID)
 }
+
 
 /**
  * Sends a ajax request to the sever in order to create the subEvents
@@ -333,7 +382,7 @@ async function createSubEvents(eventID) {
         try {
             let data = await $.ajax({
                 type: 'POST',
-                url: '/ajax/events/create-sub-event',
+                url: subEvent.serverID ? URL_SUB_EVENT_EDIT : URL_SUB_EVENT_CREATE,
                 data: subEvent,
             })
             return subEvent
@@ -345,6 +394,51 @@ async function createSubEvents(eventID) {
     }))
     if (subEventsCreated) {
         window.location.replace("/events/" + eventID + "/");
+    }
+}
+
+/**
+ * Deletes the subEvent with the given id
+ * @param eventID
+ * @returns {Promise.<void>}
+ */
+async function deleteSubEventFromServer(eventID) {
+    try {
+        let data = await $.ajax({
+            type: 'POST',
+            url: '/ajax/events/delete-sub-event',
+            data: {
+                id: eventID,
+                csrfmiddlewaretoken: csrftoken,
+            }
+        })
+
+    } catch (error) {
+        //show error alert
+        printMessage('error', error)
+    }
+}
+
+/**
+ * Deletes the category with the given id
+ * @param categoryID
+ * @returns {Promise.<void>}
+ */
+async function deleteCategoryFromServer(categoryID) {
+    try {
+        let data = await $.ajax({
+            type: 'POST',
+            url: '/ajax/events/delete-category',
+            data: {
+                id: categoryID,
+                csrfmiddlewaretoken: csrftoken,
+            }
+        })
+
+    } catch (error) {
+        console.log(error)
+        //show error alert
+        printMessage('error', error)
     }
 }
 
@@ -456,9 +550,26 @@ function validateDate(button, dispError) {
     return false;
 }
 
-function showSubEvent(subEvent) {
+function showSubEvent(subEvent, fromServer) {
+
     // Find the subEvent container
     let container = $("#subEvents")
+
+    // If the event allready exists, place it in the right container
+    if (fromServer) {
+        // Find the category
+        const category = categories.filter((category) => category.serverID === subEvent.category_id)
+
+        // Use te category id to find the container, if the category dose not exist place it in the default container
+        if (category.length) {
+            const id = category[0].id
+            container = $('.drag-container').filter(function () {
+                return $(this).attr("data-id") === (id).toString()
+            })
+            // Remove drop-example
+            container.closest('.drag-container').find('.drop-example').first().remove();
+        }
+    }
 
     // If the container contains a example text remove it
     container.find('p').remove()
@@ -491,8 +602,16 @@ function showSubEvent(subEvent) {
         // Find the id
         const id = $(event.target).closest(".subEvent-element").attr('data-id')
 
+
         // Remove the given element from the list
-        subEvents = subEvents.filter(item => item.id != id)
+        subEvents = subEvents.filter(item => {
+            if (item.id != id) {
+                return true
+            } else {
+                subEvent = item;
+                return false
+            }
+        })
 
         // Remove the element
         $(event.target).closest(".subEvent-element").remove()
@@ -501,6 +620,10 @@ function showSubEvent(subEvent) {
         if (!container.find('div').length) {
             container.append(getContainerPlaceholder());
         }
+        if (subEvent.serverID) {
+            deleteSubEventFromServer(subEvent.serverID)
+        }
+
     })
 
     //onClick for edit subevent
@@ -566,7 +689,14 @@ function showCategory(category) {
         const id = $(event.target).closest(".category-card").find('.drag-container').attr('data-id')
 
         // Remove the category with the given id
-        categories = categories.filter(item => item.id != id)
+        categories = categories.filter(item => {
+            if (item.id != id) {
+                return true;
+            } else {
+                category = item;
+                return false;
+            }
+        })
 
         // Delete all subEvents in the category
         subEvents = subEvents.filter((subEvent) => subEvent.category != id)
@@ -577,6 +707,10 @@ function showCategory(category) {
         // IF the element no longer contains any elements, show the help text
         if (!container.find('div').length) {
             container.append(getContainerPlaceholder())
+        }
+
+        if (category.serverID) {
+            deleteCategoryFromServer(category.serverID)
         }
     })
 
