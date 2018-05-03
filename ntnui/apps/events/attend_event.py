@@ -1,15 +1,17 @@
 import stripe
-from django.conf import settings
 from datetime import datetime
+
+from .views import (get_json)
 from accounts.models import User
 from events.models.guest import Guest
 from events.models.event import Event, EventRegistration, EventWaitingList, EventGuestWaitingList, EventGuestRegistration
-from .views import (get_json)
-from django.core.validators import validate_email, validate_integer
+from events.models.sub_event import SubEvent
+
+from django.conf import settings
 from django.core.mail import send_mail
 from django.core.exceptions import ValidationError
-from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.core.validators import validate_email, validate_integer
 
 
 def event_send_mail(event, user):
@@ -104,7 +106,7 @@ def attend_event(event, attendee, payment_id):
 
     # Creates event registration for either a user or a guest, depending on the class of 'attendee'.
     if isinstance(attendee, User):
-        event.user_attend_event(attendee, payment_id, datetime.now())
+        event.user_attend_sub_event(attendee, payment_id, datetime.now())
     elif isinstance(attendee, Guest):
         event.guest_attend_event(attendee, payment_id, datetime.now())
     else:
@@ -188,28 +190,28 @@ def verify_sign_up(request, open_spots):
         guest, guest_created = get_or_create_guest(email, first_name, last_name, phone)
 
         if not isinstance(guest, Guest):
-            return None, None, False, False, get_json(400, 'The attendee is not a guest.')
+            return event, guest, guest_created, False, get_json(400, 'The attendee is not a guest.')
         # Checks if the guest already attends the event.
         if event.is_guest_enrolled(guest):
-            return None, None, guest_created, False, get_json(400, 'The guest already attends the event.')
+            return event, guest, guest_created, False, get_json(400, 'The guest already attends the event.')
         # Checks if the guest is on the event's waiting list.
-        elif event.is_guest_on_waiting_list(guest):
-            return None, None, guest_created, False, get_json(400, 'The guest is on the waiting list.')
+        elif event.is_guest_on_waiting_list(guest.id):
+            return event, guest, guest_created, False, get_json(400, 'The guest is on the waiting list.')
         # Checks if the event's registration has ended.
         elif event.is_registration_ended():
-            return None, None, guest_created, False, get_json(400, 'The event registration has ended.')
+            return event, guest, guest_created, False, get_json(400, 'The event registration has ended.')
         # The user can attend the event.
         else:
             if open_spots:
                 if not event.is_attendance_cap_exceeded():
                     return event, guest, guest_created, True, None
                 else:
-                    return None, None, guest_created, False, get_json(400, 'The event is full.')
+                    return event, guest, guest_created, False, get_json(400, 'The event is full.')
             else:
                 if event.is_attendance_cap_exceeded():
                     return event, guest, guest_created, True, None
                 else:
-                    return None, None, guest_created, False, get_json(400, 'The event still has open spots.')
+                    return event, guest, guest_created, False, get_json(400, 'The event still has open spots.')
 
 
 def remove_attendance_event_request(request):
@@ -366,70 +368,7 @@ def remove_attendance_event_request(request):
 
     return get_json(400, "Guest can't sign-off event' yet.")
 
-def attend_event_request(request, event_id):
-    """User and guest sign-up for a free event."""
 
-    event, attendee, guest_created, eligible_to_attend_event, error_message = verify_sign_up(request, event_id, True)
-
-    if not eligible_to_attend_event:
-        if guest_created:
-            attendee.delete()
-        return error_message
-
-    return attend_event(event, attendee, None)
-
-
-def attend_payment_event_request(request):
-    """User and guest sign-up for a payment event."""
-
-    event, attendee, guest_created, eligible_to_attend_event, error_message = verify_sign_up(request, True)
-
-    if not eligible_to_attend_event:
-        if guest_created:
-            attendee.delete()
-        return error_message
-
-    payment, accepted, error_message = payment_accepted(request, event, attendee)
-
-    if not accepted:
-        if guest_created:
-            attendee.delete()
-        return error_message
-
-    return attend_event(event, attendee, payment)
-
-
-def waiting_list_event_request(request):
-    """User and guest sign-up for a free event's waiting list."""
-
-    event, attendee, guest_created, eligible_to_attend_event, error_message = verify_sign_up(request, False)
-
-    if not eligible_to_attend_event:
-        if guest_created:
-            attendee.delete()
-        return error_message
-
-    return waiting_list_event(event, attendee, None)
-
-
-def waiting_list_payment_event_request(request):
-    """User and guest sign-up for a payment event."""
-
-    event, attendee, guest_created, eligible_to_attend_event, error_message = verify_sign_up(request, False)
-
-    if not eligible_to_attend_event:
-        if guest_created:
-            attendee.delete()
-        return error_message
-
-    payment, accepted, error_message = payment_accepted(request, event, attendee)
-
-    if not accepted:
-        if guest_created:
-            attendee.delete()
-        return error_message
-
-    return waiting_list_event(event, attendee, payment)
 
 def payment_accepted(request, event, attendee):
     """User or Guest: Create payment with Stripe."""
@@ -442,12 +381,14 @@ def payment_accepted(request, event, attendee):
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
     # Charges the attendee's card.
+    try:
+        charge = stripe.Charge.create(receipt_email=email, source=token, amount=amount,
+                                      currency="NOK", description=description)
+        return charge.id, True, None
+    except:
+        return None, False, get_json(400, "Payment not accepted")
 
-    charge = stripe.Charge.create(receipt_email=email, source=token, amount=amount,
-                                    currency="NOK", description=description)
 
-    # Payment accepted.
-    return True, charge.id, None
 
 
 def validate_guest_data(data):
@@ -459,9 +400,11 @@ def validate_guest_data(data):
         validate_integer(data.get('phone'))
     except ValidationError as e:
         return e.message
-    #except Event.DoesNotExist:
-    #   return _("Event dose not exist")
+    except Event.DoesNotExist:
+        return _("Event dose not exist.")
     return None
+
+
 
 
 def get_or_create_guest(email, first_name, last_name, phone):
@@ -471,7 +414,7 @@ def get_or_create_guest(email, first_name, last_name, phone):
     return guest, created
 
 
-def get_event_by_id(event_id):
+def get_event_by_id(id):
     """Gets the event which the event_id is associated with."""
 
-    return Event.objects.get(id=event_id)
+    return SubEvent.objects.get(id=id)

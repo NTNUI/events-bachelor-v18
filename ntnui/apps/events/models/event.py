@@ -153,11 +153,11 @@ class Event(models.Model):
 
     # Checks if a guest is on the event's waiting list.
     def is_guest_on_waiting_list(self, guest):
-        return EventGuestWaitingList.objects.filter(attendee=guest, event=self).exists
+        return EventGuestWaitingList.objects.filter(attendee=guest, event=self).exists()
 
     # Checks if the event's attendance capacity is exceeded.
     def is_attendance_cap_exceeded(self):
-        return self.attendance_cap is not None and self.attendance_cap < len(self.get_attendee_list())
+        return self.attendance_cap is not None and self.attendance_cap <= len(self.get_attendee_list())
 
     # Checks if the event's registration has ended.
     def is_registration_ended(self):

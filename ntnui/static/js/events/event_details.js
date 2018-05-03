@@ -37,7 +37,7 @@ $(() => {
                 $.ajax({
                     dataType: "json",
                     type: "POST",
-                    url: '/ajax/events/' + buttonValue + '/guest-attend-payment-event',
+                    url: '/ajax/events/attend-payment-event',
                     data: {
                         csrfmiddlewaretoken: csrftoken,
                         stripeToken: token.id,
@@ -54,10 +54,12 @@ $(() => {
                         button.setAttribute("class", "btn btn-danger")
                         printMessage('Success', data.message)
                         slideUpAlert()
+                        hideGuestModal()
                     },
                     error: (data) => {
                         printMessage('Error', data.responseJSON.message)
                         slideUpAlert()
+                        hideGuestModal()
                     }
                 });
 
@@ -65,9 +67,10 @@ $(() => {
             $.ajax({
                 dataType: "json",
                 type: "POST",
-                url: '/ajax/events/' + buttonValue + '/user-attend-payment-event',
+                url: '/ajax/events/attend-payment-event',
                 data: {
                     csrfmiddlewaretoken: csrftoken,
+                    id: buttonValue,
                     stripeToken: token.id,
                     stripEmail: token.email
                 },
@@ -77,10 +80,12 @@ $(() => {
                     button.setAttribute("class", "btn btn-danger")
                     printMessage('Success', data.message)
                     slideUpAlert()
+                    hideGuestModal()
                 },
                 error: (data) => {
                     printMessage('Error', data.responseJSON.message)
                     slideUpAlert()
+                    hideGuestModal()
                 }
             });
         }
@@ -122,7 +127,7 @@ $(() => {
                 buttonText = gettext('attend event')
                 openModal("removeAttendanceSubEvent")
             } else {
-                url = '/ajax/events/' + button.value + '/user-attend-sub-event'
+                url = '/ajax/events/attend-event'
                 attendEvent()
             }
         })
@@ -148,7 +153,7 @@ $(() => {
                     showGuestModal();
                 } else {
                     if ($("#price").length === 0) {
-                        url = '/ajax/events/user-attend-event'
+                        url = '/ajax/events/attend-event'
                         attendEvent()
                     } else {
                         attendPayedEvent(e)
@@ -189,7 +194,7 @@ $(() => {
                 postData = postData + '&id=' + buttonValue;
                 $.ajax({
                     type: 'POST',
-                    url: '/ajax/events/' + buttonValue + '/guest-attend-event',
+                    url: '/ajax/events/attend-event',
                     data: postData,
                     success: (data) => {
                         printMessage('success', data.message)
@@ -200,6 +205,7 @@ $(() => {
                         (data) => {
                             printMessage('error', data.responseJSON.message)
                             slideUpAlert(false)
+                            hideGuestModal()
                         }
                 })
             }

@@ -31,6 +31,8 @@ urlpatterns = [
     url(r'^delete-subevent$', delete_subevent, name='delete_subevent'),
 
     url(r'^(?P<id>\d+)$', get_event, name='get_event'),
-    url(r'^user-attend-event$', attend_event_request, name='attend_event_request'),
+    url(r'^attend-event$', attend_event_request, name='attend_event'),
+    url(r'^attend-payment-event$', waiting_list_payment_event_request, name='attend_payment_event'),
+
 
 ]
