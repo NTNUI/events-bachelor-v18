@@ -148,7 +148,7 @@ $(() => {
                     showGuestModal();
                 } else {
                     if ($("#price").length === 0) {
-                        url = '/ajax/events/' + buttonValue + '/user-attend-event'
+                        url = '/ajax/events/user-attend-event'
                         attendEvent()
                     } else {
                         attendPayedEvent(e)

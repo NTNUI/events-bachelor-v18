@@ -123,6 +123,22 @@ class Event(models.Model):
         EventGuestWaitingList.objects.create(event=self, attendee=guest, payment_id=payment_id,
                                              registration_time=registration_time)
 
+    # Delete a event registration for a user.
+    def user_event_attendance_delete(self, user):
+        EventRegistration.objects.get(event=self, attendee=user).delete()
+
+    # Delete a event registration for a guest.
+    def guest_event_attendance_delete(self, guest):
+        EventGuestRegistration.objects.get(event=self, attendee=guest).delete()
+
+    # Enrolls a user for an event's waiting list.
+    def user_waiting_list_delete(self, user):
+        EventWaitingList.objects.get(event=self, attendee=user).delete()
+
+    # Enrolls a guest for an event's waiting list.
+    def guest_waiting_list_delete(self, guest):
+        EventGuestWaitingList.objects.get(event=self, attendee=guest).delete()
+
     # Checks if a user attends the event.
     def is_user_enrolled(self, user):
         return EventRegistration.objects.filter(attendee=user, event=self).exists()

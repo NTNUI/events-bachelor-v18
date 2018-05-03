@@ -1,28 +1,5 @@
 from django.conf.urls import url
 from .views import (
-    user_attend_event,
-    user_attend_payment_event,
-    user_waiting_list_event,
-
-    user_unattend_event,
-    user_unattend_payment_event,
-    user_unattend_waiting_list_event,
-
-    guest_attend_event,
-    guest_attend_payment_event,
-    guest_waiting_list_event,
-
-    user_attend_sub_event,
-    user_attend_payment_sub_event,
-    user_waiting_list_sub_event,
-
-    guest_attend_sub_event,
-    guest_attend_payment_sub_event,
-    guest_waiting_list_sub_event,
-
-    user_unattend_sub_event,
-    user_unattend_payment_sub_event,
-    user_unattend_waiting_list_sub_event,
 
     create_event_request,
     get_events_request,
@@ -33,6 +10,13 @@ from .views import (
     get_attending_events_request,
     create_category_request,
     create_sub_event_request,
+)
+from .attend_event import (
+    attend_event_request,
+    attend_payment_event_request,
+    waiting_list_event_request,
+    waiting_list_payment_event_request,
+    remove_attendance_event_request
 )
 
 urlpatterns = [
@@ -47,34 +31,6 @@ urlpatterns = [
     url(r'^delete-subevent$', delete_subevent, name='delete_subevent'),
 
     url(r'^(?P<id>\d+)$', get_event, name='get_event'),
-    url(r'^(?P<event_id>\d+)/user-attend-event$', user_attend_event, name='user_attend_event'),
-    url(r'^(?P<event_id>\d+)/user-attend-payment-event$', user_attend_payment_event, name='user_attend_payment_event'),
-    url(r'^(?P<event_id>\d+)/user-waiting-list-event$', user_waiting_list_event, name='user_waiting_list_event'),
+    url(r'^user-attend-event$', attend_event_request, name='attend_event_request'),
 
-    url(r'^user-unattend-event$', user_unattend_event, name='user_unattend_event'),
-    url(r'^user-unattend-payment-event$', user_unattend_payment_event, name='user_unattend_payment_event'),
-    url(r'^user-unattend-waiting-list-event$', user_unattend_waiting_list_event,
-        name='user_unattend_waiting_list_event'),
-
-    url(r'^(?P<event_id>\d+)/guest-attend-event$', guest_attend_event, name='guest_attend_event'),
-    url(r'^(?P<event_id>\d+)/guest-attend-payment-event$', guest_attend_payment_event,
-        name='guest_attend_payment_event'),
-    url(r'^(?P<event_id>\d+)/guest-waiting-list-event$', guest_waiting_list_event, name='guest_waiting_list_event'),
-
-    url(r'^(?P<sub_event_id>\d+)/user-attend-sub-event$', user_attend_sub_event, name='user_attend_sub_event'),
-    url(r'^(?P<sub_event_id>\d+)/user-attend-payment-sub-event$', user_attend_payment_sub_event,
-        name='user_attend_payment_sub_event'),
-    url(r'^(?P<sub_event_id>\d+)/user-waiting-list-sub-event$', user_waiting_list_sub_event,
-        name='user_waiting_list_sub_event'),
-
-    url(r'^user-unattend-sub-event$', user_unattend_sub_event, name='user_unattend_sub_event'),
-    url(r'^user-unattend-payment-sub-event$', user_unattend_payment_sub_event, name='user_unattend_payment_sub_event'),
-    url(r'^user-unattend-waiting-list-sub-event$', user_unattend_waiting_list_sub_event,
-        name='user_unattend_waiting_list_sub_event'),
-
-    url(r'^(?P<sub_event_id>\d+)/guest-attend-sub-event$', guest_attend_sub_event, name='guest_attend_sub_event'),
-    url(r'^(?P<sub_event_id>\d+)/guest-attend-payment-sub-event$', guest_attend_payment_sub_event,
-        name='guest_attend_payment_sub_event'),
-    url(r'^(?P<sub_event_id>\d+)/guest-waiting-list-sub-event$', guest_waiting_list_sub_event,
-        name='guest_waiting_list_sub_event')
 ]

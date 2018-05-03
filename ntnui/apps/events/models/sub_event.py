@@ -81,6 +81,26 @@ class SubEvent(models.Model):
         SubEventGuestWaitingList.objects.create(sub_event=self, attendee=guest, payment_id=payment_id,
                                                 registration_time=registration_time)
 
+    # Deletes an event registration for a user.
+    def user_event_attendance_delete(self, user, payment_id, registration_time):
+        SubEventRegistration.objects.get(event=self, attendee=user, payment_id=payment_id,
+                                         registration_time=registration_time).delete()
+
+    # Deletes an event registration for a guest.
+    def guest_event_attendance_delete(self, guest, payment_id, registration_time):
+        SubEventGuestRegistration.objects.get(event=self, attendee=guest, payment_id=payment_id,
+                                              registration_time=registration_time).delete()
+
+    # Deletes a user from an event's waiting list.
+    def user_waiting_list_delete(self, user, payment_id, registration_time):
+        SubEventWaitingList.objects.get(event=self, attendee=user, payment_id=payment_id,
+                                        registration_time=registration_time).delete()
+
+    # Deletes a guest from an event's waiting list.
+    def guest_waiting_list_delete(self, guest, payment_id, registration_time):
+        SubEventGuestWaitingList.objects.get(event=self, attendee=guest, payment_id=payment_id,
+                                             registration_time=registration_time).delete()
+
     # Checks if a user attends the sub-event.
     def is_user_enrolled(self, user):
         return SubEventRegistration.objects.filter(attendee=user, sub_event=self).exists()
