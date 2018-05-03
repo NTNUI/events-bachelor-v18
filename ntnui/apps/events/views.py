@@ -1,6 +1,6 @@
 from datetime import datetime
 
-#import stripe
+# import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
@@ -248,7 +248,7 @@ def get_delete_event(request, id):
         for category in Category.objects.filter(event=event):
             delete_category(category.id)
 
-        #if eventregistration.payment_id != '':
+        # if eventregistration.payment_id != '':
         #    refund_event(request)
 
         eventwaitinglist.delete()
@@ -263,13 +263,14 @@ def get_delete_event(request, id):
 
     return render(request, 'events/delete_event_page.html')
 
+
 def delete_category(id):
     try:
-        category=Category.objects.get(id=id)
-        categorydescription_nb=CategoryDescription.objects.get(id=id, language='nb')
-        categorydescription_en=CategoryDescription.objects.get(id=id, language='en')
+        category = Category.objects.get(id=id)
+        categorydescription_nb = CategoryDescription.objects.get(id=id, language='nb')
+        categorydescription_en = CategoryDescription.objects.get(id=id, language='en')
         if SubEvent.objects.filter(category=category).exists():
-            subevents=SubEvent.objects.filter(category=category)
+            subevents = SubEvent.objects.filter(category=category)
             for subevent in subevents:
                 delete_subevent(subevent.id)
         categorydescription_nb.delete()
@@ -280,6 +281,7 @@ def delete_category(id):
         return get_json(400, "Could not delete category")
 
     return get_json(200, "Category deleted")
+
 
 def delete_subevent(id):
     try:
@@ -301,7 +303,6 @@ def delete_subevent(id):
         return get_json(400, "Could not delete subevent")
 
     return get_json(200, "Subevent deleted")
-
 
 
 def get_edit_event_page(request, id):
@@ -349,84 +350,85 @@ def get_edit_event_page(request, id):
 def edit_event(request):
     if request.method == 'POST':
         data = request.POST
+        event = Event.objects.get(id=int(data['id']))
 
-        try:
+        name_no = data['name_no']
+        name_en = data['name_en']
+        description_no = data['description_text_no']
+        description_en = data['description_text_en']
+        email_text_no = data['email_text_no']
+        email_text_en = data['email_text_en']
+        start_date = data['start_date']
+        end_date = data['end_date']
+        registration_end_date = data['registration_end_date']
+        host = data['host']
+        attendance_cap = data['attendance_cap']
+        price = data['price']
 
-            event = Event.objects.get(id=int(data['id']))
+        event.start_date = start_date
+        event.end_date = end_date
+        if registration_end_date == "":
+            event.registration_end_date = None
+        else:
+            event.registration_end_date = registration_end_date
+        if attendance_cap == "":
+            event.attendance_cap = None
+        else:
+            event.attendance_cap = attendance_cap
+        if price == "":
+            event.price = None
+        else:
+            event.price = price
 
-            name_no = data['name_no']
-            name_en = data['name_en']
-            description_no = data['description_text_no']
-            description_en = data['description_text_en']
-            email_text_no = data['email_text_no']
-            email_text_en = data['email_text_en']
-            start_date = data['start_date']
-            end_date = data['end_date']
-            registration_end_date = data['registration_end_date']
-            host = data['host']
-            attendance_cap = data['attendance_cap']
-            price = data['price']
+        if host == 'NTNUI':
+            event.is_host_ntnui = True
+        else:
+            event.sports_groups = host
 
-            event.start_date = start_date
-            event.end_date = end_date
-            if registration_end_date == "":
-                event.registration_end_date= None
-            else:
-                event.registration_end_date = registration_end_date
-            if attendance_cap == "":
-                event.attendance_cap = None
-            else:
-                event.attendance_cap = attendance_cap
-            if price == "":
-                event.price= None
-            else:
-                event.price = price
+        event.save()
+        eventdescription_no = EventDescription.objects.get(event=event, language='nb')
+        eventdescription_en = EventDescription.objects.get(event=event, language='en')
 
-            if host == 'NTNUI':
-                event.is_host_ntnui = True
-            else:
-                event.sports_groups = host
+        eventdescription_no.name = name_no
+        eventdescription_en.name = name_en
+        eventdescription_no.description_text = description_no
+        eventdescription_en.description_text = description_en
+        eventdescription_no.custom_email_text = email_text_no
+        eventdescription_en.custom_email_text = email_text_en
+        eventdescription_no.save()
+        eventdescription_en.save()
 
-            event.save()
-            eventdescription_no = EventDescription.objects.get(event=event, language='nb')
-            eventdescription_en = EventDescription.objects.get(event=event, language='en')
+        return JsonResponse({
+            'message': "Edit event successful",
+            'id': data['id']
+        }, status=200)
 
-            eventdescription_no.name = name_no
-            eventdescription_en.name = name_en
-            eventdescription_no.description_text = description_no
-            eventdescription_en.description_text = description_en
-            eventdescription_no.custom_email_text = email_text_no
-            eventdescription_en.custom_email_text = email_text_en
-            eventdescription_no.save()
-            eventdescription_en.save()
-
-            return get_json(200, "Edit event successful")
-
-        except:
-            return get_json(400, "Edit event failed")
 
 def edit_category(request):
     if request.method == 'POST':
         data = request.POST
-
         try:
-
-            categoryname_no=data['name_nb']
-            categoryname_en=data['name_en']
+            categoryname_no = data['name_nb']
+            categoryname_en = data['name_en']
 
             category = Category.objects.get(id=int(data['id']))
 
-            categorydescription_no=CategoryDescription.objects.get(category=category, language='nb')
-            categorydescription_en=CategoryDescription.objects.get(category=category, language='en')
-            categorydescription_no.name=categoryname_no
-            categorydescription_en.name=categoryname_en
+            categorydescription_no = CategoryDescription.objects.get(category=category, language='nb')
+            categorydescription_en = CategoryDescription.objects.get(category=category, language='en')
+            categorydescription_no.name = categoryname_no
+            categorydescription_en.name = categoryname_en
             categorydescription_no.save()
             categorydescription_en.save()
 
-            return get_json(200, "Edit category successful")
+            return JsonResponse({
+                'message': "Edit category successful",
+                'id': data['id']
+            }, status=200)
+
 
         except:
             return get_json(400, "Edit category failed")
+
 
 def edit_subevent(request):
     if request.method == 'POST':
@@ -443,12 +445,12 @@ def edit_subevent(request):
             attendance_cap = data['attendance_cap']
             price = data['price']
 
-            subevent=SubEvent.objects.get(id=int(data['id']))
+            subevent = SubEvent.objects.get(id=int(data['id']))
 
             subevent.start_date = start_date
             subevent.end_date = end_date
             if registration_end_date == "":
-                subevent.registration_end_date= None
+                subevent.registration_end_date = None
             else:
                 subevent.registration_end_date = registration_end_date
             if attendance_cap == "":
@@ -456,7 +458,7 @@ def edit_subevent(request):
             else:
                 subevent.attendance_cap = attendance_cap
             if price == "":
-                subevent.price= None
+                subevent.price = None
             else:
                 subevent.price = price
 
@@ -481,6 +483,7 @@ def edit_subevent(request):
 
         except:
             return get_json(400, "Edit subevent failed")
+
 
 def get_events_request(request):
     return get_events.get_events(request, False)
@@ -641,8 +644,10 @@ def get_event(request, id):
                     sub_event['start_date'] = '{:%Y-%m-%dT%H:%M}'.format(sub_event['start_date'])
                     sub_event['end_date'] = '{:%Y-%m-%dT%H:%M}'.format(sub_event['end_date'])
                     if sub_event['registration_end_date'] is not None and sub_event['registration_end_date'] != "":
-                        sub_event['registration_end_date'] = '{:%Y-%m-%dT%H:%M}'.format(sub_event['registration_end_date'])
-                    sub_event['descriptions'] = list(SubEventDescription.objects.filter(sub_event__id=sub_event['id']).values())
+                        sub_event['registration_end_date'] = '{:%Y-%m-%dT%H:%M}'.format(
+                            sub_event['registration_end_date'])
+                    sub_event['descriptions'] = list(
+                        SubEventDescription.objects.filter(sub_event__id=sub_event['id']).values())
                 categories_list.append(categories[i])
 
         return JsonResponse({

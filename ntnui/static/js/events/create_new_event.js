@@ -257,7 +257,11 @@ let validateAndCreateCategory = (e) => {
 
             // Find and replace the old category with the new one
             categories = categories.map((item) => {
-                return item.id == id ? category : item
+                if(item.id == id) {
+                    category.serverID = item.serverID
+                    return category
+                }
+                return item
             })
 
             // Reset the exit settings
@@ -311,6 +315,7 @@ let validateAndCreateSubEvent = (e) => {
             subEvents = subEvents.map((item) => {
                 if (item.id == id) {
                     subEvent.category = item.category
+                    subEvent.serverID = item.serverID
                     return subEvent
                 }
                 return item
@@ -350,12 +355,17 @@ async function createCategories(eventID) {
         category.csrfmiddlewaretoken = csrftoken
         category.event = eventID
         try {
+            let url = URL_CATEGORY_CREATE
+            if(category.serverID){
+                category.id = category.serverID
+                url = URL_CATEGORY_EDIT
+            }
             let data = await $.ajax({
                 type: 'POST',
-                url: category.serverID ? URL_CATEGORY_EDIT : URL_CATEGORY_CREATE,
+                url: url,
                 data: category
             })
-            category.databaseCategoryId = data.id;
+            category.serverID = data.id;
             return category
 
         } catch (error) {
@@ -376,20 +386,24 @@ async function createCategories(eventID) {
 async function createSubEvents(eventID) {
     let subEventsCreated = await Promise.all(subEvents.map(async (subEvent) => {
         let category = categories.filter((category) => category.id == subEvent.category)
-        subEvent.category = category.length ? category[0].databaseCategoryId : ""
+        subEvent.category = category.length ? category[0].serverID : ""
         subEvent.csrfmiddlewaretoken = csrftoken
         subEvent.event = eventID
         try {
+            let url = URL_SUB_EVENT_CREATE
+            if(subEvent.serverID) {
+                url = URL_SUB_EVENT_EDIT
+                subEvent.id = subEvent.serverID;
+            }
             let data = await $.ajax({
                 type: 'POST',
-                url: subEvent.serverID ? URL_SUB_EVENT_EDIT : URL_SUB_EVENT_CREATE,
+                url: url,
                 data: subEvent,
             })
             return subEvent
         } catch (error) {
             //show error alert
-            printMessage('error', data.responseJSON.message)
-            return subEvent
+            console.log(error)
         }
     }))
     if (subEventsCreated) {
