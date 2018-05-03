@@ -22,16 +22,6 @@
     z-index: 100;
 }
 
-.img-container {
-    width: 100%;
-    max-height:30rem;
-    overflow: hidden;
-}
-#image-centered {
-    width: 100%;
-    height: auto;
-    z-index: 1;
-}
 
 
 #content-container {

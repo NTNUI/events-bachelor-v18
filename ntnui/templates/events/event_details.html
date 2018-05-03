@@ -215,69 +215,6 @@
                 {{ event.description }}
             </div>
         </div>
-        {% if can_edit_and_delete_event and not sub_event_list %}
-            <div class="events-section">
-                <div class="category-card-container">
-                    <div class="category-card" role="tablist" aria-multiselectable="true">
-                        <div class="category-card card">
-                            <div class="card-header-category card-header" role="tab"
-                                 aria-controls="collapseOne"
-                                 data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ category }}"
-                                 aria-expanded="true">
-                                <h5 class="mb-0">
-                                    <a>
-                                        <h3>{% trans 'My executive actions' %}</h3>
-                                    </a>
-                                </h5>
-                            </div>
-                            <div id="collapse-my-executive-actions" class="collapse show" role="tabpanel"
-                                 aria-labelledby="headingOne"
-                                 style="background-color: white;">
-                                <div class="card-block">
-                                    <div class="card" style="padding:1rem;">
-                                        <div>
-                                            <a id="edit-event-button" href="{% url 'edit_event_page' event.id %}">
-                                                <button type="button" class="buttons btn btn-warning">
-                                                    <div class="button-div">
-                                                        <img src="{% static 'img/pencil.svg' %}"/>
-                                                        &nbsp;{% trans 'Edit event' %}
-                                                    </div>
-                                                </button>
-                                            </a>
-                                            <button id="show-confirm-delete-div-button" type="button"
-                                                    class="buttons btn btn-danger">
-                                                <div class="">
-                                                    <img src="{% static 'img/x.svg' %}"/>
-                                                    &nbsp;{% trans 'Delete event' %}
-                                                </div>
-                                            </button>
-                                            <a id="event-attendees-button"
-                                               href="{% url 'event_attendees' event.id number_of_subevents %}">
-                                                <button type="button" class="buttons btn btn-success">
-                                                    <div class="button-div">
-                                                        <!--<img src="{#% static 'img/pencil.svg' %#}"/>-->
-                                                        &nbsp;{% trans 'See attendees' %}
-                                                    </div>
-                                                </button>
-                                            </a>
-                                        </div>
-                                        <div id="confirm-delete">
-                                            <a id="confirm-button" href="{% url 'get_delete_event' event.id %}">
-                                                <button type="button" class="buttons btn btn-success">Confirm</button>
-                                            </a>
-                                            <button id="hide-confirm-delete-div-button" type="button"
-                                                    class="btn btn-default">Cancel
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
 
         <div style="margin-bottom: 5rem;">
             {% for category, sub_events in sub_event_list %}

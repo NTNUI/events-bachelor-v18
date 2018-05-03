@@ -3,6 +3,7 @@
 {% load static %}
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/events/create_new_event.css' %}">
+    <link rel="stylesheet" href="{% static 'css/events/events.css' %}">
 {% endblock %}
 {% block title %} NTNUI - {% trans 'Edit event' %} {% endblock %}
 
@@ -137,9 +138,35 @@
     </div>
 
 
-    <!-- Main form -->
+    <!-- nav form -->
+    <div id="container">
+        <div class="header-container">
+            <div style="margin-top: 2rem;">
+                <div class="top-menu" style="margin-bottom: 2rem;">
+                    <ul>
+                        <li>
+                            <a href="{% url 'event_details' event.id %}">Event </a>
+                        </li>
+                        <li>
+                            <div class="vert-divider"></div>
+                        </li>
+                        <li>
+                            <a href="{% url 'event_attendees' event.id 2 %}">Attendees</a>
+                        </li>
+                        <li>
+                            <div class="vert-divider"></div>
+                        </li>
+                        <li>
+                            <a class="active-item"> Edit event </a>
+                        </li>
 
-    <h1 style="text-align: center">{% trans 'Edit event:' %}</h1>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main form -->
     <form id="create-event-form" style="width:80%; max-width:1000px;">{% csrf_token %}
         <!--Sends the event id, used to identify the event-->
         <input id="event-id" name="id" type="hidden" value="{{ event.id }}">
@@ -167,7 +194,7 @@
             <div class="form-group col-md-6">
                 <label>{% trans 'Description english' %}</label>
                 <textarea class="form-input-create-event form-control" type="textArea"
-                          name="description_text_en"required>{{ event.description_text_en }}</textarea>
+                          name="description_text_en" required>{{ event.description_text_en }}</textarea>
             </div>
         </div>
         <div class="form-row">

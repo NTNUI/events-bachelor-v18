@@ -240,6 +240,21 @@ label.custom-control.custom-checkbox:checked + label::before {
 
 }
 
+.img-container {
+    width: 100%;
+    max-height:30rem;
+    overflow: hidden;
+}
+#image-centered {
+    width: 100%;
+    height: auto;
+    z-index: 1;
+}
+
+.my-options-button {
+    width: 15rem;
+}
+
 @media only screen and (max-width: 700px) {
 
     .filter-element .form-control-select  #search .create-event #main .buttons {
