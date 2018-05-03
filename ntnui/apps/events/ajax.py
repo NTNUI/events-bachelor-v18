@@ -47,7 +47,7 @@ urlpatterns = [
     url(r'^edit-sub-event', edit_subevent, name='edit_subevent'),
     url(r'^get-attending-events', get_attending_events_request, name='get_attending_events'),
 
-    url(r'^edit-event$', edit_event_request, name='edit_event'),
+    url(r'^edit-event$', edit_event_request, name='ajax_edit_event'),
     url(r'^delete-subevent$', delete_subevent, name='delete_subevent'),
 
     url(r'^(?P<id>\d+)$', get_event, name='get_event'),
