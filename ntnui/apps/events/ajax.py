@@ -16,7 +16,6 @@ from .attend_event import (
     attend_payment_event_request,
     waiting_list_event_request,
     waiting_list_payment_event_request,
-    remove_attendance_event_request
 )
 
 urlpatterns = [
