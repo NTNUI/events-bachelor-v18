@@ -64,7 +64,7 @@ def create_sub_event_request(request):
 
         registration_end_date = request.POST.get('registration_end_date')
         if registration_end_date == "":
-            registration_end_date = None;
+            registration_end_date = None
 
         category_id = request.POST.get("category", "")
 
@@ -241,20 +241,32 @@ def get_delete_event(request, id):
         event = Event.objects.get(id=int(id))
         eventdescription_no = EventDescription.objects.get(event=event, language='nb')
         eventdescription_en = EventDescription.objects.get(event=event, language='en')
-        eventregistration = EventRegistration.objects.get(event=event)
-        eventwaitinglist = EventWaitingList.objects.get(event=event)
-        eventguestwaitinglist = EventGuestWaitingList.objects.get(event=event)
-        eventguestregistration = EventGuestRegistration.objects.get(event=event)
-        for category in Category.objects.filter(event=event):
-            delete_category(category.id)
+        eventregistrations = EventRegistration.objects.filter(event=event)
+        eventwaitinglists = EventWaitingList.objects.filter(event=event)
+        eventguestwaitinglists = EventGuestWaitingList.objects.filter(event=event)
+        eventguestregistrations = EventGuestRegistration.objects.filter(event=event)
+        if Category.objects.filter(event=event).exists():
+            categories = Category.objects.filter(event=event)
+            #print("Categories before deletion: " + categories)
+            for category in categories:
+                delete_category(category)
+            #print("Categories after deletion: " + categories)
+
+        if eventregistrations:
+            for eventregistration in eventregistrations:
+                eventregistration.delete()
+        if eventguestregistrations:
+            for eventguestregistration in eventguestregistrations:
+                eventguestregistration.delete()
+        if eventwaitinglists:
+            for eventwaitinglist in eventwaitinglists:
+                eventwaitinglist.delete()
+        if eventguestwaitinglists:
+            for eventguestwaitinglist in eventguestwaitinglists:
+                eventguestwaitinglist.delete()
 
         # if eventregistration.payment_id != '':
         #    refund_event(request)
-
-        eventwaitinglist.delete()
-        eventguestregistration.delete()
-        eventregistration.delete()
-        eventguestwaitinglist.delete()
         eventdescription_no.delete()
         eventdescription_en.delete()
         event.delete()
@@ -263,16 +275,21 @@ def get_delete_event(request, id):
 
     return render(request, 'events/delete_event_page.html')
 
+def delete_category_request(request):
+    category = Category.objects.get(id=int(request.POST.get('id')))
 
-def delete_category(id):
+    return delete_category(category)
+
+def delete_category(category):
     try:
-        category = Category.objects.get(id=id)
-        categorydescription_nb = CategoryDescription.objects.get(id=id, language='nb')
-        categorydescription_en = CategoryDescription.objects.get(id=id, language='en')
+        print(category)
+        categorydescription_nb = CategoryDescription.objects.get(category=category, language='nb')
+        categorydescription_en = CategoryDescription.objects.get(category=category, language='en')
+
         if SubEvent.objects.filter(category=category).exists():
             subevents = SubEvent.objects.filter(category=category)
             for subevent in subevents:
-                delete_subevent(subevent.id)
+                delete_subevent(subevent)
         categorydescription_nb.delete()
         categorydescription_en.delete()
         category.delete()
@@ -282,23 +299,35 @@ def delete_category(id):
 
     return get_json(200, "Category deleted")
 
+def delete_subevent_request(request):
+    subevent = SubEvent.objects.get(id=int(request.POST.get('id')))
 
-def delete_subevent(request):
-    print(request.POST)
+    return delete_subevent(subevent)
+
+
+def delete_subevent(subevent):
     try:
-        subevent = SubEvent.objects.get(id=int(request.POST.get('id')))
         subeventdescription_nb = SubEventDescription.objects.get(sub_event=subevent, language='nb')
         subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
-        subeventregistration = SubEventRegistration.objects.get(sub_event=subevent)
-        subeventwaitinglist = SubEventWaitingList.objects.get(sub_event=subevent)
-        subeventguestregistration = SubEventGuestRegistration.objects.get(sub_event=subevent)
-        subeventguestwaitinglist = SubEventGuestWaitingList.objects.get(sub_event=subevent)
+        subeventregistrations = SubEventRegistration.objects.filter(sub_event=subevent)
+        subeventwaitinglists = SubEventWaitingList.objects.filter(sub_event=subevent)
+        subeventguestregistrations = SubEventGuestRegistration.objects.filter(sub_event=subevent)
+        subeventguestwaitinglists = SubEventGuestWaitingList.objects.filter(sub_event=subevent)
+
+        if subeventregistrations:
+            for subeventregistration in subeventregistrations:
+                subeventregistration.delete()
+        if subeventguestregistrations:
+            for subeventguestregistration in subeventguestregistrations:
+                subeventguestregistration.delete()
+        if subeventwaitinglists:
+            for subeventwaitinglist in subeventwaitinglists:
+                subeventwaitinglist.delete()
+        if subeventguestwaitinglists:
+            for subeventguestwaitinglist in subeventguestwaitinglists:
+                subeventguestwaitinglist.delete()
         subeventdescription_nb.delete()
         subeventdescription_en.delete()
-        subeventregistration.delete()
-        subeventguestregistration.delete()
-        subeventwaitinglist.delete()
-        subeventguestwaitinglist.delete()
         subevent.delete()
 
     except:
