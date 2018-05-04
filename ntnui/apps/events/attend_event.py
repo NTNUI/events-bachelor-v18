@@ -167,7 +167,7 @@ def verify_sign_up(request, event_has_open_spots):
         # Checks
         elif event.is_user_enrolled(user):
             return event, user, False, False, get_json(400, 'The user already attends the event.')
-        Checks
+        # Checks
         elif event.is_user_on_waiting_list(user):
             return event, user, False, False, get_json(400, 'The user is on the waiting list.')
         # Checks if the registration period has ended.
