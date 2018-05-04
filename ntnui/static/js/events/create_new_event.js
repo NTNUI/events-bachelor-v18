@@ -62,6 +62,13 @@ $(() => {
         $("#category-modal").modal('show')
     });
 
+    const subEventContainer = $('#subEvents')
+
+    subEventContainer.on('click', ".delete-sub-event", deleteSubEvent)
+    subEventContainer.on('click', ".edit-subEvent", editSubEvent)
+    subEventContainer.on('click', ".delete-category", deleteCategory)
+    subEventContainer.on('click', ".edit-category", editCategory)
+
     // add listener to all the event form fields
     $(".form-input-create-event").blur(validateInputOnBlur);
 
@@ -257,7 +264,7 @@ let validateAndCreateCategory = (e) => {
 
             // Find and replace the old category with the new one
             categories = categories.map((item) => {
-                if(item.id == id) {
+                if (item.id == id) {
                     category.serverID = item.serverID
                     return category
                 }
@@ -356,7 +363,7 @@ async function createCategories(eventID) {
         category.event = eventID
         try {
             let url = URL_CATEGORY_CREATE
-            if(category.serverID){
+            if (category.serverID) {
                 category.id = category.serverID
                 url = URL_CATEGORY_EDIT
             }
@@ -391,7 +398,7 @@ async function createSubEvents(eventID) {
         subEvent.event = eventID
         try {
             let url = URL_SUB_EVENT_CREATE
-            if(subEvent.serverID) {
+            if (subEvent.serverID) {
                 url = URL_SUB_EVENT_EDIT
                 subEvent.id = subEvent.serverID;
             }
@@ -607,60 +614,65 @@ function showSubEvent(subEvent, fromServer) {
         '   </div>' +
         ' </div>' +
         '</div>');
+}
 
 
-    // onClick for the delete SubEvent button
-    $(".delete-sub-event").click((e) => {
-        const event = e || window.event
+//onClick for edit subevent
+let editSubEvent = (e) => {
+    const event = e || window.event
 
-        // Find the id
-        const id = $(event.target).closest(".subEvent-element").attr('data-id')
+    console.log("here")
 
+    // Set the edit container
+    editContainer = $(event.target).closest(".subEvent-element")
+    const id = editContainer.attr('data-id')
 
-        // Remove the given element from the list
-        subEvents = subEvents.filter(item => {
-            if (item.id != id) {
-                return true
-            } else {
-                subEvent = item;
-                return false
-            }
-        })
+    // Find the given subevent
+    let subEvent = subEvents.filter(item => item.id == id)
 
-        // Remove the element
-        $(event.target).closest(".subEvent-element").remove()
-
-        // iF the container contains no elements, put the help text back
-        if (!container.find('div').length) {
-            container.append(getContainerPlaceholder());
-        }
-        if (subEvent.serverID) {
-            deleteSubEventFromServer(subEvent.serverID)
-        }
-
+    // Set the form values
+    $('#subEvent-data-form *').filter(':input').each((e, input) => {
+        const value = subEvent[0][input.name]
+        input.value = value;
     })
 
-    //onClick for edit subevent
-    $(".edit-subEvent").click((e) => {
-        const event = e || window.event
+    // Update the button and show the form
+    $('#submit-sub-event-form').text(gettext("Save"))
+    $("#subEvent-modal").modal('show')
+}
 
-        // Set the edit container
-        editContainer = $(event.target).closest(".subEvent-element")
-        const id = editContainer.attr('data-id')
 
-        // Find the given subevent
-        subEvent = subEvents.filter(item => item.id == id)
+// onClick for the delete SubEvent button7
+let deleteSubEvent = (e) => {
+    e.stopPropagation()
+    e.preventDefault()
 
-        // Set the form values
-        $('#subEvent-data-form *').filter(':input').each((e, input) => {
-            const value = subEvent[0][input.name]
-            input.value = value;
-        })
+    const event = e || window.event
 
-        // Update the button and show the form
-        $('#submit-sub-event-form').text(gettext("Save"))
-        $("#subEvent-modal").modal('show')
+    // Find the id
+    const id = $(event.target).closest(".subEvent-element").attr('data-id')
+
+    // Remove the given element from the list
+    subEvents = subEvents.filter(item => {
+        if (item.id != id) {
+            return true
+        } else {
+            subEvent = item;
+            return false
+        }
     })
+
+    // Remove the element
+    $(event.target).closest(".subEvent-element").remove()
+
+    // iF the container contains no elements, put the help text back
+    const container = $("#subEvents");
+    if (!container.find('div').length) {
+        container.append(getContainerPlaceholder());
+    }
+    if (subEvent.serverID) {
+        deleteSubEventFromServer(subEvent.serverID)
+    }
 }
 
 function showCategory(category) {
@@ -693,63 +705,64 @@ function showCategory(category) {
         '       </div>' +
         '   </div>' +
         '</div>')
+}
 
 
-    // onClick for delete category
-    $(".delete-category").click((e) => {
-        const event = e || window.event
+// onClick for delete category
+let deleteCategory = (e) => {
+    const event = e || window.event
 
-        // Find the category id
-        const id = $(event.target).closest(".category-card").find('.drag-container').attr('data-id')
+    // Find the category id
+    const id = $(event.target).closest(".category-card").find('.drag-container').attr('data-id')
 
-        // Remove the category with the given id
-        categories = categories.filter(item => {
-            if (item.id != id) {
-                return true;
-            } else {
-                category = item;
-                return false;
-            }
-        })
-
-        // Delete all subEvents in the category
-        subEvents = subEvents.filter((subEvent) => subEvent.category != id)
-
-        // Remove the visible category
-        $(event.target).closest(".category-card").remove()
-
-        // IF the element no longer contains any elements, show the help text
-        if (!container.find('div').length) {
-            container.append(getContainerPlaceholder())
-        }
-
-        if (category.serverID) {
-            deleteCategoryFromServer(category.serverID)
+    // Remove the category with the given id
+    categories = categories.filter(item => {
+        if (item.id != id) {
+            return true;
+        } else {
+            category = item;
+            return false;
         }
     })
 
-    // onClick for edit category
-    $(".edit-category").click((e) => {
-        const event = e || window.event
+    // Delete all subEvents in the category
+    subEvents = subEvents.filter((subEvent) => subEvent.category != id)
 
-        // Set the edit container
-        editContainer = $(event.target).closest(".category-card")
+    // Remove the visible category
+    $(event.target).closest(".category-card").remove()
 
-        // Find the category id
-        const id = editContainer.find('.drag-container').attr('data-id')
-        // Find the category with the given id
-        category = categories.filter(item => item.id == id)
+    const container = $("#subEvents");
+    // IF the element no longer contains any elements, show the help text
+    if (!container.find('div').length) {
+        container.append(getContainerPlaceholder())
+    }
 
-        // Place the values in the form
-        $('#category-data-form *').filter(':input').each((e, input) => {
-            const value = category[0][input.name]
-            input.value = value;
-        })
+    if (category.serverID) {
+        deleteCategoryFromServer(category.serverID)
+    }
+}
 
-        // Uodate the create button and show the form
-        $('#submit-category-form').text(gettext("Save"))
-        $("#category-modal").modal('show')
+// onClick for edit category
+let editCategory = (e) => {
+    const event = e || window.event
+
+    // Set the edit container
+    editContainer = $(event.target).closest(".category-card")
+
+    // Find the category id
+    const id = editContainer.find('.drag-container').attr('data-id')
+    // Find the category with the given id
+    const category = categories.filter(item => item.id == id)
+
+    // Place the values in the form
+    $('#category-data-form *').filter(':input').each((e, input) => {
+        const value = category[0][input.name]
+        input.value = value;
     })
+
+    // Uodate the create button and show the form
+    $('#submit-category-form').text(gettext("Save"))
+    $("#category-modal").modal('show')
 }
 
 /**

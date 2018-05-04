@@ -245,6 +245,10 @@ label.custom-control.custom-checkbox:checked + label::before {
     max-height:30rem;
     overflow: hidden;
 }
+.title-container {
+    width: 100%;
+}
+
 #image-centered {
     width: 100%;
     height: auto;
@@ -253,6 +257,20 @@ label.custom-control.custom-checkbox:checked + label::before {
 
 .my-options-button {
     width: 15rem;
+}
+
+.loader {
+    border: 16px solid lightgrey; /* Light grey */
+    border-top: 16px solid green; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 @media only screen and (max-width: 700px) {
