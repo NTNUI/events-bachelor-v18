@@ -1,6 +1,6 @@
 from datetime import datetime
 
-# import stripe
+import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
@@ -283,9 +283,10 @@ def delete_category(id):
     return get_json(200, "Category deleted")
 
 
-def delete_subevent(id):
+def delete_subevent(request):
+    print(request.POST)
     try:
-        subevent = SubEvent.objects.get(id=id)
+        subevent = SubEvent.objects.get(id=int(request.POST.get('id')))
         subeventdescription_nb = SubEventDescription.objects.get(sub_event=subevent, language='nb')
         subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
         subeventregistration = SubEventRegistration.objects.get(sub_event=subevent)
