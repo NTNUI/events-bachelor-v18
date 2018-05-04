@@ -4,6 +4,7 @@
 
 {% block stylesheet %}
     <link rel="stylesheet" href="{% static 'css/events/event_details.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/events/events.css' %}"/>
 {% endblock %}
 
 {% block content %}
@@ -11,11 +12,41 @@
     </div>
 
     <div id="container">
-        <img id="image-centered" src=" /static/{{ event.cover_photo }}" alt="Event Image"/>
+        <div class="header-container">
+            {% if can_edit_and_delete_event %}
+                <div class="top-menu" style="margin-bottom: 2rem;">
+                    <ul>
+                        <li>
+                            <a class="active-item"> Event </a>
+                        </li>
+                        <li>
+                            <div class="vert-divider"></div>
+                        </li>
+                        <li>
+                            <a href="{% url 'event_attendees' event.id number_of_subevents %}">Attendees</a>
+                        </li>
+                        <li>
+                            <div class="vert-divider"></div>
+                        </li>
+                        <li>
+                            <a href="{% url 'edit_event_page' event.id %}"> Edit event </a>
+                        </li>
 
-        <div id="header">
-            {{ event.name }}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="img-container">
+                <img id="image-centered" src=" /static/{{ event.cover_photo }}" alt="Event Image"/>
+                <div style="width: 100%; display: flex; justify-content: center;">
+                    <div id="header">
+                        {{ event.name }}
+                    </div>
+                </div>
+
+            </div>
         </div>
+
 
         <!-- Waring modal -->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -39,6 +70,7 @@
                 </div>
             </div>
         </div>
+
 
         {% if not is_authenticated %}
             <!-- Guest user modal -->
@@ -89,6 +121,7 @@
         {% endif %}
 
         <div id="content-container">
+
             <div id="event-info-container">
 
                 <div id="labels-infos">
@@ -145,6 +178,7 @@
                         {% endif %}
                     </div>
                 </div>
+
                 {% if not sub_event_list %}
                     <div id="event-sign-up">
                         {% if event.attends %}
@@ -181,145 +215,60 @@
                 {{ event.description }}
             </div>
         </div>
-        {% if can_edit_and_delete_event and not sub_event_list %}
-            <div class="events-section">
-                <div class="category-card-container">
-                    <div class="category-card" id="accordion" role="tablist" aria-multiselectable="true">
-                        <div class="category-card card">
-                            <div class="card-header-category card-header" role="tab"
-                                 aria-controls="collapseOne"
-                                 data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ category }}"
-                                 aria-expanded="true">
-                                <h5 class="mb-0">
-                                    <a>
-                                        <h3>{% trans 'My executive actions' %}</h3>
-                                    </a>
-                                </h5>
-                            </div>
-                            <div id="collapse-my-executive-actions" class="collapse show" role="tabpanel"
-                                 aria-labelledby="headingOne"
-                                 style="background-color: white;">
-                                <div class="card-block">
-                                    <div class="card" style="padding:1rem;">
-                                        <div>
-                                            <a id="edit-event-button" href="{% url 'edit_event_page' event.id %}">
-                                                <button type="button" class="buttons btn btn-warning">
-                                                    <div class="button-div">
-                                                        <img src="{% static 'img/pencil.svg' %}"/>
-                                                        &nbsp;{% trans 'Edit event' %}
-                                                    </div>
-                                                </button>
-                                            </a>
-                                            <button id="show-confirm-delete-div-button" type="button"
-                                                    class="buttons btn btn-danger">
-                                                <div class="">
-                                                    <img src="{% static 'img/x.svg' %}"/>
-                                                    &nbsp;{% trans 'Delete event' %}
-                                                </div>
-                                            </button>
-                                            <a id="event-attendees-button"
-                                               href="{% url 'event_attendees' event.id number_of_subevents %}">
-                                                <button type="button" class="buttons btn btn-success">
-                                                    <div class="button-div">
-                                                        <!--<img src="{#% static 'img/pencil.svg' %#}"/>-->
-                                                        &nbsp;{% trans 'See attendees' %}
-                                                    </div>
-                                                </button>
-                                            </a>
-                                        </div>
-                                        <div id="confirm-delete">
-                                            <a id="confirm-button" href="{% url 'get_delete_event' event.id %}">
-                                                <button type="button" class="buttons btn btn-success">Confirm</button>
-                                            </a>
-                                            <button id="hide-confirm-delete-div-button" type="button"
-                                                    class="btn btn-default">Cancel
-                                            </button>
-                                        </div>
 
+        <div style="margin-bottom: 5rem;">
+            {% for category, sub_events in sub_event_list %}
+                <div class="category-card">
+                    <div id="collapce-{{ category }}" class="collapse-header card-header"
+                         data-target="#{{ forloop.counter }}-container" data-toggle="collapse"
+                         aria-expanded="true" style="background-color: white;">
+                        <h5>
+                            <h3>{{ category }}</h3>
+                        </h5>
+                    </div>
+                    <div id="{{ forloop.counter }}-container" class="collapse show">
+                        <div class="card">
+                            {% for sub_event in sub_events %}
+                                <div class="card">
+                                    <div class="sub-event-container card-body">
+                                        <div class="sub-event-item">
+                                            <div>{{ sub_event.name }}</div>
+                                        </div>
+                                        <div class="sub-event-item">
+                                            <!--<div>{{ sub_event.start_date }} </br>
+                                                        {{ sub_event.end_date }}
+                                                </div> -->
+                                        </div>
+                                        <div class="sub-event-item">
+                                            {% if sub_event.attends %}
+                                                <button type="button" class="join-subevent-button btn btn-danger"
+                                                        value="-{{ sub_event.id }}">
+                                                    Unattend from event
+                                                </button>
+                                            {% else %}
+                                                <button class="join-subevent-button btn btn-success "
+                                                        type="button"
+                                                        value="{{ sub_event.id }}" name="mybtn">
+                                                    {% trans 'Attend event' %}
+                                                </button>
+                                            {% endif %}
+                                            {% if can_edit_and_delete_event %}
+                                                <button type="button" class="delete-subevent-button btn btn-danger"
+                                                        value="{{ sub_event.id }}">
+                                                    {% trans 'Delete' %}
+                                                </button>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
-            </div>
-        {% endif %}
-
-        <div class="events-section">
-
-            <div class="category-card-container">
-                {% if sub_event_list and can_edit_and_delete_event %}
-                    <div class="card-header-category card-header" role="tab">
-                        <a id="event-attendees-button" href="{% url 'event_attendees' event.id number_of_subevents %}">
-                            <button type="button" class="buttons btn btn-success">
-                                <div class="button-div">
-                                    <!--<img src="{#% static 'img/pencil.svg' %#}"/>-->
-                                    &nbsp;{% trans 'See attendees' %}
-                                </div>
-                            </button>
-                        </a>
-                    </div>
-                {% endif %}
-                <div class="category-card" id="accordion" role="tablist" aria-multiselectable="true">
-                    {% for category, sub_events in sub_event_list %}
-
-                        <div class="category-card card">
-                            <div class="card-header-category card-header" role="tab" id="headingOne"
-                                 aria-controls="collapseOne"
-                                 data-toggle="collapse" data-parent="#accordion" href="#collapse-{{ category }}"
-                                 aria-expanded="true">
-                                <h5 class="mb-0">
-                                    <a>
-                                        <h3>{{ category }}</h3>
-                                    </a>
-                                </h5>
-                            </div>
-                            <div id="collapse-{{ category }}" class="collapse show" role="tabpanel"
-                                 aria-labelledby="headingOne"
-                                 style="background-color: white;">
-                                {% for sub_event in sub_events %}
-                                    <div class="card-block">
-                                    <div class="card">
-                                        <div class="sub-event-container card-body">
-                                            <div class="sub-event-item">
-                                                <div>{{ sub_event.name }}</div>
-                                            </div>
-                                            <div class="sub-event-item">
-                                                <!--<div>{{ sub_event.start_date }} </br>
-                                                        {{ sub_event.end_date }}
-                                                </div> -->
-                                            </div>
-                                            <div class="sub-event-item">
-                                                {% if sub_event.attends %}
-                                                    <button type="button" class="join-subevent-button btn btn-danger"
-                                                            value="-{{ sub_event.id }}">
-                                                        Unattend from event
-                                                    </button>
-                                                {% else %}
-                                                    <button class="join-subevent-button btn btn-success "
-                                                            type="button"
-                                                            value="{{ sub_event.id }}" name="mybtn">
-                                                        {% trans 'Attend event' %}
-                                                    </button>
-                                                {% endif %}
-                                                {% if can_edit_and_delete_event %}
-                                                    <button type="button" class="delete-subevent-button btn btn-danger"
-                                                            value="{{ sub_event.id }}">
-                                                        {% trans 'Delete' %}
-                                                    </button>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-                    {% endfor %}
-            </div>
+            {% endfor %}
         </div>
     </div>
+
 
 
 
