@@ -543,5 +543,20 @@ def event_send_mail(event, user):
     )
 
 
+def get_event_by_id(event_id):
+    """Gets the event which the event ID is associated with."""
 
+    try:
+        return Event.objects.get(id=event_id)
+    except Event.DoesNotExist:
+        return get_json(404, "Event doesn't exist.")
+
+
+def get_sub_event_by_id(sub_event_id):
+    """Gets the sub-event which the sub-event ID is associated with."""
+
+    try:
+        return SubEvent.objects.get(id=sub_event_id)
+    except SubEvent.DoesNotExist:
+        return get_json(404, "Sub-event doesn't exist.")
 

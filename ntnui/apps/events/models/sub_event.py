@@ -62,12 +62,12 @@ class SubEvent(models.Model):
         return None
 
     # Enrolls a user for an sub-event.
-    def user_attend_sub_event(self, user, payment_id, registration_time):
+    def user_attend(self, user, payment_id, registration_time):
         SubEventRegistration.objects.create(sub_event=self, attendee=user, payment_id=payment_id,
                                             registration_time=registration_time)
 
     # Enrolls a guest for an sub-event.
-    def guest_attend_sub_event(self, guest, payment_id, registration_time):
+    def guest_attend(self, guest, payment_id, registration_time):
         SubEventGuestRegistration.objects.create(sub_event=self, attendee=guest, payment_id=payment_id,
                                                  registration_time=registration_time)
 
@@ -82,14 +82,12 @@ class SubEvent(models.Model):
                                                 registration_time=registration_time)
 
     # Deletes an event registration for a user.
-    def user_event_attendance_delete(self, user, payment_id, registration_time):
-        SubEventRegistration.objects.get(event=self, attendee=user, payment_id=payment_id,
-                                         registration_time=registration_time).delete()
+    def user_attendance_delete(self, user):
+        SubEventRegistration.objects.get(event=self, attendee=user).delete()
 
     # Deletes an event registration for a guest.
-    def guest_event_attendance_delete(self, guest, payment_id, registration_time):
-        SubEventGuestRegistration.objects.get(event=self, attendee=guest, payment_id=payment_id,
-                                              registration_time=registration_time).delete()
+    def guest_attendance_delete(self, guest):
+        SubEventGuestRegistration.objects.get(event=self, attendee=guest).delete()
 
     # Deletes a user from an event's waiting list.
     def user_waiting_list_delete(self, user, payment_id, registration_time):

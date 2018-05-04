@@ -104,12 +104,12 @@ class Event(models.Model):
         return None
 
     # Enrolls a user for an event.
-    def user_attend_event(self, user, payment_id, registration_time):
+    def user_attend(self, user, payment_id, registration_time):
         EventRegistration.objects.create(event=self, attendee=user, payment_id=payment_id,
                                          registration_time=registration_time)
 
     # Enrolls a guest for an event.
-    def guest_attend_event(self, guest, payment_id, registration_time):
+    def guest_attend(self, guest, payment_id, registration_time):
         EventGuestRegistration.objects.create(event=self, attendee=guest, payment_id=payment_id,
                                               registration_time=registration_time)
 
@@ -124,11 +124,11 @@ class Event(models.Model):
                                              registration_time=registration_time)
 
     # Delete a event registration for a user.
-    def user_event_attendance_delete(self, user):
+    def user_attendance_delete(self, user):
         EventRegistration.objects.get(event=self, attendee=user).delete()
 
     # Delete a event registration for a guest.
-    def guest_event_attendance_delete(self, guest):
+    def guest_attendance_delete(self, guest):
         EventGuestRegistration.objects.get(event=self, attendee=guest).delete()
 
     # Enrolls a user for an event's waiting list.
