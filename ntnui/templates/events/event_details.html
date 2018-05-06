@@ -229,13 +229,13 @@
                                             <div class="sub-event-item">
                                                 {% if sub_event.attends %}
                                                     <button type="button" class="join-subevent-button btn btn-danger"
-                                                            value="-{{ sub_event.id }}">
+                                                            value="{{ sub_event.id }}" data-state="unattend">
                                                         Unattend from event
                                                     </button>
                                                 {% else %}
                                                     <button class="join-subevent-button btn btn-success "
                                                             type="button"
-                                                            value="{{ sub_event.id }}" name="mybtn">
+                                                            value="{{ sub_event.id }}" data-state="attend" name="mybtn">
                                                         {% trans 'Attend event' %}
                                                     </button>
                                                 {% endif %}
