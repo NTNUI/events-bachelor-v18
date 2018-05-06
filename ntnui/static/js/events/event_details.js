@@ -2,7 +2,8 @@
 const States = {
     ATTEND: 'ATTEND',
     UNATTEND: 'UNATTEND',
-    WAIT_LIST: 'WAIT_LIST'
+    WAIT_LIST: 'WAIT_LIST',
+    ON_WAITING_LIST: 'ON_WAITING_LIST'
 }
 
 // Used to set the modal functionality
@@ -108,7 +109,9 @@ function getState(type) {
         return States.WAIT_LIST
     } else if (type === "unattend") {
         return States.UNATTEND
-    } else {
+    } else if (type === "on-waiting-list") {
+        return States.ON_WAITING_LIST
+    }else {
         return States.ATTEND
     }
 }
@@ -135,6 +138,11 @@ $("#attend-event-button").click((e) => {
                     attendPayedEvent(button)
                 }
             }
+            break;
+        case States.WAIT_LIST:
+            attendWaitingList(button)
+            break;
+        case States.ON_WAITING_LIST:
             break;
     }
 })
@@ -302,7 +310,10 @@ function updateButton(button, title, type) {
             button.setAttribute("class", "btn btn-success")
             break;
         case States.WAIT_LIST:
-            button.setAttribute("class", "btn btn-secondary")
+            button.setAttribute("class", "btn btn-info")
+            break;
+        case States.ON_WAITING_LIST:
+            button.setAttribute("class", "btn btn-secondary disabled")
             break;
     }
 }
@@ -350,6 +361,30 @@ async function attendEvent(button, subEvent) {
             subEvent.state = States.UNATTEND
         } else {
             state = States.UNATTEND
+        }
+        printMessage(MsgType.SUCCESS, response.message);
+    }
+}
+
+/**
+ * Gather information and send a request to the server in order to let the user be place on the waiting
+ * @param button
+ * @param subEvent
+ * @returns {Promise.<void>}
+ */
+async function attendWaitingList(button, subEvent) {
+    let response;
+    if (subEvent) {
+        response = await sendAjax({event_id: eventID}, 'waiting-list-event');
+    } else {
+        response = await sendAjax({sub_event_id: subEvent.id}, 'waiting-list-event');
+    }
+    if (response) {
+        updateButton(button, gettext('you are on the wailing list'), States.ON_WAITING_LIST)
+        if (subEvent) {
+            subEvent.state = States.ON_WAITING_LIST
+        } else {
+            state = States.ON_WAITING_LIST
         }
         printMessage(MsgType.SUCCESS, response.message);
     }
