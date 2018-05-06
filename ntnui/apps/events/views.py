@@ -495,7 +495,6 @@ def event_has_description_and_name(description, name):
 
 def get_json(code, message):
     """Returns JSON with the given format."""
-
     return JsonResponse({
         'message': message},
         status=code)

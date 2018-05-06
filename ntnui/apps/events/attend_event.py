@@ -115,6 +115,7 @@ def attend_event(event, attendee, payment_id):
     return get_json(201, 'Signed-up for the event!')
 
 
+
 def waiting_list_event(event, attendee, payment_id):
     """ Creates the waiting list attendance and sends a confirmation mail. """
 
