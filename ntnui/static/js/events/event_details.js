@@ -1,10 +1,36 @@
+// Define enum use to set the state of the button
+const States = {
+    ATTEND: 'ATTEND',
+    UNATTEND: 'UNATTEND',
+    WAIT_LIST: 'WAIT_LIST'
+}
+
+// Set the currentState, defaultis ADD
+let state
+
+// Used to set the right modal content
+const ModalTypes = {
+    UNATTEND_EVENT: 'UNATTEND_EVENT',
+    UNATTEND_PAYED_EVENT: 'UNATTEND_PAYED_EVENT',
+    UNATTEND_SUB_EVENT: 'UNATTEND_SUB_EVENT',
+    UNATTEND_PAYED_SUB_EVENT: 'UNATTEND_PAYED_SUB_EVENT',
+}
+
+let modalType;
+
 // defines variables that will be used
-let buttonValue
-let button
 let csrftoken
-let url
+
+// properties used by the modal, in order to preform the right action
+let lastPressedButton = null;
 let buttonText
-let modalType
+let url
+
+// Sets the id of the given event
+let eventID
+
+// Event has price
+let hasNoPrice;
 
 // used for guest users
 let isGuestUser = false;
@@ -23,9 +49,25 @@ let handler = null;
 $(() => {
     // get the language
     lang = $('html').attr('lang')
+
     if (lang === 'nb' || lang === 'nn') {
         lang = 'no';
     }
+
+    // Get the eventID
+    const attendEventButton = $("#attend-event-button")
+    eventID = attendEventButton.val()
+
+    const type = attendEventButton.attr("data-state")
+    if (type === "wait-list") {
+        state = States.WAIT_LIST
+    } else if (type === "unattend") {
+        state = States.UNATTEND
+    } else {
+        state = States.ATTEND
+    }
+
+    hasNoPrice = $("#price").length === 0;
 
     // get the csrf token
     csrftoken = getCookie('csrftoken')
@@ -49,35 +91,31 @@ $(() => {
 })
 
 
-async function processStripeToken(token) {
-    if (isGuestUser) {
-        const data = {
-            csrfmiddlewaretoken: csrftoken,
-            stripeToken: token.id,
-            id: buttonValue,
-            stripEmail: token.email,
-            email: email,
-            first_name: firstName,
-            last_name: lastName,
-            phone: phone,
-        }
-    } else {
-        const data = {
-            csrfmiddlewaretoken: csrftoken,
-            id: buttonValue,
-            stripeToken: token.id,
-            stripEmail: token.email
-        }
+/**
+ * Sends a attend event request to the server
+ */
+$("#attend-event-button").click((e) => {
+    e.preventDefault()
+    const button = getButton(e);
+
+    switch (state) {
+        case States.UNATTEND:
+            modalType = (hasNoPrice) ? ModalTypes.UNATTEND_EVENT : ModalTypes.UNATTEND_PAYED_EVENT
+            $("#deleteModal").modal("show");
+            break;
+        case States.ATTEND:
+            if (isGuestUser) {
+                showGuestModal();
+            } else {
+                if (hasNoPrice) {
+                    attendEvent('/ajax/events/attend-event', button)
+                } else {
+                    attendPayedEvent()
+                }
+            }
+            break;
     }
-    let result = await sendAjax(data, '/ajax/events/attend-payment-event')
-    if (result) {
-        button.innerHTML = gettext("Do not attend event")
-        button.value = '-' + button.value
-        button.setAttribute("class", "btn btn-danger")
-        printMessage('Success', data.message)
-    }
-    hideGuestModal()
-}
+})
 
 /**
  * Sends a attend subevet request
@@ -96,36 +134,16 @@ $(".join-subevent-button").click((e) => {
     }
 })
 
-/**
- * Sends a attend event request to the server
- */
-$("#attend-event-button").click((e) => {
-    const event = e || window.event
-    button = event.target
-    buttonValue = button.value
-    if (button.value[0] === "-") {
-        buttonText = gettext('attend event')
-        if ($("#price").length === 0) {
-            url = '/ajax/events/user-unattend-event'
-        } else {
-            url = '/ajax/events/user-unattend-payment-event'
-            buttonText = gettext('Pay using card')
-        }
-        openModal()
-    } else {
-        if (isGuestUser) {
-            showGuestModal();
-        } else {
-            if ($("#price").length === 0) {
-                url = '/ajax/events/attend-event'
-                attendEvent()
-            } else {
-                attendPayedEvent(e)
-            }
-        }
+$("#remove-attend-event-button-modal").click(() => {
+    switch (modalType) {
+        case ModalTypes.UNATTEND_EVENT:
+            removeAttendEvent('/ajax/events/user-unattend-event')
+            break;
+        case ModalTypes.UNATTEND_PAYED_EVENT:
+            // ('/ajax/events/user-unattend-payment-event', gettext('Pay using card'))
+            break;
     }
 })
-
 
 $("#guest-data-form").on('submit', async (e) => {
     firstName = $("#first-name").val()
@@ -157,38 +175,6 @@ $("#guest-data-form").on('submit', async (e) => {
     }
 })
 
-function openModal() {
-    $("#deleteModal").modal("show");
-}
-
-function showGuestModal() {
-    $("#guestUserModal").modal('show')
-}
-
-function hideGuestModal() {
-    $("#guestUserModal").modal('hide')
-}
-
-$("#remove-attend-event-button").click(() => {
-    if (modalType === "removeEventAttendance") {
-        removeAttendEvent()
-    } else if (modalType === "deleteEvent") {
-        // Get eventID, if event id contains - remove it
-        eventID = $("#attend-event-button").val()
-        eventID = eventID.replace('-', '')
-        window.location.href = '/events/delete/' + eventID;
-    }
-})
-
-async function attendEvent() {
-    let response = await sendAjax({event_id: button.value}, url);
-    if (response) {
-        button.innerHTML = gettext('Do not attend event');
-        button.value = '-'  + button.value;
-        button.setAttribute('class', 'btn btn-danger');
-        printMessage('Success', response.message);
-    }
-}
 
 async function sendAjax(data, url, type) {
     data.csrfmiddlewaretoken = csrftoken;
@@ -206,10 +192,81 @@ async function sendAjax(data, url, type) {
     }
 }
 
-async function attendPayedEvent(e) {
-    e.preventDefault();
-    const URL = '/ajax/events/' + button.value
-    buttonValue = button.value
+function getButton(e) {
+    const event = e || window.event
+    return event.target
+}
+
+async function processStripeToken(token) {
+    if (isGuestUser) {
+        const data = {
+            csrfmiddlewaretoken: csrftoken,
+            stripeToken: token.id,
+            id: buttonValue,
+            stripEmail: token.email,
+            email: email,
+            first_name: firstName,
+            last_name: lastName,
+            phone: phone,
+        }
+    } else {
+        const data = {
+            csrfmiddlewaretoken: csrftoken,
+            id: buttonValue,
+            stripeToken: token.id,
+            stripEmail: token.email
+        }
+    }
+    let result = await sendAjax(data, '/ajax/events/attend-payment-event')
+    if (result) {
+        button.innerHTML = gettext("Do not attend event")
+        button.value = '-' + button.value
+        button.setAttribute("class", "btn btn-danger")
+        printMessage('Success', data.message)
+    }
+    hideGuestModal()
+}
+
+function showGuestModal() {
+    $("#guestUserModal").modal('show')
+}
+
+function hideGuestModal() {
+    $("#guestUserModal").modal('hide')
+}
+
+async function attendEvent(url, button) {
+    let response = await sendAjax({event_id: button.value}, url);
+    if (response) {
+        updateButton(button, gettext('Do not attend event'), States.UNATTEND)
+        state = States.UNATTEND
+        printMessage('Success', response.message);
+    }
+}
+
+async function removeAttendEvent(url) {
+    const button = $("#attend-event-button")[0]
+    const result = await sendAjax({id: button.value}, url)
+    if (result) {
+        updateButton(button, gettext('attend event'), States.ATTEND)
+        printMessage('Success', data.message)
+    }
+}
+
+function updateButton(button, title, type) {
+    button.innerHTML = title;
+    switch (type) {
+        case States.UNATTEND:
+            button.setAttribute('class', 'btn btn-danger');
+            break;
+        case States.ATTEND:
+            button.setAttribute("class", "btn btn-success")
+            break;
+    }
+}
+
+async function attendPayedEvent() {
+    const URL = '/ajax/events/' + eventID
     const event = await sendAjax(null, URL)
     if (event) {
         const user = await sendAjax(null, '/ajax/accounts')
@@ -222,17 +279,6 @@ async function attendPayedEvent(e) {
                 email: user.email,
             });
         }
-    }
-}
-
-async function removeAttendEvent() {
-    button.value = button.value.substring(1,)
-    const result = await sendAjax({id: button.value}, url)
-    if (result) {
-        button.innerHTML = buttonText
-        button.setAttribute("class", "btn btn-success")
-        printMessage('Success', data.message)
-        slideUpAlert()
     }
 }
 
