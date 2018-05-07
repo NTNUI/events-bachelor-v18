@@ -4,6 +4,8 @@ from django.http import JsonResponse
 from django.utils import translation
 from datetime import datetime
 from events.models.event import Event
+from events.models.category import Category
+from events.models.sub_event import SubEvent
 
 
 def get_events(request, attending):
@@ -56,8 +58,23 @@ def get_filtered_events(request, attending):
 
         attending_events=[]
         for event in events:
-            if event.is_user_enrolled(request.user):
-                attending_events.append(event)
+            if Category.objects.filter(event=event).exists():
+                subevent_list=[]
+                categories = Category.objects.filter(event=event)
+                # for every category do:
+                for i in range(len(categories)):
+                    # get all the sub-events for that category
+                    sub_events = SubEvent.objects.filter(category=categories[i])
+                    # add the category and map each sub_event to a dic
+                    for subevent in sub_events:
+                        subevent_list.append(subevent)
+                for subevent in subevent_list:
+                    if subevent.is_user_enrolled(request.user):
+                        if event not in attending_events:
+                            attending_events.append(event)
+            else:
+                if event.is_user_enrolled(request.user):
+                    attending_events.append(event)
 
         return attending_events
 

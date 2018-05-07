@@ -165,6 +165,114 @@ label.custom-control.custom-checkbox:checked + label::before {
 .col-10 {
     margin-bottom: 2%;
 }
+
+.top-menu {
+    background: white;
+    height: 3rem;
+    border: 1px solid #dfdfdf;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.top-menu {
+    background: white;
+    height: 3rem;
+    border: 1px solid #dfdfdf;
+    box-sizing: border-box;
+}
+
+.top-menu ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    list-style-type: none;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.top-menu ul li:nth-child(2n-1) {
+    flex-grow: 1;
+}
+
+.top-menu a {
+    flex-grow: 1;
+    height: 52px;
+    display: block;
+    padding-top: 14px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.top-menu a:hover {
+    color: #007D32;
+    border-bottom: 4px solid #007D32;
+    opacity: 0.8;
+}
+
+.header-container {
+    margin-top:2rem;
+    width:100%;
+}
+.active-item {
+    border-bottom: 4px solid #007D32;
+}
+#container {
+    width: 50%;
+    max-width:80rem;
+}
+
+
+#header {
+    z-index: 100;
+    margin: auto;
+    margin-top: -30px;
+    text-align: center;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+    font-family: "Droid serif", serif;
+    font-size: 36px;
+    font-weight: 700;
+
+}
+
+.img-container {
+    width: 100%;
+    max-height:30rem;
+    overflow: hidden;
+}
+.title-container {
+    width: 100%;
+}
+
+#image-centered {
+    width: 100%;
+    height: auto;
+    z-index: 1;
+}
+
+.my-options-button {
+    width: 15rem;
+}
+
+.loader {
+    border: 16px solid lightgrey; /* Light grey */
+    border-top: 16px solid green; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 @media only screen and (max-width: 700px) {
 
     .filter-element .form-control-select  #search .create-event #main .buttons {

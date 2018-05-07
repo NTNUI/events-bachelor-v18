@@ -205,7 +205,7 @@ $("#guest-data-form").on('submit', async (e) => {
     } else {
         let postData = $("#guest-data-form").serialize();
         postData = postData + '&csrfmiddlewaretoken=' + csrftoken;
-        postData = postData + '&id=' + buttonValue;
+        postData = postData + '&id=' + eventID;
         let result = await sendAjax(postData, '/ajax/events/attend-event')
         if (result) {
             printMessage(MsgType.SUCCESS, result.message)
@@ -259,7 +259,7 @@ async function processStripeToken(token) {
     let data = {
         csrfmiddlewaretoken: csrftoken,
         stripeToken: token.id,
-        id: buttonValue,
+        event_id: eventID,
         stripEmail: token.email,
     }
     if (isGuestUser) {
@@ -324,11 +324,11 @@ function updateButton(button, title, type) {
  * @returns {Promise.<void>}
  */
 async function attendPayedEvent(button, subEvent) {
-    const URL = subevent ? '/ajax/events/' + eventID : +'/ajax/events/sub-event/' + subEvent.id
+    const URL = !subEvent ? ('/ajax/events/' + eventID) : ('/ajax/events/sub-event/' + subEvent.id)
     paymentButton = button;
-    const event = await sendAjax(null, URL)
+    const event = await sendAjax({id: (subEvent ? subEvent.id : eventID) }, URL)
     if (event) {
-        const user = await sendAjax(null, '/ajax/accounts')
+        const user = await sendAjax({}, '/ajax/accounts', 'GET')
         if (user) {
             handler.open({
                 amount: parseInt(event.price) * 100,

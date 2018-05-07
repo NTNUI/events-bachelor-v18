@@ -14,14 +14,18 @@ from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 
 from . import create_event, get_events
-from events.models.event import Event, EventDescription, EventRegistration, EventWaitingList, EventGuestWaitingList, EventGuestRegistration
-from events.models.sub_event import SubEvent, SubEventDescription, SubEventRegistration, SubEventWaitingList, SubEventGuestWaitingList, SubEventGuestRegistration
+from events.models.event import Event, EventDescription, EventRegistration, EventWaitingList, EventGuestWaitingList, \
+    EventGuestRegistration
+from events.models.sub_event import SubEvent, SubEventDescription, SubEventRegistration, SubEventWaitingList, \
+    SubEventGuestWaitingList, SubEventGuestRegistration
 from events.models.category import Category, CategoryDescription
 from events.models.guest import Guest
 from accounts.models import User
 from django.core.validators import validate_email, validate_integer
 from django.core.mail import send_mail
-#from events.ntnui.apps.accounts.models import User
+
+
+# from events.ntnui.apps.accounts.models import User
 
 
 def create_category_request(request):
@@ -60,9 +64,9 @@ def create_sub_event_request(request):
 
         registration_end_date = request.POST.get('registration_end_date')
         if registration_end_date == "":
-            registration_end_date = None;
+            registration_end_date = None
 
-        category_id =  request.POST.get("category", "")
+        category_id = request.POST.get("category", "")
 
         if category_id == "":
             event_id = int(request.POST.get("event"))
@@ -84,8 +88,10 @@ def create_sub_event_request(request):
                                             attendance_cap=attendance_cap,
                                             category=category)
 
-        SubEventDescription.objects.create(sub_event=sub_event, name=name_nb, custom_email_text =email_text_nb, language='nb')
-        SubEventDescription.objects.create(sub_event=sub_event, name=name_en, custom_email_text = email_text_en, language='en')
+        SubEventDescription.objects.create(sub_event=sub_event, name=name_nb, custom_email_text=email_text_nb,
+                                           language='nb')
+        SubEventDescription.objects.create(sub_event=sub_event, name=name_en, custom_email_text=email_text_en,
+                                           language='en')
         return JsonResponse({
             'id': sub_event.id,
             'message': _('New sub-event successfully created!')},
@@ -142,7 +148,7 @@ def get_event_details(request, id):
             # add the category and map each sub_event to a dic
             sub_event_list.append((categories[i], list(map(lambda item: get_sub_event_dic(item, request), sub_event))))
 
-    number_of_subevents=len(sub_event_list)
+    number_of_subevents = len(sub_event_list)
 
     # Checks if the user is sign in.
     if request.user.is_authenticated:
@@ -207,8 +213,8 @@ def get_event_details(request, id):
 
     return render(request, 'events/event_details.html', context)
 
-def get_attending_events_page(request):
 
+def get_attending_events_page(request):
     # Used to find out if the create-event button shall be rendered or not
     if request.user.is_authenticated:
         can_create_event = user_can_create_event(request.user)
@@ -235,37 +241,99 @@ def get_delete_event(request, id):
         event = Event.objects.get(id=int(id))
         eventdescription_no = EventDescription.objects.get(event=event, language='nb')
         eventdescription_en = EventDescription.objects.get(event=event, language='en')
-        # eventregistration = EventRegistration.objects.get(event=event)
+        eventregistrations = EventRegistration.objects.filter(event=event)
+        eventwaitinglists = EventWaitingList.objects.filter(event=event)
+        eventguestwaitinglists = EventGuestWaitingList.objects.filter(event=event)
+        eventguestregistrations = EventGuestRegistration.objects.filter(event=event)
+        if Category.objects.filter(event=event).exists():
+            categories = Category.objects.filter(event=event)
+            #print("Categories before deletion: " + categories)
+            for category in categories:
+                delete_category(category)
+            #print("Categories after deletion: " + categories)
+
+        if eventregistrations:
+            for eventregistration in eventregistrations:
+                eventregistration.delete()
+        if eventguestregistrations:
+            for eventguestregistration in eventguestregistrations:
+                eventguestregistration.delete()
+        if eventwaitinglists:
+            for eventwaitinglist in eventwaitinglists:
+                eventwaitinglist.delete()
+        if eventguestwaitinglists:
+            for eventguestwaitinglist in eventguestwaitinglists:
+                eventguestwaitinglist.delete()
+
         # if eventregistration.payment_id != '':
         #    refund_event(request)
-        event.delete()
         eventdescription_no.delete()
         eventdescription_en.delete()
-        # eventregistration.delete()
+        event.delete()
     except:
-        return HttpResponse("Event delete failed")
+        return get_json(400, "Could not delete event")
 
     return render(request, 'events/delete_event_page.html')
 
+def delete_category_request(request):
+    category = Category.objects.get(id=int(request.POST.get('id')))
 
+    return delete_category(category)
 
-#the commented lines are to be uncommented when created subevents have a subeventregistration by default
-def delete_subevent(request):
+def delete_category(category):
     try:
-        if request.method == 'POST':
-            data = request.POST
-            subeventid = (data['subeventid'])
-            subevent = SubEvent.objects.get(id=int(subeventid))
-            subeventdescription_no = SubEventDescription.objects.get(sub_event=subevent, language='nb')
-            subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
-            #subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
-            # subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
-            subevent.delete()
-            subeventdescription_no.delete()
-            subeventdescription_en.delete()
-            # subeventregistration.delete()
+        print(category)
+        categorydescription_nb = CategoryDescription.objects.get(category=category, language='nb')
+        categorydescription_en = CategoryDescription.objects.get(category=category, language='en')
+
+        if SubEvent.objects.filter(category=category).exists():
+            subevents = SubEvent.objects.filter(category=category)
+            for subevent in subevents:
+                delete_subevent(subevent)
+        categorydescription_nb.delete()
+        categorydescription_en.delete()
+        category.delete()
+
     except:
-        return HttpResponse("Subevent delete failed")
+        return get_json(400, "Could not delete category")
+
+    return get_json(200, "Category deleted")
+
+def delete_subevent_request(request):
+    subevent = SubEvent.objects.get(id=int(request.POST.get('id')))
+
+    return delete_subevent(subevent)
+
+
+def delete_subevent(subevent):
+    try:
+        subeventdescription_nb = SubEventDescription.objects.get(sub_event=subevent, language='nb')
+        subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
+        subeventregistrations = SubEventRegistration.objects.filter(sub_event=subevent)
+        subeventwaitinglists = SubEventWaitingList.objects.filter(sub_event=subevent)
+        subeventguestregistrations = SubEventGuestRegistration.objects.filter(sub_event=subevent)
+        subeventguestwaitinglists = SubEventGuestWaitingList.objects.filter(sub_event=subevent)
+
+        if subeventregistrations:
+            for subeventregistration in subeventregistrations:
+                subeventregistration.delete()
+        if subeventguestregistrations:
+            for subeventguestregistration in subeventguestregistrations:
+                subeventguestregistration.delete()
+        if subeventwaitinglists:
+            for subeventwaitinglist in subeventwaitinglists:
+                subeventwaitinglist.delete()
+        if subeventguestwaitinglists:
+            for subeventguestwaitinglist in subeventguestwaitinglists:
+                subeventguestwaitinglist.delete()
+        subeventdescription_nb.delete()
+        subeventdescription_en.delete()
+        subevent.delete()
+
+    except:
+        return get_json(400, "Could not delete subevent")
+
+    return get_json(200, "Subevent deleted")
 
 
 def get_edit_event_page(request, id):
@@ -280,11 +348,16 @@ def get_edit_event_page(request, id):
     event_end_date = event.end_date
     start_date = '{:%Y-%m-%dT%H:%M}'.format(event_start_date)
     end_date = '{:%Y-%m-%dT%H:%M}'.format(event_end_date)
+
+    registration_end_date = ""
+    if event.registration_end_date != "" and event.registration_end_date is not None:
+        registration_end_date = '{:%Y-%m-%dT%H:%M}'.format(event.registration_end_date)
+
     event = {
         'name_no': eventdescription_no.name,
         'name_en': eventdescription_en.name,
-        'description_no': eventdescription_no.description_text,
-        'description_en': eventdescription_en.description_text,
+        'description_text_no': eventdescription_no.description_text,
+        'description_text_en': eventdescription_en.description_text,
         'email_text_no': eventdescription_no.custom_email_text,
         'email_text_en': eventdescription_en.custom_email_text,
 
@@ -292,6 +365,7 @@ def get_edit_event_page(request, id):
         'end_date': end_date,
         'id': event.id,
         'attendance_cap': attendance_cap,
+        'registration_end_date': registration_end_date,
         'price': price,
         'host': event.get_host(),
         'place': event.place,
@@ -305,67 +379,156 @@ def get_edit_event_page(request, id):
 
 
 def edit_event(request):
-    try:
-        if request.method == 'POST':
-            data = request.POST
+    if request.method == 'POST':
+        data = request.POST
+        event = Event.objects.get(id=int(data['id']))
 
-            event = Event.objects.get(id=int(data['event_id']))
+        name_no = data['name_no']
+        name_en = data['name_en']
+        description_no = data['description_text_no']
+        description_en = data['description_text_en']
+        email_text_no = data['email_text_no']
+        email_text_en = data['email_text_en']
+        start_date = data['start_date']
+        end_date = data['end_date']
+        registration_end_date = data['registration_end_date']
+        host = data['host']
+        attendance_cap = data['attendance_cap']
+        price = data['price']
 
-            name_no = data['name_no']
+        event.start_date = start_date
+        event.end_date = end_date
+        if registration_end_date == "":
+            event.registration_end_date = None
+        else:
+            event.registration_end_date = registration_end_date
+        if attendance_cap == "":
+            event.attendance_cap = None
+        else:
+            event.attendance_cap = attendance_cap
+        if price == "":
+            event.price = None
+        else:
+            event.price = price
+
+        if host == 'NTNUI':
+            event.is_host_ntnui = True
+        else:
+            event.sports_groups = host
+
+        event.save()
+        eventdescription_no = EventDescription.objects.get(event=event, language='nb')
+        eventdescription_en = EventDescription.objects.get(event=event, language='en')
+
+        eventdescription_no.name = name_no
+        eventdescription_en.name = name_en
+        eventdescription_no.description_text = description_no
+        eventdescription_en.description_text = description_en
+        eventdescription_no.custom_email_text = email_text_no
+        eventdescription_en.custom_email_text = email_text_en
+        eventdescription_no.save()
+        eventdescription_en.save()
+
+        return JsonResponse({
+            'message': "Edit event successful",
+            'id': data['id']
+        }, status=200)
+
+
+def edit_category(request):
+    if request.method == 'POST':
+        data = request.POST
+        try:
+            categoryname_no = data['name_nb']
+            categoryname_en = data['name_en']
+
+            category = Category.objects.get(id=int(data['id']))
+
+            categorydescription_no = CategoryDescription.objects.get(category=category, language='nb')
+            categorydescription_en = CategoryDescription.objects.get(category=category, language='en')
+            categorydescription_no.name = categoryname_no
+            categorydescription_en.name = categoryname_en
+            categorydescription_no.save()
+            categorydescription_en.save()
+
+            return JsonResponse({
+                'message': "Edit category successful",
+                'id': data['id']
+            }, status=200)
+
+
+        except:
+            return get_json(400, "Edit category failed")
+
+
+def edit_subevent(request):
+    if request.method == 'POST':
+        data = request.POST
+
+        try:
+            name_no = data['name_nb']
             name_en = data['name_en']
-            description_no = data['description_text_no']
-            description_en = data['description_text_en']
-            email_text_no = data['email_text_no']
-            email_text_en = data['email_text_en']
+            email_text_no = data['email_nb']
+            email_text_en = data['email_en']
             start_date = data['start_date']
             end_date = data['end_date']
-            host = data['host']
+            registration_end_date = data['registration_end_date']
             attendance_cap = data['attendance_cap']
             price = data['price']
 
-            event.start_date = start_date
-            event.end_date = end_date
-            event.attendance_cap = attendance_cap
-            event.price = price
+            subevent = SubEvent.objects.get(id=int(data['id']))
 
-            if host == 'NTNUI':
-                event.is_host_ntnui = True
+            subevent.start_date = start_date
+            subevent.end_date = end_date
+            if registration_end_date == "":
+                subevent.registration_end_date = None
             else:
-                event.sports_groups = host
+                subevent.registration_end_date = registration_end_date
+            if attendance_cap == "":
+                subevent.attendance_cap = None
+            else:
+                subevent.attendance_cap = attendance_cap
+            if price == "":
+                subevent.price = None
+            else:
+                subevent.price = price
 
-            event.save()
-            eventdescription_no = EventDescription.objects.get(event=event, language='nb')
-            eventdescription_en = EventDescription.objects.get(event=event, language='en')
+            subevent.save()
+            subeventdescription_no = SubEventDescription.objects.get(sub_event=subevent, language='nb')
+            subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
 
-            eventdescription_no.name = name_no
-            eventdescription_en.name = name_en
-            eventdescription_no.description_text = description_no
-            eventdescription_en.description_text = description_en
-            eventdescription_no.custom_email_text = email_text_no
-            eventdescription_en.custom_email_text = email_text_en
-            eventdescription_no.save()
-            eventdescription_en.save()
+            subeventdescription_no.name = name_no
+            subeventdescription_en.name = name_en
+            if email_text_no == "":
+                subeventdescription_no.custom_email_text = None
+            else:
+                subeventdescription_no.custom_email_text = email_text_no
+            if email_text_en == "":
+                subeventdescription_en.custom_email_text = None
+            else:
+                subeventdescription_en.custom_email_text = email_text_en
+            subeventdescription_no.save()
+            subeventdescription_en.save()
 
-            return HttpResponse("Edit successful")
-    except:
-        return HttpResponse("Edit failed")
+            return get_json(200, "Edit subevent successful")
+
+        except:
+            return get_json(400, "Edit subevent failed")
 
 
 def get_events_request(request):
     return get_events.get_events(request, False)
 
-def get_attending_events_request(request):
 
+def get_attending_events_request(request):
     return get_events.get_events(request, True)
 
 
 def get_event_attendees_page(request, id, numberofsubevents):
-
     event = Event.objects.get(id=int(id))
-    eventname = event.name()
 
-    if int(numberofsubevents)== 0:
-        subeventsexist=False
+    if int(numberofsubevents) == 0:
+        subeventsexist = False
         eventregistrations = EventRegistration.objects.filter(event=event)
 
         attendees = []
@@ -377,25 +540,25 @@ def get_event_attendees_page(request, id, numberofsubevents):
 
         context = {
             'subeventsexist': subeventsexist,
-            'eventname': eventname,
+            'event': event,
             'attendees_list': attendees,
         }
 
     else:
-        subeventsexist=True
-        eventcategories=Category.objects.filter(event=event)
+        subeventsexist = True
+        eventcategories = Category.objects.filter(event=event)
 
-        subeventslist=[]
+        subeventslist = []
         for category in eventcategories:
-            subevents=SubEvent.objects.filter(category=category)
+            subevents = SubEvent.objects.filter(category=category)
             for subevent in subevents:
                 subeventslist.append(subevent)
 
-        subevents_attendees_and_names_list=[]
+        subevents_attendees_and_names_list = []
 
         for subevent in subeventslist:
-            attendees=[]
-            users=[]
+            attendees = []
+            users = []
             subeventregistrations = SubEventRegistration.objects.filter(sub_event=subevent)
             for registration in subeventregistrations:
                 user = registration.attendee
@@ -408,10 +571,9 @@ def get_event_attendees_page(request, id, numberofsubevents):
 
         context = {
                 'subeventsexist': subeventsexist,
-                'eventname': eventname,
+                'event': event,
                 'subevents_attendees_and_name_list': subevents_attendees_and_names_list,
             }
-
 
     return render(request, 'events/event_attendees_page.html', context)
 
@@ -464,8 +626,8 @@ def get_groups_user_can_create_events_for(user):
 
     # Finds all the groups were the user is in the board
     for board in Board.objects.filter(president=user) | \
-                 Board.objects.filter(vice_president=user) | \
-                 Board.objects.filter(cashier=user):
+            Board.objects.filter(vice_president=user) | \
+            Board.objects.filter(cashier=user):
 
         # Checks that the board is active
         for group in SportsGroup.objects.filter(active_board=board):
@@ -503,24 +665,46 @@ def get_json(code, message):
 def get_event(request, id):
     if Event.objects.filter(id=int(id)).exists():
         event = Event.objects.get(id=int(id))
+
+        categories_list = [];
+        if Category.objects.filter(event=event).exists():
+            categories = Category.objects.filter(event=event).values()
+            # for every category do:
+            for i in range(len(categories)):
+                # get all the sub-events for that category
+                categories[i]['descriptions'] = list(
+                    CategoryDescription.objects.filter(category__id=categories[i]['id']).values())
+                categories[i]['sub-events'] = list(SubEvent.objects.filter(category__id=categories[i]['id']).values())
+                for j in range(len(categories[i]['sub-events'])):
+                    # Give subevents the right format
+                    sub_event = categories[i]['sub-events'][j]
+                    sub_event['start_date'] = '{:%Y-%m-%dT%H:%M}'.format(sub_event['start_date'])
+                    sub_event['end_date'] = '{:%Y-%m-%dT%H:%M}'.format(sub_event['end_date'])
+                    if sub_event['registration_end_date'] is not None and sub_event['registration_end_date'] != "":
+                        sub_event['registration_end_date'] = '{:%Y-%m-%dT%H:%M}'.format(
+                            sub_event['registration_end_date'])
+                    sub_event['descriptions'] = list(
+                        SubEventDescription.objects.filter(sub_event__id=sub_event['id']).values())
+                categories_list.append(categories[i])
+
         return JsonResponse({
             'id': event.id,
             'name': event.name(),
             'place': event.place,
-            'description': event.description(),
+            'descriptions': list(EventDescription.objects.filter(event=event).values()),
             'start_date': event.start_date,
             'end_date': event.end_date,
             'priority': event.priority,
             'price': event.price,
             'host': event.get_host(),
-            'cover_photo': str(event.cover_photo)
+            'cover_photo': str(event.cover_photo),
+            'categories': list(categories_list),
         })
     return get_json(404, "Event with id: " + id + " does not exist.")
 
 
 @login_required
 def user_unattend_payment_event(request):
-
     return get_json(404, "Contact the host for refunding.")
 
     """
@@ -541,3 +725,440 @@ def user_unattend_payment_event(request):
             return get_json(404, 'Woops, something went wrong')
     return get_json(404, 'Request must be post!')
     """
+
+
+@login_required
+def user_unattend_waiting_list_event(request):
+    """User sign-off for an event."""
+
+    # Checks that the request is POST.
+    if not request.POST:
+        return get_json(400, 'Request must be post')
+
+    user = request.user
+    event_id = request.POST.get('id')
+
+    # Sign off event.
+    return sign_off_waiting_list(int(event_id), user)
+
+
+def unattend_event(event_id, attendee):
+    """User sign-off for event"""
+
+    # Gets event.
+    event = get_event_by_id(event_id)
+
+    # Checks that the user is signed up for the event.
+    if not event.is_user_enrolled(attendee):
+        return get_json(400, 'You not signed up the event.')
+    # Sign-off the event.
+    try:
+        EventRegistration.objects.get(event=event, attendee=attendee).delete()
+
+        if len(event.get_waiting_list()) > 0 and not event.is_payment_event():
+
+            attendee, payment_id = event.waiting_list_next()
+
+            if isinstance(attendee, User):
+                EventWaitingList.objects.filter(event=event, attendee=attendee).delete()
+            else:
+                EventGuestWaitingList.objects.filter(event=event, attendee=attendee).delete()
+
+            attend_event(event_id, attendee, payment_id)
+        return get_json(201, 'Signed-off the event!')
+    # Couldn't sign-off the event.
+    except:
+        return get_json(400, "Could not sign-off the event.")
+
+
+def sign_off_waiting_list(event_id, attendee):
+    """User sign-off the event's waiting list."""
+
+    # Get event.
+    event = Event.objects.get(id=event_id)
+
+    # Checks that the user is signed up for the event.
+    if event.is_user_enrolled(attendee):
+        return get_json(400, 'You are already signed off the event.')
+    # Sign-off the event.
+    try:
+        EventWaitingList.objects.get(event=event, attendee=attendee).delete()
+
+        return get_json(201, 'Signed-off the waiting list!')
+    # Couldn't sign-off the event.
+    # Couldn't sign-off the event.
+    except:
+        return get_json(400, "Could not sign-off the waiting list.")
+
+
+@login_required
+def user_attend_sub_event(request, sub_event_id):
+    """User: Sign-up for a free sub-event."""
+
+    # Checks that the request is POST.
+    if not request.POST:
+        return get_json(400, 'Request must be POST.')
+
+    # Gets the event, the user, and if the user can attend the event.
+    user = request.user
+    sub_event = get_sub_event_by_id(sub_event_id)
+    can_attend, error_message = user_can_attend_sub_event(sub_event, user)
+
+    # Checks if the user can attend the sub-event.
+    # Creates the sub-event registration if the user is eligible to attend.
+    if not can_attend:
+        return error_message
+    elif sub_event.is_attendance_cap_exceeded():
+        return get_json(400, 'The sub-event is full.')
+    else:
+        return attend_sub_event(sub_event, user, None)
+
+
+@login_required
+def user_attend_payment_sub_event(request, sub_event_id):
+    """User: Sign-up for a payment sub-event."""
+
+    # Checks that the request is POST.
+    if not request.POST:
+        return get_json(400, 'Request must be POST.')
+
+    # Gets the sub-event, the user, and if the user can attend the sub-event.
+    user = request.user
+    sub_event = get_sub_event_by_id(sub_event_id)
+    can_attend, error_message = user_can_attend_sub_event(sub_event, user)
+
+    # Checks if the user can attend the event.
+    # Creates the payment for the event registration if the user is eligible to attend.
+    if not can_attend:
+        return error_message
+    elif sub_event.is_attendance_cap_exceeded():
+        return get_json(400, 'The sub-event is full.')
+    else:
+        accepted, charge, error_message = payment_accepted(request, sub_event, user)
+
+    # Checks if the payment went through.
+    # Creates the sub-event registration if the payment were accepted.
+    if not accepted:
+        return error_message
+    else:
+        return attend_sub_event(sub_event, user, charge.id)
+
+
+@login_required
+def user_waiting_list_sub_event(request, sub_event_id):
+    """User: Sign-up for the sub-event's waiting list."""
+
+    # Checks that the request is POST.
+    if not request.POST:
+        return get_json(400, 'Request must be post')
+
+    # Gets the event, the user, and if the user can attend the event.
+    user = request.user
+    sub_event = get_sub_event_by_id(sub_event_id)
+    can_attend, error_message = user_can_attend_sub_event(sub_event, user)
+
+    # Checks if the user can join the sub-event's waiting list.
+    # Creates the waiting list registration if the user is eligible to attend.
+    if not can_attend:
+        return error_message
+    elif not sub_event.is_attendance_cap_exceeded():
+        return get_json(400, 'The sub-event still has open spots.')
+    else:
+        return waiting_list_sub_event(sub_event, user, None)
+
+
+def guest_attend_sub_event(request, sub_event_id):
+    """Guest: Sign-up for a free sub-event."""
+
+    # Checks that the request is POST.
+    if not request.POST:
+        return get_json(400, 'Request must be POST.')
+
+    # Validates the input from the guest sign-up form, and gives error messages for invalid fields.
+    failure_message = validate_guest_data(request.POST)
+    if failure_message:
+        return get_json(404, failure_message)
+
+    # Gets the validated data from POST request.
+    email = request.POST.get('email')
+    first_name = request.POST.get('first_name')
+    last_name = request.POST.get('last_name')
+    phone = request.POST.get('phone')
+
+    # Gets the event, the guest, and if the guest can attend the event.
+    sub_event = get_sub_event_by_id(sub_event_id)
+    guest, created = get_or_create_guest(email, first_name, last_name, phone)
+    can_attend, error_message = guest_can_attend_sub_event(sub_event, guest)
+
+    # Checks if the user can attend the event.
+    # Creates the event registration if the user is eligible to attend.
+    if not can_attend:
+        if created:
+            guest.delete()
+        return error_message
+    elif sub_event.is_attendance_cap_exceeded():
+        if created:
+            guest.delete()
+        return get_json(400, 'The sub-event is full.')
+    else:
+        return attend_sub_event(sub_event, guest, None)
+
+
+def guest_attend_payment_sub_event(request, sub_event_id):
+    """Guest: Sign-up for a payment sub-event."""
+
+    # Checks that the request is POST.
+    if not request.POST:
+        return get_json(400, 'Request must be POST.')
+
+    # Validates the input from the guest sign-up form, and gives error messages for invalid fields.
+    failure_message = validate_guest_data(request.POST)
+    if failure_message:
+        return get_json(404, failure_message)
+
+    # Gets the validated data from POST request.
+    email = request.POST.get('email')
+    first_name = request.POST.get('first_name')
+    last_name = request.POST.get('last_name')
+    phone = request.POST.get('phone')
+
+    # Gets the event, the guest, and if the user can attend the event.
+    sub_event = get_sub_event_by_id(sub_event_id)
+    guest, created = get_or_create_guest(email, first_name, last_name, phone)
+    can_attend, error_message = guest_can_attend_sub_event(sub_event, guest)
+
+    # Checks if the user can attend the sub-event.
+    # Creates the payment if the user is eligible to attend.
+    if not can_attend:
+        if created:
+            guest.delete()
+        return error_message
+    elif sub_event.is_attendance_cap_exceeded():
+        if created:
+            guest.delete()
+        return get_json(400, 'The event is full.')
+    else:
+        charge = payment_accepted(request, sub_event, guest)
+
+    # Checks if the payment went through.
+    # Creates the event registration if the payment were accepted.
+    if not charge[0]:
+        if created:
+            guest.delete()
+        return charge[1]
+    else:
+        return attend_sub_event(sub_event, guest, charge.id)
+
+
+def guest_waiting_list_sub_event(request, sub_event_id):
+    """Guest: Sign-up for the sub-event's waiting list."""
+
+    # Checks that the request is POST.
+    if not request.POST:
+        return get_json(400, 'Request must be POST.')
+
+    # Validates the input from the guest sign-up form, and gives error messages for invalid fields.
+    failure_message = validate_guest_data(request.POST)
+    if failure_message:
+        return get_json(404, failure_message)
+
+    # Gets the validated data from POST request.
+    email = request.POST.get('email')
+    first_name = request.POST.get('first_name')
+    last_name = request.POST.get('last_name')
+    phone = request.POST.get('phone')
+
+    # Gets the event, the g, and if the user can attend the event.
+    sub_event = get_sub_event_by_id(sub_event_id)
+    guest, created = get_or_create_guest(email, first_name, last_name, phone)
+    can_attend, error_message = guest_can_attend_sub_event(sub_event, guest)
+
+    # Checks if the user can attend the sub-event.
+    # Creates the event registration if the user is eligible to attend.
+    if not can_attend:
+        if created:
+            guest.delete()
+        return error_message
+    elif not sub_event.is_attendance_cap_exceeded():
+        if created:
+            guest.delete()
+        return get_json(400, 'The sub-event still has open spots.')
+    else:
+        return attend_sub_event(sub_event, guest, None)
+
+
+def attend_sub_event(sub_event, attendee, payment_id):
+    """User or Guest: Create sub-event registration."""
+
+    # Creates sub-event registration for either a user or a guest, depending on the class of 'attendee'.
+    if isinstance(attendee, User):
+        sub_event.user_attend_sub_event(attendee, payment_id, datetime.now())
+    elif isinstance(attendee, Guest):
+        sub_event.guest_attend_sub_event(attendee, payment_id, datetime.now())
+    else:
+        return get_json(400, "Only users and guests can attend.")
+
+    # Sends confirmation email after signing-up for the sub-event.
+    # event_send_mail(sub_event, attendee)
+    return get_json(201, 'Signed-up for the event!')
+
+
+def waiting_list_sub_event(sub_event, attendee, payment_id):
+    """User or Guest: Create waiting list registration."""
+
+    # Creates sub-event waiting list registration for either a user or a guest, depending on the class of 'attendee'.
+    if isinstance(attendee, User):
+        sub_event.user_attend_waiting_list(attendee, payment_id, datetime.now())
+    elif isinstance(attendee, Guest):
+        sub_event.guest_attend_waiting_list(attendee, payment_id, datetime.now())
+    else:
+        return get_json(400, "Attendee is neither user nor guest.")
+
+    # Sends confirmation mail after successfully signing-up for the sub-event.
+    # event_send_mail(event, attendee)
+    return get_json(201, 'Signed-up for the waiting list!')
+
+
+def user_can_attend_sub_event(sub_event, user):
+    """User: JSON-response if the user can't attend the sub-event."""
+
+    # Checks if the user already attends the event.
+    if sub_event.is_user_enrolled(user):
+        return False, get_json(400, 'The user already attends the event.')
+    # Checks if the user is on the event's waiting list.
+    elif sub_event.is_user_on_waiting_list(user):
+        return False, get_json(400, 'The user is on the waiting list.')
+    # Checks if the event's registration has ended.
+    elif sub_event.is_registration_ended():
+        return False, get_json(400, 'The event registration has ended.')
+    # The user can attend the event.
+    else:
+        return True, None
+
+
+def guest_can_attend_sub_event(sub_event, guest):
+    """Guest: JSON-response if the guest can't attend the sub-event."""
+
+    # Checks if the guest already attends the sub-event.
+    if sub_event.is_guest_enrolled(guest):
+        return False, get_json(400, 'The guest already attends the sub-event.')
+    # Checks if the guest is on the sub-event's waiting list.
+    elif sub_event.is_guest_on_waiting_list(guest):
+        return False, get_json(400, 'The guest is on the waiting list.')
+    # Checks if the sub-event's registration has ended.
+    elif sub_event.is_registration_ended():
+        return False, get_json(400, 'The sub-event registration has ended.')
+    # The user can attend the sub-event.
+    else:
+        return True, None
+
+
+def get_sub_event_by_id(sub_event_id):
+    """Gets the event which the event_id is associated with."""
+
+    return SubEvent.objects.get(id=sub_event_id)
+
+
+@login_required
+def user_unattend_sub_event(request):
+    """User: Sign-off for an event."""
+
+    # Checks that the request is POST.
+    if not request.POST:
+        return get_json(400, 'Request must be post')
+
+    sub_event_id = request.POST.get("id")
+
+    # Sign off event.
+    return unattend_sub_event(sub_event_id, request.user)
+
+
+@login_required
+def user_unattend_payment_sub_event(request):
+
+    return get_json(404, "Contact the host for refunding.")
+
+    """
+    if request.POST:
+        try:
+            id = request.POST.get('id')
+            event = Event.objects.get(id=int(id))
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+
+            event_registration = EventRegistration.objects.get(attendee=request.user, event=event)
+
+            # refund user
+            refund = stripe.Refund.create(
+                charge=event_registration.payment_id
+            )
+            if refund:
+                remove_attendance(event.id, request.user)
+                return get_json(200, 'Refund accepted')
+        except:
+            return get_json(404, 'Woops, something went wrong')
+    return get_json(404, 'Request must be post!')
+    """
+
+
+@login_required
+def user_unattend_waiting_list_sub_event(request):
+    """User sign-off for an event."""
+
+    # Checks that the request is POST.
+    if not request.POST:
+        return get_json(400, 'Request must be post')
+
+    user = request.user
+    event_id = request.POST.get('id')
+
+    # Sign off event.
+    return sign_off_waiting_list(int(event_id), user)
+
+
+def unattend_sub_event(sub_event_id, attendee):
+    """User sign-off for event"""
+
+    # Gets event.
+    sub_event = get_sub_event_by_id(sub_event_id)
+
+    # Checks that the user is signed up for the event.
+    if not sub_event.is_user_enrolled(attendee):
+        return get_json(400, 'You not signed up the event.')
+    # Sign-off the event.
+    try:
+        SubEventRegistration.objects.get(sub_event=sub_event, attendee=attendee).delete()
+
+        if len(sub_event.get_waiting_list()) > 0 and not sub_event.is_payment_event():
+
+            attendee, payment_id = sub_event.waiting_list_next()
+
+            if isinstance(attendee, User):
+                SubEventWaitingList.objects.filter(sub_event=sub_event, attendee=attendee).delete()
+            else:
+                SubEventGuestWaitingList.objects.filter(sub_event=sub_event, attendee=attendee).delete()
+
+            attend_sub_event(sub_event_id, attendee, payment_id)
+
+        return get_json(201, 'Signed-off the event!')
+    # Couldn't sign-off the event.
+    except:
+        return get_json(400, "Could not sign-off the event.")
+
+
+def sign_off_waiting_list(sub_event_id, attendee):
+    """User sign-off the event's waiting list."""
+
+    # Get event.
+    sub_event = SubEvent.objects.get(id=sub_event_id)
+
+    # Checks that the user is signed up for the event.
+    if sub_event.is_user_enrolled(attendee):
+        return get_json(400, 'You are already signed off the event.')
+    # Sign-off the event.
+    try:
+        SubEventWaitingList.objects.get(sub_event=sub_event, attendee=attendee).delete()
+
+        return get_json(201, 'Signed-off the waiting list!')
+    # Couldn't sign-off the event.
+    except:
+        return get_json(400, "Could not sign-off the waiting list.")
