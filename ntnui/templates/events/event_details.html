@@ -11,11 +11,6 @@
     <div class="alert-message-container">
     </div>
 
-
-    <!--<div style="position: absolute; background-color: black; opacity: .9; width:100%; height:100%; Z-index:1000; display:flex; justify-content: center; align-items: center;">
-        <div class="loader"></div>
-    </div> -->
-
     <div id="container">
         <div class="header-container">
             {% if can_edit_and_delete_event %}
@@ -189,29 +184,36 @@
                             <button type="button"
                                     id="attend-event-button"
                                     class="btn btn-danger"
-                                    data-state = "unattend"
+                                    data-state="unattend"
                                     value="{{ event.id }}"
                                     data-toggle="modal"
                                     data-target="#eventModal">
-                                {% trans 'Unattend from event' %}
+                                <div class="button-title-container">
+                                    {% trans 'Unattend from event' %}
+                                </div>
                             </button>
                         {% else %}
                             <button id="attend-event-button"
                                     type="button"
                                     value="{{ event.id }}"
                                     name="mybtn"
-                                    data-state= ="attend"
+                                    data-state=="attend"
                                     class="btn btn-success">
-                                {% if event.payment_required %}
-                                    {% trans 'Pay using card' %}
-                                    {#                                    <div class="button-div">#}
-                                    {#                                        <img src="{% static 'img/credit-card.svg' %}"/>#}
-                                    {#                                        &nbsp;{% trans 'Pay using card' %}#}
-                                    {#                                    </div>#}
-                                {% else %}
-                                    {% trans 'Attend event' %}
-                                    </button>
-                                {% endif %}
+                                <div class="button-title-container">
+                                    {% if event.payment_required %}
+
+                                        {% trans 'Pay using card' %}
+                                        {#                                    <div class="button-div">#}
+                                        {#                                        <img src="{% static 'img/credit-card.svg' %}"/>#}
+                                        {#                                        &nbsp;{% trans 'Pay using card' %}#}
+                                        {#                                    </div>#}
+                                    {% else %}
+                                        {% trans 'Attend event' %}
+
+
+                                    {% endif %}
+                                </div>
+                            </button>
                         {% endif %}
                     </div>
                 {% endif %}
@@ -244,28 +246,28 @@
                                             <!--<div>{{ sub_event.start_date }} </br>
                                                         {{ sub_event.end_date }}
                                                 </div> -->
-                                            </div>
-                                            <div class="sub-event-item">
-                                                {% if sub_event.attends %}
-                                                    <button type="button" class="join-subevent-button btn btn-danger"
-                                                            value="{{ sub_event.id }}" data-state="unattend">
-                                                        Unattend from event
-                                                    </button>
-                                                {% else %}
-                                                    <button class="join-subevent-button btn btn-success "
-                                                            type="button"
-                                                            value="{{ sub_event.id }}" data-state="attend" name="mybtn">
-                                                        {% trans 'Attend event' %}
-                                                    </button>
-                                                {% endif %}
-                                                {% if can_edit_and_delete_event %}
-                                                    <button type="button" class="delete-subevent-button btn btn-danger"
-                                                            value="{{ sub_event.id }}">
-                                                        {% trans 'Delete' %}
-                                                    </button>
-                                                {% endif %}
-                                            </div>
                                         </div>
+                                        <div class="sub-event-item">
+                                            {% if sub_event.attends %}
+                                                <button type="button" class="join-subevent-button btn btn-danger"
+                                                        value="{{ sub_event.id }}" data-state="unattend">
+                                                    Unattend from event
+                                                </button>
+                                            {% else %}
+                                                <button class="join-subevent-button btn btn-success "
+                                                        type="button"
+                                                        value="{{ sub_event.id }}" data-state="attend" name="mybtn">
+                                                    {% trans 'Attend event' %}
+                                                </button>
+                                            {% endif %}
+                                            {% if can_edit_and_delete_event %}
+                                                <button type="button" class="delete-subevent-button btn btn-danger"
+                                                        value="{{ sub_event.id }}">
+                                                    {% trans 'Delete' %}
+                                                </button>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </div>
                             {% endfor %}
                         </div>

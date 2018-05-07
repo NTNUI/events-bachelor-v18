@@ -260,12 +260,20 @@ label.custom-control.custom-checkbox:checked + label::before {
 }
 
 .loader {
-    border: 16px solid lightgrey; /* Light grey */
-    border-top: 16px solid green; /* Blue */
+    border: .1rem solid #00AA00;
+    border-top: .1rem solid white;
     border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
+    width: .7rem;
+    height: .7rem;
+    animation: spin 1.5s linear infinite;
+    margin: 0.1rem;
+    box-sizing: initial;
+}
+
+#attend-event-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @keyframes spin {

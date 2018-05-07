@@ -155,6 +155,10 @@
     background-color: var(--NTNUI-red) !important;
 }
 
+.button-title-container {
+    margin-left:.4rem;
+}
+
 
 
 

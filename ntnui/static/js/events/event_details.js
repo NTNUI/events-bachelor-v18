@@ -300,7 +300,7 @@ function hideGuestModal() {
  * @param type
  */
 function updateButton(button, title, type) {
-    button.innerHTML = title;
+    $(button).find("button-title-container").html(title);
     switch (type) {
         case States.UNATTEND:
             button.setAttribute('class', 'btn btn-danger');
@@ -315,6 +315,12 @@ function updateButton(button, title, type) {
             button.setAttribute("class", "btn btn-secondary disabled")
             break;
     }
+    $(button).find(".loader").remove();
+}
+
+function setButtonLoader(button, color) {
+    button.innerHTML = ('<div style="border: .1rem solid ' + color + '; border-top: .1rem solid white" class="loader"></div>')
+        + button.innerHTML;
 }
 
 /**
@@ -326,6 +332,7 @@ function updateButton(button, title, type) {
 async function attendPayedEvent(button, subEvent) {
     const URL = !subEvent ? ('/ajax/events/' + eventID) : ('/ajax/events/sub-event/' + subEvent.id)
     paymentButton = button;
+    setButtonLoader(button)
     const event = await sendAjax({id: (subEvent ? subEvent.id : eventID) }, URL)
     if (event) {
         const user = await sendAjax({}, '/ajax/accounts', 'GET')
@@ -348,6 +355,7 @@ async function attendPayedEvent(button, subEvent) {
  * @returns {Promise.<void>}
  */
 async function attendEvent(button, subEvent) {
+    setButtonLoader(button, '#00AA00')
     let response;
     if (subEvent) {
         response = await sendAjax({sub_event_id: subEvent.id}, '/ajax/events/attend-event');
@@ -372,6 +380,7 @@ async function attendEvent(button, subEvent) {
  * @returns {Promise.<void>}
  */
 async function attendWaitingList(button, subEvent) {
+    setButtonLoader(button, '#0000AA')
     let response;
     if (subEvent) {
         response = await sendAjax({event_id: eventID}, 'waiting-list-event');
@@ -396,6 +405,7 @@ async function attendWaitingList(button, subEvent) {
  * @returns {Promise.<void>}
  */
 async function removeAttendEvent(button, subEvent) {
+    setButtonLoader(button, '#AA0000')
     let response;
     if (subEvent) {
         response = await sendAjax({sub_event_id: subEvent.id}, '/ajax/events/unattend-event')
