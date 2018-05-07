@@ -10,34 +10,71 @@
 
 {% block content %}
 
-    <h1 style="text-align: center">{{ eventname }}{% trans ' attendees' %}</h1>
+    <div id="container">
+        <div class="header-container" style="margin-bottom:2rem;">
+            <div class="top-menu" style="margin-bottom: 2rem;">
+                <ul>
+                    <li>
+                        <a href="{% url 'event_details' event.id %}">Event </a>
+                    </li>
+                    <li>
+                        <div class="vert-divider"></div>
+                    </li>
+                    <li>
+                        <a class="active-item">Attendees</a>
+                    </li>
+                    <li>
+                        <div class="vert-divider"></div>
+                    </li>
+                    <li>
+                        <a href="{% url 'edit_event_page' event.id %}"> Edit event </a>
+                    </li>
 
+                </ul>
+            </div>
 
-    {% if not subeventsexist %}
-        <div class="col-10">
-        <div class="list-group">
-        <ul class="list-group">
-            {% for full_name in attendees_list %}
-                <li class="list-group-item">{{ full_name }}</li>
+            <div class="img-container">
+                <img id="image-centered" src=" /static/{{ event.cover_photo }}" alt="Event Image"/>
+            </div>
+            <div class="title-container">
+                <div style="width: 100%; display: flex; justify-content: center;">
+                    <div id="header">
+                        {{ event.name }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="border:none; margin:0.5rem;">
+            <div class="card-body ">
+                <b>{% trans 'Attendees' %}</b>
+            </div>
+        </div>
+        {% if not subeventsexist %}
+            <div class="col-12">
+                <div class="list-group">
+                    <ul class="list-group">
+                        {% for full_name in attendees_list %}
+                            <li class="list-group-item">{{ full_name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+        {% if subeventsexist %}
+            {% for list, subeventname in subevents_attendees_and_name_list %}
+                <div class="col-12">
+                    <ul class="list-group">
+                        <li class="list-group-item"><b>{{ subeventname }}</b></li>
+                        {% for full_name in list %}
+                            <li class="list-group-item">{{ full_name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             {% endfor %}
-        </ul>
-        </div>
-        </div>
-    {% endif %}
-    {% if subeventsexist %}
-        {% for list, subeventname in subevents_attendees_and_name_list %}
-        <div class="col-10">
-        <ul class="list-group">
-        <li class="list-group-item"><b>{{ subeventname }}</b></li>
-            {% for full_name in list %}
-                <li class="list-group-item">{{ full_name }}</li>
-            {% endfor %}
-        </ul>
-        </div>
-        {% endfor %}
-    {% endif %}
+        {% endif %}
 
-
+    </div>
 {% endblock %}
 
 {% block script %}

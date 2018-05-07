@@ -14,14 +14,18 @@ from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 
 from . import create_event, get_events
-from events.models.event import Event, EventDescription, EventRegistration, EventWaitingList, EventGuestWaitingList, EventGuestRegistration
-from events.models.sub_event import SubEvent, SubEventDescription, SubEventRegistration, SubEventWaitingList, SubEventGuestWaitingList, SubEventGuestRegistration
+from events.models.event import Event, EventDescription, EventRegistration, EventWaitingList, EventGuestWaitingList, \
+    EventGuestRegistration
+from events.models.sub_event import SubEvent, SubEventDescription, SubEventRegistration, SubEventWaitingList, \
+    SubEventGuestWaitingList, SubEventGuestRegistration
 from events.models.category import Category, CategoryDescription
 from events.models.guest import Guest
 from accounts.models import User
 from django.core.validators import validate_email, validate_integer
 from django.core.mail import send_mail
-#from events.ntnui.apps.accounts.models import User
+
+
+# from events.ntnui.apps.accounts.models import User
 
 
 def create_category_request(request):
@@ -60,9 +64,9 @@ def create_sub_event_request(request):
 
         registration_end_date = request.POST.get('registration_end_date')
         if registration_end_date == "":
-            registration_end_date = None;
+            registration_end_date = None
 
-        category_id =  request.POST.get("category", "")
+        category_id = request.POST.get("category", "")
 
         if category_id == "":
             event_id = int(request.POST.get("event"))
@@ -84,8 +88,10 @@ def create_sub_event_request(request):
                                             attendance_cap=attendance_cap,
                                             category=category)
 
-        SubEventDescription.objects.create(sub_event=sub_event, name=name_nb, custom_email_text =email_text_nb, language='nb')
-        SubEventDescription.objects.create(sub_event=sub_event, name=name_en, custom_email_text = email_text_en, language='en')
+        SubEventDescription.objects.create(sub_event=sub_event, name=name_nb, custom_email_text=email_text_nb,
+                                           language='nb')
+        SubEventDescription.objects.create(sub_event=sub_event, name=name_en, custom_email_text=email_text_en,
+                                           language='en')
         return JsonResponse({
             'id': sub_event.id,
             'message': _('New sub-event successfully created!')},
@@ -142,7 +148,7 @@ def get_event_details(request, id):
             # add the category and map each sub_event to a dic
             sub_event_list.append((categories[i], list(map(lambda item: get_sub_event_dic(item, request), sub_event))))
 
-    number_of_subevents=len(sub_event_list)
+    number_of_subevents = len(sub_event_list)
 
     # Checks if the user is sign in.
     if request.user.is_authenticated:
@@ -207,8 +213,8 @@ def get_event_details(request, id):
 
     return render(request, 'events/event_details.html', context)
 
-def get_attending_events_page(request):
 
+def get_attending_events_page(request):
     # Used to find out if the create-event button shall be rendered or not
     if request.user.is_authenticated:
         can_create_event = user_can_create_event(request.user)
@@ -235,37 +241,99 @@ def get_delete_event(request, id):
         event = Event.objects.get(id=int(id))
         eventdescription_no = EventDescription.objects.get(event=event, language='nb')
         eventdescription_en = EventDescription.objects.get(event=event, language='en')
-        # eventregistration = EventRegistration.objects.get(event=event)
+        eventregistrations = EventRegistration.objects.filter(event=event)
+        eventwaitinglists = EventWaitingList.objects.filter(event=event)
+        eventguestwaitinglists = EventGuestWaitingList.objects.filter(event=event)
+        eventguestregistrations = EventGuestRegistration.objects.filter(event=event)
+        if Category.objects.filter(event=event).exists():
+            categories = Category.objects.filter(event=event)
+            #print("Categories before deletion: " + categories)
+            for category in categories:
+                delete_category(category)
+            #print("Categories after deletion: " + categories)
+
+        if eventregistrations:
+            for eventregistration in eventregistrations:
+                eventregistration.delete()
+        if eventguestregistrations:
+            for eventguestregistration in eventguestregistrations:
+                eventguestregistration.delete()
+        if eventwaitinglists:
+            for eventwaitinglist in eventwaitinglists:
+                eventwaitinglist.delete()
+        if eventguestwaitinglists:
+            for eventguestwaitinglist in eventguestwaitinglists:
+                eventguestwaitinglist.delete()
+
         # if eventregistration.payment_id != '':
         #    refund_event(request)
-        event.delete()
         eventdescription_no.delete()
         eventdescription_en.delete()
-        # eventregistration.delete()
+        event.delete()
     except:
-        return HttpResponse("Event delete failed")
+        return get_json(400, "Could not delete event")
 
     return render(request, 'events/delete_event_page.html')
 
+def delete_category_request(request):
+    category = Category.objects.get(id=int(request.POST.get('id')))
 
+    return delete_category(category)
 
-#the commented lines are to be uncommented when created subevents have a subeventregistration by default
-def delete_subevent(request):
+def delete_category(category):
     try:
-        if request.method == 'POST':
-            data = request.POST
-            subeventid = (data['subeventid'])
-            subevent = SubEvent.objects.get(id=int(subeventid))
-            subeventdescription_no = SubEventDescription.objects.get(sub_event=subevent, language='nb')
-            subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
-            #subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
-            # subeventregistration = SubEventRegistration.objects.get(subevent=subevent)
-            subevent.delete()
-            subeventdescription_no.delete()
-            subeventdescription_en.delete()
-            # subeventregistration.delete()
+        print(category)
+        categorydescription_nb = CategoryDescription.objects.get(category=category, language='nb')
+        categorydescription_en = CategoryDescription.objects.get(category=category, language='en')
+
+        if SubEvent.objects.filter(category=category).exists():
+            subevents = SubEvent.objects.filter(category=category)
+            for subevent in subevents:
+                delete_subevent(subevent)
+        categorydescription_nb.delete()
+        categorydescription_en.delete()
+        category.delete()
+
     except:
-        return HttpResponse("Subevent delete failed")
+        return get_json(400, "Could not delete category")
+
+    return get_json(200, "Category deleted")
+
+def delete_subevent_request(request):
+    subevent = SubEvent.objects.get(id=int(request.POST.get('id')))
+
+    return delete_subevent(subevent)
+
+
+def delete_subevent(subevent):
+    try:
+        subeventdescription_nb = SubEventDescription.objects.get(sub_event=subevent, language='nb')
+        subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
+        subeventregistrations = SubEventRegistration.objects.filter(sub_event=subevent)
+        subeventwaitinglists = SubEventWaitingList.objects.filter(sub_event=subevent)
+        subeventguestregistrations = SubEventGuestRegistration.objects.filter(sub_event=subevent)
+        subeventguestwaitinglists = SubEventGuestWaitingList.objects.filter(sub_event=subevent)
+
+        if subeventregistrations:
+            for subeventregistration in subeventregistrations:
+                subeventregistration.delete()
+        if subeventguestregistrations:
+            for subeventguestregistration in subeventguestregistrations:
+                subeventguestregistration.delete()
+        if subeventwaitinglists:
+            for subeventwaitinglist in subeventwaitinglists:
+                subeventwaitinglist.delete()
+        if subeventguestwaitinglists:
+            for subeventguestwaitinglist in subeventguestwaitinglists:
+                subeventguestwaitinglist.delete()
+        subeventdescription_nb.delete()
+        subeventdescription_en.delete()
+        subevent.delete()
+
+    except:
+        return get_json(400, "Could not delete subevent")
+
+    return get_json(200, "Subevent deleted")
 
 
 def get_edit_event_page(request, id):
@@ -280,11 +348,16 @@ def get_edit_event_page(request, id):
     event_end_date = event.end_date
     start_date = '{:%Y-%m-%dT%H:%M}'.format(event_start_date)
     end_date = '{:%Y-%m-%dT%H:%M}'.format(event_end_date)
+
+    registration_end_date = ""
+    if event.registration_end_date != "" and event.registration_end_date is not None:
+        registration_end_date = '{:%Y-%m-%dT%H:%M}'.format(event.registration_end_date)
+
     event = {
         'name_no': eventdescription_no.name,
         'name_en': eventdescription_en.name,
-        'description_no': eventdescription_no.description_text,
-        'description_en': eventdescription_en.description_text,
+        'description_text_no': eventdescription_no.description_text,
+        'description_text_en': eventdescription_en.description_text,
         'email_text_no': eventdescription_no.custom_email_text,
         'email_text_en': eventdescription_en.custom_email_text,
 
@@ -292,6 +365,7 @@ def get_edit_event_page(request, id):
         'end_date': end_date,
         'id': event.id,
         'attendance_cap': attendance_cap,
+        'registration_end_date': registration_end_date,
         'price': price,
         'host': event.get_host(),
         'place': event.place,
@@ -305,67 +379,156 @@ def get_edit_event_page(request, id):
 
 
 def edit_event(request):
-    try:
-        if request.method == 'POST':
-            data = request.POST
+    if request.method == 'POST':
+        data = request.POST
+        event = Event.objects.get(id=int(data['id']))
 
-            event = Event.objects.get(id=int(data['event_id']))
+        name_no = data['name_no']
+        name_en = data['name_en']
+        description_no = data['description_text_no']
+        description_en = data['description_text_en']
+        email_text_no = data['email_text_no']
+        email_text_en = data['email_text_en']
+        start_date = data['start_date']
+        end_date = data['end_date']
+        registration_end_date = data['registration_end_date']
+        host = data['host']
+        attendance_cap = data['attendance_cap']
+        price = data['price']
 
-            name_no = data['name_no']
+        event.start_date = start_date
+        event.end_date = end_date
+        if registration_end_date == "":
+            event.registration_end_date = None
+        else:
+            event.registration_end_date = registration_end_date
+        if attendance_cap == "":
+            event.attendance_cap = None
+        else:
+            event.attendance_cap = attendance_cap
+        if price == "":
+            event.price = None
+        else:
+            event.price = price
+
+        if host == 'NTNUI':
+            event.is_host_ntnui = True
+        else:
+            event.sports_groups = host
+
+        event.save()
+        eventdescription_no = EventDescription.objects.get(event=event, language='nb')
+        eventdescription_en = EventDescription.objects.get(event=event, language='en')
+
+        eventdescription_no.name = name_no
+        eventdescription_en.name = name_en
+        eventdescription_no.description_text = description_no
+        eventdescription_en.description_text = description_en
+        eventdescription_no.custom_email_text = email_text_no
+        eventdescription_en.custom_email_text = email_text_en
+        eventdescription_no.save()
+        eventdescription_en.save()
+
+        return JsonResponse({
+            'message': "Edit event successful",
+            'id': data['id']
+        }, status=200)
+
+
+def edit_category(request):
+    if request.method == 'POST':
+        data = request.POST
+        try:
+            categoryname_no = data['name_nb']
+            categoryname_en = data['name_en']
+
+            category = Category.objects.get(id=int(data['id']))
+
+            categorydescription_no = CategoryDescription.objects.get(category=category, language='nb')
+            categorydescription_en = CategoryDescription.objects.get(category=category, language='en')
+            categorydescription_no.name = categoryname_no
+            categorydescription_en.name = categoryname_en
+            categorydescription_no.save()
+            categorydescription_en.save()
+
+            return JsonResponse({
+                'message': "Edit category successful",
+                'id': data['id']
+            }, status=200)
+
+
+        except:
+            return get_json(400, "Edit category failed")
+
+
+def edit_subevent(request):
+    if request.method == 'POST':
+        data = request.POST
+
+        try:
+            name_no = data['name_nb']
             name_en = data['name_en']
-            description_no = data['description_text_no']
-            description_en = data['description_text_en']
-            email_text_no = data['email_text_no']
-            email_text_en = data['email_text_en']
+            email_text_no = data['email_nb']
+            email_text_en = data['email_en']
             start_date = data['start_date']
             end_date = data['end_date']
-            host = data['host']
+            registration_end_date = data['registration_end_date']
             attendance_cap = data['attendance_cap']
             price = data['price']
 
-            event.start_date = start_date
-            event.end_date = end_date
-            event.attendance_cap = attendance_cap
-            event.price = price
+            subevent = SubEvent.objects.get(id=int(data['id']))
 
-            if host == 'NTNUI':
-                event.is_host_ntnui = True
+            subevent.start_date = start_date
+            subevent.end_date = end_date
+            if registration_end_date == "":
+                subevent.registration_end_date = None
             else:
-                event.sports_groups = host
+                subevent.registration_end_date = registration_end_date
+            if attendance_cap == "":
+                subevent.attendance_cap = None
+            else:
+                subevent.attendance_cap = attendance_cap
+            if price == "":
+                subevent.price = None
+            else:
+                subevent.price = price
 
-            event.save()
-            eventdescription_no = EventDescription.objects.get(event=event, language='nb')
-            eventdescription_en = EventDescription.objects.get(event=event, language='en')
+            subevent.save()
+            subeventdescription_no = SubEventDescription.objects.get(sub_event=subevent, language='nb')
+            subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
 
-            eventdescription_no.name = name_no
-            eventdescription_en.name = name_en
-            eventdescription_no.description_text = description_no
-            eventdescription_en.description_text = description_en
-            eventdescription_no.custom_email_text = email_text_no
-            eventdescription_en.custom_email_text = email_text_en
-            eventdescription_no.save()
-            eventdescription_en.save()
+            subeventdescription_no.name = name_no
+            subeventdescription_en.name = name_en
+            if email_text_no == "":
+                subeventdescription_no.custom_email_text = None
+            else:
+                subeventdescription_no.custom_email_text = email_text_no
+            if email_text_en == "":
+                subeventdescription_en.custom_email_text = None
+            else:
+                subeventdescription_en.custom_email_text = email_text_en
+            subeventdescription_no.save()
+            subeventdescription_en.save()
 
-            return HttpResponse("Edit successful")
-    except:
-        return HttpResponse("Edit failed")
+            return get_json(200, "Edit subevent successful")
+
+        except:
+            return get_json(400, "Edit subevent failed")
 
 
 def get_events_request(request):
     return get_events.get_events(request, False)
 
-def get_attending_events_request(request):
 
+def get_attending_events_request(request):
     return get_events.get_events(request, True)
 
 
 def get_event_attendees_page(request, id, numberofsubevents):
-
     event = Event.objects.get(id=int(id))
-    eventname = event.name()
 
-    if int(numberofsubevents)== 0:
-        subeventsexist=False
+    if int(numberofsubevents) == 0:
+        subeventsexist = False
         eventregistrations = EventRegistration.objects.filter(event=event)
 
         attendees = []
@@ -377,25 +540,25 @@ def get_event_attendees_page(request, id, numberofsubevents):
 
         context = {
             'subeventsexist': subeventsexist,
-            'eventname': eventname,
+            'event': event,
             'attendees_list': attendees,
         }
 
     else:
-        subeventsexist=True
-        eventcategories=Category.objects.filter(event=event)
+        subeventsexist = True
+        eventcategories = Category.objects.filter(event=event)
 
-        subeventslist=[]
+        subeventslist = []
         for category in eventcategories:
-            subevents=SubEvent.objects.filter(category=category)
+            subevents = SubEvent.objects.filter(category=category)
             for subevent in subevents:
                 subeventslist.append(subevent)
 
-        subevents_attendees_and_names_list=[]
+        subevents_attendees_and_names_list = []
 
         for subevent in subeventslist:
-            attendees=[]
-            users=[]
+            attendees = []
+            users = []
             subeventregistrations = SubEventRegistration.objects.filter(sub_event=subevent)
             for registration in subeventregistrations:
                 user = registration.attendee
@@ -408,10 +571,9 @@ def get_event_attendees_page(request, id, numberofsubevents):
 
         context = {
                 'subeventsexist': subeventsexist,
-                'eventname': eventname,
+                'event': event,
                 'subevents_attendees_and_name_list': subevents_attendees_and_names_list,
             }
-
 
     return render(request, 'events/event_attendees_page.html', context)
 
@@ -464,8 +626,8 @@ def get_groups_user_can_create_events_for(user):
 
     # Finds all the groups were the user is in the board
     for board in Board.objects.filter(president=user) | \
-                 Board.objects.filter(vice_president=user) | \
-                 Board.objects.filter(cashier=user):
+            Board.objects.filter(vice_president=user) | \
+            Board.objects.filter(cashier=user):
 
         # Checks that the board is active
         for group in SportsGroup.objects.filter(active_board=board):
@@ -496,17 +658,40 @@ def event_has_description_and_name(description, name):
 def get_event(request, id):
     if Event.objects.filter(id=int(id)).exists():
         event = Event.objects.get(id=int(id))
+
+        categories_list = [];
+        if Category.objects.filter(event=event).exists():
+            categories = Category.objects.filter(event=event).values()
+            # for every category do:
+            for i in range(len(categories)):
+                # get all the sub-events for that category
+                categories[i]['descriptions'] = list(
+                    CategoryDescription.objects.filter(category__id=categories[i]['id']).values())
+                categories[i]['sub-events'] = list(SubEvent.objects.filter(category__id=categories[i]['id']).values())
+                for j in range(len(categories[i]['sub-events'])):
+                    # Give subevents the right format
+                    sub_event = categories[i]['sub-events'][j]
+                    sub_event['start_date'] = '{:%Y-%m-%dT%H:%M}'.format(sub_event['start_date'])
+                    sub_event['end_date'] = '{:%Y-%m-%dT%H:%M}'.format(sub_event['end_date'])
+                    if sub_event['registration_end_date'] is not None and sub_event['registration_end_date'] != "":
+                        sub_event['registration_end_date'] = '{:%Y-%m-%dT%H:%M}'.format(
+                            sub_event['registration_end_date'])
+                    sub_event['descriptions'] = list(
+                        SubEventDescription.objects.filter(sub_event__id=sub_event['id']).values())
+                categories_list.append(categories[i])
+
         return JsonResponse({
             'id': event.id,
             'name': event.name(),
             'place': event.place,
-            'description': event.description(),
+            'descriptions': list(EventDescription.objects.filter(event=event).values()),
             'start_date': event.start_date,
             'end_date': event.end_date,
             'priority': event.priority,
             'price': event.price,
             'host': event.get_host(),
-            'cover_photo': str(event.cover_photo)
+            'cover_photo': str(event.cover_photo),
+            'categories': list(categories_list),
         })
     return get_json(404, "Event with id: " + id + " does not exist.")
 
@@ -816,7 +1001,7 @@ def payment_accepted(request, event, attendee):
     # Charges the attendee's card.
 
     charge = stripe.Charge.create(receipt_email=email, source=token, amount=amount,
-                                    currency="NOK", description=description)
+                                  currency="NOK", description=description)
 
     # Payment accepted.
     return True, charge, None
@@ -839,7 +1024,8 @@ def validate_guest_data(data):
 def get_or_create_guest(email, first_name, last_name, phone):
     """Guest: Get an existing guest or create a new one."""
 
-    guest, created = Guest.objects.get_or_create(email=email, first_name=first_name, last_name=last_name, phone_number=phone)
+    guest, created = Guest.objects.get_or_create(email=email, first_name=first_name, last_name=last_name,
+                                                 phone_number=phone)
     return guest, created
 
 
@@ -865,7 +1051,6 @@ def user_unattend_event(request):
 
 @login_required
 def user_unattend_payment_event(request):
-
     return get_json(404, "Contact the host for refunding.")
 
     """
@@ -1238,7 +1423,6 @@ def user_unattend_sub_event(request):
 
 @login_required
 def user_unattend_payment_sub_event(request):
-
     return get_json(404, "Contact the host for refunding.")
 
     """
