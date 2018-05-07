@@ -40,6 +40,13 @@ class SubEvent(models.Model):
         else:
             return 'No name given'
 
+    # Returns the event's host(s) as a list
+    def get_host(self):
+        event = self.category.event
+        groups = event.get_host()
+
+        return groups
+
     # Returns the sub-event's attendee list consisting of users and guests.
     def get_attendee_list(self):
         return list(SubEventRegistration.objects.filter(sub_event=self)) + \
@@ -62,24 +69,24 @@ class SubEvent(models.Model):
         return None
 
     # Enrolls a user for an sub-event.
-    def user_attend(self, user, payment_id, registration_time):
+    def user_attend(self, user, payment_id, registration_time, token):
         SubEventRegistration.objects.create(sub_event=self, attendee=user, payment_id=payment_id,
-                                            registration_time=registration_time)
+                                            registration_time=registration_time, token=token)
 
     # Enrolls a guest for an sub-event.
-    def guest_attend(self, guest, payment_id, registration_time):
+    def guest_attend(self, guest, payment_id, registration_time, token):
         SubEventGuestRegistration.objects.create(sub_event=self, attendee=guest, payment_id=payment_id,
-                                                 registration_time=registration_time)
+                                                 registration_time=registration_time, token=token)
 
     # Enrolls a user for an sub-event's waiting list.
-    def user_attend_waiting_list(self, user, payment_id, registration_time):
+    def user_attend_waiting_list(self, user, payment_id, registration_time, token):
         SubEventWaitingList.objects.create(sub_event=self, attendee=user, payment_id=payment_id,
-                                           registration_time=registration_time)
+                                           registration_time=registration_time, token=token)
 
     # Enrolls a guest for an sub-event's waiting list.
-    def guest_attend_waiting_list(self, guest, payment_id, registration_time):
+    def guest_attend_waiting_list(self, guest, payment_id, registration_time, token):
         SubEventGuestWaitingList.objects.create(sub_event=self, attendee=guest, payment_id=payment_id,
-                                                registration_time=registration_time)
+                                                registration_time=registration_time, token=token)
 
     # Deletes an event registration for a user.
     def user_attendance_delete(self, user):

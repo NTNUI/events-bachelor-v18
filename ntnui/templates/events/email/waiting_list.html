@@ -15,7 +15,8 @@
         <br>
         {{ event.description }}
         <br>
-        http://{{ domain }}
+        If you can't attend the event, please use the sign-off link:
+        <a href="{{ request.get_host }}/events/remove-attendance/{{ token }}">{{ request.get_host }}/events/remove-attendance/{{ token }}</a>
     </p>
 
 

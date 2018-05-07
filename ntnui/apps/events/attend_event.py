@@ -302,12 +302,11 @@ def charge_card(data, event, attendee):
 def attendance_mail(request, event, attendee, token):
     """ Sends confirmation email to users and guests who signs-up for events and sub-events. """
 
-    # Mail header and sign-off link.
+    # Mail header.
     sender, receiver, subject = create_mail_header(event, attendee)
-    sign_off_link = create_sign_off_url(request, token)
 
     # Content for the mail body.
-    content = {'user': attendee, 'event': event, 'sign-off-link': sign_off_link}
+    content = {'user': attendee, 'event': event, 'request': request, 'token': token}
 
     # Mail body.
     message_plain = render_to_string('events/email/attendance.txt', content)
@@ -320,12 +319,11 @@ def attendance_mail(request, event, attendee, token):
 def waiting_list_mail(request, event, attendee, token):
     """ Sends confirmation email to users and guests who signs-up for the waiting list of an event and sub-event. """
 
-    # Mail header and sign-off link.
+    # Mail header.
     sender, receiver, subject = create_mail_header(event, attendee)
-    sign_off_link = create_sign_off_url(request, token)
 
     # Content for the mail body.
-    content = {'user': attendee, 'event': event, 'sign-off-link': sign_off_link}
+    content = {'user': attendee, 'event': event, 'request': request, 'token': token}
 
     # Mail body.
     message_plain = render_to_string('events/email/waiting_list.txt', content)
@@ -339,7 +337,7 @@ def create_sign_off_url(request, token):
     """ Creates an URL which leads to sign-off template for an event or sub-event. """
 
     # Creates the sign-off link.
-    return request.build_absolute_uri() + "/sign-off/" + token + "/"
+    return request.META.HTTP_HOST + "/events/sing-off/" + token + "/"
 
 
 """ User and guest sign-off for events and sub-events. """
@@ -363,7 +361,7 @@ def remove_attendance_request(request):
             if not attendance.payment_id:
                 attendance.delete()
                 waiting_list_next_attend(request, event)
-                remove_attendance_email(user, event)
+                remove_attendance_email(event, user)
                 return get_json(201, "Signed-off the event!")
         else:
             # User is signed-up for the sub-event.
@@ -373,7 +371,7 @@ def remove_attendance_request(request):
             if not attendance.payment_id:
                 attendance.delete()
                 waiting_list_next_attend(request, event)
-                remove_attendance_email(user, event)
+                remove_attendance_email(event, user)
                 return get_json(201, "Signed-off the event!")
 
     else:
@@ -385,7 +383,7 @@ def remove_attendance_request(request):
             if not waiting_list_registration.payment_id:
                 waiting_list_registration.delete()
                 waiting_list_next_attend(request, event)
-                remove_attendance_email(user, event)
+                remove_attendance_email(event, user)
                 return get_json(201, "Signed-off the event's waiting list!")
         else:
             # User is signed-up for the sub-event's waiting list.
@@ -395,7 +393,7 @@ def remove_attendance_request(request):
             if not waiting_list_registration.payment_id:
                 waiting_list_registration.delete()
                 waiting_list_next_attend(request, event)
-                remove_attendance_email(user, event)
+                remove_attendance_email(event, user)
                 return get_json(201, "Signed-off the event's waiting list!")
 
     # Can't sign off payment events.
@@ -440,7 +438,7 @@ def remove_attendance_by_token_request(request, token):
             registration.delete()
             if event:
                 waiting_list_next_attend(request, event)
-                remove_attendance_email(attendee, event)
+                remove_attendance_email(event, attendee)
             return get_json(201, "Signed-off the event!")
 
         # Can't sign off payment events.
@@ -540,7 +538,7 @@ def waiting_list_next_attend(request, event):
 def remove_attendance_email(event, attendee):
     """ Sends confirmation email to users and guests who signs-up for the waiting list of an event and sub-event. """
 
-    # Mail header and sign-off link.
+    # Mail header.
     sender, receiver, subject = create_mail_header(event, attendee)
 
     # Content for the mail body.
