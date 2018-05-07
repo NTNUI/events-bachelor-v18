@@ -13,8 +13,6 @@ from .views import (
 )
 from .attend_event import (
     attend_event_request,
-    attend_payment_event_request,
-    waiting_list_event_request,
 )
 
 urlpatterns = [
@@ -30,6 +28,4 @@ urlpatterns = [
 
     url(r'^(?P<id>\d+)$', get_event, name='get_event'),
     url(r'^attend-event$', attend_event_request, name='attend_event'),
-
-
 ]
