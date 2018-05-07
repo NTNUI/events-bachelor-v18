@@ -175,7 +175,6 @@ $("#remove-attend-event-button-modal").click(() => {
             $(".join-subevent-button").each((e, element) => {
                 if (element.value = subEvents[subEventIndex].id) {
                     removeAttendEvent(element, subEvents[subEventIndex])
-                    break;
                 }
             })
             break;
@@ -351,9 +350,9 @@ async function attendPayedEvent(button, subEvent) {
 async function attendEvent(button, subEvent) {
     let response;
     if (subEvent) {
-        response = await sendAjax({event_id: eventID}, '/ajax/events/attend-event');
-    } else {
         response = await sendAjax({sub_event_id: subEvent.id}, '/ajax/events/attend-event');
+    } else {
+        response = await sendAjax({event_id: eventID}, '/ajax/events/attend-event');
     }
     if (response) {
         updateButton(button, gettext('Do not attend event'), States.UNATTEND)
@@ -464,7 +463,7 @@ function printMessage(msgType, msg) {
     }
     //print message to screen
     $(".alert-message-container").html(() => {
-        return "<div class=\"alert alert-" + type + " show fade \" role=\"alert\"> <strong>" + msgType + ":</strong>" +
+        return "<div class=\"alert alert-" + type + " show fade \" role=\"alert\"> <strong>" + type + ":</strong>" +
             " " + msg + "</div>"
     })
 
