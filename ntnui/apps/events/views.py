@@ -97,6 +97,9 @@ def create_sub_event_request(request):
             'message': _('New sub-event successfully created!')},
             status=201)
 
+def get_remove_attendance_page(request, token):
+
+    return render(request, 'events/remove_attendance.html')
 
 def get_main_page(request):
     """Returns the main page for events"""

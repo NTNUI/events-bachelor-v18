@@ -8,6 +8,7 @@ from .views import (
     get_delete_event,
     get_attending_events_page,
     get_event_attendees_page,
+    get_remove_attendance_page
 )
 
 urlpatterns = [
@@ -18,4 +19,6 @@ urlpatterns = [
     url(r'^delete/(?P<id>\d+)/$', get_delete_event, name='get_delete_event'),
     url(r'^attending/$', get_attending_events_page, name='attending_events_page'),
     url(r'^attendees/(?P<id>\d+)/(?P<numberofsubevents>\d+)/', get_event_attendees_page, name='event_attendees'),
+    url(r'^remove-attendance/(?P<token>[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}'
+        r'\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})/', get_remove_attendance_page, name='remove-attendance'),
 ]

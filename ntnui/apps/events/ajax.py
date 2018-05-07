@@ -15,8 +15,10 @@ from .views import (
 )
 from .attend_event import (
     attend_event_request,
+    attend_payment_event_request,
+    waiting_list_event_request,
     remove_attendance_request,
-    attend_payment_event_request
+    remove_attendance_by_token_request
 )
 
 urlpatterns = [
@@ -37,6 +39,8 @@ urlpatterns = [
     url(r'^(?P<id>\d+)$', get_event, name='get_event'),
 
     url(r'^attend-event$', attend_event_request, name='attend_event'),
-    url(r'^attend-payment-event$', attend_payment_event_request, name='attend_event'),
-    url(r'^unattend-event$', remove_attendance_request, name='attend_event'),
+    url(r'^attend-payment-event$', attend_payment_event_request, name='attend-payment-event'),
+    url(r'^attend-payment-event$', attend_payment_event_request, name='attend-payment-event'),
+    url(r'^unattend-event$', remove_attendance_request, name='remove_attendance'),
+    url(r'^unattend-event_by_token$', remove_attendance_by_token_request, name='remove_attendance_by_token'),
 ]
