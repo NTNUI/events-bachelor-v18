@@ -104,40 +104,32 @@ class Event(models.Model):
         return None
 
     # Enrolls a user for an event.
-    def user_attend(self, user, payment_id, registration_time):
+    def user_attend(self, user, payment_id, registration_time, token):
         EventRegistration.objects.create(event=self, attendee=user, payment_id=payment_id,
-                                         registration_time=registration_time)
+                                         registration_time=registration_time, token=token)
 
     # Enrolls a guest for an event.
-    def guest_attend(self, guest, payment_id, registration_time):
+    def guest_attend(self, guest, payment_id, registration_time, token):
         EventGuestRegistration.objects.create(event=self, attendee=guest, payment_id=payment_id,
-                                              registration_time=registration_time)
+                                              registration_time=registration_time, token=token)
 
     # Enrolls a user for an event's waiting list.
-    def user_attend_waiting_list(self, user, payment_id, registration_time):
+    def user_attend_waiting_list(self, user, payment_id, registration_time, token):
         EventWaitingList.objects.create(event=self, attendee=user, payment_id=payment_id,
-                                        registration_time=registration_time)
+                                        registration_time=registration_time, token=token)
 
     # Enrolls a guest for an event's waiting list.
-    def guest_attend_waiting_list(self, guest, payment_id, registration_time):
+    def guest_attend_waiting_list(self, guest, payment_id, registration_time, token):
         EventGuestWaitingList.objects.create(event=self, attendee=guest, payment_id=payment_id,
-                                             registration_time=registration_time)
+                                             registration_time=registration_time, token=token)
 
     # Delete a event registration for a user.
     def user_attendance_delete(self, user):
         EventRegistration.objects.get(event=self, attendee=user).delete()
 
-    # Delete a event registration for a guest.
-    def guest_attendance_delete(self, guest):
-        EventGuestRegistration.objects.get(event=self, attendee=guest).delete()
-
     # Enrolls a user for an event's waiting list.
     def user_waiting_list_delete(self, user):
         EventWaitingList.objects.get(event=self, attendee=user).delete()
-
-    # Enrolls a guest for an event's waiting list.
-    def guest_waiting_list_delete(self, guest):
-        EventGuestWaitingList.objects.get(event=self, attendee=guest).delete()
 
     # Checks if a user attends the event.
     def is_user_enrolled(self, user):
@@ -200,6 +192,7 @@ class EventRegistration(models.Model):
     event = models.ForeignKey(Event, verbose_name='event')
     payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name='attendee')
+    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('attendee, user')
@@ -217,6 +210,7 @@ class EventWaitingList(models.Model):
     event = models.ForeignKey(Event, verbose_name='event')
     payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name='attendee')
+    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('waiting list, user')
@@ -234,6 +228,7 @@ class EventGuestRegistration(models.Model):
     event = models.ForeignKey(Event, verbose_name='event')
     payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
+    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('attendee, guest')
@@ -251,6 +246,7 @@ class EventGuestWaitingList(models.Model):
     event = models.ForeignKey(Event, verbose_name='event')
     payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
+    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('waiting list, guest')

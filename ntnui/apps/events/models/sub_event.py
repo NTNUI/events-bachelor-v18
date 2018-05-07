@@ -85,19 +85,9 @@ class SubEvent(models.Model):
     def user_attendance_delete(self, user):
         SubEventRegistration.objects.get(event=self, attendee=user).delete()
 
-    # Deletes an event registration for a guest.
-    def guest_attendance_delete(self, guest):
-        SubEventGuestRegistration.objects.get(event=self, attendee=guest).delete()
-
     # Deletes a user from an event's waiting list.
-    def user_waiting_list_delete(self, user, payment_id, registration_time):
-        SubEventWaitingList.objects.get(event=self, attendee=user, payment_id=payment_id,
-                                        registration_time=registration_time).delete()
-
-    # Deletes a guest from an event's waiting list.
-    def guest_waiting_list_delete(self, guest, payment_id, registration_time):
-        SubEventGuestWaitingList.objects.get(event=self, attendee=guest, payment_id=payment_id,
-                                             registration_time=registration_time).delete()
+    def user_waiting_list_delete(self, user, payment_id):
+        SubEventWaitingList.objects.get(event=self, attendee=user, payment_id=payment_id).delete()
 
     # Checks if a user attends the sub-event.
     def is_user_enrolled(self, user):
@@ -159,6 +149,7 @@ class SubEventRegistration(models.Model):
     sub_event = models.ForeignKey(SubEvent, verbose_name='sub-event')
     payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name='attendee')
+    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('attendee, users')
@@ -176,6 +167,7 @@ class SubEventWaitingList(models.Model):
     sub_event = models.ForeignKey(SubEvent, verbose_name='sub-event')
     payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name='attendee')
+    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('waiting list, user')
@@ -193,6 +185,7 @@ class SubEventGuestRegistration(models.Model):
     sub_event = models.ForeignKey(SubEvent, verbose_name='event')
     payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
+    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('attendee, guest')
@@ -210,6 +203,7 @@ class SubEventGuestWaitingList(models.Model):
     sub_event = models.ForeignKey(SubEvent, verbose_name='event')
     payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
+    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('waiting list, guest')

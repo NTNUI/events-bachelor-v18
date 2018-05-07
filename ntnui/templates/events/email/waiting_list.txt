@@ -1,0 +1,1 @@
+You are now on {{ event.name }}'s waiting list!

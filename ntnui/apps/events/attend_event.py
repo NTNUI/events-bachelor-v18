@@ -1,11 +1,15 @@
+import uuid
 import stripe
+
 from datetime import datetime
 
-from .views import (get_json, get_event_by_id, get_sub_event_by_id)
+from .views import (get_json)
 from accounts.models import User
 from events.models.guest import Guest
-from events.models.event import Event, EventRegistration, EventWaitingList, EventGuestWaitingList, EventGuestRegistration
-from events.models.sub_event import SubEvent
+from events.models.event import Event, EventRegistration, EventWaitingList, EventGuestWaitingList, \
+    EventGuestRegistration
+from events.models.sub_event import SubEvent, SubEventRegistration, SubEventWaitingList, SubEventGuestRegistration, \
+    SubEventGuestWaitingList
 
 from django.conf import settings
 from django.core.mail import send_mail
@@ -14,26 +18,26 @@ from django.template.loader import render_to_string
 from django.core.validators import validate_email, validate_integer
 
 
-""" Attend both free- and payment events and sub-events for users and guests. """
+""" User and guest sign-up for events and sub-events. """
 
 
 def attend_event_request(request):
-    """ User and guest sign-up for an event or sub-event, which is free to attend. """
+    """ Lets users and guests sign-up for events and sub-events, which are free to attend. """
 
-    event, attendee, guest_created, eligible_to_attend_event, error_message = verify_sign_up(request, True)
+    event, attendee, guest_created, eligible_to_attend_event, error_response = verify_sign_up(request, True)
 
     # Checks if the attendee is eligible to attend the event.
     # If there is created a new guest who can't attend the event, it gets deleted.
     if not eligible_to_attend_event:
         if guest_created:
-            attendee.delete()
-        return error_message
+            delete_guest(attendee)
+        return error_response
 
-    return attend_event(event, attendee, None)
+    return attend_event(request, event, attendee, None)
 
 
 def attend_payment_event_request(request):
-    """ User and guest sign-up for an event or sub-event, which requires payment to attend. """
+    """ Lets users and guests sign-up for events and sub-events, which require payment to attend. """
 
     event, attendee, guest_created, eligible_to_attend_event, error_message = verify_sign_up(request, True)
 
@@ -41,23 +45,23 @@ def attend_payment_event_request(request):
     # If there is created a new guest who can't attend the event, it gets deleted.
     if not eligible_to_attend_event:
         if guest_created:
-            attendee.delete()
+            delete_guest(attendee)
         return error_message
 
-    charge, payment_accepted, error_message = charge_card(request.POST, event, attendee)
+    payment_id, payment_accepted, error_message = charge_card(request.POST, event, attendee)
 
     # Checks if the payment for the event is accepted.
     # If there is created a new guest and the payment is declined, it gets deleted.
     if not payment_accepted:
         if guest_created:
-            attendee.delete()
+            delete_guest(attendee)
         return error_message
 
-    return attend_event(event, attendee, charge)
+    return attend_event(request, event, attendee, payment_id)
 
 
 def waiting_list_event_request(request):
-    """ User and guest sign-up for an event's or sub-event's waiting list, which is free to attend. """
+    """ Lets users and guests sign-up for events' and sub-events' waiting lists, which are free to attend. """
 
     event, attendee, guest_created, eligible_to_attend_event, error_message = verify_sign_up(request.POST, False)
 
@@ -65,95 +69,76 @@ def waiting_list_event_request(request):
     # If there is created a new guest who can't attend the event, it gets deleted.
     if not eligible_to_attend_event:
         if guest_created:
-            attendee.delete()
+            delete_guest(attendee)
         return error_message
 
-    return waiting_list_event(event, attendee, None)
+    return waiting_list_event(request, event, attendee, None)
 
 
-"""
-def waiting_list_payment_event_request(request):
-    # User and guest sign-up for an event's or sub-event's waiting list, which requires payment to attend. 
+def attend_event(request, event, attendee, payment_id):
+    """ Creates the event or sub-event registration for a user or a guest. """
 
-    event, attendee, guest_created, eligible_to_attend_event, error_message = verify_sign_up(request, False)
-
-    # Checks if the attendee is eligible to attend the event.
-    # If there is created a new guest who can't attend the event, it gets deleted.
-    if not eligible_to_attend_event:
-        if guest_created:
-            attendee.delete()
-        return error_message
-
-    charge, accepted, error_message = charge_card(request.POST, event, attendee)
-
-    # Checks if the payment for the event is accepted.
-    # If there is created a new guest and the payment is declined, it gets deleted.
-    if not accepted:
-        if guest_created:
-            attendee.delete()
-        return error_message
-
-    return waiting_list_event(event, attendee, charge)
-"""
-
-
-def attend_event(event, attendee, payment_id):
-    """ Creates the attendance and sends a confirmation mail. """
+    # Generates a token which uniquely identifies the registration.
+    token = str(uuid.uuid4())
 
     # Lets a user attend either an event or sub-event.
     if isinstance(attendee, User):
-        event.user_attend(attendee, payment_id, datetime.now())
+        event.user_attend(attendee, payment_id, datetime.now(), token)
+
     # Lets a guest attend ether an event or a sub-event.
     elif isinstance(attendee, Guest):
-        event.guest_attend(attendee, payment_id, datetime.now())
+        event.guest_attend(attendee, payment_id, datetime.now(), token)
+
     # The attendee given is neither a user nor a guest.
     else:
         return get_json(400, "Only users and guests can attend.")
 
-    # Sends an email confirming the sign-up, and returns the success message.
-    attendance_send_mail(event, attendee)
+    # Sends an email confirming the event sign-up.
+    attendance_mail(request, event, attendee, token)
     return get_json(201, 'Signed-up for the event!')
 
 
-def waiting_list_event(event, attendee, payment_id):
-    """ Creates the waiting list attendance and sends a confirmation mail. """
+def waiting_list_event(request, event, attendee, payment_id):
+    """ Creates the event or sub-event waiting list registration for a user or a guest. """
+
+    # Generates a token which uniquely identifies the registration.
+    token = str(uuid.uuid4())
 
     # Lets a user attend either an event's or a sub-event's waiting list.
     if isinstance(attendee, User):
-        event.user_attend_waiting_list(attendee, payment_id, datetime.now())
+        event.user_attend_waiting_list(attendee, payment_id, datetime.now(), token)
+
     # Lets a guest attend either an event's or a sub-event's waiting list.
     elif isinstance(attendee, Guest):
-        event.guest_attend_waiting_list(attendee, payment_id, datetime.now())
+        event.guest_attend_waiting_list(attendee, payment_id, datetime.now(), token)
+
     # The attendee given is neither a user nor a guest.
     else:
         return get_json(400, "Only users and guests can attend.")
 
-    # Sends an email confirming the waiting list sign-up, and returns the success message.
-    waiting_list_send_mail(event, attendee)
-    return get_json(201, 'Signed-up for the waiting list!')
+    # Sends an email confirming the waiting list sign-up,
+    waiting_list_mail(request, event, attendee,  token)
+    return get_json(201, "Signed-up for the waiting list!")
 
 
 def verify_sign_up(request, event_has_open_spots):
-    """
-        Verifies the input for guest sign-up.
-        Returns respectively:   the event or the sub-event,
-                                the user or the guest,
-                                if a guest has been created,
-                                if the user or guest is eligible to attend,
-                                an error message.
-    """
+    """ Checks that the user or guest who's trying to sign-up for an event or sub-event is eligible to attend. """
 
     # Checks that the request is POST.
     if not request.POST:
         return None, None, False, False, get_json(400, 'Request must be POST.')
 
-    # Gets the event or sub-event which the attendee signing-up to.
-    event_id = request.POST.get('event_id')
-    sub_event_id = request.POST.get('sub_event_id')
+    # An event will have 'event_id', while a sub-event will have 'sub_event_id'.
+    event_id = request.POST.get("event_id")
+    sub_event_id = request.POST.get("sub_event_id")
+
+    # Gets the event or sub-event which the attendee is signing-up to.
     if event_id:
         event = get_event_by_id(event_id)
-    else:
+    elif sub_event_id:
         event = get_sub_event_by_id(sub_event_id)
+    else:
+        return None, None, False, False, get_json(400, "Can't find the event ID.")
 
     # The attendee is a user.
     if request.user.is_authenticated():
@@ -161,258 +146,442 @@ def verify_sign_up(request, event_has_open_spots):
         # Gets the user.
         user = request.user
 
-        # Checks that the user can attend the event.
+        # Checks if the user is a User object.
         if not isinstance(user, User):
-            return event, None, False, False, get_json(400, 'The attendee is not a user.')
-        # Checks
+            return event, None, False, False, get_json(400, "The attendee is not a user.")
+
+        # Checks if the user attends the event already.
         elif event.is_user_enrolled(user):
-            return event, user, False, False, get_json(400, 'The user already attends the event.')
-        # Checks
+            return event, user, False, False, get_json(400, "The user already attends the event.")
+
+        # Checks if the user is on the event's waiting list already.
         elif event.is_user_on_waiting_list(user):
-            return event, user, False, False, get_json(400, 'The user is on the waiting list.')
+            return event, user, False, False, get_json(400, "The user is on the waiting list.")
+
         # Checks if the registration period has ended.
         elif event.is_registration_ended():
-            return event, user, False, False, get_json(400, 'The event registration has ended.')
+            return event, user, False, False, get_json(400, "The event registration has ended.")
+
         else:
-            # Verify event sign-up.
+            # Verifies event sign-up.
+            # Checks that the event's attendance cap ain't exceeded, so the attendee can join the event.
             if event_has_open_spots:
-                # Checks that the event's attendance cap ain't exceeded.
                 if not event.is_attendance_cap_exceeded():
                     return event, user, False, True, None
-                #
                 else:
-                    return None, None, False, False, get_json(400, 'The event is full.')
-            # Verify waiting list sign-up-
+                    return None, None, False, False, get_json(400, "The event is full.")
+            # Verify waiting list sign-up.
+            # Checks that the event's attendance cap is exceeded, so the attendee can join the waiting list.
             else:
                 if event.is_attendance_cap_exceeded():
                     return event, user, False, True, None
                 else:
-                    return None, None, False, False, get_json(400, 'The event still has open spots.')
+                    return None, None, False, False, get_json(400, "The event still has open spots.")
 
     else:
+        # Validates the data from the guest sign-up form.
+        error_response = validate_guest_data(request.POST)
+        if error_response:
+            return event, None, False, False, error_response
 
-        failure_message = validate_guest_data(request.POST)
-        if failure_message:
-            return None, None, False, False, get_json(404, failure_message)
+        # Either gets an existing guest matching the input form, or creates a new guest.
+        guest, guest_created, error_response = get_or_create_guest(request)
 
-        guest, guest_created = get_or_create_guest(request)
-
+        # Checks if the guest is a Guest object.
         if not isinstance(guest, Guest):
-            return event, guest, guest_created, False, get_json(400, 'The attendee is not a guest.')
-        if event.is_guest_enrolled(guest):
-            return event, guest, guest_created, False, get_json(400, 'The guest already attends the event.')
+            return event, guest, guest_created, False, get_json(400, "The attendee is not a guest.")
+        # Checks if the guest attends the event already.
+        elif event.is_guest_enrolled(guest):
+            return event, guest, guest_created, False, get_json(400, "The guest already attends the event.")
+
+        # Checks if the guest is on the event's waiting list already.
         elif event.is_guest_on_waiting_list(guest.id):
-            return event, guest, guest_created, False, get_json(400, 'The guest is on the waiting list.')
+            return event, guest, guest_created, False, get_json(400, "The guest is on the waiting list.")
+
+        # Checks if the registration period has ended.
+        elif event.is_registration_ended():
+            return event, guest, False, False, get_json(400, "The event registration has ended.")
+
         else:
+            # Verifies event sign-up.
+            # Checks that the event's attendance cap ain't exceeded, so the attendee can join the event.
             if event_has_open_spots:
                 if not event.is_attendance_cap_exceeded():
                     return event, guest, guest_created, True, None
                 else:
-                    return event, guest, guest_created, False, get_json(400, 'The event is full.')
+                    return event, guest, guest_created, False, get_json(400, "The event is full.")
+            # Verifies waiting list sign-up.
+            # Checks that the event's attendance cap is exceeded, so the attendee can join the waiting list.
             else:
                 if event.is_attendance_cap_exceeded():
                     return event, guest, guest_created, True, None
                 else:
-                    return event, guest, guest_created, False, get_json(400, 'The event still has open spots.')
+                    return event, guest, guest_created, False, get_json(400, "The event still has open spots.")
 
 
 def validate_guest_data(data):
-    """"""
+    """ Validates the data from the guest sign-up form. """
 
     try:
-        event_id = data.get('event_id')
-        sub_event_id = data.get('sub_event_id')
+        # Checks that the event or sub-event which the guest is trying to sign-up to exists.
+        event_id = data.get("event_id")
+        sub_event_id = data.get("sub_event_id")
         if event_id:
             Event.objects.get(id=event_id)
         else:
             SubEvent.objects.get(id=sub_event_id)
-        validate_email(data.get('email'))
-        validate_integer(data.get('phone'))
+
+        # Validates the email and phone input from the sign-up form.
+        validate_email(data.get("email"))
+        validate_integer(data.get("phone"))
+
+    # Catch exceptions.
     except ValidationError as error:
-        return error.message
+        return get_json(404, error.message)
     except Event.DoesNotExist:
-        return "Event doesn't exist."
+        return get_json(404, "Event doesn't exist.")
     except SubEvent.DoesNotExist:
-        return "Sub-event doesn't exist."
+        return get_json(404, "Sub-event doesn't exist.")
+
+    # The input is valid.
     return None
 
 
 def get_or_create_guest(data):
-    """"""
+    """ Gets an existing guest or creates a new one. """
 
-    email = data.get('email')
-    first_name = data.get('first_name')
-    last_name = data.get('last_name')
-    phone = data.get('phone')
+    # Request input data from the guest sign-up form.
+    email = data.get("email")
+    first_name = data.get("first_name")
+    last_name = data.get("last_name")
+    phone = data.get("phone")
 
+    # Checks if there exists a guest with identical input, or creates a new guest.
     try:
-        guest, guest_created = Guest.objects.get_or_create(email=email, first_name=first_name, last_name=last_name,
-                                                           phone_number=phone)
-        return guest, guest_created
-    except:
-        return get_json(404, "Couldn't get or create the guest.")
+        guest, guest_created = Guest.objects.get_or_create(email=email, first_name=first_name,
+                                                           last_name=last_name, phone_number=phone)
+    # Catch exceptions.
+    except Guest.ValidationError:
+        return None, False, get_json(400, "Invalid input, can't create guest.")
+    except Guest.MulitpleObjectsReturned:
+        return None, False, get_json(400, "There exists multiple identical guests.")
+
+    # Returns the guest and whether it was created or not.
+    return guest, guest_created, None
+
+
+def delete_guest(guest):
+    """ Deletes the given guest. """
+
+    if isinstance(guest, Guest):
+        guest.delete()
 
 
 def charge_card(data, event, attendee):
-    """"""
+    """ Charges the attendee's card. """
 
+    # Requests the necessary data for creating the Stripe payment.
     amount = event.price * 100
     description = str(event.name()) + " - " + str(attendee)
     email = data.get('stripeEmail')
     token = data.get('stripToken')
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
+    # Creates a payment with Stripe.
     try:
-        charge = stripe.Charge.create(receipt_email=email, source=token, amount=amount,
-                                      currency="NOK", description=description)
-    except:
-        return None, False, get_json(400, "Payment not accepted")
+        payment = stripe.Charge.create(receipt_email=email, source=token, amount=amount,
+                                       currency="NOK", description=description)
+    # Catch exceptions.
+    except stripe.ValidationError:
+        return None, False, get_json(400, "Payment declined.")
 
-    return charge.id, True, None
+    # Payment accepted.
+    return payment.id, True, None
 
 
-""" Remove attendance from free- and payment events and sub-events for users """
+def attendance_mail(request, event, attendee, token):
+    """ Sends confirmation email to users and guests who signs-up for events and sub-events. """
+
+    # Mail header and sign-off link.
+    sender, receiver, subject = create_mail_header(event, attendee)
+    sign_off_link = create_sign_off_url(request, token)
+
+    # Content for the mail body.
+    content = {'user': attendee, 'event': event, 'sign-off-link': sign_off_link}
+
+    # Mail body.
+    message_plain = render_to_string('events/email/attendance.txt', content)
+    message_html = render_to_string('events/email/attendance.html', content)
+
+    # Sends email.
+    send_mail(subject, message_plain, sender, receiver, html_message=message_html)
+
+
+def waiting_list_mail(request, event, attendee, token):
+    """ Sends confirmation email to users and guests who signs-up for the waiting list of an event and sub-event. """
+
+    # Mail header and sign-off link.
+    sender, receiver, subject = create_mail_header(event, attendee)
+    sign_off_link = create_sign_off_url(request, token)
+
+    # Content for the mail body.
+    content = {'user': attendee, 'event': event, 'sign-off-link': sign_off_link}
+
+    # Mail body.
+    message_plain = render_to_string('events/email/waiting_list.txt', content)
+    message_html = render_to_string('events/email/waiting_list.html', content)
+
+    # Sends email.
+    send_mail(subject, message_plain, sender, receiver, html_message=message_html)
+
+
+def create_sign_off_url(request, token):
+    """ Creates an URL which leads to sign-off template for an event or sub-event. """
+
+    # Creates the sign-off link.
+    return request.build_absolute_uri() + "/sign-off/" + token + "/"
+
+
+""" User and guest sign-off for events and sub-events. """
 
 
 def remove_attendance_request(request):
-    """User: Sign-off for an event."""
+    """ Lets users sign-off an event or sub-event, which are free to attend. """
 
-    event, attendee, attending_event, on_waiting_list, error_message = verify_sign_off(request)
+    event, user, user_attends_event, user_on_waiting_list, error_response = verify_sign_off(request)
 
-    if not attending_event and not on_waiting_list:
-        return error_message
+    # Checks that the user is signed-up for the event or its waiting list.
+    if not user_attends_event and not user_on_waiting_list:
+        return error_response
 
-    if attending_event:
-        if isinstance(attendee, User):
-            payment_id = EventRegistration.objects.get(event=event, attendee=attendee).payment_id
-            if payment_id:
-                refunded, error_message = refund_event(payment_id)
-                if refunded:
-                    event.user_attendance_delete(attendee)
-                    waiting_list_next_attend(event)
-                    return get_json(200, 'You are refunded.')
-                else:
-                    return error_message
+    if user_attends_event:
+        if isinstance(event, Event):
+            # User is signed-up for the event.
+            attendance = EventRegistration.objects.get(event=event, attendee=user)
 
-            else:
-                event.user_attendance_delete(attendee)
-                waiting_list_next_attend(event)
-                return get_json(200, 'Not attending any more.')
+            # Deletes the event registration if the event is free to attend.
+            if not attendance.payment_id:
+                attendance.delete()
+                waiting_list_next_attend(request, event)
+                remove_attendance_email(user, event)
+                return get_json(201, "Signed-off the event!")
+        else:
+            # User is signed-up for the sub-event.
+            attendance = SubEventRegistration.objects.get(sub_event=event, attendee=user)
+
+            # Deletes the sub-event registration if the sub-event is free to attend.
+            if not attendance.payment_id:
+                attendance.delete()
+                waiting_list_next_attend(request, event)
+                remove_attendance_email(user, event)
+                return get_json(201, "Signed-off the event!")
 
     else:
-        if isinstance(attendee, User):
-            payment_id = EventWaitingList.objects.get(event=event, attendee=attendee).payment_id
-            if payment_id:
-                refunded, error_message = refund_event(payment_id)
-                if refunded:
-                    event.user_waiting_list_delete(attendee)
-                    return get_json(200, 'You are refunded.')
-                else:
-                    return error_message
+        if isinstance(event, Event):
+            # User is signed-up for the event's waiting list.
+            waiting_list_registration = EventWaitingList.objects.get(event=event, attendee=user)
 
-            else:
-                event.user_waiting_list_delete(attendee)
-                return get_json(200, 'Not attending any more.')
+            # Deletes the waiting list registration if the event is free to attend.
+            if not waiting_list_registration.payment_id:
+                waiting_list_registration.delete()
+                waiting_list_next_attend(request, event)
+                remove_attendance_email(user, event)
+                return get_json(201, "Signed-off the event's waiting list!")
+        else:
+            # User is signed-up for the sub-event's waiting list.
+            waiting_list_registration = SubEventWaitingList.objects.get(sub_event=event, attendee=user)
 
-    return get_json(400, "Guest can't sign-off event' yet.")
+            # Deletes the waiting list registration if the sub-event is free to attend.
+            if not waiting_list_registration.payment_id:
+                waiting_list_registration.delete()
+                waiting_list_next_attend(request, event)
+                remove_attendance_email(user, event)
+                return get_json(201, "Signed-off the event's waiting list!")
+
+    # Can't sign off payment events.
+    return get_json(400, "Can't sign off payment events, contact the host for refunding.")
+
+
+def remove_attendance_by_token_request(request, token):
+    """ Lets users and guests sign-off an event or sub-event, which are free to attend. """
+
+    # Models which will be searched through for the token.
+    search_models = [EventRegistration, EventWaitingList, EventGuestRegistration, EventGuestWaitingList,
+                     SubEventRegistration, SubEventWaitingList, SubEventGuestRegistration, SubEventGuestWaitingList]
+    search_results = []
+
+    # Searches through the models for the token, and saves all results.
+    for model in search_models:
+        results = model.objects.filter(token=token)
+        if results.exists():
+            search_results.append(results)
+
+    # No registrations matched the search.
+    if len(search_results) == 0:
+        return get_json(400, "Found no matching event or sub-event registration.")
+
+    # One registration matched the search.
+    elif len(search_results) == 1:
+
+        registration = search_results[0]
+        attendee = registration.attendee
+
+        # Checks if the user or guest was signed-up for an event or sub-event (not waiting list).
+        if isinstance(registration, EventRegistration) or isinstance(registration, EventGuestRegistration):
+            event = registration.event
+        elif isinstance(registration, SubEventRegistration) or isinstance(registration, SubEventGuestRegistration):
+            event = registration.sub_event
+        else:
+            event = None
+
+        # Deletes the registration if it's related to an event or sub-event, which are free to attend.
+        # Moves the next person on the waiting list into the list of attendees.
+        if not registration.payment_id:
+            registration.delete()
+            if event:
+                waiting_list_next_attend(request, event)
+                remove_attendance_email(attendee, event)
+            return get_json(201, "Signed-off the event!")
+
+        # Can't sign off payment events.
+        return get_json(400, "Can't sign off payment events, contact the host for refunding.")
+
+    # Multiple registrations matched the search.
+    else:
+        return get_json(400, "Found multiple matching registrations, contact the host to sign-off the event.")
 
 
 def verify_sign_off(request):
-    """"""
+    """ Checks that the user who's trying to sign-off an event or sub-event is signed-up beforehand. """
 
+    # Checks that the request is POST.
     if not request.POST:
         return None, None, False, False, get_json(400, 'Request must be POST.')
 
-    event_id = request.POST.get('event_id')
-    sub_event_id = request.POST.get('sub_event_id')
+    # An event will have 'event_id', while a sub-event will have 'sub_event_id'.
+    event_id = request.POST.get("event_id")
+    sub_event_id = request.POST.get("sub_event_id")
+
+    # Gets the event or sub-event which the attendee is signing-up to.
     if event_id:
         event = get_event_by_id(event_id)
-    else:
+    elif sub_event_id:
         event = get_sub_event_by_id(sub_event_id)
+    else:
+        return None, None, False, False, get_json(400, "Can't find the event ID.")
 
+    # Checks that the user is logged in.
     if request.user.is_authenticated():
+
+        # Gets the user.
         user = request.user
 
-        if not isinstance(user, User):
-            return None, None, False, False, get_json(400, 'The attendee is not a user.')
-        elif event.is_user_enrolled(user):
+        # Checks if the user attends the event already.
+        if event.is_user_enrolled(user):
             return event, user, True, False, None
+
+        # Checks if the user is on the event's waiting list already.
         elif event.is_user_on_waiting_list(user):
             return event, user, False, True, None
-        if event.is_registration_ended():
-            return event, None, False, False, get_json(400, 'Registration has ended, cannot sign off.')
+
+        # The user isn't signed-up for the event.
         else:
-            return event, user, False, False, get_json(400, 'Already signed off the event.')
+            return event, user, False, False, get_json(400, "You are not signed-up for the event.")
 
+    # The user have to log-in to remove the attendance.
     else:
-        return None, None, False, False, get_json(400, 'Cannot sign off as guest yet.')
+        return event, None, False, False, get_json(400, "Please log-in to sign-off the event.")
 
 
-def refund_event(payment_id):
+def waiting_list_next_attend(request, event):
+    """ Gets the next person on the waiting list and signs them up for the event or sub-event. """
 
-    stripe.api_key = settings.STRIPE_SECRET_KEY
+    # Checks that the event is free to attend.
+    if event.is_payment_event():
+        return
 
-    try:
-        stripe.Refund.create(
-            charge=payment_id
-        )
-    except:
-        return False, get_json("Refund failed.")
+    # Checks if there are people on the waiting list.
+    elif len(event.get_waiting_list()) > 0:
 
-    return True, None
-
-
-def waiting_list_next_attend(event):
-
-    if len(event.get_waiting_list()) > 0 and not event.is_payment_event():
-
+        # Gets the first person on the waiting list.
         attendee, payment_id = event.waiting_list_next()
 
-        if isinstance(attendee, User):
-            EventWaitingList.objects.filter(event=event, attendee=attendee).delete()
+        # The event or sub-event is free to attend, and there are not a payment ID in the waiting list registration.
+        if not payment_id:
+
+            if isinstance(event, Event):
+                # Deletes the event waiting list registration for a user.
+                if isinstance(attendee, User):
+                    EventWaitingList.objects.filter(event=event, attendee=attendee).delete()
+                # Deletes the event waiting list registration for a guest.
+                else:
+                    EventGuestWaitingList.objects.filter(event=event, attendee=attendee).delete()
+
+            elif isinstance(event, SubEvent):
+                # Deletes the sub-event waiting list registration for a user.
+                if isinstance(attendee, User):
+                    EventWaitingList.objects.filter(event=event, attendee=attendee).delete()
+                # Deletes the sub-event waiting list registration for a guest.
+                else:
+                    EventGuestWaitingList.objects.filter(event=event, attendee=attendee).delete()
+
+            # The event given to the function is neither a Event nor a SubEvent.
+            else:
+                return
+
+            # The user or guest has been removed from the waiting list, and get moved into the event or sub-event.
+            attend_event(request, event, attendee, None)
+
+        # Can't move people into events or sub-events, where there are a payment ID in the waiting list registration.
         else:
-            EventGuestWaitingList.objects.filter(event=event, attendee=attendee).delete()
-
-        attend_event(event, attendee, payment_id)
+            return
 
 
-def attendance_send_mail(event, user):
+def remove_attendance_email(event, attendee):
+    """ Sends confirmation email to users and guests who signs-up for the waiting list of an event and sub-event. """
+
+    # Mail header and sign-off link.
+    sender, receiver, subject = create_mail_header(event, attendee)
+
+    # Content for the mail body.
+    content = {'user': attendee, 'event': event}
+
+    # Mail body.
+    message_plain = render_to_string('events/email/remove_attendance.txt', content)
+    message_html = render_to_string('events/email/remove_attendance.html', content)
+
+    # Sends email.
+    send_mail(subject, message_plain, sender, receiver, html_message=message_html)
+
+
+""" Generic functions applicable to both sign-up and sign-off. """
+
+
+def get_event_by_id(event_id):
+    """Gets the event which the event ID is associated with."""
+
+    try:
+        return Event.objects.get(id=event_id)
+    except Event.DoesNotExist:
+        return get_json(404, "Event doesn't exist.")
+
+
+def get_sub_event_by_id(sub_event_id):
+    """Gets the sub-event which the sub-event ID is associated with."""
+
+    try:
+        return SubEvent.objects.get(id=sub_event_id)
+    except SubEvent.DoesNotExist:
+        return get_json(404, "Sub-event doesn't exist.")
+
+
+def create_mail_header(event, attendee):
+    """ Gets the from, to, and subject fields for the email. """
+
+    # Create mail header.
+    sender = 'noreply@mg.ntnui.no'
+    receiver = [attendee.email]
     subject = event.name() + " - " + " - ".join(str(item) for item in event.get_host())
-    from_email = 'noreply@mg.ntnui.no'
-    to_email = [user.email]
 
-    content = {'user': user,
-               'event': event
-               }
-
-    msg_plain = render_to_string('events/email/event.txt', content)
-    msg_html = render_to_string('events/email/event.html', content)
-
-    send_mail(
-        subject,
-        msg_plain,
-        from_email,
-        to_email,
-        html_message=msg_html,
-    )
-
-
-def waiting_list_send_mail(event, attendee):
-    subject = event.name() + " - " + " - ".join(str(item) for item in event.get_host())
-    from_email = 'noreply@mg.ntnui.no'
-    to_email = [attendee.email]
-
-    content = {'user': attendee,
-               'event': event
-               }
-
-    msg_plain = render_to_string('events/email/event.txt', content)
-    msg_html = render_to_string('events/email/event.html', content)
-
-    send_mail(
-        subject,
-        msg_plain,
-        from_email,
-        to_email,
-        html_message=msg_html,
-    )
+    # Returns the sender and receiver of the email and the email's subject.
+    return sender, receiver, subject
