@@ -516,3 +516,28 @@ def get_event(request, id):
             'cover_photo': str(event.cover_photo)
         })
     return get_json(404, "Event with id: " + id + " does not exist.")
+
+
+@login_required
+def user_unattend_payment_event(request):
+
+    return get_json(404, "Contact the host for refunding.")
+
+    """
+    if request.POST:
+        try:
+            id = request.POST.get('id')
+            event = Event.objects.get(id=int(id))
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            event_registration = EventRegistration.objects.get(attendee=request.user, event=event)
+            # refund user
+            refund = stripe.Refund.create(
+                charge=event_registration.payment_id
+            )
+            if refund:
+                remove_attendance(event.id, request.user)
+                return get_json(200, 'Refund accepted')
+        except:
+            return get_json(404, 'Woops, something went wrong')
+    return get_json(404, 'Request must be post!')
+    """
