@@ -6,10 +6,10 @@ from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 from accounts.models import User
-from groups.models import SportsGroup
-from events.models.tag import Tag
 from events.models.guest import Guest
 from events.models.restriction import Restriction
+from events.models.tag import Tag
+from groups.models import SportsGroup
 
 
 class Event(models.Model):

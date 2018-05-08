@@ -1,12 +1,13 @@
 from datetime import datetime
+
 from django.db import models
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 from accounts.models import User
-from events.models.tag import Tag
-from events.models.guest import Guest
 from events.models.category import Category
+from events.models.guest import Guest
+from events.models.tag import Tag
 
 
 class SubEvent(models.Model):
