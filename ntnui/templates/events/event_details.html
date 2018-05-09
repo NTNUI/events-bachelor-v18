@@ -121,79 +121,89 @@
 
     <div id="content-container">
 
-        <div id="event-info-container">
+    <div id="event-info-container">
 
-            <div id="labels-infos">
+        <div id="labels-infos">
 
-                <div id="event-labels">
+            <div id="event-labels">
 
-                    <div class="label">
-                        {% trans 'Location' %}
-                    </div>
-
-                    <div class="label">
-                        {% trans 'Host' %}
-                    </div>
-
-                    <div class="label">
-                        {% trans 'Start date' %}
-                    </div>
-
-                    <div class="label">
-                        {% trans 'End date' %}
-                    </div>
-                    {% if event.payment_required %}
-                        <div class="label">
-                            {% trans 'Price' %}
-                        </div>
-                    {% endif %}
-
+                <div class="label">
+                    {% trans 'Location' %}
                 </div>
 
-                <div id="event-infos">
-
-                    <div class="info">
-                        {{ event.place }}
-                    </div>
-
-                    <div class="info">
-                        {% for host in event.host %}
-                            {{ host }}
-                        {% endfor %}
-                    </div>
-
-                    <div class="info">
-                        {{ event.start_date }}
-                    </div>
-
-                    <div class="info">
-                        {{ event.end_date }}
-                    </div>
-
-                    {% if event.payment_required %}
-                        <div id="price" class="info">
-                            {{ event.price }},-
-                        </div>
-                    {% endif %}
+                <div class="label">
+                    {% trans 'Host' %}
                 </div>
+
+                <div class="label">
+                    {% trans 'Start date' %}
+                </div>
+
+                <div class="label">
+                    {% trans 'End date' %}
+                </div>
+                {% if event.payment_required %}
+                    <div class="label">
+                        {% trans 'Price' %}
+                    </div>
+                {% endif %}
+
             </div>
 
-            {% if not sub_event_list %}
-                <div id="event-sign-up">
-                {% if event.attends %}
-                    <button type="button"
-                            id="attend-event-button"
-                            class="btn btn-danger"
-                            data-state="unattend"
-                            value="{{ event.id }}"
-                            data-toggle="modal"
-                            data-target="#eventModal">
+            <div id="event-infos">
+
+                <div class="info">
+                    {{ event.place }}
+                </div>
+
+                <div class="info">
+                    {% for host in event.host %}
+                        {{ host }}
+                    {% endfor %}
+                </div>
+
+                <div class="info">
+                    {{ event.start_date }}
+                </div>
+
+                <div class="info">
+                    {{ event.end_date }}
+                </div>
+
+                {% if event.payment_required %}
+                    <div id="price" class="info">
+                        {{ event.price }},-
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if not sub_event_list %}
+            <div id="event-sign-up">
+            {% if event.attends %}
+                <button type="button"
+                        id="attend-event-button"
+                        class="btn btn-danger"
+                        data-state="unattend"
+                        value="{{ event.id }}"
+                        data-toggle="modal"
+                        data-target="#eventModal">
+                    <div class="button-title-container">
+                        {% trans 'Unattend from event' %}
+                    </div>
+                </button>
+            {% else %}
+                {% if event.waiting_list %}
+                    {% if event.is_user_on_waiting_list %}
+                        <button id="attend-event-button"
+                                type="button"
+                                value="{{ event.id }}"
+                                name="mybtn"
+                                data-state="on-waiting-list"
+                                class="btn btn-secondary">
                         <div class="button-title-container">
-                            {% trans 'Unattend from event' %}
-                        </div>
-                    </button>
-                {% else %}
-                    {% if event.waiting_list %}
+                        {% trans 'Remove me from wait list' %}
+                    {% else %}
                         <button id="attend-event-button"
                                 type="button"
                                 value="{{ event.id }}"
@@ -202,35 +212,36 @@
                                 class="btn btn-info">
                         <div class="button-title-container">
                         {% trans 'Put me on the waiting list' %}
-                    {% else %}
-                        <button id="attend-event-button"
-                                type="button"
-                                value="{{ event.id }}"
-                                name="mybtn"
-                                data-state="attend"
-                                class="btn btn-success">
-                        <div class="button-title-container">
-                        {% if event.payment_required %}
-                            <div class="button-div">
-                                <img src="{% static 'img/credit-card.svg' %}"/>
-                                &nbsp;{% trans 'Pay using card' %}
-                            </div>
-                        {% else %}
-                            {% trans 'Attend event' %}
-                        {% endif %}
                     {% endif %}
-                </div>
-                </button>
-
+                {% else %}
+                    <button id="attend-event-button"
+                            type="button"
+                            value="{{ event.id }}"
+                            name="mybtn"
+                            data-state="attend"
+                            class="btn btn-success">
+                    <div class="button-title-container">
+                    {% if event.payment_required %}
+                        <div class="button-div">
+                            <img src="{% static 'img/credit-card.svg' %}"/>
+                            &nbsp;{% trans 'Pay using card' %}
+                        </div>
+                    {% else %}
+                        {% trans 'Attend event' %}
+                    {% endif %}
                 {% endif %}
-
             </div>
+            </button>
+
             {% endif %}
-            </div>
 
-            <div id="event-description">
-                {{ event.description }}
-            </div>
+        </div>
+        {% endif %}
+        </div>
+
+        <div id="event-description">
+            {{ event.description }}
+        </div>
         </div>
 
         <div style="margin-bottom: 5rem;">

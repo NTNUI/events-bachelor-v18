@@ -167,6 +167,7 @@ def get_event_details(request, id):
         can_create_event = False
 
     waiting_list = event.is_attendance_cap_exceeded()
+    is_user_on_waiting_list = event.is_user_on_waiting_list(request.user);
 
     if request.user.is_authenticated:
         if user_is_in_mainboard(request.user):
@@ -200,6 +201,7 @@ def get_event_details(request, id):
         'attends': attends,
         'id': event.id,
         'waiting_list': waiting_list,
+        'is_user_on_waiting_list': is_user_on_waiting_list,
         'price': event.price,
         'payment_required': event.is_payment_event(),
         'host': event.get_host(),
