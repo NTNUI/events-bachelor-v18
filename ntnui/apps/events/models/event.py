@@ -26,8 +26,8 @@ class Event(CommonEvent):
         verbose_name_plural = _('events')
 
     # Gets the path to the image folder.
-    def get_cover_upload_to(self, filename):
-        name = EventDescription.objects.get(event=self, language=translation.get_language()).name
+    def get_cover_upload_to(instance, filename):
+        name = EventDescription.objects.get(event=instance, language=translation.get_language()).name
         return os.path.join(
             "cover_photo/events/{}".format(name.replace(" ", "-")), filename)
 
@@ -164,23 +164,6 @@ class Event(CommonEvent):
     def is_guest_on_waiting_list(self, guest):
         return EventGuestWaitingList.objects.filter(attendee=guest, event=self).exists()
 
-    # Checks if the event's attendance capacity is exceeded.
-    def is_attendance_cap_exceeded(self):
-        return self.attendance_cap is not None and self.attendance_cap <= len(self.get_attendee_list())
-
-    # Checks if the event's registration has ended.
-    def is_registration_ended(self):
-        return self.registration_end_date is not None and \
-               self.registration_end_date.replace(tzinfo=None) < datetime.now()
-
-    # Checks if the event requires payment.
-    def is_payment_event(self):
-        return self.price > 0
-
-    # Checks if a payment is created and that the event require payment.
-    def is_payment_created(self, payment_id):
-        return payment_id is not None and self.is_payment_event()
-
     def __str__(self):
         return self.name()
 
@@ -195,9 +178,7 @@ class EventDescription(CommonDescription):
     class Meta:
         verbose_name = _('description')
         verbose_name_plural = _('descriptions')
-
-    def __str__(self):
-        return self.name
+        verbose_name_plural = _('descriptions')
 
 
 class EventRegistration(CommonRegistration):

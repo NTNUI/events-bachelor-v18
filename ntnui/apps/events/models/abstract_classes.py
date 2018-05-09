@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -13,6 +15,9 @@ class CommonDescription(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return self.name
+
 
 class CommonEvent(models.Model):
     """ Common fields for Event and SubEvent. """
@@ -26,6 +31,23 @@ class CommonEvent(models.Model):
 
     class Meta:
         abstract = True
+
+    # Checks if the event's attendance capacity is exceeded.
+    def is_attendance_cap_exceeded(self):
+        return self.attendance_cap is not None and self.attendance_cap <= len(self.get_attendee_list())
+
+    # Checks if the event's registration has ended.
+    def is_registration_ended(self):
+        return self.registration_end_date is not None and \
+               self.registration_end_date.replace(tzinfo=None) < datetime.now()
+
+    # Checks if the sub-event requires payment.
+    def is_payment_event(self):
+        return self.price > 0
+
+    # Checks if a payment is created and that the sub-event require payment.
+    def is_payment_created(self, payment_id):
+        return payment_id is not None and self.is_payment_event()
 
 
 class CommonRegistration(models.Model):

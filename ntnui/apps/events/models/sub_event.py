@@ -114,23 +114,6 @@ class SubEvent(CommonEvent):
     def is_guest_on_waiting_list(self, guest):
         return SubEventGuestWaitingList.objects.filter(attendee=guest, sub_event=self).exists()
 
-    # Checks if the sub-event's attendance capacity is exceeded.
-    def is_attendance_cap_exceeded(self):
-        return self.attendance_cap is not None and self.attendance_cap < len(self.get_attendee_list())
-
-    # Checks if the sub-event's registration has ended.
-    def is_registration_ended(self):
-        return self.registration_end_date is not None and \
-               self.registration_end_date.replace(tzinfo=None) < datetime.now()
-
-    # Checks if the sub-event requires payment.
-    def is_payment_event(self):
-        return self.price > 0
-
-    # Checks if a payment is created and that the sub-event require payment.
-    def is_payment_created(self, payment_id):
-        return payment_id is not None and self.is_payment_event()
-
     def __str__(self):
         return self.name()
 
@@ -145,9 +128,6 @@ class SubEventDescription(CommonDescription):
         verbose_name = _('description')
         verbose_name_plural = _('descriptions')
 
-    def __str__(self):
-        return self.name
-
 
 class SubEventRegistration(CommonRegistration):
     """ Created to let users sign up for sub-events. """
@@ -156,7 +136,7 @@ class SubEventRegistration(CommonRegistration):
     attendee = models.ForeignKey(User, verbose_name='attendee')
 
     class Meta:
-        verbose_name = _('attendee, users')
+        verbose_name = _('attendee, user')
         verbose_name_plural = _('attendees, users')
         unique_together = ('sub_event', 'attendee')
 
@@ -182,7 +162,7 @@ class SubEventWaitingList(CommonRegistration):
 class SubEventGuestRegistration(CommonRegistration):
     """ Created to let guests sign up for sub-events. """
 
-    sub_event = models.ForeignKey(SubEvent, verbose_name='event')
+    sub_event = models.ForeignKey(SubEvent, verbose_name='sub-event')
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
 
     class Meta:
@@ -197,7 +177,7 @@ class SubEventGuestRegistration(CommonRegistration):
 class SubEventGuestWaitingList(CommonRegistration):
     """ Created to let guests sign up for the waiting list, when an sub-event is capped out. """
 
-    sub_event = models.ForeignKey(SubEvent, verbose_name='event')
+    sub_event = models.ForeignKey(SubEvent, verbose_name='sub-event')
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
 
     class Meta:

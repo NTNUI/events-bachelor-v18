@@ -292,7 +292,7 @@ def charge_card(data, event, attendee):
         payment = stripe.Charge.create(receipt_email=email, source=token, amount=amount,
                                        currency="NOK", description=description)
     # Catch exceptions.
-    except stripe.ValidationError:
+    except:
         return None, False, get_json(400, "Payment declined.")
 
     # Payment accepted.
