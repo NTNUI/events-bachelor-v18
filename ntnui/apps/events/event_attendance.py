@@ -12,6 +12,7 @@ from events.models.sub_event \
     import SubEvent, SubEventRegistration, SubEventWaitingList, SubEventGuestRegistration, SubEventGuestWaitingList
 
 from django.conf import settings
+from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.core.exceptions import ValidationError
 from django.template.loader import render_to_string
@@ -96,7 +97,9 @@ def attend_event(request, event, attendee, payment_id):
 
     # Sends an email confirming the event sign-up.
     attendance_mail(request, event, attendee, token)
-    return get_json(201, _('Signed up for the event!'))
+    return JsonResponse({'message': _('Signed up for the event!'),
+                         'number_of_participants': len(event.get_attendee_list),
+                         'attendance_cap': event.attendance_cap}, status=201)
 
 
 def waiting_list_event(request, event, attendee, payment_id):

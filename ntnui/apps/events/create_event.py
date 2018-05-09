@@ -44,10 +44,10 @@ def create_event(request):
         elif datetime.now() >= start_date.replace(tzinfo=None):
             return get_json(400, _("Starting date cannot be in the past."))
     else:
-        # The event
+        # The event is lacking either start date or end date.
         return get_json(400, _('Start date and end date is required.'))
 
-    # Tries to create the event
+    # Creates the event.
     entry_created = create_and_validate_database_entry(request)
 
     # if success send event created
@@ -63,14 +63,7 @@ def create_event(request):
     return get_json(400, _('Failed to create event!'))
 
 
-def event_has_description_and_name(description, name):
-    """ Checks that a description is not empyt"""
 
-    if description is None or description.replace(' ', '') == "":
-        return False, get_json(400, _('Event must have description'))
-    elif name is None or name.replace(' ', '') == "":
-        return False, _('Event must have a name.')
-    return True, None
 
 
 def create_and_validate_database_entry(request):
@@ -89,7 +82,7 @@ def create_and_validate_database_entry(request):
         if user_is_in_mainboard(request.user):
             return create_event_for_group(data, priority, True)
         else:
-            return (False, 'User is not in mainboard')
+            return False, 'User is not in mainboard'
 
     # Checks that the sportGroup exists
     if SportsGroup.objects.filter(id=int(data.get('host'))).exists():
@@ -104,11 +97,11 @@ def create_and_validate_database_entry(request):
             if user_is_in_board(active_board, request.user):
                 return create_event_for_group(data, priority, False)
             else:
-                return (False, "user is not in board")
+                return False, "user is not in board"
         else:
-            return (False, "active_board is None")
+            return False, "active_board is None"
     else:
-        return (False, "sportsGroup doesn't exist")
+        return False, "sportsGroup doesn't exist"
 
 
 def create_event_for_group(data, priority, is_ntnui):
