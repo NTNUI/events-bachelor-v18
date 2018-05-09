@@ -282,7 +282,7 @@ async function processStripeToken(token) {
         csrfmiddlewaretoken: csrftoken,
         stripeToken: token.id,
         event_id: eventID,
-        stripEmail: token.email,
+        stripeEmail: token.email,
     }
     if (isGuestUser) {
         data.email = email
@@ -334,7 +334,7 @@ function updateButton(button, title, type, subEvent) {
             button.setAttribute("class", "btn btn-info")
             break;
         case States.ON_WAITING_LIST:
-            button.setAttribute("class", "btn btn-secondary disabled")
+            button.setAttribute("class", "btn btn-secondary")
             break;
     }
     if (subEvent) {
@@ -438,9 +438,9 @@ async function attendWaitingList(button, subEvent) {
 async function removeAttendEvent(button, subEvent) {
     if (subEvent && subEvent.state === States.ON_WAITING_LIST) {
         setButtonLoader(button, '#AAAAAA')
-    } else if (state == States.ON_WAITING_LIST){
+    } else if (state == States.ON_WAITING_LIST) {
         setButtonLoader(button, '#AAAAAA')
-    }else {
+    } else {
         setButtonLoader(button, '#AA0000')
     }
 
@@ -452,21 +452,22 @@ async function removeAttendEvent(button, subEvent) {
     }
     if (response) {
         console.log(response)
-        if (response.number_of_participants >= response.attandance_cap) {
-            updateButton(button, gettext('waitlist'), States.WAIT_LIST, subEvent)
+        if (parseInt(response.number_of_participants) >= parseInt(response.attendance_cap)) {
+            updateButton(button, gettext('Put me on the wait list'), States.WAIT_LIST, subEvent)
             if (subEvent) {
                 subEvents[subEvents.indexOf(subEvent)].state = States.WAIT_LIST
             } else {
                 state = States.WAIT_LIST
             }
-        }
-        updateButton(button, gettext('attend event'), States.ATTEND, subEvent)
-        if (subEvent) {
-            subEvents[subEvents.indexOf(subEvent)].state = States.ATTEND
         } else {
-            state = States.ATTEND
+            updateButton(button, gettext('attend event'), States.ATTEND, subEvent)
+            if (subEvent) {
+                subEvents[subEvents.indexOf(subEvent)].state = States.ATTEND
+            } else {
+                state = States.ATTEND
+            }
+            printMessage(MsgType.SUCCESS, response.message)
         }
-        printMessage(MsgType.SUCCESS, response.message)
     }
 }
 

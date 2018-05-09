@@ -219,7 +219,7 @@ label.custom-control.custom-checkbox:checked + label::before {
     border-bottom: 4px solid #007D32;
 }
 #container {
-    width: 50%;
+    width: 60%;
     max-width:80rem;
 }
 
@@ -292,8 +292,11 @@ label.custom-control.custom-checkbox:checked + label::before {
         margin-left: 0;
     }
 
-
     .event-main-page-container {
         display: block;
+    }
+
+    #container {
+        width:95%;
     }
 }

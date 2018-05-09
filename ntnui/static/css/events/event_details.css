@@ -59,6 +59,7 @@
     border-left: 2px solid;
 }
 
+
 #labels-infos {
     display: flex;
     flex-direction: row;
@@ -189,8 +190,4 @@
         margin-bottom: 1rem;
     }
 
-    #image-centered {
-        max-width: 95%;
-        max-height: 100%;
-    }
 }

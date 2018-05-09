@@ -147,6 +147,15 @@
                         {% trans 'Price' %}
                     </div>
                 {% endif %}
+                <div class="label">
+                    {% trans 'Number of participants' %}
+                </div>
+                {% if event.registration_end_date %}
+                    <div class="label">
+                        {% trans 'Registration end date' %}
+                    </div>
+                {% endif %}
+
 
             </div>
 
@@ -175,8 +184,29 @@
                         {{ event.price }},-
                     </div>
                 {% endif %}
+
+                <div class="into">
+                    {{ attendance_cap }}
+                    {% if event.attendance_cap != "" and event.attendance_cap is not none %}
+                        {{ event.number_of_participants }}/{{ event.attendance_cap }}
+                    {% else %}
+                        {{ event.number_of_participants }}
+                    {% endif %}
+                </div>
+
+                {% if event.registration_end_date %}
+                    <div class="info">
+                        {{ event.registration_end_date }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+            <div>
+                <p>test</p>
             </div>
         </div>
+
 
         {% if not sub_event_list %}
             <div id="event-sign-up">
