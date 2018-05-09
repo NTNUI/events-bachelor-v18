@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Guest(models.Model):
-    """Guest makes it possible to sign up for events and sub events when the user ain't a member of NTNUI."""
+    """ Created to make it possible for people who aren't NTNUI members to sign-up for events and sub-events. """
 
     email = models.EmailField(_('email address'))
     first_name = models.CharField(_('first name'), max_length=30)

@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Tag(models.Model):
-    """Tags makes searching for events easier by giving additional searchable elements."""
+    """ Created to make searching for events and sub-events easier by giving additional searchable elements. """
 
     name = models.CharField(_('name'), max_length=50)
 

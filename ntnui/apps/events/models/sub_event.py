@@ -5,48 +5,49 @@ from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 from accounts.models import User
+from events.models.abstract_classes import CommonDescription, CommonEvent, CommonRegistration
 from events.models.category import Category
 from events.models.guest import Guest
-from events.models.tag import Tag
 
 
-class SubEvent(models.Model):
-    """Makes it possible to divide an event into multiple sub-events (e.g. multiple disciplines)."""
+class SubEvent(CommonEvent):
+    """ Created to Makes it possible to divide an event into multiple sub-events (e.g. multiple disciplines). """
 
-    start_date = models.DateTimeField(_('start date'))
-    end_date = models.DateTimeField(_('end date'))
-    registration_end_date = models.DateTimeField(_('registration end date'), blank=True, null=True)
-    price = models.IntegerField(_('price'), default=0)
-    attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
-    tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     category = models.ForeignKey(Category, verbose_name=_('category'))
 
     class Meta:
         verbose_name = _('sub-event')
         verbose_name_plural = _('sub-events')
 
-    # Returns the name of the sub-event, in the given language.
+    # Finds the browser's language setting, and returns the sub-event's name in the preferred language.
     def name(self):
-        sub_event_description_get_language = SubEventDescription.objects.filter(sub_event=self,
-                                                                                language=translation.get_language())
+
+        # Filter for desirable languages.
+        sub_event_description_get_language = SubEventDescription.objects.filter(
+            sub_event=self, language=translation.get_language())
         sub_event_description_english = SubEventDescription.objects.filter(sub_event=self, language='en')
         sub_event_description = SubEventDescription.objects.filter(sub_event=self)
 
+        # Checks if the sub-event's name exists in the browser's language.
         if sub_event_description_get_language.exists():
             return sub_event_description_get_language[0].name
+
+        # Checks if the sub-event's name exists in English.
         elif sub_event_description_english.exists():
             return sub_event_description_english[0].name
+
+        # Checks if the sub-event's name exists in any language.
         elif sub_event_description.exists():
             return sub_event_description[0].name
+
+        # No sub-event name exists.
         else:
             return 'No name given'
 
-    # Returns the event's host(s) as a list
+    # Finds the sub-event's host(s), and returns a list containing them.
     def get_host(self):
         event = self.category.event
-        groups = event.get_host()
-
-        return groups
+        return event.get_host()
 
     # Returns the sub-event's attendee list consisting of users and guests.
     def get_attendee_list(self):
@@ -71,29 +72,29 @@ class SubEvent(models.Model):
 
     # Enrolls a user for an sub-event.
     def user_attend(self, user, payment_id, registration_time, token):
-        SubEventRegistration.objects.create(sub_event=self, attendee=user, payment_id=payment_id,
-                                            registration_time=registration_time, token=token)
+        SubEventRegistration.objects.create(
+            sub_event=self, attendee=user, payment_id=payment_id, registration_time=registration_time, token=token)
 
     # Enrolls a guest for an sub-event.
     def guest_attend(self, guest, payment_id, registration_time, token):
-        SubEventGuestRegistration.objects.create(sub_event=self, attendee=guest, payment_id=payment_id,
-                                                 registration_time=registration_time, token=token)
+        SubEventGuestRegistration.objects.create(
+            sub_event=self, attendee=guest, payment_id=payment_id, registration_time=registration_time, token=token)
 
     # Enrolls a user for an sub-event's waiting list.
     def user_attend_waiting_list(self, user, payment_id, registration_time, token):
-        SubEventWaitingList.objects.create(sub_event=self, attendee=user, payment_id=payment_id,
-                                           registration_time=registration_time, token=token)
+        SubEventWaitingList.objects.create(
+            sub_event=self, attendee=user, payment_id=payment_id, registration_time=registration_time, token=token)
 
     # Enrolls a guest for an sub-event's waiting list.
     def guest_attend_waiting_list(self, guest, payment_id, registration_time, token):
-        SubEventGuestWaitingList.objects.create(sub_event=self, attendee=guest, payment_id=payment_id,
-                                                registration_time=registration_time, token=token)
+        SubEventGuestWaitingList.objects.create(
+            sub_event=self, attendee=guest, payment_id=payment_id, registration_time=registration_time, token=token)
 
-    # Deletes an event registration for a user.
+    # Deletes an sub-event registration for a user.
     def user_attendance_delete(self, user):
         SubEventRegistration.objects.get(event=self, attendee=user).delete()
 
-    # Deletes a user from an event's waiting list.
+    # Deletes a user from an sub-event's waiting list.
     def user_waiting_list_delete(self, user, payment_id):
         SubEventWaitingList.objects.get(event=self, attendee=user, payment_id=payment_id).delete()
 
@@ -134,11 +135,9 @@ class SubEvent(models.Model):
         return self.name()
 
 
-class SubEventDescription(models.Model):
-    """Created to support multiple languages for each sub-event's name and description."""
+class SubEventDescription(CommonDescription):
+    """ Created to support multiple languages for each sub-event's name and description. """
 
-    name = models.CharField(_('name'), max_length=100)
-    language = models.CharField(_('language'), max_length=30)
     custom_email_text = models.CharField(_('email text'), max_length=250, null=True, blank=True)
     sub_event = models.ForeignKey(SubEvent, verbose_name=_('sub-event'))
 
@@ -150,14 +149,11 @@ class SubEventDescription(models.Model):
         return self.name
 
 
-class SubEventRegistration(models.Model):
-    """Created to let users sign up for sub-events"""
+class SubEventRegistration(CommonRegistration):
+    """ Created to let users sign up for sub-events. """
 
-    registration_time = models.DateTimeField(_('registration time'))
     sub_event = models.ForeignKey(SubEvent, verbose_name='sub-event')
-    payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name='attendee')
-    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('attendee, users')
@@ -168,14 +164,11 @@ class SubEventRegistration(models.Model):
         return self.sub_event.name() + ' - ' + self.attendee.email
 
 
-class SubEventWaitingList(models.Model):
-    """Created to let users sign up for the waiting list, when an sub-event is capped out"""
+class SubEventWaitingList(CommonRegistration):
+    """ Created to let users sign up for the waiting list, when an sub-event is capped out. """
 
-    registration_time = models.DateTimeField(_('registration time'))
     sub_event = models.ForeignKey(SubEvent, verbose_name='sub-event')
-    payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name='attendee')
-    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('waiting list, user')
@@ -186,14 +179,11 @@ class SubEventWaitingList(models.Model):
         return self.sub_event.name() + ' - ' + self.attendee.email
 
 
-class SubEventGuestRegistration(models.Model):
-    """Created to let guests sign up for sub-events"""
+class SubEventGuestRegistration(CommonRegistration):
+    """ Created to let guests sign up for sub-events. """
 
-    registration_time = models.DateTimeField(_('registration time'))
     sub_event = models.ForeignKey(SubEvent, verbose_name='event')
-    payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
-    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('attendee, guest')
@@ -204,14 +194,11 @@ class SubEventGuestRegistration(models.Model):
         return self.sub_event.name() + ' - ' + self.attendee.email
 
 
-class SubEventGuestWaitingList(models.Model):
-    """Created to let guests sign up for the waiting list, when an sub-event is capped out"""
+class SubEventGuestWaitingList(CommonRegistration):
+    """ Created to let guests sign up for the waiting list, when an sub-event is capped out. """
 
-    registration_time = models.DateTimeField(_('registration time'))
     sub_event = models.ForeignKey(SubEvent, verbose_name='event')
-    payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
-    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('waiting list, guest')

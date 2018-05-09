@@ -6,21 +6,15 @@ from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 from accounts.models import User
+from events.models.abstract_classes import CommonDescription, CommonEvent, CommonRegistration
 from events.models.guest import Guest
 from events.models.restriction import Restriction
-from events.models.tag import Tag
 from groups.models import SportsGroup
 
 
-class Event(models.Model):
-    """Event is the main object, which gets complemented by the rest of the models in different aspects."""
+class Event(CommonEvent):
+    """ Event is the main model, which gets complemented by the rest of the models in different aspects. """
 
-    start_date = models.DateTimeField(_('start date'))
-    end_date = models.DateTimeField(_('end date'))
-    registration_end_date = models.DateTimeField(_('registration end date'), blank=True, null=True)
-    price = models.IntegerField(_('price'), default=0)
-    attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
-    tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
     place = models.CharField(_('place'), max_length=50, blank=True)
     restriction = models.ForeignKey(Restriction, verbose_name=_('restriction'), default=0)
     priority = models.BooleanField(_('priority'), default=False)
@@ -31,52 +25,75 @@ class Event(models.Model):
         verbose_name = _('event')
         verbose_name_plural = _('events')
 
-    def get_cover_upload_to(instance, filename):
-        name = EventDescription.objects.get(event=instance, language=translation.get_language()).name
+    # Gets the path to the image folder.
+    def get_cover_upload_to(self, filename):
+        name = EventDescription.objects.get(event=self, language=translation.get_language()).name
         return os.path.join(
             "cover_photo/events/{}".format(name.replace(" ", "-")), filename)
 
     cover_photo = models.ImageField(upload_to=get_cover_upload_to, default='cover_photo/events/ntnui-volleyball.png')
 
-    # Returns the event's name, in the given language
+    # Finds the browser's language setting, and returns the event's name in the preferred language.
     def name(self):
-        event_name_get_language = EventDescription.objects.filter(event=self, language=translation.get_language())
-        event_name_english = EventDescription.objects.filter(event=self, language='en')
-        event_name = EventDescription.objects.filter(event=self)
 
-        if event_name_get_language.exists():
-            return event_name_get_language[0].name
-        elif event_name_english.exists():
-            return event_name_english[0].name
-        elif event_name.exists():
-            return event_name[0].name
+        # Filter for desirable languages.
+        browser_language_event_name = EventDescription.objects.filter(event=self, language=translation.get_language())
+        english_event_name = EventDescription.objects.filter(event=self, language='en')
+        any_event_name = EventDescription.objects.filter(event=self)
+
+        # Checks if the event's name exists in the browser's language.
+        if browser_language_event_name.exists():
+            return browser_language_event_name[0].name
+
+        # Checks if the event's name exists in English.
+        elif english_event_name.exists():
+            return english_event_name[0].name
+
+        # Checks if the event's name exists in any language.
+        elif any_event_name.exists():
+            return any_event_name[0].name
+
+        # No event name exists.
         else:
             return 'No name given'
 
     name.short_description = _('name')
 
-    # Returns the event's description, in the given language
+    # Finds the browser's language setting, and returns the event's description in the preferred language.
     def description(self):
-        event_description_get_language = EventDescription.objects.filter(event=self,
-                                                                         language=translation.get_language())
+
+        # Filter for desirable languages.
+        event_description_get_language = EventDescription.objects.filter(
+            event=self, language=translation.get_language())
         event_description_english = EventDescription.objects.filter(event=self, language='en')
         event_description = EventDescription.objects.filter(event=self)
 
+        # Checks if there exists an event description in the browser's language.
         if event_description_get_language.exists():
             return event_description_get_language[0].description_text
+
+        # Checks if there exists an English event description.
         elif event_description_english.exists():
             return event_description_english[0].description_text
+
+        # Checks if there exists any event description.
         elif event_description.exists():
             return event_description[0].description_text
+
+        # No event description exists.
         else:
             return 'No description given'
 
     description.short_description = _('description')
 
-    # Returns the event's host(s) as a list
+    # Finds the event's host(s), and returns a list containing the host(s).
     def get_host(self):
+
+        # Checks if NTNUI is hosting the event.
         if self.is_host_ntnui:
             return ['NTNUI']
+
+        # Gets the group(s) hosting the event.
         groups = []
         for group in self.sports_groups.all():
             groups.append(group.name)
@@ -105,23 +122,23 @@ class Event(models.Model):
 
     # Enrolls a user for an event.
     def user_attend(self, user, payment_id, registration_time, token):
-        EventRegistration.objects.create(event=self, attendee=user, payment_id=payment_id,
-                                         registration_time=registration_time, token=token)
+        EventRegistration.objects.create(
+            event=self, attendee=user, payment_id=payment_id, registration_time=registration_time, token=token)
 
     # Enrolls a guest for an event.
     def guest_attend(self, guest, payment_id, registration_time, token):
-        EventGuestRegistration.objects.create(event=self, attendee=guest, payment_id=payment_id,
-                                              registration_time=registration_time, token=token)
+        EventGuestRegistration.objects.create(
+            event=self, attendee=guest, payment_id=payment_id, registration_time=registration_time, token=token)
 
     # Enrolls a user for an event's waiting list.
     def user_attend_waiting_list(self, user, payment_id, registration_time, token):
-        EventWaitingList.objects.create(event=self, attendee=user, payment_id=payment_id,
-                                        registration_time=registration_time, token=token)
+        EventWaitingList.objects.create(
+            event=self, attendee=user, payment_id=payment_id, registration_time=registration_time, token=token)
 
     # Enrolls a guest for an event's waiting list.
     def guest_attend_waiting_list(self, guest, payment_id, registration_time, token):
-        EventGuestWaitingList.objects.create(event=self, attendee=guest, payment_id=payment_id,
-                                             registration_time=registration_time, token=token)
+        EventGuestWaitingList.objects.create(
+            event=self, attendee=guest, payment_id=payment_id, registration_time=registration_time, token=token)
 
     # Delete a event registration for a user.
     def user_attendance_delete(self, user):
@@ -168,13 +185,11 @@ class Event(models.Model):
         return self.name()
 
 
-class EventDescription(models.Model):
-    """Created to support multiple languages for each event's name and description."""
+class EventDescription(CommonDescription):
+    """ Created to support multiple languages for each event's name and description. """
 
-    name = models.CharField(_('name'), max_length=100)
     description_text = models.CharField(_('description'), max_length=500)
     custom_email_text = models.CharField(_('email text'), max_length=250, null=True, blank=True)
-    language = models.CharField(_('language'), max_length=30)
     event = models.ForeignKey(Event, verbose_name=_('event'))
 
     class Meta:
@@ -185,14 +200,11 @@ class EventDescription(models.Model):
         return self.name
 
 
-class EventRegistration(models.Model):
-    """Created to let users sign up for events"""
+class EventRegistration(CommonRegistration):
+    """ Created to let users sign up for events. """
 
-    registration_time = models.DateTimeField(_('registration time'))
     event = models.ForeignKey(Event, verbose_name='event')
-    payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name='attendee')
-    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('attendee, user')
@@ -203,14 +215,11 @@ class EventRegistration(models.Model):
         return self.event.name() + ' - ' + self.attendee.email
 
 
-class EventWaitingList(models.Model):
-    """Created to let users sign up for the waiting list, when an event is capped out"""
+class EventWaitingList(CommonRegistration):
+    """ Created to let users sign up for the waiting list, when an event is capped out. """
 
-    registration_time = models.DateTimeField(_('registration time'))
     event = models.ForeignKey(Event, verbose_name='event')
-    payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(User, verbose_name='attendee')
-    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('waiting list, user')
@@ -221,14 +230,11 @@ class EventWaitingList(models.Model):
         return self.event.name() + ' - ' + self.attendee.email
 
 
-class EventGuestRegistration(models.Model):
-    """Created to let guests sign up for events"""
+class EventGuestRegistration(CommonRegistration):
+    """ Created to let guests sign up for events. """
 
-    registration_time = models.DateTimeField(_('registration time'))
     event = models.ForeignKey(Event, verbose_name='event')
-    payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
-    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('attendee, guest')
@@ -239,14 +245,11 @@ class EventGuestRegistration(models.Model):
         return self.event.name() + ' - ' + self.attendee.email
 
 
-class EventGuestWaitingList(models.Model):
-    """Created to let guests sign up for the waiting list, when an event is capped out"""
+class EventGuestWaitingList(CommonRegistration):
+    """ Created to let guests sign up for the waiting list, when an event is capped out. """
 
-    registration_time = models.DateTimeField(_('registration time'))
     event = models.ForeignKey(Event, verbose_name='event')
-    payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
     attendee = models.ForeignKey(Guest, verbose_name='attendee')
-    token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:
         verbose_name = _('waiting list, guest')
