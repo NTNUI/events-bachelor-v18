@@ -111,7 +111,7 @@ function getState(type) {
         return States.UNATTEND
     } else if (type === "on-waiting-list") {
         return States.ON_WAITING_LIST
-    }else {
+    } else {
         return States.ATTEND
     }
 }
@@ -122,28 +122,31 @@ function getState(type) {
 $("#attend-event-button").click((e) => {
     e.preventDefault()
     const button = getButton(e);
+    if (!$(button).prop('disabled')) {
+        $(button).prop("disabled", true).addClass("disabled");
 
-    switch (state) {
-        case States.UNATTEND:
-            modalType = (hasNoPrice) ? ModalTypes.UNATTEND_EVENT : ModalTypes.UNATTEND_PAYED_EVENT
-            $("#deleteModal").modal("show");
-            break;
-        case States.ATTEND:
-            if (isGuestUser) {
-                showGuestModal();
-            } else {
-                if (hasNoPrice) {
-                    attendEvent(button)
+        switch (state) {
+            case States.UNATTEND:
+                modalType = (hasNoPrice) ? ModalTypes.UNATTEND_EVENT : ModalTypes.UNATTEND_PAYED_EVENT
+                $("#deleteModal").modal("show");
+                break;
+            case States.ATTEND:
+                if (isGuestUser) {
+                    showGuestModal();
                 } else {
-                    attendPayedEvent(button)
+                    if (hasNoPrice) {
+                        attendEvent(button)
+                    } else {
+                        attendPayedEvent(button)
+                    }
                 }
-            }
-            break;
-        case States.WAIT_LIST:
-            attendWaitingList(button)
-            break;
-        case States.ON_WAITING_LIST:
-            break;
+                break;
+            case States.WAIT_LIST:
+                attendWaitingList(button)
+                break;
+            case States.ON_WAITING_LIST:
+                break;
+        }
     }
 })
 
@@ -152,15 +155,21 @@ $("#attend-event-button").click((e) => {
  */
 $(".join-subevent-button").click((e) => {
     const button = getButton(e)
-    let subEvent = subEvents.filter((event) => event.id === button.value)
-    subEventIndex = subEvents.indexOf(subEvent[0])
-    // IF the first sign is a - we want to remove attending event
-    if (subEvent[0].state === States.UNATTEND) {
-        modalType = ModalTypes.UNATTEND_SUB_EVENT
-        $("#deleteModal").modal("show");
-    } else {
-        attendEvent(button, subEvent[0])
+
+    if (!$(button).prop('disabled')) {
+        $(button).prop("disabled", true).addClass("disabled");
+
+        let subEvent = subEvents.filter((event) => event.id === button.value)
+        subEventIndex = subEvents.indexOf(subEvent[0])
+        // IF the first sign is a - we want to remove attending event
+        if (subEvent[0].state === States.UNATTEND) {
+            modalType = ModalTypes.UNATTEND_SUB_EVENT
+            $("#deleteModal").modal("show");
+        } else {
+            attendEvent(button, subEvent[0])
+        }
     }
+
 })
 
 /**
@@ -172,8 +181,11 @@ $("#remove-attend-event-button-modal").click(() => {
             removeAttendEvent($("#attend-event-button")[0])
             break;
         case ModalTypes.UNATTEND_SUB_EVENT:
+            console.log(subEventIndex);
+            console.log(subEvents)
             $(".join-subevent-button").each((e, element) => {
-                if (element.value = subEvents[subEventIndex].id) {
+                console.log(element.value)
+                if (element.value == subEvents[subEventIndex].id) {
                     removeAttendEvent(element, subEvents[subEventIndex])
                 }
             })
@@ -221,9 +233,10 @@ $("#guest-data-form").on('submit', async (e) => {
  * @param data
  * @param url
  * @param type
+ * @param button
  * @returns {Promise.<*>}
  */
-async function sendAjax(data, url, type) {
+async function sendAjax(data, url, type, button) {
     data.csrfmiddlewaretoken = csrftoken;
     try {
         let result = await $.ajax({
@@ -235,6 +248,12 @@ async function sendAjax(data, url, type) {
     } catch (error) {
         if (error.responseJSON) {
             printMessage(MsgType.ERROR, error.responseJSON.message)
+            if (button) {
+                $(button).find('.loader').remove();
+                if ($(button).prop('disabled')) {
+                    $(button).prop("disabled", false).removeClass("disabled");
+                }
+            }
         }
     }
 }
@@ -246,8 +265,8 @@ async function sendAjax(data, url, type) {
  */
 function getButton(e) {
     const event = e || window.event
-    const target = event.target
-    return $(target).closest("button")[0]
+    const element = event.target
+    return $(element).closest("button")[0]
 }
 
 /**
@@ -299,8 +318,8 @@ function hideGuestModal() {
  * @param title
  * @param type
  */
-function updateButton(button, title, type) {
-    $(button).find("button-title-container").html(title);
+function updateButton(button, title, type, subEvent) {
+    $(button).find(".button-title-container").html(title);
     switch (type) {
         case States.UNATTEND:
             button.setAttribute('class', 'btn btn-danger');
@@ -315,12 +334,21 @@ function updateButton(button, title, type) {
             button.setAttribute("class", "btn btn-secondary disabled")
             break;
     }
+    if (subEvent) {
+        button.setAttribute("class", ("join-subevent-button " + button.getAttribute("class")))
+    }
     $(button).find(".loader").remove();
+
+    if ($(button).prop('disabled')) {
+        $(button).prop("disabled", false).removeClass("disabled");
+    }
 }
 
 function setButtonLoader(button, color) {
-    button.innerHTML = ('<div style="border: .1rem solid ' + color + '; border-top: .1rem solid white" class="loader"></div>')
-        + button.innerHTML;
+    if (!$(button).find(".loader").length) {
+        button.innerHTML = ('<div style="border: .1rem solid ' + color + '; border-top: .1rem solid white" class="loader"></div>')
+            + button.innerHTML;
+    }
 }
 
 /**
@@ -333,7 +361,7 @@ async function attendPayedEvent(button, subEvent) {
     const URL = !subEvent ? ('/ajax/events/' + eventID) : ('/ajax/events/sub-event/' + subEvent.id)
     paymentButton = button;
     setButtonLoader(button)
-    const event = await sendAjax({id: (subEvent ? subEvent.id : eventID) }, URL)
+    const event = await sendAjax({id: (subEvent ? subEvent.id : eventID)}, URL, 'POST', button)
     if (event) {
         const user = await sendAjax({}, '/ajax/accounts', 'GET')
         if (user) {
@@ -358,14 +386,14 @@ async function attendEvent(button, subEvent) {
     setButtonLoader(button, '#00AA00')
     let response;
     if (subEvent) {
-        response = await sendAjax({sub_event_id: subEvent.id}, '/ajax/events/attend-event');
+        response = await sendAjax({sub_event_id: subEvent.id}, '/ajax/events/attend-event', 'POST', button);
     } else {
-        response = await sendAjax({event_id: eventID}, '/ajax/events/attend-event');
+        response = await sendAjax({event_id: eventID}, '/ajax/events/attend-event', 'POST', button);
     }
     if (response) {
-        updateButton(button, gettext('Do not attend event'), States.UNATTEND)
+        updateButton(button, gettext('Do not attend event'), States.UNATTEND, subEvent)
         if (subEvent) {
-            subEvent.state = States.UNATTEND
+            subEvents[subEvents.indexOf(subEvent)].state = States.UNATTEND
         } else {
             state = States.UNATTEND
         }
@@ -383,14 +411,14 @@ async function attendWaitingList(button, subEvent) {
     setButtonLoader(button, '#0000AA')
     let response;
     if (subEvent) {
-        response = await sendAjax({event_id: eventID}, 'waiting-list-event');
+        response = await sendAjax({event_id: eventID}, 'waiting-list-event', 'POST', button);
     } else {
-        response = await sendAjax({sub_event_id: subEvent.id}, 'waiting-list-event');
+        response = await sendAjax({sub_event_id: subEvent.id}, 'waiting-list-event', 'POST', button);
     }
     if (response) {
-        updateButton(button, gettext('you are on the wailing list'), States.ON_WAITING_LIST)
+        updateButton(button, gettext('you are on the wailing list'), States.ON_WAITING_LIST, subEvent)
         if (subEvent) {
-            subEvent.state = States.ON_WAITING_LIST
+            subEvents[subEvents.indexOf(subEvent)].state = States.ON_WAITING_LIST
         } else {
             state = States.ON_WAITING_LIST
         }
@@ -408,26 +436,26 @@ async function removeAttendEvent(button, subEvent) {
     setButtonLoader(button, '#AA0000')
     let response;
     if (subEvent) {
-        response = await sendAjax({sub_event_id: subEvent.id}, '/ajax/events/unattend-event')
+        response = await sendAjax({sub_event_id: subEvent.id}, '/ajax/events/unattend-event', 'POST', button)
     } else {
-        response = await sendAjax({event_id: eventID}, '/ajax/events/unattend-event')
+        response = await sendAjax({event_id: eventID}, '/ajax/events/unattend-event', 'POST', button)
     }
     if (response) {
         if (response.number_of_participance >= response.maximum_number_of_participants) {
-            updateButton(button, gettext('waitlist'), States.WAIT_LIST)
+            updateButton(button, gettext('waitlist'), States.WAIT_LIST, subEvent)
             if (subEvent) {
-                subEvent.state = States.WAIT_LIST
+                subEvents[subEvents.indexOf(subEvent)].state = States.WAIT_LIST
             } else {
                 state = States.WAIT_LIST
             }
         }
-        updateButton(button, gettext('attend event'), States.ATTEND)
+        updateButton(button, gettext('attend event'), States.ATTEND, subEvent)
         if (subEvent) {
-            subEvent.state = States.ATTEND
+            subEvents[subEvents.indexOf(subEvent)].state = States.ATTEND
         } else {
             state = States.ATTEND
         }
-        printMessage(MsgType.SUCCESS, data.message)
+        printMessage(MsgType.SUCCESS, response.message)
     }
 }
 
