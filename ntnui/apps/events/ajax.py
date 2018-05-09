@@ -13,7 +13,7 @@ from .views import (
     delete_category_request,
     delete_subevent_request,
 )
-from .attend_event import (
+from .event_attendance import (
     attend_event_request,
     attend_payment_event_request,
     waiting_list_event_request,

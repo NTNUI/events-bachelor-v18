@@ -17,9 +17,9 @@ class Event(CommonEvent):
 
     place = models.CharField(_('place'), max_length=50, blank=True)
     restriction = models.ForeignKey(Restriction, verbose_name=_('restriction'), default=0)
-    priority = models.BooleanField(_('priority'), default=False)
     is_host_ntnui = models.BooleanField(_('hosted by NTNUI'), default=False)
-    sports_groups = models.ManyToManyField(SportsGroup, blank=True, verbose_name=_('hosted by'))
+    sports_groups = models.ManyToManyField(SportsGroup, verbose_name=_('hosted by'), blank=True)
+    priority = models.BooleanField(_('priority'), default=False)
 
     class Meta:
         verbose_name = _('event')
@@ -29,7 +29,7 @@ class Event(CommonEvent):
     def get_cover_upload_to(self, filename):
         name = EventDescription.objects.get(event=self, language=translation.get_language()).name
         return os.path.join(
-            "cover_photo/events/{}".format(name.replace(" ", "-")), filename)
+            'cover_photo/events/{}'.format(name.replace(' ', '-')), filename)
 
     cover_photo = models.ImageField(upload_to=get_cover_upload_to, default='cover_photo/events/ntnui-volleyball.png')
 
@@ -171,13 +171,12 @@ class Event(CommonEvent):
 class EventDescription(CommonDescription):
     """ Created to support multiple languages for each event's name and description. """
 
+    event = models.ForeignKey(Event, verbose_name=_('event'))
     description_text = models.CharField(_('description'), max_length=500)
     custom_email_text = models.CharField(_('email text'), max_length=250, null=True, blank=True)
-    event = models.ForeignKey(Event, verbose_name=_('event'))
 
     class Meta:
         verbose_name = _('description')
-        verbose_name_plural = _('descriptions')
         verbose_name_plural = _('descriptions')
 
 
