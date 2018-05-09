@@ -166,6 +166,8 @@ def get_event_details(request, id):
     else:
         can_create_event = False
 
+    waiting_list = event.is_attendance_cap_exceeded()
+
     if request.user.is_authenticated:
         if user_is_in_mainboard(request.user):
             is_in_mainboard = user_is_in_mainboard(request.user)
@@ -197,6 +199,7 @@ def get_event_details(request, id):
         'cover_photo': event.cover_photo,
         'attends': attends,
         'id': event.id,
+        'waiting_list': waiting_list,
         'price': event.price,
         'payment_required': event.is_payment_event(),
         'host': event.get_host(),

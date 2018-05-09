@@ -12,211 +12,220 @@
     </div>
 
     <div id="container">
-        <div class="header-container">
-            {% if can_edit_and_delete_event %}
-                <div class="top-menu" style="margin-bottom: 2rem;">
-                    <ul>
-                        <li>
-                            <a class="active-item"> Event </a>
-                        </li>
-                        <li>
-                            <div class="vert-divider"></div>
-                        </li>
-                        <li>
-                            <a href="{% url 'event_attendees' event.id number_of_subevents %}">Attendees</a>
-                        </li>
-                        <li>
-                            <div class="vert-divider"></div>
-                        </li>
-                        <li>
-                            <a href="{% url 'edit_event_page' event.id %}"> Edit event </a>
-                        </li>
+    <div class="header-container">
+        {% if can_edit_and_delete_event %}
+            <div class="top-menu" style="margin-bottom: 2rem;">
+                <ul>
+                    <li>
+                        <a class="active-item"> Event </a>
+                    </li>
+                    <li>
+                        <div class="vert-divider"></div>
+                    </li>
+                    <li>
+                        <a href="{% url 'event_attendees' event.id number_of_subevents %}">Attendees</a>
+                    </li>
+                    <li>
+                        <div class="vert-divider"></div>
+                    </li>
+                    <li>
+                        <a href="{% url 'edit_event_page' event.id %}"> Edit event </a>
+                    </li>
 
-                    </ul>
-                </div>
-            {% endif %}
-
-            <div class="img-container">
-                <img id="image-centered" src=" /static/{{ event.cover_photo }}" alt="Event Image"/>
+                </ul>
             </div>
-            <div class="title-container">
-                <div style="width: 100%; display: flex; justify-content: center;">
-                    <div id="header">
-                        {{ event.name }}
-                    </div>
+        {% endif %}
+
+        <div class="img-container">
+            <img id="image-centered" src=" /static/{{ event.cover_photo }}" alt="Event Image"/>
+        </div>
+        <div class="title-container">
+            <div style="width: 100%; display: flex; justify-content: center;">
+                <div id="header">
+                    {{ event.name }}
                 </div>
             </div>
         </div>
+    </div>
 
 
-        <!-- Waring modal -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <!-- Waring modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans 'Are you sure?' %}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">{% trans 'Close' %}</button>
+                    <button type="button" id="remove-attend-event-button-modal" class="btn btn-danger"
+                            data-dismiss="modal">{% trans 'Yes' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% if not is_authenticated %}
+        <!-- Guest user modal -->
+        <div class="modal fade" id="guestUserModal" tabindex="-1" role="dialog" aria-labelledby="guestUserModal"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">{% trans 'Are you sure?' %}</h5>
+                        <h5 class="modal-title">{% trans 'Please fill in the fields bellow' %}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
+                    <div class="container">
+                        <form id="guest-data-form" onsubmit="return attendEventGuest()">
+                            <div class="form-group">
+                                <label>Email address</label>
+                                <input id="input-email" name="email" type="email" class="form-control"
+                                       placeholder="name@example.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>First name </label>
+                                <input id="first-name" name="first_name" type="text" class="form-control"
+                                       placeholder="Ola" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last name</label>
+                                <input id="last-name" name="last_name" type="text" class="form-control"
+                                       placeholder="Nordmann" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input id="phone" name="phone" type="number" class="form-control"
+                                       placeholder="+47 555 55 555" required>
+                            </div>
+                        </form>
+                    </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
                                 data-dismiss="modal">{% trans 'Close' %}</button>
-                        <button type="button" id="remove-attend-event-button-modal" class="btn btn-danger"
-                                data-dismiss="modal">{% trans 'Yes' %}</button>
+                        <button type="submit" form="guest-data-form" class="btn btn-success">
+                            {% trans 'Attend event' %}</button>
                     </div>
                 </div>
             </div>
         </div>
+    {% endif %}
 
+    <div id="content-container">
 
-        {% if not is_authenticated %}
-            <!-- Guest user modal -->
-            <div class="modal fade" id="guestUserModal" tabindex="-1" role="dialog" aria-labelledby="guestUserModal"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">{% trans 'Please fill in the fields bellow' %}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="container">
-                            <form id="guest-data-form" onsubmit="return attendEventGuest()">
-                                <div class="form-group">
-                                    <label>Email address</label>
-                                    <input id="input-email" name="email" type="email" class="form-control"
-                                           placeholder="name@example.com" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>First name </label>
-                                    <input id="first-name" name="first_name" type="text" class="form-control"
-                                           placeholder="Ola" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Last name</label>
-                                    <input id="last-name" name="last_name" type="text" class="form-control"
-                                           placeholder="Nordmann" required>
-                                </div>
-                                <div class="form-group">
-                                    <label>Phone</label>
-                                    <input id="phone" name="phone" type="number" class="form-control"
-                                           placeholder="+47 555 55 555" required>
-                                </div>
-                            </form>
-                        </div>
+        <div id="event-info-container">
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary"
-                                    data-dismiss="modal">{% trans 'Close' %}</button>
-                            <button type="submit" form="guest-data-form" class="btn btn-success">
-                                {% trans 'Attend event' %}</button>
-                        </div>
+            <div id="labels-infos">
+
+                <div id="event-labels">
+
+                    <div class="label">
+                        {% trans 'Location' %}
                     </div>
+
+                    <div class="label">
+                        {% trans 'Host' %}
+                    </div>
+
+                    <div class="label">
+                        {% trans 'Start date' %}
+                    </div>
+
+                    <div class="label">
+                        {% trans 'End date' %}
+                    </div>
+                    {% if event.payment_required %}
+                        <div class="label">
+                            {% trans 'Price' %}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <div id="event-infos">
+
+                    <div class="info">
+                        {{ event.place }}
+                    </div>
+
+                    <div class="info">
+                        {% for host in event.host %}
+                            {{ host }}
+                        {% endfor %}
+                    </div>
+
+                    <div class="info">
+                        {{ event.start_date }}
+                    </div>
+
+                    <div class="info">
+                        {{ event.end_date }}
+                    </div>
+
+                    {% if event.payment_required %}
+                        <div id="price" class="info">
+                            {{ event.price }},-
+                        </div>
+                    {% endif %}
                 </div>
             </div>
-        {% endif %}
 
-        <div id="content-container">
-
-            <div id="event-info-container">
-
-                <div id="labels-infos">
-
-                    <div id="event-labels">
-
-                        <div class="label">
-                            {% trans 'Location' %}
+            {% if not sub_event_list %}
+                <div id="event-sign-up">
+                {% if event.attends %}
+                    <button type="button"
+                            id="attend-event-button"
+                            class="btn btn-danger"
+                            data-state="unattend"
+                            value="{{ event.id }}"
+                            data-toggle="modal"
+                            data-target="#eventModal">
+                        <div class="button-title-container">
+                            {% trans 'Unattend from event' %}
                         </div>
-
-                        <div class="label">
-                            {% trans 'Host' %}
-                        </div>
-
-                        <div class="label">
-                            {% trans 'Start date' %}
-                        </div>
-
-                        <div class="label">
-                            {% trans 'End date' %}
-                        </div>
+                    </button>
+                {% else %}
+                    {% if event.waiting_list %}
+                        <button id="attend-event-button"
+                                type="button"
+                                value="{{ event.id }}"
+                                name="mybtn"
+                                data-state="wait-list"
+                                class="btn btn-info">
+                        <div class="button-title-container">
+                        {% trans 'Put me on the waiting list' %}
+                    {% else %}
+                        <button id="attend-event-button"
+                                type="button"
+                                value="{{ event.id }}"
+                                name="mybtn"
+                                data-state="attend"
+                                class="btn btn-success">
+                        <div class="button-title-container">
                         {% if event.payment_required %}
-                            <div class="label">
-                                {% trans 'Price' %}
+                            <div class="button-div">
+                                <img src="{% static 'img/credit-card.svg' %}"/>
+                                &nbsp;{% trans 'Pay using card' %}
                             </div>
-                        {% endif %}
-
-                    </div>
-
-                    <div id="event-infos">
-
-                        <div class="info">
-                            {{ event.place }}
-                        </div>
-
-                        <div class="info">
-                            {% for host in event.host %}
-                                {{ host }}
-                            {% endfor %}
-                        </div>
-
-                        <div class="info">
-                            {{ event.start_date }}
-                        </div>
-
-                        <div class="info">
-                            {{ event.end_date }}
-                        </div>
-
-                        {% if event.payment_required %}
-                            <div id="price" class="info">
-                                {{ event.price }},-
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-
-                {% if not sub_event_list %}
-                    <div id="event-sign-up">
-                        {% if event.attends %}
-                            <button type="button"
-                                    id="attend-event-button"
-                                    class="btn btn-danger"
-                                    data-state="unattend"
-                                    value="{{ event.id }}"
-                                    data-toggle="modal"
-                                    data-target="#eventModal">
-                                <div class="button-title-container">
-                                    {% trans 'Unattend from event' %}
-                                </div>
-                            </button>
                         {% else %}
-                            <button id="attend-event-button"
-                                    type="button"
-                                    value="{{ event.id }}"
-                                    name="mybtn"
-                                    data-state=="attend"
-                                    class="btn btn-success">
-                                <div class="button-title-container">
-                                    {% if event.payment_required %}
-
-                                        {% trans 'Pay using card' %}
-                                        {#                                    <div class="button-div">#}
-                                        {#                                        <img src="{% static 'img/credit-card.svg' %}"/>#}
-                                        {#                                        &nbsp;{% trans 'Pay using card' %}#}
-                                        {#                                    </div>#}
-                                    {% else %}
-                                        {% trans 'Attend event' %}
-
-
-                                    {% endif %}
-                                </div>
-                            </button>
+                            {% trans 'Attend event' %}
                         {% endif %}
-                    </div>
+                    {% endif %}
+                </div>
+                </button>
+
                 {% endif %}
+
+            </div>
+            {% endif %}
             </div>
 
             <div id="event-description">
@@ -251,19 +260,17 @@
                                             {% if sub_event.attends %}
                                                 <button type="button" class="join-subevent-button btn btn-danger"
                                                         value="{{ sub_event.id }}" data-state="unattend">
-                                                    Unattend from event
+                                                    <div class="button-title-container">
+                                                        {% trans 'Unattend from event' %}
+                                                    </div>
                                                 </button>
                                             {% else %}
                                                 <button class="join-subevent-button btn btn-success "
                                                         type="button"
                                                         value="{{ sub_event.id }}" data-state="attend" name="mybtn">
-                                                    {% trans 'Attend event' %}
-                                                </button>
-                                            {% endif %}
-                                            {% if can_edit_and_delete_event %}
-                                                <button type="button" class="delete-subevent-button btn btn-danger"
-                                                        value="{{ sub_event.id }}">
-                                                    {% trans 'Delete' %}
+                                                    <div class="button-title-container">
+                                                        {% trans 'Attend event' %}
+                                                    </div>
                                                 </button>
                                             {% endif %}
                                         </div>

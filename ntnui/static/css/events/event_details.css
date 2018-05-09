@@ -159,6 +159,11 @@
     margin-left:.4rem;
 }
 
+.join-subevent-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 
 
