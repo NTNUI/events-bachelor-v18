@@ -1,8 +1,10 @@
+from datetime import datetime
+
 from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
-from groups.models import SportsGroup
 
 from events.models.event import Event, EventDescription
+from groups.models import SportsGroup
 from hs.models import MainBoardMembership
 
 
@@ -16,15 +18,31 @@ def create_event(request):
     # Gets the data from the POST request.
     data = request.POST
 
-    # Checks that the description has an English name and description text.
-    has_english_name_and_description, error = event_has_description_and_name(data.get('description_text_en'), data.get('name_en'))
-    if not has_english_description[0]:
-        return get_json(400, has_english_description[1])
+    # Checks that the event has an Norwegian name and description text.
+    norwegian_name = data.get('name_no')
+    norwegian_description = data.get('description_text_no')
 
-    # Checks that the description has a Norwegian name and description text.
-    has_norwegian_description = event_has_description_and_name(data.get('description_text_no'), data.get('name_no'))
-    if not has_norwegian_description[0]:
-        return get_json(400, has_norwegian_description[1])
+    if not (norwegian_name or norwegian_description):
+        return get_json(400, _('Norwegian name and description is required.'))
+
+    # Checks that the event has an English name and description text.
+    english_name = data.get('name_en')
+    english_description = data.get('description_text_no')
+
+    if not (english_name or english_description):
+        return get_json(400, _('English name and description is required.'))
+
+    # Checks that the event has an valid start and end date.
+    start_date = data.get('start_date')
+    end_date = data.get('end_date')
+
+    if start_date and end_date:
+        if start_date >= end_date:
+            return get_json(400, _("Start-date cannot be later than the end-date."))
+        elif datetime.now() >= start_date.replace(tzinfo=None):
+            return get_json(400, _("Start-date cannot be in the past."))
+    else:
+        return get_json(400, _('Start- and end date is required.'))
 
     # Tries to create the event
     entry_created = create_and_validate_database_entry(request)

@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^(?P<id>\d+)$', get_event, name='get_event'),
 
     url(r'^attend-event$', attend_event_request, name='attend_event'),
+    url(r'^waiting-list$', waiting_list_event_request, name='waiting_list_event_request'),
     url(r'^attend-payment-event$', attend_payment_event_request, name='attend-payment-event'),
     url(r'^attend-payment-event$', attend_payment_event_request, name='attend-payment-event'),
     url(r'^unattend-event$', remove_attendance_request, name='remove_attendance'),
