@@ -9,7 +9,7 @@ from hs.models import MainBoardMembership
 
 
 def create_event(request):
-    """ Creates a new event for a given sports group. """
+    """ Creates a new event for a given sports group. """"""
 
     # Checks that the request is POST.
     if not request.POST:
@@ -56,7 +56,8 @@ def create_event(request):
             'id': entry_created[1].id,
             'message': _('New event successfully created!')},
             status=201)
-        if entry_created[1] is not None:
+
+       if entry_created[1] is not None:
             return get_json(400, entry_created[1])
 
     # if something goes wrong send faild to create event
@@ -64,7 +65,7 @@ def create_event(request):
 
 
 
-
+"""
 
 def create_and_validate_database_entry(request):
     """ Tries to create an entry in the database for the event described in the POST message.
@@ -97,7 +98,7 @@ def create_and_validate_database_entry(request):
             if user_is_in_board(active_board, request.user):
                 return create_event_for_group(data, priority, False)
             else:
-                return False, get_json(400, _('User is not in '))"user is not in board"
+                return False, get_json(400, _('User is not in board'))
         else:
             return False, "active_board is None"
     else:
