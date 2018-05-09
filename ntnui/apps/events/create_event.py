@@ -97,7 +97,7 @@ def create_and_validate_database_entry(request):
             if user_is_in_board(active_board, request.user):
                 return create_event_for_group(data, priority, False)
             else:
-                return False, "user is not in board"
+                return False, get_json(400, _('User is not in '))"user is not in board"
         else:
             return False, "active_board is None"
     else:

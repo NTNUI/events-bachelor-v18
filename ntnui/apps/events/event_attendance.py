@@ -97,9 +97,7 @@ def attend_event(request, event, attendee, payment_id):
 
     # Sends an email confirming the event sign-up.
     attendance_mail(request, event, attendee, token)
-    return JsonResponse({'message': _('Signed up for the event!'),
-                         'number_of_participants': len(event.get_attendee_list),
-                         'attendance_cap': event.attendance_cap}, status=201)
+    return get_json(201, _('Signed up for the event!'))
 
 
 def waiting_list_event(request, event, attendee, payment_id):
@@ -368,7 +366,9 @@ def remove_attendance_request(request):
                 attendance.delete()
                 waiting_list_next_attend(request, event)
                 remove_attendance_email(event, user)
-                return get_json(201, _('Signed off the event!'))
+                return JsonResponse({'message': _("Signed off the event!"),
+                                     'number_of_participants': len(event.get_attendee_list),
+                                     'attendance_cap': event.attendance_cap}, status=201)
         else:
             # User is signed up for the sub-event.
             attendance = SubEventRegistration.objects.get(sub_event=event, attendee=user)
@@ -378,7 +378,9 @@ def remove_attendance_request(request):
                 attendance.delete()
                 waiting_list_next_attend(request, event)
                 remove_attendance_email(event, user)
-                return get_json(201, _('Signed off the event!'))
+                return JsonResponse({'message': _("Signed off the event!"),
+                                     'number_of_participants': len(event.get_attendee_list),
+                                     'attendance_cap': event.attendance_cap}, status=201)
 
     else:
         if isinstance(event, Event):
@@ -390,7 +392,9 @@ def remove_attendance_request(request):
                 waiting_list_registration.delete()
                 waiting_list_next_attend(request, event)
                 remove_attendance_email(event, user)
-                return get_json(201, _("Signed off the event's waiting list!"))
+                return JsonResponse({'message': _("Signed off the event's waiting list!"),
+                                     'number_of_participants': len(event.get_attendee_list),
+                                     'attendance_cap': event.attendance_cap}, status=201)
         else:
             # User is signed up for the sub-event's waiting list.
             waiting_list_registration = SubEventWaitingList.objects.get(sub_event=event, attendee=user)
@@ -400,7 +404,9 @@ def remove_attendance_request(request):
                 waiting_list_registration.delete()
                 waiting_list_next_attend(request, event)
                 remove_attendance_email(event, user)
-                return get_json(201, _("Signed off the event's waiting list!"))
+                return JsonResponse({'message': _("Signed off the event's waiting list!"),
+                                     'number_of_participants': len(event.get_attendee_list),
+                                     'attendance_cap': event.attendance_cap}, status=201)
 
     # Can't sign off payment events.
     return get_json(400, _("Can't sign off payment events, contact the host for refunding."))
