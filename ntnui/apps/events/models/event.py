@@ -26,8 +26,8 @@ class Event(CommonEvent):
         verbose_name_plural = _('events')
 
     # Gets the path to the image folder.
-    def get_cover_upload_to(instance, filename):
-        name = EventDescription.objects.get(event=instance, language=translation.get_language()).name
+    def get_cover_upload_to(self, filename):
+        name = EventDescription.objects.get(event=self, language=translation.get_language()).name
         return os.path.join(
             "cover_photo/events/{}".format(name.replace(" ", "-")), filename)
 
