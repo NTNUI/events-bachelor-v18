@@ -125,7 +125,7 @@ $("#attend-event-button").click((e) => {
     if (!$(button).prop('disabled')) {
         switch (state) {
             case States.UNATTEND:
-                modalType = (hasNoPrice) ? ModalTypes.UNATTEND_EVENT : ModalTypes.UNATTEND_PAYED_EVENT
+                modalType = ModalTypes.UNATTEND_EVENT
                 $("#deleteModal").modal("show");
                 break;
             case States.ATTEND:
@@ -185,7 +185,6 @@ $("#remove-attend-event-button-modal").click(() => {
             break;
         case ModalTypes.UNATTEND_SUB_EVENT:
             $(".join-subevent-button").each((e, element) => {
-                console.log(element.value)
                 if (element.value == subEvents[subEventIndex].id) {
                     removeAttendEvent(element, subEvents[subEventIndex])
                 }
@@ -398,6 +397,7 @@ async function attendEvent(button, subEvent) {
         if (subEvent) {
             subEvents[subEvents.indexOf(subEvent)].state = States.UNATTEND
         } else {
+            $("#attendance").html(response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : ""))
             state = States.UNATTEND
         }
         printMessage(MsgType.SUCCESS, response.message);
@@ -423,6 +423,7 @@ async function attendWaitingList(button, subEvent) {
         if (subEvent) {
             subEvents[subEvents.indexOf(subEvent)].state = States.ON_WAITING_LIST
         } else {
+            $("#attendance").html(response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : ""))
             state = States.ON_WAITING_LIST
         }
         printMessage(MsgType.SUCCESS, response.message);
@@ -451,12 +452,12 @@ async function removeAttendEvent(button, subEvent) {
         response = await sendAjax({event_id: eventID}, '/ajax/events/unattend-event', 'POST', button)
     }
     if (response) {
-        console.log(response)
         if (parseInt(response.number_of_participants) >= parseInt(response.attendance_cap)) {
             updateButton(button, gettext('Put me on the wait list'), States.WAIT_LIST, subEvent)
             if (subEvent) {
                 subEvents[subEvents.indexOf(subEvent)].state = States.WAIT_LIST
             } else {
+                $("#attendance").html(response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : ""))
                 state = States.WAIT_LIST
             }
         } else {
@@ -464,6 +465,7 @@ async function removeAttendEvent(button, subEvent) {
             if (subEvent) {
                 subEvents[subEvents.indexOf(subEvent)].state = States.ATTEND
             } else {
+                $("#attendance").html(response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : ""))
                 state = States.ATTEND
             }
             printMessage(MsgType.SUCCESS, response.message)

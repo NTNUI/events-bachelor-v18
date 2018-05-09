@@ -228,9 +228,9 @@ def charge_card(data, event, attendee):
     amount = event.price * 100
     description = str(event.name()) + ' - ' + str(attendee)
     email = data.get('stripeEmail')
-    token = data.get('stripToken')
+    token = data.get('stripeToken')
     stripe.api_key = settings.STRIPE_SECRET_KEY
-
+    print(amount, description, email, token)
     # Creates a payment with Stripe.
     try:
         payment = stripe.Charge.create(

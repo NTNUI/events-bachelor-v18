@@ -38,8 +38,7 @@ class CommonEvent(models.Model):
 
     # Checks if the event's registration has ended.
     def is_registration_ended(self):
-        return self.registration_end_date is not None and \
-               self.registration_end_date.replace(tzinfo=None) < datetime.now()
+        return self.registration_end_date is not None and self.registration_end_date.replace(tzinfo=None) < datetime.now()
 
     # Checks if the sub-event requires payment.
     def is_payment_event(self):

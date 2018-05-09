@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
 import stripe
 from django.conf import settings
@@ -204,6 +204,7 @@ def get_event_details(request, id):
         'is_user_on_waiting_list': is_user_on_waiting_list,
         'number_of_participants': len(event.get_attendee_list()),
         'attendance_cap': event.attendance_cap,
+        'is_registration_ended': event.is_registration_ended(),
         'price': event.price,
         'registration_end_date': event.registration_end_date,
         'payment_required': event.is_payment_event(),

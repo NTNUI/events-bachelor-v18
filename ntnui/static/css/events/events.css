@@ -220,6 +220,7 @@ label.custom-control.custom-checkbox:checked + label::before {
 }
 #container {
     width: 60%;
+    min-width:941px;
     max-width:80rem;
 }
 
@@ -281,7 +282,7 @@ label.custom-control.custom-checkbox:checked + label::before {
     100% { transform: rotate(360deg); }
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 991px) {
 
     .filter-element .form-control-select  #search .create-event #main .buttons {
         width: 100%;
@@ -298,5 +299,6 @@ label.custom-control.custom-checkbox:checked + label::before {
 
     #container {
         width:95%;
+        min-width:0;
     }
 }
