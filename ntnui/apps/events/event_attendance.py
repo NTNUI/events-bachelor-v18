@@ -64,7 +64,7 @@ def attend_payment_event_request(request):
 def waiting_list_event_request(request):
     """ Lets users and guests sign up for events' and sub-events' waiting lists, which are free to attend. """
 
-    event, attendee, guest_created, eligible_to_attend_event, error_response = verify_sign_up(request.POST, False)
+    event, attendee, guest_created, eligible_to_attend_event, error_response = verify_sign_up(request, False)
 
     # Checks if the attendee is eligible to attend the event.
     # If there is created a new guest who can't attend the event, it gets deleted.

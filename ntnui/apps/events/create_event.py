@@ -37,12 +37,15 @@ def create_event(request):
     end_date = data.get('end_date')
 
     if start_date and end_date:
+        # Start date is later than the end date.
         if start_date >= end_date:
-            return get_json(400, _("Start-date cannot be later than the end-date."))
+            return get_json(400, _("Starting date cannot be later than end date."))
+        # Start date is in the past.
         elif datetime.now() >= start_date.replace(tzinfo=None):
-            return get_json(400, _("Start-date cannot be in the past."))
+            return get_json(400, _("Starting date cannot be in the past."))
     else:
-        return get_json(400, _('Start- and end date is required.'))
+        # The event
+        return get_json(400, _('Start date and end date is required.'))
 
     # Tries to create the event
     entry_created = create_and_validate_database_entry(request)
