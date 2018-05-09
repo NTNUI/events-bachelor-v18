@@ -1,42 +1,55 @@
 from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
 from groups.models import SportsGroup
-from hs.models import MainBoardMembership
 
 from events.models.event import Event, EventDescription
-
+from hs.models import MainBoardMembership
 
 
 def create_event(request):
-    """Creates a new event for a given sports group"""
-    if request.method == "POST":
+    """ Creates a new event for a given sports group. """
 
-        # Get the data from the post
-        data = request.POST
+    # Checks that the request is POST.
+    if not request.POST:
+        return get_json(400, 'Request must be POST.')
 
-        # checks that the description and name are not empty
-        has_english_description = event_has_description_and_name(data.get('description_text_en'), data.get('name_en'))
-        if not has_english_description[0]:
-            return get_json(400, has_english_description[1])
+    # Gets the data from the POST request.
+    data = request.POST
 
-        has_norwegian_description = event_has_description_and_name(data.get('description_text_no'), data.get('name_no'))
-        if not has_norwegian_description[0]:
-            return get_json(400, has_norwegian_description[1])
+    # Checks that the description has an English name and description text.
+    has_english_name_and_description, error = event_has_description_and_name(data.get('description_text_en'), data.get('name_en'))
+    if not has_english_description[0]:
+        return get_json(400, has_english_description[1])
 
-        # Tries to create the event
-        entry_created = create_and_validate_database_entry(request)
+    # Checks that the description has a Norwegian name and description text.
+    has_norwegian_description = event_has_description_and_name(data.get('description_text_no'), data.get('name_no'))
+    if not has_norwegian_description[0]:
+        return get_json(400, has_norwegian_description[1])
 
-        # if succsess send event created
-        if entry_created[0]:
-            return JsonResponse({
-                'id': entry_created[1].id,
-                'message': _('New event successfully created!')},
-                status=201)
+    # Tries to create the event
+    entry_created = create_and_validate_database_entry(request)
+
+    # if success send event created
+    if entry_created[0]:
+        return JsonResponse({
+            'id': entry_created[1].id,
+            'message': _('New event successfully created!')},
+            status=201)
         if entry_created[1] is not None:
             return get_json(400, entry_created[1])
 
     # if something goes wrong send faild to create event
     return get_json(400, _('Failed to create event!'))
+
+
+def event_has_description_and_name(description, name):
+    """ Checks that a description is not empyt"""
+
+    if description is None or description.replace(' ', '') == "":
+        return False, get_json(400, _('Event must have description'))
+    elif name is None or name.replace(' ', '') == "":
+        return False, _('Event must have a name.')
+    return True, None
 
 
 def create_and_validate_database_entry(request):
@@ -147,13 +160,7 @@ def user_is_in_board(board, user):
     return board.president == user or board.vice_president == user or board.cashier == user
 
 
-def event_has_description_and_name(description, name):
-    """Checks that a description is not empyt"""
-    if description is None or description.replace(' ', '') == "":
-        return False, 'Event must have description'
-    elif name is None or name.replace(' ', '') == "":
-        return False, _('Event must have a name')
-    return True, None
+
 
 
 def get_json(code, message):

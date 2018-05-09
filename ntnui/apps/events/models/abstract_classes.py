@@ -27,7 +27,7 @@ class CommonEvent(models.Model):
     registration_end_date = models.DateTimeField(_('registration end date'), blank=True, null=True)
     price = models.IntegerField(_('price'), default=0)
     attendance_cap = models.IntegerField(_('attendance cap'), blank=True, null=True)
-    tags = models.ManyToManyField(Tag, blank=True, verbose_name=_('tags'))
+    tags = models.ManyToManyField(Tag, verbose_name=_('tags'), blank=True)
 
     class Meta:
         abstract = True
