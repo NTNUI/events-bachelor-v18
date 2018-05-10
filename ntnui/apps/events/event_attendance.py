@@ -205,7 +205,7 @@ def verify_sign_up(request, event_has_open_spots):
             return event, None, False, False, error_response
 
         # Either gets an existing guest matching the input form, or creates a new guest.
-        guest, guest_created, error_response = get_or_create_guest(request)
+        guest, guest_created, error_response = get_or_create_guest(request.POST)
 
         # Checks if the guest is a Guest object.
         if not isinstance(guest, Guest):
