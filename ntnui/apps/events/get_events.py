@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
 from django.utils import translation
+from django.utils.translation import gettext as _
 
 from events.models.category import Category
 from events.models.event import Event
