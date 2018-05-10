@@ -12,6 +12,7 @@ from events.models.sub_event import SubEvent
 
 def get_events(request, attending):
     """Returnes a set of events filter after the parms in the request"""
+
     if request.method == "GET":
         # gets the page from the request, or returns one if page is not given as a parm in the url
         page = request.GET.get('page', 1)
