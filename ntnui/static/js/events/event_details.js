@@ -21,6 +21,9 @@ const MsgType = {
 // Set the currentState, defaultis ADD
 let state
 
+// Used to know whether to use eventID or subEventid when performing a payment
+let paymentSubEvent
+
 // Keeps the current modal state
 let modalType;
 
@@ -73,7 +76,7 @@ $(() => {
 
     // FInd all the subEvents
     $(".join-subevent-button").each((e, element) => {
-        let subEvent = {id: element.value}
+        let subEvent = {id: parseInt(element.value)}
         subEvent.state = getState(element.getAttribute("data-state"))
         subEvents.push(subEvent)
     })
@@ -159,20 +162,37 @@ $(".join-subevent-button").click((e) => {
     const button = getButton(e)
 
     if (!$(button).prop('disabled')) {
-        $(button).prop("disabled", true).addClass("disabled");
 
-        let subEvent = subEvents.filter((event) => event.id === button.value)
+        let subEvent = subEvents.filter((event) => event.id == parseInt(button.value))
         subEventIndex = subEvents.indexOf(subEvent[0])
         // IF the first sign is a - we want to remove attending event
-        if (subEvent[0].state === States.UNATTEND) {
-            modalType = ModalTypes.UNATTEND_SUB_EVENT
-            $("#deleteModal").modal("show");
-        } else {
-            $(button).prop("disabled", true).addClass("disabled");
-            attendEvent(button, subEvent[0])
+        switch (subEvent[0].state) {
+            case States.ATTEND:
+                $(button).prop("disabled", true).addClass("disabled");
+                if (isGuestUser) {
+                    showGuestModal();
+                } else {
+                    if (!$(button).closest(".sub-event-container").find(".price").length) {
+                        attendEvent(button, subEvent[0])
+                    } else {
+                        attendPayedEvent(button, subEvent[0])
+                    }
+                }
+                break;
+            case States.UNATTEND:
+                modalType = ModalTypes.UNATTEND_SUB_EVENT
+                $("#deleteModal").modal("show");
+                break;
+            case States.ON_WAITING_LIST:
+                $(button).prop("disabled", true).addClass("disabled");
+                removeAttendEvent(button, subEvent[0])
+                break;
+            case States.WAIT_LIST:
+                $(button).prop("disabled", true).addClass("disabled");
+                attendWaitingList(button, subEvent[0])
+                break;
         }
     }
-
 })
 
 /**
@@ -186,6 +206,7 @@ $("#remove-attend-event-button-modal").click(() => {
         case ModalTypes.UNATTEND_SUB_EVENT:
             $(".join-subevent-button").each((e, element) => {
                 if (element.value == subEvents[subEventIndex].id) {
+                    $(element).prop("disabled", true).addClass("disabled");
                     removeAttendEvent(element, subEvents[subEventIndex])
                 }
             })
@@ -280,9 +301,17 @@ async function processStripeToken(token) {
     let data = {
         csrfmiddlewaretoken: csrftoken,
         stripeToken: token.id,
-        event_id: eventID,
         stripeEmail: token.email,
     }
+
+    let subEvent = paymentSubEvent
+    if (paymentSubEvent) {
+        data.sub_event_id = subEvent.id;
+    }
+    else {
+        data.event_id = eventID;
+    }
+    paymentSubEvent = null;
     if (isGuestUser) {
         data.email = email
         data.first_name = firstName
@@ -292,10 +321,16 @@ async function processStripeToken(token) {
 
     let result = await sendAjax(data, '/ajax/events/attend-payment-event')
     if (result) {
-        button.innerHTML = gettext("Do not attend event")
-        button.value = '-' + button.value
-        button.setAttribute("class", "btn btn-danger")
-        printMessage(MsgType.SUCCESS, data.message)
+        if(subEvent) {
+            $(".join-subevent-button").each((e, button) => {
+                if(parseInt(button.value) === subEvent.id) {
+                    updateButton(button, gettext('Unattend'), States.UNATTEND, subEvent)
+                }
+            })
+        } else {
+            updateButton($("#attend-event-button")[0], gettext('Unattend'), States.UNATTEND)
+        }
+        printMessage(MsgType.SUCCESS, result.message)
     }
     hideGuestModal()
 }
@@ -320,9 +355,9 @@ function hideGuestModal() {
  * @param title
  * @param type
  */
-function updateButton(button, title, type, subEvent) {
+function updateButton(button, title, state, subEvent) {
     $(button).find(".button-title-container").html(title);
-    switch (type) {
+    switch (state) {
         case States.UNATTEND:
             button.setAttribute('class', 'btn btn-danger');
             break;
@@ -365,8 +400,12 @@ async function attendPayedEvent(button, subEvent) {
     setButtonLoader(button)
     const event = await sendAjax({id: (subEvent ? subEvent.id : eventID)}, URL, 'POST', button)
     if (event) {
+        console.log(event)
         const user = await sendAjax({}, '/ajax/accounts', 'GET')
         if (user) {
+            if(subEvent) {
+                 paymentSubEvent = subEvent
+            }
             handler.open({
                 amount: parseInt(event.price) * 100,
                 currency: "nok",
@@ -393,7 +432,7 @@ async function attendEvent(button, subEvent) {
         response = await sendAjax({event_id: eventID}, '/ajax/events/attend-event', 'POST', button);
     }
     if (response) {
-        updateButton(button, gettext('Do not attend event'), States.UNATTEND, subEvent)
+        updateButton(button, gettext('Unattend'), States.UNATTEND, subEvent)
         if (subEvent) {
             subEvents[subEvents.indexOf(subEvent)].state = States.UNATTEND
         } else {
@@ -419,7 +458,7 @@ async function attendWaitingList(button, subEvent) {
         response = await sendAjax({event_id: eventID}, '/ajax/events/waiting-list', 'POST', button);
     }
     if (response) {
-        updateButton(button, gettext('Remove me from wait list'), States.ON_WAITING_LIST, subEvent)
+        updateButton(button, gettext('Remove me from the wait list'), States.ON_WAITING_LIST, subEvent)
         if (subEvent) {
             subEvents[subEvents.indexOf(subEvent)].state = States.ON_WAITING_LIST
         } else {
@@ -461,7 +500,7 @@ async function removeAttendEvent(button, subEvent) {
                 state = States.WAIT_LIST
             }
         } else {
-            updateButton(button, gettext('attend event'), States.ATTEND, subEvent)
+            updateButton(button, gettext('Attend event'), States.ATTEND, subEvent)
             if (subEvent) {
                 subEvents[subEvents.indexOf(subEvent)].state = States.ATTEND
             } else {

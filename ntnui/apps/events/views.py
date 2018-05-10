@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.forms import model_to_dict
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.utils import translation
@@ -89,9 +90,10 @@ def create_sub_event_request(request):
             'message': _('New sub-event successfully created!')},
             status=201)
 
-def get_remove_attendance_page(request, token):
 
+def get_remove_attendance_page(request, token):
     return render(request, 'events/remove_attendance.html')
+
 
 def get_main_page(request):
     """Returns the main page for events"""
@@ -131,6 +133,7 @@ def get_sub_event_dic(item, request):
         'registration_end_date': item.registration_end_date,
         'name': str(item),
         'price': item.price,
+        'payment_required': item.is_payment_event(),
         'id': item.id
     }
 
@@ -257,10 +260,10 @@ def get_delete_event(request, id):
         eventguestregistrations = EventGuestRegistration.objects.filter(event=event)
         if Category.objects.filter(event=event).exists():
             categories = Category.objects.filter(event=event)
-            #print("Categories before deletion: " + categories)
+            # print("Categories before deletion: " + categories)
             for category in categories:
                 delete_category(category)
-            #print("Categories after deletion: " + categories)
+                # print("Categories after deletion: " + categories)
 
         if eventregistrations:
             for eventregistration in eventregistrations:
@@ -285,10 +288,12 @@ def get_delete_event(request, id):
 
     return render(request, 'events/delete_event_page.html')
 
+
 def delete_category_request(request):
     category = Category.objects.get(id=int(request.POST.get('id')))
 
     return delete_category(category)
+
 
 def delete_category(category):
     try:
@@ -308,6 +313,7 @@ def delete_category(category):
         return get_json(400, "Could not delete category")
 
     return get_json(200, "Category deleted")
+
 
 def delete_subevent_request(request):
     subevent = SubEvent.objects.get(id=int(request.POST.get('id')))
@@ -580,10 +586,10 @@ def get_event_attendees_page(request, id, numberofsubevents):
             subevents_attendees_and_names_list.append((attendees, subevent.name()))
 
         context = {
-                'subeventsexist': subeventsexist,
-                'event': event,
-                'subevents_attendees_and_name_list': subevents_attendees_and_names_list,
-            }
+            'subeventsexist': subeventsexist,
+            'event': event,
+            'subevents_attendees_and_name_list': subevents_attendees_and_names_list,
+        }
 
     return render(request, 'events/event_attendees_page.html', context)
 
@@ -710,4 +716,14 @@ def get_event(request, id):
             'cover_photo': str(event.cover_photo),
             'categories': list(categories_list),
         })
-    return get_json(404, "Event with id: " + id + " does not exist.")
+    return get_json(400, "Event with id: " + id + " does not exist.")
+
+
+def get_sub_event(request, id):
+    if SubEvent.objects.filter(id=int(id)).exists():
+        sub_event = SubEvent.objects.get(id=int(id))
+        sub_event_dict = model_to_dict(sub_event)
+        sub_event_dict["name"] = sub_event.name()
+        sub_event_dict["host"] = sub_event.get_host()
+        return JsonResponse(sub_event_dict)
+    return get_json(400, "Sub-event with id: " + id + " does not exist.")
