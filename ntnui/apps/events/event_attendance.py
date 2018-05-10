@@ -532,7 +532,7 @@ def waiting_list_next_attend(request, event):
     elif len(event.get_waiting_list()) > 0:
 
         # Gets the first person on the waiting list.
-        attendee, payment_id = event.waiting_list_next()
+        attendee, payment_id = event.get_waiting_list_next()
 
         # The event or sub-event is free to attend, and there are not a payment ID in the waiting list registration.
         if not payment_id:
