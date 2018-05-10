@@ -19,6 +19,23 @@ from hs.models import MainBoardMembership
 
 from . import get_events
 
+def get_main_page(request):
+    """ Returns the events' main page. """
+
+    # Used to find out if the create-event button shall be rendered or not
+    if request.user.is_authenticated:
+        can_create_event = can_user_create_event(request.user)
+    else:
+        can_create_event = False
+
+    # Get groups that are hosting events
+    groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
+
+    return render(request, 'events/events_main_page.html', {
+        'can_create_event': can_create_event,
+        'groups': groups,
+    })
+
 
 def create_category_request(request):
     if request.POST:
@@ -89,26 +106,12 @@ def create_sub_event_request(request):
             'message': _('New sub-event successfully created!')},
             status=201)
 
+
 def get_remove_attendance_page(request, token):
 
     return render(request, 'events/remove_attendance.html')
 
-def get_main_page(request):
-    """Returns the main page for events"""
 
-    # Used to find out if the create-event button shall be rendered or not
-    if request.user.is_authenticated:
-        can_create_event = user_can_create_event(request.user)
-    else:
-        can_create_event = False
-
-    # Get groups that are hosting events
-    groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
-
-    return render(request, 'events/events_main_page.html', {
-        'can_create_event': can_create_event,
-        'groups': groups,
-    })
 
 
 def get_sub_event_dic(item, request):
@@ -148,13 +151,13 @@ def get_event_details(request, id):
     # Checks if the user is sign in.
     if request.user.is_authenticated:
         attends = event.is_user_enrolled(request.user)
-        can_create_event = user_can_create_event(request.user)
+        can_create_event = can_user_create_event(request.user)
     else:
         # Returns false if not
         attends = False
 
     if request.user.is_authenticated:
-        can_create_event = user_can_create_event(request.user)
+        can_create_event = can_user_create_event(request.user)
     else:
         can_create_event = False
 
@@ -162,8 +165,8 @@ def get_event_details(request, id):
     is_user_on_waiting_list = event.is_user_on_waiting_list(request.user);
 
     if request.user.is_authenticated:
-        if user_is_in_mainboard(request.user):
-            is_in_mainboard = user_is_in_mainboard(request.user)
+        if is_user_in_main_board(request.user):
+            is_in_mainboard = is_user_in_main_board(request.user)
         else:
             is_in_mainboard = False
 
@@ -221,7 +224,7 @@ def get_event_details(request, id):
 def get_attending_events_page(request):
     # Used to find out if the create-event button shall be rendered or not
     if request.user.is_authenticated:
-        can_create_event = user_can_create_event(request.user)
+        can_create_event = can_user_create_event(request.user)
     else:
         can_create_event = False
 
@@ -588,12 +591,6 @@ def edit_event_request(request):
 
 
 @login_required
-def create_event_request(request):
-    """Creates a new event with the given data"""
-    return create_event.create_event(request)
-
-
-@login_required
 def get_create_event_page(request):
     """Returns the page where events are created"""
 
@@ -603,19 +600,7 @@ def get_create_event_page(request):
     return render(request, 'events/create_new_event.html', {'groups': groups})
 
 
-def user_can_create_event(user):
-    """Checks to see if a user can create event of any kind"""
 
-    # User is in MainBoard
-    if user_is_in_mainboard(user):
-        return True
-
-    # Checks if the user is in any active board
-    for board in (Board.objects.filter(Q(president=user) | Q(vice_president=user) | Q(cashier=user))):
-        # Checks that the board is active
-        if SportsGroup.objects.filter(active_board=board).exists():
-            return True
-    return False
 
 
 def get_groups_user_can_create_events_for(user):
@@ -625,7 +610,7 @@ def get_groups_user_can_create_events_for(user):
     return_list = []
 
     # Adds NTNUI if member of hs
-    if user_is_in_mainboard(user):
+    if is_user_in_main_board(user):
         return_list.append({'id': "NTNUI", 'name': 'NTNUI'})
 
     # Finds all the groups were the user is in the board
@@ -640,14 +625,6 @@ def get_groups_user_can_create_events_for(user):
     return return_list
 
 
-def user_is_in_mainboard(user):
-    """Checks if a given user is in mainboard"""
-    return MainBoardMembership.objects.filter(person_id=user).exists()
-
-
-def user_is_in_board(board, user):
-    """Checks if a given user is in board"""
-    return board.president == user or board.vice_president == user or board.cashier == user
 
 
 def event_has_description_and_name(description, name):
@@ -670,7 +647,7 @@ def get_event(request, id):
     if Event.objects.filter(id=int(id)).exists():
         event = Event.objects.get(id=int(id))
 
-        categories_list = [];
+        categories_list = []
         if Category.objects.filter(event=event).exists():
             categories = Category.objects.filter(event=event).values()
             # for every category do:
@@ -705,3 +682,33 @@ def get_event(request, id):
             'categories': list(categories_list),
         })
     return get_json(404, "Event with id: " + id + " does not exist.")
+
+
+def can_user_create_event(user):
+    """ Checks if the user can create event of any kind"""
+
+    # Checks if the user is a member of the main board.
+    if is_user_in_main_board(user):
+        return True
+
+    # Checks if the user is in a member of any active boards.
+    for board in (Board.objects.filter(Q(president=user) | Q(vice_president=user) | Q(cashier=user))):
+
+        # Checks that the board which the user is a member of is active.
+        if SportsGroup.objects.filter(active_board=board).exists():
+            return True
+
+    # The user is not eligible to create events.
+    return False
+
+
+def is_user_in_main_board(user):
+    """ Checks if the user is a member of the main board. """
+
+    return MainBoardMembership.objects.filter(person_id=user).exists()
+
+
+def is_user_in_board(board, user):
+    """ Checks if the user is a member of the board. """
+
+    return board.president == user or board.vice_president == user or board.cashier == user

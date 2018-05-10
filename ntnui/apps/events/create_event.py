@@ -6,9 +6,8 @@ from django.utils.translation import gettext_lazy as _
 
 from events.models.event import Event, EventDescription
 from groups.models import SportsGroup
-from hs.models import MainBoardMembership
 
-from .views import get_json
+from .views import (get_json, is_user_in_board, is_user_in_main_board)
 
 
 @login_required
@@ -112,7 +111,7 @@ def create_event(data, user):
             return None, False, 'Active board does not exist.'
 
         # Checks that the user got a position in the group's board, and creates the event.
-        if is_user_in_board(user, active_board):
+        if is_user_in_board(active_board, user):
             return create_event_for_group(data, False)
         else:
             return None, False, 'Cannot create an event for an sports group without being part of the group board.'
@@ -191,15 +190,3 @@ def get_sports_group_by_id(sports_group_id):
     except Exception as e:
         print(e)
         return None
-
-
-def is_user_in_main_board(user):
-    """ Checks if the user is a member of the main board. """
-
-    return MainBoardMembership.objects.filter(person_id=user).exists()
-
-
-def is_user_in_board(user, board):
-    """ Checks if the user is a member of the board. """
-
-    return board.president == user or board.vice_president == user or board.cashier == user
