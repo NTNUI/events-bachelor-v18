@@ -185,13 +185,17 @@
 }
 
 .button-title-container {
+    display:flex;
+    align-items: center;
     margin-left: .4rem;
 }
 
 .join-subevent-button {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    width:15rem;
+
 }
 
 .sign-up-div {
@@ -205,7 +209,7 @@
     display: flex;
     align-items: center;
     width: 30%;
-    min-width: 10rem;
+    min-width: 11rem;
 }
 
 

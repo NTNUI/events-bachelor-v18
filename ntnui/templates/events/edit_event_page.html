@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load static %}
 {% block stylesheet %}
-    <link rel="stylesheet" href="{% static 'css/events/create_new_event.css' %}">
+    <link rel="stylesheet" href="{% static 'css/events/create_and_edit_event.css' %}">
     <link rel="stylesheet" href="{% static 'css/events/events.css' %}">
 {% endblock %}
 {% block title %} NTNUI - {% trans 'Edit event' %} {% endblock %}
@@ -10,6 +10,28 @@
 {% block content %}
     <!-- Used to show alerts -->
     <div class="alert-message-container">
+    </div>
+
+
+    <!-- Delete modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans 'Are you sure you wannt to delete the event?' %}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal">{% trans 'Close' %}</button>
+                    <button type="button" id="delete-event-button-modal" class="btn btn-danger"
+                            data-dismiss="modal">{% trans 'Yes' %}</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- SubEventModal -->
@@ -151,7 +173,7 @@
                             <div class="vert-divider"></div>
                         </li>
                         <li>
-                            <a href="{% url 'event_attendees' event.id 2 %}">Attendees</a>
+                            <a href="{% url 'event_attendees' event.id %}">Attendees</a>
                         </li>
                         <li>
                             <div class="vert-divider"></div>
@@ -348,8 +370,10 @@
         <!-- create from button-->
         <div class="form-group row">
             <div id="create-event-button-container">
-                <button id="create-event-button" type="button" style="margin:0;"
+                <button id="create-event-button" type="button" style="margin:1rem;"
                         class="btn btn-success">{% trans 'Save event' %}</button>
+                <button id="delete-event-button" type="button" style="margin:1rem;"
+                        class="btn btn-danger">{% trans 'Delete event' %}</button>
             </div>
         </div>
 
@@ -359,5 +383,5 @@
 
 {% block script %}
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
-    <script type="text/javascript" src="{% static 'js/events/create_new_event.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/events/create_and_edit_event.js' %}"></script>
 {% endblock %}
