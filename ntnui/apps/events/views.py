@@ -18,7 +18,6 @@ from events.models.sub_event import (SubEvent, SubEventDescription,
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 
-from . import get_events
 
 def get_main_page(request):
     """ Returns the events' main page. """
