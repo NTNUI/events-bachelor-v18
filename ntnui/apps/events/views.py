@@ -284,8 +284,7 @@ def get_delete_event(request, id):
         event.delete()
     except:
         return get_json(400, "Could not delete event")
-
-    return render(request, 'events/delete_event_page.html')
+    return get_json(200, "Event deleted")
 
 
 def delete_category_request(request):
@@ -539,11 +538,10 @@ def get_attending_events_request(request):
     return get_events.get_events(request, True)
 
 
-def get_event_attendees_page(request, id, numberofsubevents):
+def get_event_attendees_page(request, id):
     event = Event.objects.get(id=int(id))
-
-    if int(numberofsubevents) == 0:
-        subeventsexist = False
+    if not len(event.get_sub_events()) > 0:
+        subevents_exist = False
         eventregistrations = EventRegistration.objects.filter(event=event)
 
         attendees = []
@@ -554,7 +552,7 @@ def get_event_attendees_page(request, id, numberofsubevents):
         attendees.sort()
 
         context = {
-            'subeventsexist': subeventsexist,
+            'subeventsexist': subevents_exist,
             'event': event,
             'attendees_list': attendees,
         }

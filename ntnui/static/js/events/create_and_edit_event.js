@@ -108,7 +108,11 @@ $(() => {
         }
     })
 
+    $("#delete-event-button").click((e) => {
+        $("#deleteModal").modal("show")
+    })
 
+    $("#delete-event-button-modal").click(deleteEvent)
 });
 
 /**
@@ -163,8 +167,28 @@ async function getEventFromServer() {
         //show error alert
         printMessage('error', error)
     }
+}
 
 
+let deleteEvent = async () => {
+    try {
+        let result = await $.ajax({
+            type: 'GET',
+            url: '/ajax/events/delete/' + eventID,
+        });
+        if (result) {
+            printMessage('success', result.message)
+            setTimeout(() => {
+                window.location.replace("/events");
+            }, 2000)
+        }
+    } catch (error) {
+        if (error.responseJSON) {
+            printMessage('error', error.responseJSON.message)
+        } else {
+            printMessage('error', gettext("Your request could not be processed"))
+        }
+    }
 }
 
 function setInVisualContent() {

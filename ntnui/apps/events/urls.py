@@ -10,9 +10,8 @@ urlpatterns = [
     url(r'^create-event$', get_create_event_page, name='create_event_page'),
     url(r'^(?P<id>\d+)/', get_event_details, name='event_details'),
     url(r'^edit/(?P<id>\d+)/', get_edit_event_page, name='edit_event_page'),
-    url(r'^delete/(?P<id>\d+)/$', get_delete_event, name='get_delete_event'),
     url(r'^attending/$', get_attending_events_page, name='attending_events_page'),
-    url(r'^attendees/(?P<id>\d+)/(?P<numberofsubevents>\d+)/', get_event_attendees_page, name='event_attendees'),
+    url(r'^attendees/(?P<id>\d+)', get_event_attendees_page, name='event_attendees'),
     url(r'^remove-attendance/(?P<token>[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}'
         r'\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12})/', get_remove_attendance_page, name='remove-attendance'),
 ]
