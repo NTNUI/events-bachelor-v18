@@ -126,6 +126,12 @@ def get_sub_event_dic(item, request):
         'start_date': item.start_date,
         'end_date': item.end_date,
         'attends': attends,
+        'waiting_list': item.is_attendance_cap_exceeded(),
+        'is_user_on_waiting_list': item.is_user_on_waiting_list(request.user),
+        'number_of_participants': len(item.get_attendee_list()),
+        'attendance_cap': item.attendance_cap,
+        'is_registration_ended': item.is_registration_ended(),
+        'registration_end_date': item.registration_end_date,
         'name': str(item),
         'price': item.price,
         'id': item.id
