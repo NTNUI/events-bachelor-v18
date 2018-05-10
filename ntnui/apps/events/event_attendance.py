@@ -21,6 +21,7 @@ from events.models.sub_event import (SubEvent, SubEventGuestRegistration,
 
 from .views import get_json
 
+
 """ User and guest sign-up for events and sub-events. """
 
 
@@ -98,7 +99,9 @@ def attend_event(request, event, attendee, payment_id):
 
     # Sends an email confirming the event sign-up.
     attendance_mail(request, event, attendee, token)
-    return get_json(201, _('Signed up for the event!'))
+    return JsonResponse({'message': _("Signed up for the event!"),
+                         'number_of_participants': len(event.get_attendee_list()),
+                         'attendance_cap': event.attendance_cap}, status=201)
 
 
 def waiting_list_event(request, event, attendee, payment_id):
@@ -121,7 +124,9 @@ def waiting_list_event(request, event, attendee, payment_id):
 
     # Sends an email confirming the waiting list sign-up,
     waiting_list_mail(request, event, attendee,  token)
-    return get_json(201, _('Signed up for the waiting list!'))
+    return JsonResponse({'message': _("Signed up for the event's waiting list!"),
+                         'number_of_participants': len(event.get_attendee_list()),
+                         'attendance_cap': event.attendance_cap}, status=201)
 
 
 def verify_sign_up(request, event_has_open_spots):
