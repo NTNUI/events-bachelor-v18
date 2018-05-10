@@ -523,14 +523,6 @@ def edit_subevent(request):
             return get_json(400, "Edit subevent failed")
 
 
-def get_events_request(request):
-    return get_events.get_events(request, False)
-
-
-def get_attending_events_request(request):
-    return get_events.get_events(request, True)
-
-
 def get_event_attendees_page(request, id):
     event = Event.objects.get(id=int(id))
     if not len(event.get_sub_events()) > 0:

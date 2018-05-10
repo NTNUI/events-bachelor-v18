@@ -12,6 +12,14 @@ from events.models.sub_event import SubEvent
 from .views import (get_json)
 
 
+def get_events_request(request):
+    return get_events(request, False)
+
+
+def get_attending_events_request(request):
+    return get_events(request, True)
+
+
 def get_events(request, attending):
     """ Returns a set of events based on the requested sorting and filtering. """
 

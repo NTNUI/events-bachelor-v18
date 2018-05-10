@@ -9,8 +9,9 @@ from .event_attendance import (attend_event_request,
 from .views import (create_category_request, create_sub_event_request,
                     delete_category_request, delete_subevent_request,
                     edit_category, edit_event_request, edit_subevent,
-                    get_attending_events_request, get_event,
-                    get_events_request, get_sub_event, get_delete_event)
+                    get_event, get_sub_event, get_delete_event)
+
+from .get_events import (get_events_request, get_attending_events_request)
 
 urlpatterns = [
     url(r'^add-event$', create_event_request, name='create_event'),
