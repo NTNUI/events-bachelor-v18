@@ -1,186 +1,196 @@
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
 
+from .views import (get_json)
 from events.models.event import Event, EventDescription
 from groups.models import SportsGroup
 from hs.models import MainBoardMembership
 
 
-def create_event(request):
-    """ Creates a new event for a given sports group. """"""
+@login_required
+def create_event_request(request):
+    """ Creates a new event for a given sports group. """
 
     # Checks that the request is POST.
     if not request.POST:
-        return get_json(400, 'Request must be POST.')
+        return get_json(400, _('Request must be POST.'))
 
-    # Gets the data from the POST request.
+    # Gets the user and the POST request's data.
     data = request.POST
+    user = request.user
 
-    # Checks that the event has an Norwegian name and description text.
-    norwegian_name = data.get('name_no')
-    norwegian_description = data.get('description_text_no')
-
-    if not (norwegian_name or norwegian_description):
-        return get_json(400, _('Norwegian name and description is required.'))
-
-    # Checks that the event has an English name and description text.
-    english_name = data.get('name_en')
-    english_description = data.get('description_text_no')
-
-    if not (english_name or english_description):
-        return get_json(400, _('English name and description is required.'))
-
-    # Checks that the event has an valid start and end date.
-    start_date = data.get('start_date')
-    end_date = data.get('end_date')
-
-    if start_date and end_date:
-        # Start date is later than the end date.
-        if start_date >= end_date:
-            return get_json(400, _("Starting date cannot be later than end date."))
-        # Start date is in the past.
-        elif datetime.now() >= start_date.replace(tzinfo=None):
-            return get_json(400, _("Starting date cannot be in the past."))
-    else:
-        # The event is lacking either start date or end date.
-        return get_json(400, _('Start date and end date is required.'))
+    # Checks that the required fields for an event is valid.
+    error_message = validate_event_data(data)
+    if error_message:
+        return get_json(400, _(error_message))
 
     # Creates the event.
-    entry_created = create_and_validate_database_entry(request)
-
-    # if success send event created
-    if entry_created[0]:
-        return JsonResponse({
-            'id': entry_created[1].id,
-            'message': _('New event successfully created!')},
-            status=201)
-
-       if entry_created[1] is not None:
-            return get_json(400, entry_created[1])
-
-    # if something goes wrong send faild to create event
-    return get_json(400, _('Failed to create event!'))
-
-
-
-"""
-
-def create_and_validate_database_entry(request):
-    """ Tries to create an entry in the database for the event described in the POST message.
-    The entry is validated, as well.
-    """
-
-    # Get the post data
-    data = request.POST
-
-    # get the value for prority
-    priority = priority_is_selected(data.get('priority'))
-
-    # checks if host is NTNUI, if so check that the user is member of the board
-    if data.get('host') == 'NTNUI':
-        if user_is_in_mainboard(request.user):
-            return create_event_for_group(data, priority, True)
-        else:
-            return False, 'User is not in mainboard'
-
-    # Checks that the sportGroup exists
-    if SportsGroup.objects.filter(id=int(data.get('host'))).exists():
-
-        # Get the active board
-        active_board = SportsGroup.objects.get(id=int(data.get('host'))).active_board
-
-        # Check that the active board is not None
-        if active_board is not None:
-
-            # Checks that the user got a position at the board
-            if user_is_in_board(active_board, request.user):
-                return create_event_for_group(data, priority, False)
-            else:
-                return False, get_json(400, _('User is not in board'))
-        else:
-            return False, "active_board is None"
+    event, event_created, error_message = create_event(data, user)
+    if event_created:
+        return JsonResponse({'id': event.id, 'message': _('New event successfully created!')}, status=201)
     else:
-        return False, "sportsGroup doesn't exist"
+        return get_json(400, _(error_message))
 
 
-def create_event_for_group(data, priority, is_ntnui):
-    """Creates a new event hosted by a group"""
+def validate_event_data(data):
+    """ Checks that the event's start and end date is valid, and that it has
+        an English and Norwegian name and description, and its start and end date. """
 
-    # If price is not given a value, price is set to 0
+    # Gets the required data for creating an event.
+    norwegian_name = data.get('name_no')
+    norwegian_description = data.get('description_text_no')
+    english_name = data.get('name_en')
+    english_description = data.get('description_text_no')
+    start_date = data.get('start_date')
+    end_date = data.get('end_date')
+    location = data.get('place')
+    host = data.get('host')
+
+    # Checks that the event has an Norwegian name and description text.
+    if not (norwegian_name or norwegian_description):
+        return 'Norwegian name and description is required.'
+
+    # Checks that the event has an English name and description text.
+    if not (english_name or english_description):
+        return 'English name and description is required.'
+
+    # Checks that the event has an valid start and end date.
+    if start_date and end_date:
+        # Start date set later than end date.
+        if start_date >= end_date:
+            return 'Starting date cannot be later than end date.'
+        # Start date set in the past.
+        elif datetime.now() >= start_date.replace(tzinfo=None):
+            return 'Starting date cannot be in the past.'
+    else:
+        # The event is lacking start date and/or end date.
+        return 'Start date and end date is required.'
+
+    # Checks that the event has a location.
+    if not location:
+        return 'Location is required.'
+
+    # Checks that the event has a host.
+    if not host:
+        return 'Host is required.'
+
+    # The event's data is validated.
+    return None
+
+
+def create_event(data, user):
+    """ Creates the event, either as NTNUI or a sports group. """
+
+    # Gets the required data.
+    host = data.get('host')
+
+    # Checks if the host is NTNUI.
+    if host == 'NTNUI':
+
+        # Creates the event if the user is a member of the main board.
+        if is_user_in_main_board(user):
+            return create_event_for_group(data, True)
+
+        # The user attempting to create an event for NTNUI is not a member of the main board.
+        else:
+            return None, False, 'Cannot create an event for NTNUI without being part of the main board.'
+
+    # A sports group is the host of the event.
+    else:
+
+        # Checks if the sports group exists.
+        if not get_sports_group(host).exists():
+            return None, False, 'Sports group does not exist.'
+
+        # Gets the sports group's active board.
+        active_board = get_sports_group(host).active_board
+        if not active_board:
+            return None, False, 'Active board does not exist.'
+
+        # Checks that the user got a position at the group's board, and creates the event.
+        if is_user_in_board(active_board, user):
+            return create_event_for_group(data, False)
+        else:
+            return None, False, 'Cannot create an event for an sports group without being part of the group board.'
+
+
+def create_event_for_group(data, is_host_ntnui):
+    """ Creates a new event hosted by a sports group. """
+
+    # Sets the event's price to 0 if it is not set.
     price = data.get('price')
     if price == "":
         price = 0
 
-    # if attendance_cap is "" its set to None
+    # Sets the event's attendance cap to None if it is not set.
     attendance_cap = data.get('attendance_cap')
     if attendance_cap == "":
         attendance_cap = None
 
+    # Sets the event's registration end date to None if it is not set.
     registration_end_date = data.get('registration_end_date')
     if registration_end_date == "":
-        registration_end_date = None;
+        registration_end_date = None
 
     try:
-        # create the events
-        event = Event.objects.create(start_date=data.get('start_date'), end_date=data.get('end_date'), registration_end_date = registration_end_date,
-                                     priority=priority, is_host_ntnui=is_ntnui, place=data.get('place'), attendance_cap=attendance_cap,
-                                     price=price)
+        # Creates the event.
+        event = Event.objects.create(
+            start_date=data.get('start_date'), end_date=data.get('end_date'), place=data.get('place'), price=price,
+            registration_end_date=registration_end_date,  is_host_ntnui=is_host_ntnui, attendance_cap=attendance_cap)
 
-        if not is_ntnui:
-            # Add the group as the host
-            event.sports_groups.add(SportsGroup.objects.get(id=int(data.get('host'))))
+        # Sets the event's host, if the host is not NTNUI.
+        if not is_host_ntnui:
+            for sports_group in data.get('host'):
+                event.sports_groups.add(get_sports_group(sports_group))
 
-        # Creates description and checks that it was created
-        if create_description_for_event(event, data.get('description_text_no'), data.get('email_text_no'),
-                                        data.get('name_no'), 'nb') and \
-                create_description_for_event(event, data.get('description_text_en'), data.get('email_text_en'),
-                                             data.get('name_en'), 'en'):
-            return True, event
-        return False, _('could not create description')
+        # Creates the Norwegian event description.
+        create_event_description(
+            event, data.get('name_no'), data.get('description_text_no'), data.get('email_text_no'), 'nb')
 
-    # if something goes wrong return false and print error to console
+        # Creates the English event description.
+        create_event_description(
+            event, data.get('name_en'), data.get('description_text_en'), data.get('email_text_en'), 'en')
+
+        # The event were successfully created.
+        return event, True, None
+
+    # Catch exceptions.
     except Exception as e:
         print(e)
-    return False, None
+        return None, False, 'Failed to create the event.'
 
 
-def priority_is_selected(priority):
-    """ Checks whether the event is priorized or not."""
-    if priority is not None:
+def create_event_description(event, name, description, email_text, language):
+    """ Creates an event description. """
+
+    # Creates an event description.
+    try:
+        EventDescription.objects.create(
+            event=event, name=name, description_text=description, custom_email_text=email_text, language=language)
         return True
-    else:
+
+    # Catch exceptions.
+    except Exception as e:
+        print(e)
         return False
 
 
-def create_description_for_event(event, decription, email_text, name, lang):
-    """Creates a description for a given event"""
-    try:
-        EventDescription.objects.create(name=name, description_text=decription, custom_email_text=email_text,
-                                        language=lang, event=event)
-        return True
-    except Exception as e:
-        print(e)
-        return False
+def is_user_in_main_board(user):
+    """ Checks if the user is a member of the main board. """
 
-
-def user_is_in_mainboard(user):
-    """Checks if user is in mainboard"""
     return MainBoardMembership.objects.filter(person_id=user).exists()
 
 
-def user_is_in_board(board, user):
-    """Checks if a given user is in board"""
+def is_user_in_board(user, board):
+    """ Checks if the user is a member of the board. """
+
     return board.president == user or board.vice_president == user or board.cashier == user
 
 
+def get_sports_group(sports_group):
+    """ Checks if the sports group exists. """
 
-
-
-def get_json(code, message):
-    """Returnes json with the given format"""
-    return JsonResponse({
-        'message': message},
-        status=code)
-
+    return SportsGroup.objects.filter(id=int(sports_group))

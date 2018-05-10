@@ -1,7 +1,6 @@
 from django.conf.urls import url
 from .views import (
 
-    create_event_request,
     get_events_request,
     edit_event_request,
     get_event,
@@ -13,6 +12,7 @@ from .views import (
     delete_category_request,
     delete_subevent_request,
 )
+from .create_event import (create_event_request)
 from .event_attendance import (
     attend_event_request,
     attend_payment_event_request,

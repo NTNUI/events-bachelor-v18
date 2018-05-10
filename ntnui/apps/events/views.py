@@ -13,7 +13,7 @@ from django.utils import translation
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 
-from . import create_event, get_events
+from . import get_events
 from events.models.event import Event, EventDescription, EventRegistration, EventWaitingList, EventGuestWaitingList, \
     EventGuestRegistration
 from events.models.sub_event import SubEvent, SubEventDescription, SubEventRegistration, SubEventWaitingList, \
