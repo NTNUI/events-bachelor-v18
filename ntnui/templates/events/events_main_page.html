@@ -69,15 +69,14 @@
 
         <div class="create-event">
 
-            <h3>{% trans 'My options' %}</h3>
+            <div class="my-options-button"><h3>{% trans 'My options' %}</h3></div>
                 {% if can_create_event %}
-                <div>
+                <div class="button-container-my-options">
                     <a id="go-to-create-event" href="{% url 'create_event_page' %}">
                         <button type="button" class="buttons btn btn-success my-options-button">{% trans 'Create event' %}</button>
                     </a>
-                </div>
+
                 {% endif %}
-                <div>
                     <a id="go-to-attending-events" href="{% url 'attending_events_page' %}">
                         <button type="button" class="buttons btn btn-success my-options-button">{% trans 'Attending events' %}</button>
                     </a>
@@ -101,5 +100,5 @@
 
 {% block script %}
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
-    <script type="text/javascript" src="{% static 'js/events/event_main.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/events/event_main_page.js' %}"></script>
 {% endblock %}

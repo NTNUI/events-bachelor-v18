@@ -23,7 +23,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="container">
+                <div class="modal-body">
                     <form id="subEvent-data-form">
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -139,7 +139,7 @@
 
 
     <!-- nav form -->
-    <div id="container">
+    <div class="container">
         <div class="header-container">
             <div style="margin-top: 2rem;">
                 <div class="top-menu" style="margin-bottom: 2rem;">
@@ -167,7 +167,7 @@
     </div>
 
     <!-- Main form -->
-    <form id="create-event-form" style="width:80%; max-width:1000px;">{% csrf_token %}
+    <form id="create-event-form" class="container">{% csrf_token %}
         <!--Sends the event id, used to identify the event-->
         <input id="event-id" name="id" type="hidden" value="{{ event.id }}">
         <h4 style="margin-top: 0" class="sub-titles">{% trans 'Basic info' %}:</h4>
