@@ -37,6 +37,10 @@ def attend_event_request(request):
             delete_guest(attendee)
         return error_response
 
+    # Checks that the event is free to attend.
+    if event.is_payment_event:
+        return get_json(400, 'The event requires payment to attend.')
+
     return attend_event(request, event, attendee, None)
 
 
@@ -51,6 +55,10 @@ def attend_payment_event_request(request):
         if guest_created:
             delete_guest(attendee)
         return error_response
+
+    # Checks that the event requires payment to attend.
+    if not event.is_payment_event:
+        return get_json(400, 'The event does not require payment to attend.')
 
     payment_id, payment_accepted, error_response = charge_card(request.POST, event, attendee)
 
@@ -75,6 +83,10 @@ def waiting_list_event_request(request):
         if guest_created:
             delete_guest(attendee)
         return error_response
+
+    # Checks that the event is free to attend.
+    if event.is_payment_event:
+        return get_json(400, 'The event requires payment to attend.')
 
     return waiting_list_event(request, event, attendee, None)
 
