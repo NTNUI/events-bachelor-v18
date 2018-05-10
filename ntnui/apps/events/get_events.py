@@ -145,18 +145,17 @@ def get_sorted_events(sort_by_criterion, events):
     # Clarifying variables.
     ascending = ''
     descending = '-'
-    sort_by_criterion_descending = sort_by_criterion[1:]
-    is_sort_by_descending = sort_by_criterion[0] == '-'
 
     # Checks that sort_by_criteria has a valid value.
     if sort_by_criterion is not None:
-        if (sort_by_criterion or sort_by_criterion_descending) in sort_by_criteria:
+
+        if (sort_by_criterion or sort_by_criterion[1:]) in sort_by_criteria:
 
             # Checks if the sorting is ascending or descending.
             sort_type = ascending
-            if is_sort_by_descending:
+            if sort_by_criterion[0] == '-':
                 sort_type = descending
-                sort_by_criterion = sort_by_criterion_descending
+                sort_by_criterion = sort_by_criterion[1:]
 
             # if the sort by is not in the event table we need to find the filed by merging
             if sort_by_criterion == 'name':
