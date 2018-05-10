@@ -9,41 +9,40 @@ from events.models.category import Category
 from events.models.event import Event
 from events.models.sub_event import SubEvent
 
+from .views import (get_json)
+
 
 def get_events(request, attending):
-    """ Returns a set of events based on the requested filtering. """
+    """ Returns a set of events based on the requested sorting and filtering. """
 
-    if request.method == "GET":
-        # gets the page from the request, or returns one if page is not given as a parm in the url
-        page = request.GET.get('page', 1)
+    # Checks if the request is GET.
+    if not request.method == "GET":
+        return get_json(404, _('Request must be GET.'))
 
-        if not attending:
-            events = get_filtered_events(request, False)
-        else:
-            events = get_filtered_events(request, True)
-        # paginate the events, with 10 elements on every page
-        p = Paginator(events, 10)
+    # Gets the page from the request.
+    # Gets 1, if the page is not given as a param in the url.
+    page = request.GET.get('page', 1)
 
-        # Get json from the paginated events
-        events = get_events_json(p.page(page))
+    events = get_filtered_events(request, attending)
 
-        # Return the json also containing the page number and page count
-        return JsonResponse({
-            'events': events,
-            'page_number': page,
-            'page_count': p.num_pages}
-        )
+    # Paginate the events, with 10 elements on every page.
+    p = Paginator(events, 10)
 
-    # if not get return 404
+    # Get JSON from the paginated events
+    events = get_events_json(p.page(page))
+
+    # Return the JSON also containing the page number and page count.
     return JsonResponse({
-        'message': 'must be get'
-    }, status=404)
+        'events': events,
+        'page_number': page,
+        'page_count': p.num_pages}
+    )
 
 
 def get_filtered_events(request, attending):
     """Returns all the events that fits the sort_by, search and filter_by"""
 
-    # Get filters from parameters.
+    # Get filters from params.
     sort_by = request.GET.get('sort-by', "")
     search = request.GET.get('search', "")
     filter_host = request.GET.get('filter-host', "")
@@ -60,23 +59,35 @@ def get_filtered_events(request, attending):
         events = get_filtered_events_on_host(filter_host, events)
         events = get_sorted_events(sort_by, events)
 
-        attending_events=[]
+        attending_events = []
+
+        # For each event.
         for event in events:
+
+            # Checks if the event has categories.
             if Category.objects.filter(event=event).exists():
-                subevent_list=[]
-                categories = Category.objects.filter(event=event)
-                # for every category do:
+                sub_event_list = []
+                categories = Category.objects.get(event=event)
+
+                # Gets all the categories sub-events.
                 for i in range(len(categories)):
-                    # get all the sub-events for that category
                     sub_events = SubEvent.objects.filter(category=categories[i])
-                    # add the category and map each sub_event to a dic
-                    for subevent in sub_events:
-                        subevent_list.append(subevent)
-                for subevent in subevent_list:
-                    if subevent.is_user_enrolled(request.user):
+
+                    # Adds all the category's sub-events to the sub_event_list.
+                    for sub_event in sub_events:
+                        sub_event_list.append(sub_event)
+
+                # For each sub-event.
+                for sub_event in sub_event_list:
+
+                    # Checks if the user attends the sub-event.
+                    if sub_event.is_user_enrolled(request.user):
+
+                        # Adds the event to the list of events which the user attends, if the user attends a sub-event.
                         if event not in attending_events:
                             attending_events.append(event)
             else:
+
                 if event.is_user_enrolled(request.user):
                     attending_events.append(event)
 
@@ -142,19 +153,15 @@ def get_sorted_events(sort_by_criterion, events):
     # Criteria the events can be sorted by.
     sort_by_criteria = ['start_date', 'end_date', 'name']
 
-    # Clarifying variables.
-    ascending = ''
-    descending = '-'
-
     # Checks that sort_by_criteria has a valid value.
     if sort_by_criterion is not None:
 
         if (sort_by_criterion or sort_by_criterion[1:]) in sort_by_criteria:
 
             # Checks if the sorting is ascending or descending.
-            sort_type = ascending
+            sort_type = ''
             if sort_by_criterion[0] == '-':
-                sort_type = descending
+                sort_type = '-'
                 sort_by_criterion = sort_by_criterion[1:]
 
             # if the sort by is not in the event table we need to find the filed by merging
