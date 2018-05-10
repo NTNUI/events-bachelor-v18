@@ -228,9 +228,9 @@ def charge_card(data, event, attendee):
     amount = event.price * 100
     description = str(event.name()) + ' - ' + str(attendee)
     email = data.get('stripeEmail')
-    token = data.get('stripToken')
+    token = data.get('stripeToken')
     stripe.api_key = settings.STRIPE_SECRET_KEY
-
+    print(amount, description, email, token)
     # Creates a payment with Stripe.
     try:
         payment = stripe.Charge.create(
@@ -367,7 +367,7 @@ def remove_attendance_request(request):
                 waiting_list_next_attend(request, event)
                 remove_attendance_email(event, user)
                 return JsonResponse({'message': _("Signed off the event!"),
-                                     'number_of_participants': len(event.get_attendee_list),
+                                     'number_of_participants': len(event.get_attendee_list()),
                                      'attendance_cap': event.attendance_cap}, status=201)
         else:
             # User is signed up for the sub-event.
@@ -379,7 +379,7 @@ def remove_attendance_request(request):
                 waiting_list_next_attend(request, event)
                 remove_attendance_email(event, user)
                 return JsonResponse({'message': _("Signed off the event!"),
-                                     'number_of_participants': len(event.get_attendee_list),
+                                     'number_of_participants': len(event.get_attendee_list()),
                                      'attendance_cap': event.attendance_cap}, status=201)
 
     else:
@@ -393,7 +393,7 @@ def remove_attendance_request(request):
                 waiting_list_next_attend(request, event)
                 remove_attendance_email(event, user)
                 return JsonResponse({'message': _("Signed off the event's waiting list!"),
-                                     'number_of_participants': len(event.get_attendee_list),
+                                     'number_of_participants': len(event.get_attendee_list()),
                                      'attendance_cap': event.attendance_cap}, status=201)
         else:
             # User is signed up for the sub-event's waiting list.
@@ -405,7 +405,7 @@ def remove_attendance_request(request):
                 waiting_list_next_attend(request, event)
                 remove_attendance_email(event, user)
                 return JsonResponse({'message': _("Signed off the event's waiting list!"),
-                                     'number_of_participants': len(event.get_attendee_list),
+                                     'number_of_participants': len(event.get_attendee_list()),
                                      'attendance_cap': event.attendance_cap}, status=201)
 
     # Can't sign off payment events.

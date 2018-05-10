@@ -123,14 +123,13 @@ $("#attend-event-button").click((e) => {
     e.preventDefault()
     const button = getButton(e);
     if (!$(button).prop('disabled')) {
-        $(button).prop("disabled", true).addClass("disabled");
-
         switch (state) {
             case States.UNATTEND:
-                modalType = (hasNoPrice) ? ModalTypes.UNATTEND_EVENT : ModalTypes.UNATTEND_PAYED_EVENT
+                modalType = ModalTypes.UNATTEND_EVENT
                 $("#deleteModal").modal("show");
                 break;
             case States.ATTEND:
+                $(button).prop("disabled", true).addClass("disabled");
                 if (isGuestUser) {
                     showGuestModal();
                 } else {
@@ -142,9 +141,12 @@ $("#attend-event-button").click((e) => {
                 }
                 break;
             case States.WAIT_LIST:
+                $(button).prop("disabled", true).addClass("disabled");
                 attendWaitingList(button)
                 break;
             case States.ON_WAITING_LIST:
+                $("#deleteModal").modal("show");
+                modalType = ModalTypes.UNATTEND_EVENT
                 break;
         }
     }
@@ -166,6 +168,7 @@ $(".join-subevent-button").click((e) => {
             modalType = ModalTypes.UNATTEND_SUB_EVENT
             $("#deleteModal").modal("show");
         } else {
+            $(button).prop("disabled", true).addClass("disabled");
             attendEvent(button, subEvent[0])
         }
     }
@@ -181,10 +184,7 @@ $("#remove-attend-event-button-modal").click(() => {
             removeAttendEvent($("#attend-event-button")[0])
             break;
         case ModalTypes.UNATTEND_SUB_EVENT:
-            console.log(subEventIndex);
-            console.log(subEvents)
             $(".join-subevent-button").each((e, element) => {
-                console.log(element.value)
                 if (element.value == subEvents[subEventIndex].id) {
                     removeAttendEvent(element, subEvents[subEventIndex])
                 }
@@ -248,11 +248,13 @@ async function sendAjax(data, url, type, button) {
     } catch (error) {
         if (error.responseJSON) {
             printMessage(MsgType.ERROR, error.responseJSON.message)
-            if (button) {
-                $(button).find('.loader').remove();
-                if ($(button).prop('disabled')) {
-                    $(button).prop("disabled", false).removeClass("disabled");
-                }
+        } else {
+            printMessage(MsgType.ERROR, gettext("Your request could not be processed"))
+        }
+        if (button) {
+            $(button).find('.loader').remove();
+            if ($(button).prop('disabled')) {
+                $(button).prop("disabled", false).removeClass("disabled");
             }
         }
     }
@@ -279,7 +281,7 @@ async function processStripeToken(token) {
         csrfmiddlewaretoken: csrftoken,
         stripeToken: token.id,
         event_id: eventID,
-        stripEmail: token.email,
+        stripeEmail: token.email,
     }
     if (isGuestUser) {
         data.email = email
@@ -331,7 +333,7 @@ function updateButton(button, title, type, subEvent) {
             button.setAttribute("class", "btn btn-info")
             break;
         case States.ON_WAITING_LIST:
-            button.setAttribute("class", "btn btn-secondary disabled")
+            button.setAttribute("class", "btn btn-secondary")
             break;
     }
     if (subEvent) {
@@ -395,6 +397,7 @@ async function attendEvent(button, subEvent) {
         if (subEvent) {
             subEvents[subEvents.indexOf(subEvent)].state = States.UNATTEND
         } else {
+            $("#attendance").html(response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : ""))
             state = States.UNATTEND
         }
         printMessage(MsgType.SUCCESS, response.message);
@@ -411,15 +414,16 @@ async function attendWaitingList(button, subEvent) {
     setButtonLoader(button, '#0000AA')
     let response;
     if (subEvent) {
-        response = await sendAjax({event_id: eventID}, 'waiting-list-event', 'POST', button);
+        response = await sendAjax({sub_event_id: subEvent.id}, '/ajax/events/waiting-list', 'POST', button);
     } else {
-        response = await sendAjax({sub_event_id: subEvent.id}, 'waiting-list-event', 'POST', button);
+        response = await sendAjax({event_id: eventID}, '/ajax/events/waiting-list', 'POST', button);
     }
     if (response) {
-        updateButton(button, gettext('you are on the wailing list'), States.ON_WAITING_LIST, subEvent)
+        updateButton(button, gettext('Remove me from wait list'), States.ON_WAITING_LIST, subEvent)
         if (subEvent) {
             subEvents[subEvents.indexOf(subEvent)].state = States.ON_WAITING_LIST
         } else {
+            $("#attendance").html(response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : ""))
             state = States.ON_WAITING_LIST
         }
         printMessage(MsgType.SUCCESS, response.message);
@@ -433,7 +437,14 @@ async function attendWaitingList(button, subEvent) {
  * @returns {Promise.<void>}
  */
 async function removeAttendEvent(button, subEvent) {
-    setButtonLoader(button, '#AA0000')
+    if (subEvent && subEvent.state === States.ON_WAITING_LIST) {
+        setButtonLoader(button, '#AAAAAA')
+    } else if (state == States.ON_WAITING_LIST) {
+        setButtonLoader(button, '#AAAAAA')
+    } else {
+        setButtonLoader(button, '#AA0000')
+    }
+
     let response;
     if (subEvent) {
         response = await sendAjax({sub_event_id: subEvent.id}, '/ajax/events/unattend-event', 'POST', button)
@@ -441,21 +452,24 @@ async function removeAttendEvent(button, subEvent) {
         response = await sendAjax({event_id: eventID}, '/ajax/events/unattend-event', 'POST', button)
     }
     if (response) {
-        if (response.number_of_participance >= response.maximum_number_of_participants) {
-            updateButton(button, gettext('waitlist'), States.WAIT_LIST, subEvent)
+        if (parseInt(response.number_of_participants) >= parseInt(response.attendance_cap)) {
+            updateButton(button, gettext('Put me on the wait list'), States.WAIT_LIST, subEvent)
             if (subEvent) {
                 subEvents[subEvents.indexOf(subEvent)].state = States.WAIT_LIST
             } else {
+                $("#attendance").html(response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : ""))
                 state = States.WAIT_LIST
             }
-        }
-        updateButton(button, gettext('attend event'), States.ATTEND, subEvent)
-        if (subEvent) {
-            subEvents[subEvents.indexOf(subEvent)].state = States.ATTEND
         } else {
-            state = States.ATTEND
+            updateButton(button, gettext('attend event'), States.ATTEND, subEvent)
+            if (subEvent) {
+                subEvents[subEvents.indexOf(subEvent)].state = States.ATTEND
+            } else {
+                $("#attendance").html(response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : ""))
+                state = States.ATTEND
+            }
+            printMessage(MsgType.SUCCESS, response.message)
         }
-        printMessage(MsgType.SUCCESS, response.message)
     }
 }
 
@@ -491,17 +505,20 @@ function getCookie(name) {
 function printMessage(msgType, msg) {
     //checks the msgType, to get the right color for the alert
     let type = ''
+    let msgIdentifier;
     switch (msgType) {
         case MsgType.ERROR:
             type = 'danger'
+            msgIdentifier = gettext('Error')
             break
         case MsgType.SUCCESS:
             type = 'success'
+            msgIdentifier = gettext('Success')
             break
     }
     //print message to screen
     $(".alert-message-container").html(() => {
-        return "<div class=\"alert alert-" + type + " show fade \" role=\"alert\"> <strong>" + type + ":</strong>" +
+        return "<div class=\"alert alert-" + type + " show fade \" role=\"alert\"> <strong>" + msgIdentifier + ":</strong>" +
             " " + msg + "</div>"
     })
 
