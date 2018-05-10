@@ -112,28 +112,30 @@ def get_remove_attendance_page(request, token):
     return render(request, 'events/remove_attendance.html')
 
 
-def get_sub_event_dic(item, request):
+def get_sub_event_dict(sub_event, user):
     # Checks if the user is signed in.
-    if request.user.is_authenticated:
-        attends = item.is_user_enrolled(request.user)
+    if user.is_authenticated:
+        attends = sub_event.is_user_enrolled(user)
+        is_user_on_waiting_list = sub_event.is_user_on_waiting_list(user)
     else:
         # Returns false if not
+        is_user_on_waiting_list = False
         attends = False
 
     return {
-        'start_date': item.start_date,
-        'end_date': item.end_date,
+        'start_date': sub_event.start_date,
+        'end_date': sub_event.end_date,
         'attends': attends,
-        'waiting_list': item.is_attendance_cap_exceeded(),
-        'is_user_on_waiting_list': item.is_user_on_waiting_list(request.user),
-        'number_of_participants': len(item.get_attendee_list()),
-        'attendance_cap': item.attendance_cap,
-        'is_registration_ended': item.is_registration_ended(),
-        'registration_end_date': item.registration_end_date,
-        'name': str(item),
-        'price': item.price,
-        'payment_required': item.is_payment_event(),
-        'id': item.id
+        'waiting_list': sub_event.is_attendance_cap_exceeded(),
+        'is_user_on_waiting_list': is_user_on_waiting_list,
+        'number_of_participants': len(sub_event.get_attendee_list()),
+        'attendance_cap': sub_event.attendance_cap,
+        'is_registration_ended': sub_event.is_registration_ended(),
+        'registration_end_date': sub_event.registration_end_date,
+        'name': str(sub_event),
+        'price': sub_event.price,
+        'payment_required': sub_event.is_payment_event(),
+        'id': sub_event.id
     }
 
 
@@ -149,27 +151,14 @@ def get_event_details(request, id):
             # get all the sub-events for that category
             sub_event = SubEvent.objects.filter(category=categories[i])
             # add the category and map each sub_event to a dic
-            sub_event_list.append((categories[i], list(map(lambda item: get_sub_event_dic(item, request), sub_event))))
-
-    number_of_subevents = len(sub_event_list)
+            sub_event_list.append((categories[i], list(map(lambda item: get_sub_event_dict(item, request.user), sub_event))))
 
     # Checks if the user is sign in.
     if request.user.is_authenticated:
         attends = event.is_user_enrolled(request.user)
         can_create_event = can_user_create_event(request.user)
-    else:
-        # Returns false if not
-        attends = False
+        is_user_on_waiting_list = event.is_user_on_waiting_list(request.user);
 
-    if request.user.is_authenticated:
-        can_create_event = can_user_create_event(request.user)
-    else:
-        can_create_event = False
-
-    waiting_list = event.is_attendance_cap_exceeded()
-    is_user_on_waiting_list = event.is_user_on_waiting_list(request.user);
-
-    if request.user.is_authenticated:
         if is_user_in_main_board(request.user):
             is_in_mainboard = is_user_in_main_board(request.user)
         else:
@@ -189,7 +178,12 @@ def get_event_details(request, id):
             can_edit_and_delete_event = True
         else:
             can_edit_and_delete_event = False
+
     else:
+        # Returns false if not
+        attends = False
+        is_user_on_waiting_list = False
+        can_create_event = False
         can_edit_and_delete_event = False
 
     event = {
@@ -200,7 +194,7 @@ def get_event_details(request, id):
         'cover_photo': event.cover_photo,
         'attends': attends,
         'id': event.id,
-        'waiting_list': waiting_list,
+        'waiting_list': event.is_attendance_cap_exceeded(),
         'is_user_on_waiting_list': is_user_on_waiting_list,
         'number_of_participants': len(event.get_attendee_list()),
         'attendance_cap': event.attendance_cap,
@@ -217,7 +211,7 @@ def get_event_details(request, id):
         "event": event,
         "is_authenticated": request.user.is_authenticated,
         "sub_event_list": sub_event_list,
-        'number_of_subevents': number_of_subevents,
+        'number_of_subevents': len(sub_event_list),
         'can_create_event': can_create_event,
         'can_edit_and_delete_event': can_edit_and_delete_event,
         "STRIPE_KEY": settings.STRIPE_PUBLIC_KEY

@@ -38,8 +38,12 @@ let hasNoPrice;
 let isGuestUser = false;
 let email, firstName, lastName, phone
 
-// Defines the button to be updated when payting for an event
+// Defines the button to be updated when paying for an event
 let paymentButton;
+
+// defines what button to be updated when guestUser is active
+let guestSubEventButton
+let guestSubEventObject
 
 // used to define the current language
 let lang;
@@ -168,10 +172,12 @@ $(".join-subevent-button").click((e) => {
         // IF the first sign is a - we want to remove attending event
         switch (subEvent[0].state) {
             case States.ATTEND:
-                $(button).prop("disabled", true).addClass("disabled");
                 if (isGuestUser) {
+                    guestSubEventButton = button;
+                    guestSubEventObject = subEvent[0]
                     showGuestModal();
                 } else {
+                    $(button).prop("disabled", true).addClass("disabled");
                     if (!$(button).closest(".sub-event-container").find(".price").length) {
                         attendEvent(button, subEvent[0])
                     } else {
@@ -219,33 +225,35 @@ $("#remove-attend-event-button-modal").click(() => {
  */
 $("#guest-data-form").on('submit', async (e) => {
     // Get all values from the modal
-    firstName = $("#first-name").val()
-    lastName = $("#last-name").val()
-    phone = $("#phone").val()
-    email = $("#input-email").val()
-    if ($("#price").length > 0) {
-        const result = await sendAjax(data, ('/ajax/events/' + button.value), 'GET')
-        if (result) {
-            handler.open({
-                amount: parseInt(event.price) * 100,
-                currency: "nok",
-                name: event.host,
-                description: event.name,
-                email: email,
-            });
-        }
-        e.preventDefault();
+    firstName = $("#first-name").val();
+    lastName = $("#last-name").val();
+    phone = $("#phone").val();
+    email = $("#input-email").val();
+
+    if ($("#price").length > 0 && !guestSubEventObject) {
+        attendPayedEvent($("#attend-event-button"))
+    } else if (guestSubEventObject && $(guestSubEventButton).closest(".sub-event-container").find(".price").length) {
+        attendPayedEvent(guestSubEventButton, guestSubEventObject);
+        guestSubEventObject = null;
+        guestSubEventButton = null;
     } else {
         let postData = $("#guest-data-form").serialize();
         postData = postData + '&csrfmiddlewaretoken=' + csrftoken;
-        postData = postData + '&id=' + eventID;
-        let result = await sendAjax(postData, '/ajax/events/attend-event')
+        if(!guestSubEventObject) {
+            postData = postData + '&event_id=' + eventID;
+        }
+        else {
+            postData = postData + '&sub_event_id=' + guestSubEventObject.id;
+            guestSubEventObject = null;
+            guestSubEventButton = null;
+        }
+        let result = await sendAjax(postData, '/ajax/events/attend-event');
         if (result) {
             printMessage(MsgType.SUCCESS, result.message)
         }
         hideGuestModal()
-        e.preventDefault();
     }
+    e.preventDefault();
 })
 
 
@@ -321,9 +329,9 @@ async function processStripeToken(token) {
 
     let result = await sendAjax(data, '/ajax/events/attend-payment-event')
     if (result) {
-        if(subEvent) {
+        if (subEvent) {
             $(".join-subevent-button").each((e, button) => {
-                if(parseInt(button.value) === subEvent.id) {
+                if (parseInt(button.value) === subEvent.id) {
                     updateButton(button, gettext('Unattend'), States.UNATTEND, subEvent)
                 }
             })
@@ -400,20 +408,25 @@ async function attendPayedEvent(button, subEvent) {
     setButtonLoader(button)
     const event = await sendAjax({id: (subEvent ? subEvent.id : eventID)}, URL, 'POST', button)
     if (event) {
-        console.log(event)
-        const user = await sendAjax({}, '/ajax/accounts', 'GET')
-        if (user) {
-            if(subEvent) {
-                 paymentSubEvent = subEvent
+        let user = {}
+        if (!isGuestUser) {
+            user = await sendAjax({}, '/ajax/accounts', 'GET')
+            if (!user) {
+                return
             }
-            handler.open({
-                amount: parseInt(event.price) * 100,
-                currency: "nok",
-                name: event.host,
-                description: event.name,
-                email: user.email,
-            });
+        } else {
+            user.email = email
         }
+        if (subEvent) {
+            paymentSubEvent = subEvent
+        }
+        handler.open({
+            amount: parseInt(event.price) * 100,
+            currency: "nok",
+            name: event.host,
+            description: event.name,
+            email: user.email,
+        });
     }
 }
 
