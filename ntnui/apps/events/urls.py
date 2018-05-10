@@ -1,15 +1,9 @@
 from django.conf.urls import url
 
-from .views import (
-    get_main_page,
-    get_create_event_page,
-    get_event_details,
-    get_edit_event_page,
-    get_delete_event,
-    get_attending_events_page,
-    get_event_attendees_page,
-    get_remove_attendance_page
-)
+from .views import (get_attending_events_page, get_create_event_page,
+                    get_delete_event, get_edit_event_page,
+                    get_event_attendees_page, get_event_details, get_main_page,
+                    get_remove_attendance_page)
 
 urlpatterns = [
     url(r'^$', get_main_page, name='get_main_page'),

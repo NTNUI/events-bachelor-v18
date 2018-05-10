@@ -1,14 +1,13 @@
 from datetime import date
 
-from accounts.models import User
-from django.test import Client
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
-from events.models import Event, EventDescription
-from hs.models import MainBoard, MainBoardMembership
-from groups.models import SportsGroup, Membership, Board
 
+from accounts.models import User
 from events import create_event
+from events.models import Event, EventDescription
+from groups.models import Board, Membership, SportsGroup
+from hs.models import MainBoard, MainBoardMembership
 
 
 class Event_add(TestCase):

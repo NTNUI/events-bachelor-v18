@@ -3,7 +3,8 @@ from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 from accounts.models import User
-from events.models.abstract_classes import CommonDescription, CommonEvent, CommonRegistration
+from events.models.abstract_classes import (CommonDescription, CommonEvent,
+                                            CommonRegistration)
 from events.models.category import Category
 from events.models.guest import Guest
 

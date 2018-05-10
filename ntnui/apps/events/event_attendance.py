@@ -1,24 +1,25 @@
 import uuid
-import stripe
-
 from datetime import datetime
 
-from .views import (get_json)
-from accounts.models import User
-from events.models.guest import Guest
-from events.models.event \
-    import Event, EventRegistration, EventWaitingList, EventGuestWaitingList, EventGuestRegistration
-from events.models.sub_event \
-    import SubEvent, SubEventRegistration, SubEventWaitingList, SubEventGuestRegistration, SubEventGuestWaitingList
-
+import stripe
 from django.conf import settings
-from django.http import JsonResponse
-from django.core.mail import send_mail
 from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
+from django.core.validators import validate_email, validate_integer
+from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import validate_email, validate_integer
 
+from accounts.models import User
+from events.models.event import (Event, EventGuestRegistration,
+                                 EventGuestWaitingList, EventRegistration,
+                                 EventWaitingList)
+from events.models.guest import Guest
+from events.models.sub_event import (SubEvent, SubEventGuestRegistration,
+                                     SubEventGuestWaitingList,
+                                     SubEventRegistration, SubEventWaitingList)
+
+from .views import get_json
 
 """ User and guest sign-up for events and sub-events. """
 
@@ -567,6 +568,18 @@ def remove_attendance_email(event, attendee):
 """ Generic functions applicable to both sign up and sign off. """
 
 
+def create_mail_header(event, attendee):
+    """ Gets the from, to, and subject fields for the email. """
+
+    # Create mail header.
+    sender = 'noreply@mg.ntnui.no'
+    receiver = [attendee.email]
+    subject = event.name() + ' - ' + ' - '.join(str(item) for item in event.get_host())
+
+    # Returns the sender and receiver of the email and the email's subject.
+    return sender, receiver, subject
+
+
 def get_event_by_id(event_id):
     """Gets the event which the event ID is associated with."""
 
@@ -583,15 +596,3 @@ def get_sub_event_by_id(sub_event_id):
         return SubEvent.objects.get(id=sub_event_id)
     except SubEvent.DoesNotExist:
         return get_json(404, _("Sub-event doesn't exist."))
-
-
-def create_mail_header(event, attendee):
-    """ Gets the from, to, and subject fields for the email. """
-
-    # Create mail header.
-    sender = 'noreply@mg.ntnui.no'
-    receiver = [attendee.email]
-    subject = event.name() + ' - ' + ' - '.join(str(item) for item in event.get_host())
-
-    # Returns the sender and receiver of the email and the email's subject.
-    return sender, receiver, subject

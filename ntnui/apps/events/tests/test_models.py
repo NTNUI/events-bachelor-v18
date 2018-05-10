@@ -1,12 +1,15 @@
 from datetime import date
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import MagicMock, Mock, patch
+
 from django.test import TestCase
 from django.utils import translation
+
 from accounts.models import User
+from events.models import (Category, CategoryDescription, Event,
+                           EventDescription, EventRegistration, Restriction,
+                           SubEvent, SubEventDescription, SubEventRegistration,
+                           Tag)
 from groups.models import SportsGroup
-from events.models import Event, EventDescription, \
-    Restriction, Tag, EventRegistration, Category, \
-    CategoryDescription, SubEvent, SubEventDescription, SubEventRegistration
 
 
 """

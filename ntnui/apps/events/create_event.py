@@ -4,10 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
 
-from .views import (get_json)
 from events.models.event import Event, EventDescription
 from groups.models import SportsGroup
 from hs.models import MainBoardMembership
+
+from .views import get_json
 
 
 @login_required
@@ -29,6 +30,7 @@ def create_event_request(request):
 
     # Creates the event.
     event, event_created, error_message = create_event(data, user)
+    print(event, event_created, error_message)
     if event_created:
         return JsonResponse({'id': event.id, 'message': _('New event successfully created!')}, status=201)
     else:
@@ -60,10 +62,10 @@ def validate_event_data(data):
     # Checks that the event has an valid start and end date.
     if start_date and end_date:
         # Start date set later than end date.
-        if start_date >= end_date:
+        if datetime.strptime(start_date, '%Y-%m-%dT%M:%H') >= datetime.strptime(end_date, '%Y-%m-%dT%M:%H'):
             return 'Starting date cannot be later than end date.'
         # Start date set in the past.
-        elif datetime.now() >= start_date.replace(tzinfo=None):
+        elif datetime.now() >= datetime.strptime(start_date, '%Y-%m-%dT%M:%H'):
             return 'Starting date cannot be in the past.'
     else:
         # The event is lacking start date and/or end date.
@@ -87,31 +89,30 @@ def create_event(data, user):
     # Gets the required data.
     host = data.get('host')
 
-    # Checks if the host is NTNUI.
+    # NTNUI is the host of the event.
     if host == 'NTNUI':
 
-        # Creates the event if the user is a member of the main board.
+        # Checks that the user got a position in the main board, and creates the event.
         if is_user_in_main_board(user):
             return create_event_for_group(data, True)
-
-        # The user attempting to create an event for NTNUI is not a member of the main board.
         else:
             return None, False, 'Cannot create an event for NTNUI without being part of the main board.'
 
     # A sports group is the host of the event.
     else:
 
-        # Checks if the sports group exists.
-        if not get_sports_group(host).exists():
+        # Checks that the sports group exists.
+        sports_group = get_sports_group_by_id(host)
+        if not sports_group:
             return None, False, 'Sports group does not exist.'
 
-        # Gets the sports group's active board.
-        active_board = get_sports_group(host).active_board
+        # Checks that the sports group has an active board.
+        active_board = sports_group.active_board
         if not active_board:
             return None, False, 'Active board does not exist.'
 
-        # Checks that the user got a position at the group's board, and creates the event.
-        if is_user_in_board(active_board, user):
+        # Checks that the user got a position in the group's board, and creates the event.
+        if is_user_in_board(user, active_board):
             return create_event_for_group(data, False)
         else:
             return None, False, 'Cannot create an event for an sports group without being part of the group board.'
@@ -143,8 +144,7 @@ def create_event_for_group(data, is_host_ntnui):
 
         # Sets the event's host, if the host is not NTNUI.
         if not is_host_ntnui:
-            for sports_group in data.get('host'):
-                event.sports_groups.add(get_sports_group(sports_group))
+            event.sports_groups.add(get_sports_group_by_id(data.get('host')))
 
         # Creates the Norwegian event description.
         create_event_description(
@@ -178,6 +178,21 @@ def create_event_description(event, name, description, email_text, language):
         return False
 
 
+def get_sports_group_by_id(sports_group_id):
+    """ Gets the sports group if it exists. """
+
+    # Get the sports group.
+    try:
+        return SportsGroup.objects.get(id=sports_group_id)
+
+    # Catch exceptions.
+    except SportsGroup.DoesNotExist:
+        return None
+    except Exception as e:
+        print(e)
+        return None
+
+
 def is_user_in_main_board(user):
     """ Checks if the user is a member of the main board. """
 
@@ -188,9 +203,3 @@ def is_user_in_board(user, board):
     """ Checks if the user is a member of the board. """
 
     return board.president == user or board.vice_president == user or board.cashier == user
-
-
-def get_sports_group(sports_group):
-    """ Checks if the sports group exists. """
-
-    return SportsGroup.objects.filter(id=int(sports_group))

@@ -6,7 +6,8 @@ from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 
 from accounts.models import User
-from events.models.abstract_classes import CommonDescription, CommonEvent, CommonRegistration
+from events.models.abstract_classes import (CommonDescription, CommonEvent,
+                                            CommonRegistration)
 from events.models.guest import Guest
 from events.models.restriction import Restriction
 from groups.models import SportsGroup

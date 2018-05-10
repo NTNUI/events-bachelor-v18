@@ -1,31 +1,23 @@
-from datetime import datetime, date
-
-import stripe
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ValidationError
 from django.db.models import Q
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from django.template.loader import render_to_string
-from django.utils.translation import gettext as _
 from django.utils import translation
+from django.utils.translation import gettext as _
+
+from events.models.category import Category, CategoryDescription
+from events.models.event import (Event, EventDescription,
+                                 EventGuestRegistration, EventGuestWaitingList,
+                                 EventRegistration, EventWaitingList)
+from events.models.sub_event import (SubEvent, SubEventDescription,
+                                     SubEventGuestRegistration,
+                                     SubEventGuestWaitingList,
+                                     SubEventRegistration, SubEventWaitingList)
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 
 from . import get_events
-from events.models.event import Event, EventDescription, EventRegistration, EventWaitingList, EventGuestWaitingList, \
-    EventGuestRegistration
-from events.models.sub_event import SubEvent, SubEventDescription, SubEventRegistration, SubEventWaitingList, \
-    SubEventGuestWaitingList, SubEventGuestRegistration
-from events.models.category import Category, CategoryDescription
-from events.models.guest import Guest
-from accounts.models import User
-from django.core.validators import validate_email, validate_integer
-from django.core.mail import send_mail
-
-
-# from events.ntnui.apps.accounts.models import User
 
 
 def create_category_request(request):
@@ -713,4 +705,3 @@ def get_event(request, id):
             'categories': list(categories_list),
         })
     return get_json(404, "Event with id: " + id + " does not exist.")
-

@@ -1,25 +1,16 @@
 from django.conf.urls import url
-from .views import (
 
-    get_events_request,
-    edit_event_request,
-    get_event,
-    get_attending_events_request,
-    create_category_request,
-    create_sub_event_request,
-    edit_category,
-    edit_subevent,
-    delete_category_request,
-    delete_subevent_request,
-)
-from .create_event import (create_event_request)
-from .event_attendance import (
-    attend_event_request,
-    attend_payment_event_request,
-    waiting_list_event_request,
-    remove_attendance_request,
-    remove_attendance_by_token_request
-)
+from .create_event import create_event_request
+from .event_attendance import (attend_event_request,
+                               attend_payment_event_request,
+                               remove_attendance_by_token_request,
+                               remove_attendance_request,
+                               waiting_list_event_request)
+from .views import (create_category_request, create_sub_event_request,
+                    delete_category_request, delete_subevent_request,
+                    edit_category, edit_event_request, edit_subevent,
+                    get_attending_events_request, get_event,
+                    get_events_request)
 
 urlpatterns = [
     url(r'^add-event$', create_event_request, name='create_event'),

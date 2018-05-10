@@ -1,10 +1,12 @@
+from datetime import datetime
+
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
 from django.utils import translation
-from datetime import datetime
-from events.models.event import Event
+
 from events.models.category import Category
+from events.models.event import Event
 from events.models.sub_event import SubEvent
 
 
