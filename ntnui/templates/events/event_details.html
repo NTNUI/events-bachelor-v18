@@ -84,7 +84,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form id="guest-data-form" onsubmit="return attendEventGuest()">
+                            <form id="guest-data-form"> {% csrf_token %}
                                 <div class="form-group">
                                     <label>{% trans 'Email address' %}</label>
                                     <input id="input-email" name="email" type="email" class="form-control"
