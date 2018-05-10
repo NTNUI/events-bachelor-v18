@@ -548,10 +548,10 @@ def waiting_list_next_attend(request, event):
             elif isinstance(event, SubEvent):
                 # Deletes the sub-event waiting list registration for a user.
                 if isinstance(attendee, User):
-                    EventWaitingList.objects.filter(event=event, attendee=attendee).delete()
+                    SubEventWaitingList.objects.filter(sub_event=event, attendee=attendee).delete()
                 # Deletes the sub-event waiting list registration for a guest.
                 else:
-                    EventGuestWaitingList.objects.filter(event=event, attendee=attendee).delete()
+                    SubEventGuestWaitingList.objects.filter(sub_event=event, attendee=attendee).delete()
 
             # The event given to the function is neither a Event nor a SubEvent.
             else:
