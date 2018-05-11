@@ -122,6 +122,11 @@ After you have navigated to you project root directory, you can create or update
 python manage.py makemessages -l language_code -i env
 ```
 
+And in order to compile Javascript you can use the following command:
+```
+python -m django-admin makemessages -d djangojs -l language_code
+```
+
 Where the language_code is the extension for the language you would like to use, for instance nb is norwegian bokmål.
 
 ### Compile messages
@@ -131,5 +136,3 @@ After you have made the translations, you can compile them using the following c
 ```
 python manage.py compilemessages
 ```
-
-To compile the new translations, and you are good to go.
