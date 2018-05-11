@@ -78,7 +78,7 @@ def create_sub_event_request(request):
             registration_end_date = None
 
         category_id = request.POST.get("category", "")
-
+        print(category_id)
         if category_id == "":
             event_id = int(request.POST.get("event"))
             print(Category.objects.filter(event__id=event_id, categorydescription__name='Non categorized').exists())
@@ -154,7 +154,8 @@ def get_event_details(request, id):
             # get all the sub-events for that category
             sub_event = SubEvent.objects.filter(category=categories[i])
             # add the category and map each sub_event to a dic
-            sub_event_list.append((categories[i], list(map(lambda item: get_sub_event_dict(item, request.user), sub_event))))
+            sub_event_list.append(
+                (categories[i], list(map(lambda item: get_sub_event_dict(item, request.user), sub_event))))
 
     # Checks if the user is sign in.
     if request.user.is_authenticated:
@@ -474,56 +475,58 @@ def edit_category(request):
 def edit_subevent(request):
     if request.method == 'POST':
         data = request.POST
+        print(data)
+        name_no = data['name_nb']
+        name_en = data['name_en']
+        email_text_no = data['email_nb']
+        email_text_en = data['email_en']
+        start_date = data['start_date']
+        end_date = data['end_date']
+        registration_end_date = data['registration_end_date']
+        attendance_cap = data['attendance_cap']
+        price = data['price']
+        category = data['category']
 
-        try:
-            name_no = data['name_nb']
-            name_en = data['name_en']
-            email_text_no = data['email_nb']
-            email_text_en = data['email_en']
-            start_date = data['start_date']
-            end_date = data['end_date']
-            registration_end_date = data['registration_end_date']
-            attendance_cap = data['attendance_cap']
-            price = data['price']
+        subevent = SubEvent.objects.get(id=int(data['id']))
+        if category:
+            subevent.category = Category.objects.get(id=int(category))
+        else:
+            subevent.category = Category.objects.filter(categorydescription__name="Ikke kategorisert", event__id=int(data['event']))[0]
+        subevent.start_date = start_date
+        subevent.end_date = end_date
+        if registration_end_date == "":
+            subevent.registration_end_date = None
+        else:
+            subevent.registration_end_date = registration_end_date
+        if attendance_cap == "":
+            subevent.attendance_cap = None
+        else:
+            subevent.attendance_cap = attendance_cap
+        if price == "":
+            subevent.price = None
+        else:
+            subevent.price = price
 
-            subevent = SubEvent.objects.get(id=int(data['id']))
+        subevent.save()
+        subeventdescription_no = SubEventDescription.objects.get(sub_event=subevent, language='nb')
+        subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
 
-            subevent.start_date = start_date
-            subevent.end_date = end_date
-            if registration_end_date == "":
-                subevent.registration_end_date = None
-            else:
-                subevent.registration_end_date = registration_end_date
-            if attendance_cap == "":
-                subevent.attendance_cap = None
-            else:
-                subevent.attendance_cap = attendance_cap
-            if price == "":
-                subevent.price = None
-            else:
-                subevent.price = price
+        subeventdescription_no.name = name_no
+        subeventdescription_en.name = name_en
+        if email_text_no == "":
+            subeventdescription_no.custom_email_text = None
+        else:
+            subeventdescription_no.custom_email_text = email_text_no
+        if email_text_en == "":
+            subeventdescription_en.custom_email_text = None
+        else:
+            subeventdescription_en.custom_email_text = email_text_en
+        subeventdescription_no.save()
+        subeventdescription_en.save()
 
-            subevent.save()
-            subeventdescription_no = SubEventDescription.objects.get(sub_event=subevent, language='nb')
-            subeventdescription_en = SubEventDescription.objects.get(sub_event=subevent, language='en')
+        return get_json(200, "Edit subevent successful")
 
-            subeventdescription_no.name = name_no
-            subeventdescription_en.name = name_en
-            if email_text_no == "":
-                subeventdescription_no.custom_email_text = None
-            else:
-                subeventdescription_no.custom_email_text = email_text_no
-            if email_text_en == "":
-                subeventdescription_en.custom_email_text = None
-            else:
-                subeventdescription_en.custom_email_text = email_text_en
-            subeventdescription_no.save()
-            subeventdescription_en.save()
-
-            return get_json(200, "Edit subevent successful")
-
-        except:
-            return get_json(400, "Edit subevent failed")
+    return get_json(400, "Edit subevent failed")
 
 
 def get_sub_events(event):
@@ -598,9 +601,6 @@ def get_create_event_page(request):
     return render(request, 'events/create_new_event.html', {'groups': groups})
 
 
-
-
-
 def get_groups_user_can_create_events_for(user):
     """Finds the groups a user can create events for"""
 
@@ -613,14 +613,15 @@ def get_groups_user_can_create_events_for(user):
 
     # Finds all the groups were the user is in the board
     for board in Board.objects.filter(president=user) | \
-            Board.objects.filter(vice_president=user) | \
-            Board.objects.filter(cashier=user):
+                 Board.objects.filter(vice_president=user) | \
+                 Board.objects.filter(cashier=user):
 
         # Checks that the board is active
         for group in SportsGroup.objects.filter(active_board=board):
             return_list.append(group)
 
     return return_list
+
 
 def event_has_description_and_name(description, name):
     """Checks that a description is not empyt"""

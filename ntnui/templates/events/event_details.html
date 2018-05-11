@@ -17,19 +17,19 @@
                 <div class="top-menu" style="margin-bottom: 2rem;">
                     <ul>
                         <li>
-                            <a class="active-item"> Event </a>
+                            <a class="active-item"> {% trans 'Event' %} </a>
                         </li>
                         <li>
                             <div class="vert-divider"></div>
                         </li>
                         <li>
-                            <a href="{% url 'event_attendees' event.id %}">Attendees</a>
+                            <a href="{% url 'event_attendees' event.id %}">{% trans 'Attendees' %}</a>
                         </li>
                         <li>
                             <div class="vert-divider"></div>
                         </li>
                         <li>
-                            <a href="{% url 'edit_event_page' event.id %}"> Edit event </a>
+                            <a href="{% url 'edit_event_page' event.id %}"> {% trans 'Edit event' %} </a>
                         </li>
 
                     </ul>

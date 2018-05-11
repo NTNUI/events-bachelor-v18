@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-11 12:03+0200\n"
+"POT-Creation-Date: 2018-05-11 18:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,134 +18,130 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\ntnui\apps\accounts\models.py:14
+#: .\apps\accounts\models.py:14
 msgid "customer no"
 msgstr "kunde nr"
 
-#: .\ntnui\apps\accounts\models.py:15 .\ntnui\apps\events\models\guest.py:8
+#: .\apps\accounts\models.py:15 .\apps\events\models\guest.py:8
 msgid "email address"
 msgstr "e-postadresse"
 
-#: .\ntnui\apps\accounts\models.py:16 .\ntnui\apps\events\models\guest.py:9
+#: .\apps\accounts\models.py:16 .\apps\events\models\guest.py:9
 msgid "first name"
 msgstr "fornavn"
 
-#: .\ntnui\apps\accounts\models.py:17 .\ntnui\apps\events\models\guest.py:10
+#: .\apps\accounts\models.py:17 .\apps\events\models\guest.py:10
 msgid "last name"
 msgstr "etternavn"
 
-#: .\ntnui\apps\accounts\models.py:18
+#: .\apps\accounts\models.py:18
 msgid "date joined"
 msgstr "medlem siden"
 
-#: .\ntnui\apps\accounts\models.py:19
+#: .\apps\accounts\models.py:19
 msgid "active"
 msgstr "aktivert"
 
-#: .\ntnui\apps\accounts\models.py:20 .\ntnui\apps\events\models\guest.py:11
+#: .\apps\accounts\models.py:20 .\apps\events\models\guest.py:11
 msgid "phone number"
 msgstr "mobilnummer"
 
-#: .\ntnui\apps\accounts\models.py:23
+#: .\apps\accounts\models.py:23
 msgid "staff status"
 msgstr "ansattstatus"
 
-#: .\ntnui\apps\accounts\models.py:25
+#: .\apps\accounts\models.py:25
 msgid "Designates whether the user can log into this site."
 msgstr "Bestemmer om brukeren kan logge inn på denne siden."
 
-#: .\ntnui\apps\accounts\models.py:37
+#: .\apps\accounts\models.py:37
 msgid "user"
 msgstr "bruker"
 
-#: .\ntnui\apps\accounts\models.py:38
+#: .\apps\accounts\models.py:38
 msgid "users"
 msgstr "brukere"
 
-#: .\ntnui\apps\events\create_event.py:19
-#: .\ntnui\apps\events\event_attendance.py:149
-#: .\ntnui\apps\events\event_attendance.py:487
+#: .\apps\events\create_event.py:19 .\apps\events\event_attendance.py:149
+#: .\apps\events\event_attendance.py:487
 msgid "Request must be POST."
 msgstr "Forespørselen må være POST"
 
-#: .\ntnui\apps\events\create_event.py:34
+#: .\apps\events\create_event.py:34
 msgid "New event successfully created!"
 msgstr "Nytt arrangement opprettet!"
 
-#: .\ntnui\apps\events\event_attendance.py:110
-#: .\ntnui\apps\events\event_attendance.py:135
+#: .\apps\events\event_attendance.py:110 .\apps\events\event_attendance.py:135
 msgid "Only users and guests can attend."
 msgstr "Bare brukere og gjester kan delta."
 
-#: .\ntnui\apps\events\event_attendance.py:114
+#: .\apps\events\event_attendance.py:114
 msgid "Signed up for the event!"
 msgstr "Du er påmeldt arrangementet!"
 
-#: .\ntnui\apps\events\event_attendance.py:139
+#: .\apps\events\event_attendance.py:139
 msgid "Signed up for the event's waiting list!"
 msgstr "Meldt på arrangementets venteliste!"
 
-#: .\ntnui\apps\events\event_attendance.py:161
-#: .\ntnui\apps\events\event_attendance.py:499
+#: .\apps\events\event_attendance.py:161 .\apps\events\event_attendance.py:499
 msgid "Can't find the event ID."
 msgstr "Finner ikke arrangements-ID."
 
-#: .\ntnui\apps\events\event_attendance.py:171
-msgid "The attendee is not a user."
+#: .\apps\events\event_attendance.py:171
+#, fuzzy
+#| msgid "The attendee is not a user."
+msgid "The attendee is not a member."
 msgstr "Deltageren er ikke en bruker."
 
-#: .\ntnui\apps\events\event_attendance.py:175
+#: .\apps\events\event_attendance.py:175
 msgid "The user already attends the event."
 msgstr "Brukeren har alt meld seg på arrangementet."
 
-#: .\ntnui\apps\events\event_attendance.py:179
+#: .\apps\events\event_attendance.py:179
 msgid "The user is on the waiting list."
 msgstr "Brukeren er på ventelisten."
 
-#: .\ntnui\apps\events\event_attendance.py:183
-#: .\ntnui\apps\events\event_attendance.py:223
+#: .\apps\events\event_attendance.py:183 .\apps\events\event_attendance.py:223
 msgid "The event registration has ended."
 msgstr "Påmeldingsfristen har gått ut."
 
-#: .\ntnui\apps\events\event_attendance.py:192
-#: .\ntnui\apps\events\event_attendance.py:232
+#: .\apps\events\event_attendance.py:192 .\apps\events\event_attendance.py:232
 msgid "The event is full."
 msgstr "Arrangementet er fullt."
 
-#: .\ntnui\apps\events\event_attendance.py:199
-#: .\ntnui\apps\events\event_attendance.py:239
+#: .\apps\events\event_attendance.py:199 .\apps\events\event_attendance.py:239
 msgid "The event still has open spots."
 msgstr "Arrangementet har fortsatt ledige plasser."
 
-#: .\ntnui\apps\events\event_attendance.py:212
+#: .\apps\events\event_attendance.py:212
 msgid "The attendee is not a guest."
 msgstr "Deltageren er ikke en gjest."
 
-#: .\ntnui\apps\events\event_attendance.py:215
+#: .\apps\events\event_attendance.py:215
 msgid "The guest already attends the event."
 msgstr "Gjesten har alt meldt seg på arrangementet."
 
-#: .\ntnui\apps\events\event_attendance.py:219
+#: .\apps\events\event_attendance.py:219
 msgid "The guest is on the waiting list."
 msgstr "Gjesten er på ventelisten."
 
-#: .\ntnui\apps\events\event_attendance.py:258
+#: .\apps\events\event_attendance.py:258
 msgid "Payment declined."
 msgstr "Betaling ikke akseptert."
 
-#: .\ntnui\apps\events\event_attendance.py:260
+#: .\apps\events\event_attendance.py:260
 msgid "Too many requests made to the API too quickly."
 msgstr "For mange forespørsler til API'et."
 
-#: .\ntnui\apps\events\event_attendance.py:262
+#: .\apps\events\event_attendance.py:262
 msgid "Authentication with Stripe's API failed."
 msgstr "Autorisering med Stripe's API feilet."
 
-#: .\ntnui\apps\events\event_attendance.py:264
+#: .\apps\events\event_attendance.py:264
 msgid "Network communication with Stripe failed."
 msgstr "Nettverkskommunikasjonen med Stripe feilet."
 
-#: .\ntnui\apps\events\event_attendance.py:267
+#: .\apps\events\event_attendance.py:267
 msgid ""
 "Something went wrong, try again later or contact the host if the problem "
 "persists."
@@ -153,45 +149,42 @@ msgstr ""
 "Noe gikk galt, prøv senere eller ta kontakt med arrangøren om problemet "
 "vedvarer."
 
-#: .\ntnui\apps\events\event_attendance.py:293
-#: .\ntnui\apps\events\event_attendance.py:606
+#: .\apps\events\event_attendance.py:293 .\apps\events\event_attendance.py:606
 msgid "Event doesn't exist."
 msgstr "Arrangement eksisterer ikke."
 
-#: .\ntnui\apps\events\event_attendance.py:295
-#: .\ntnui\apps\events\event_attendance.py:615
+#: .\apps\events\event_attendance.py:295 .\apps\events\event_attendance.py:615
 msgid "Sub-event doesn't exist."
 msgstr "Underarrangement eksisterer ikke."
 
-#: .\ntnui\apps\events\event_attendance.py:316
+#: .\apps\events\event_attendance.py:316
 msgid "Invalid input, can't create guest."
 msgstr "Ugyldig inndata, klarte ikke oprette gjest."
 
-#: .\ntnui\apps\events\event_attendance.py:318
+#: .\apps\events\event_attendance.py:318
 msgid "There exists multiple identical guests."
 msgstr "Der finnes flere like gjester."
 
-#: .\ntnui\apps\events\event_attendance.py:387
-#: .\ntnui\apps\events\event_attendance.py:399
-#: .\ntnui\apps\events\event_attendance.py:472
+#: .\apps\events\event_attendance.py:387 .\apps\events\event_attendance.py:399
+#: .\apps\events\event_attendance.py:472
 msgid "Signed off the event!"
 msgstr "Meldt av arrangementet!"
 
-#: .\ntnui\apps\events\event_attendance.py:413
-#: .\ntnui\apps\events\event_attendance.py:425
+#: .\apps\events\event_attendance.py:413 .\apps\events\event_attendance.py:425
 msgid "Signed off the event's waiting list!"
 msgstr "Meldt av arrangementets venteliste!"
 
-#: .\ntnui\apps\events\event_attendance.py:430
-#: .\ntnui\apps\events\event_attendance.py:475
+#: .\apps\events\event_attendance.py:430 .\apps\events\event_attendance.py:475
 msgid "Can't sign off payment events, contact the host for refunding."
-msgstr "Du kan ikke melde deg av betaltarrangement, ta kontakt med arrangøren for refundering."
+msgstr ""
+"Du kan ikke melde deg av betaltarrangement, ta kontakt med arrangøren for "
+"refundering."
 
-#: .\ntnui\apps\events\event_attendance.py:449
+#: .\apps\events\event_attendance.py:449
 msgid "Found no matching event or sub-event registration."
 msgstr "Fant ingen matchende arrangement eller underarrangementsregistrering."
 
-#: .\ntnui\apps\events\event_attendance.py:479
+#: .\apps\events\event_attendance.py:479
 msgid ""
 "Found multiple matching registrations, contact the host to sign off the "
 "event."
@@ -199,589 +192,596 @@ msgstr ""
 "Fant flere matchende registreringer, ta kontakt med arrangøren for å melde "
 "deg av arrangementet."
 
-#: .\ntnui\apps\events\event_attendance.py:517
+#: .\apps\events\event_attendance.py:517
 msgid "You are not signed up for this event."
 msgstr "Du er ikke påmeldt dette arrangementet."
 
-#: .\ntnui\apps\events\event_attendance.py:521
+#: .\apps\events\event_attendance.py:521
 msgid "Please log in to sign off the event."
 msgstr "Vennligst logg inn for å melde deg av arrangemenet."
 
-#: .\ntnui\apps\events\get_events.py:29
+#: .\apps\events\get_events.py:33
 msgid "Request must be GET."
 msgstr "Forespørselen må være GET"
 
-#: .\ntnui\apps\events\models\abstract_classes.py:12
-#: .\ntnui\apps\events\models\event.py:61
-#: .\ntnui\apps\events\models\restriction.py:8
-#: .\ntnui\apps\events\models\tag.py:8
+#: .\apps\events\models\abstract_classes.py:12 .\apps\events\models\event.py:61
+#: .\apps\events\models\restriction.py:8 .\apps\events\models\tag.py:8
 msgid "name"
 msgstr "navn"
 
-#: .\ntnui\apps\events\models\abstract_classes.py:13
+#: .\apps\events\models\abstract_classes.py:13
 msgid "language"
 msgstr "språk"
 
-#: .\ntnui\apps\events\models\abstract_classes.py:25
+#: .\apps\events\models\abstract_classes.py:25
 msgid "start date"
 msgstr "start dato"
 
-#: .\ntnui\apps\events\models\abstract_classes.py:26
+#: .\apps\events\models\abstract_classes.py:26
 msgid "end date"
 msgstr "slutt dato"
 
-#: .\ntnui\apps\events\models\abstract_classes.py:27
+#: .\apps\events\models\abstract_classes.py:27
 msgid "registration end date"
 msgstr "sluttdato for registrering"
 
-#: .\ntnui\apps\events\models\abstract_classes.py:28
+#: .\apps\events\models\abstract_classes.py:28
 msgid "price"
 msgstr "pris"
 
-#: .\ntnui\apps\events\models\abstract_classes.py:29
+#: .\apps\events\models\abstract_classes.py:29
 msgid "attendance cap"
 msgstr "maks antall påmeldte"
 
-#: .\ntnui\apps\events\models\abstract_classes.py:30
-#: .\ntnui\apps\events\models\tag.py:12
+#: .\apps\events\models\abstract_classes.py:30 .\apps\events\models\tag.py:12
 msgid "tags"
 msgstr "stikkord"
 
-#: .\ntnui\apps\events\models\abstract_classes.py:56
+#: .\apps\events\models\abstract_classes.py:56
 msgid "registration time"
 msgstr "påmeldingstidspunkt"
 
-#: .\ntnui\apps\events\models\abstract_classes.py:57
+#: .\apps\events\models\abstract_classes.py:57
 msgid "payment id"
 msgstr "betalings-id"
 
-#: .\ntnui\apps\events\models\abstract_classes.py:58
+#: .\apps\events\models\abstract_classes.py:58
 msgid "token"
 msgstr "pollett"
 
-#: .\ntnui\apps\events\models\category.py:12
-#: .\ntnui\apps\events\models\event.py:26
-#: .\ntnui\apps\events\models\event.py:181
+#: .\apps\events\models\category.py:12 .\apps\events\models\event.py:26
+#: .\apps\events\models\event.py:175
 msgid "event"
 msgstr "arrangement"
 
-#: .\ntnui\apps\events\models\category.py:15
-#: .\ntnui\apps\events\models\category.py:50
-#: .\ntnui\apps\events\models\sub_event.py:15
+#: .\apps\events\models\category.py:15 .\apps\events\models\category.py:50
+#: .\apps\events\models\sub_event.py:15
 msgid "category"
 msgstr "kategori"
 
-#: .\ntnui\apps\events\models\category.py:16
+#: .\apps\events\models\category.py:16
 msgid "categories"
 msgstr "kategorier"
 
-#: .\ntnui\apps\events\models\category.py:53
-#: .\ntnui\apps\events\models\event.py:88
-#: .\ntnui\apps\events\models\event.py:182
-#: .\ntnui\apps\events\models\event.py:186
-#: .\ntnui\apps\events\models\sub_event.py:127
+#: .\apps\events\models\category.py:53 .\apps\events\models\event.py:88
+#: .\apps\events\models\event.py:176 .\apps\events\models\event.py:180
+#: .\apps\events\models\sub_event.py:127
 msgid "description"
 msgstr "beskrivelse"
 
-#: .\ntnui\apps\events\models\category.py:54
-#: .\ntnui\apps\events\models\event.py:187
-#: .\ntnui\apps\events\models\sub_event.py:128
+#: .\apps\events\models\category.py:54 .\apps\events\models\event.py:181
+#: .\apps\events\models\sub_event.py:128
 msgid "descriptions"
 msgstr "beskrivelser"
 
-#: .\ntnui\apps\events\models\event.py:19
+#: .\apps\events\models\event.py:19
 msgid "place"
 msgstr "sted"
 
-#: .\ntnui\apps\events\models\event.py:20
-#: .\ntnui\apps\events\models\restriction.py:11
+#: .\apps\events\models\event.py:20 .\apps\events\models\restriction.py:11
 msgid "restriction"
 msgstr "restriksjon"
 
-#: .\ntnui\apps\events\models\event.py:21
+#: .\apps\events\models\event.py:21
 msgid "hosted by NTNUI"
 msgstr "arrangert av NTNUI"
 
-#: .\ntnui\apps\events\models\event.py:22
+#: .\apps\events\models\event.py:22
 msgid "hosted by"
 msgstr "arrangert av"
 
-#: .\ntnui\apps\events\models\event.py:23
+#: .\apps\events\models\event.py:23
 msgid "priority"
 msgstr "prioritet"
 
-#: .\ntnui\apps\events\models\event.py:27
+#: .\apps\events\models\event.py:27
 msgid "events"
 msgstr "arrangement"
 
-#: .\ntnui\apps\events\models\event.py:183
-#: .\ntnui\apps\events\models\sub_event.py:123
+#: .\apps\events\models\event.py:177 .\apps\events\models\sub_event.py:123
 msgid "email text"
 msgstr "tekst for e-postadresse"
 
-#: .\ntnui\apps\events\models\event.py:197
-#: .\ntnui\apps\events\models\sub_event.py:138
+#: .\apps\events\models\event.py:191 .\apps\events\models\sub_event.py:138
 msgid "attendee, user"
 msgstr "deltager, bruker"
 
-#: .\ntnui\apps\events\models\event.py:198
-#: .\ntnui\apps\events\models\sub_event.py:139
+#: .\apps\events\models\event.py:192 .\apps\events\models\sub_event.py:139
 msgid "attendees, users"
 msgstr "deltagere, brukere"
 
-#: .\ntnui\apps\events\models\event.py:212
-#: .\ntnui\apps\events\models\sub_event.py:153
+#: .\apps\events\models\event.py:206 .\apps\events\models\sub_event.py:153
 msgid "waiting list, user"
 msgstr "venteliste, bruker"
 
-#: .\ntnui\apps\events\models\event.py:213
-#: .\ntnui\apps\events\models\sub_event.py:154
+#: .\apps\events\models\event.py:207 .\apps\events\models\sub_event.py:154
 msgid "waiting list, users"
 msgstr "venteliste, brukere"
 
-#: .\ntnui\apps\events\models\event.py:227
-#: .\ntnui\apps\events\models\sub_event.py:168
+#: .\apps\events\models\event.py:221 .\apps\events\models\sub_event.py:168
 msgid "attendee, guest"
 msgstr "deltager, gjest"
 
-#: .\ntnui\apps\events\models\event.py:228
-#: .\ntnui\apps\events\models\sub_event.py:169
+#: .\apps\events\models\event.py:222 .\apps\events\models\sub_event.py:169
 msgid "attendees, guests"
 msgstr "deltagere, gjester"
 
-#: .\ntnui\apps\events\models\event.py:242
-#: .\ntnui\apps\events\models\sub_event.py:183
+#: .\apps\events\models\event.py:236 .\apps\events\models\sub_event.py:183
 msgid "waiting list, guest"
 msgstr "venteliste, gjest"
 
-#: .\ntnui\apps\events\models\event.py:243
-#: .\ntnui\apps\events\models\sub_event.py:184
+#: .\apps\events\models\event.py:237 .\apps\events\models\sub_event.py:184
 msgid "waiting list, guests"
 msgstr "venteliste, gjester"
 
-#: .\ntnui\apps\events\models\guest.py:14
+#: .\apps\events\models\guest.py:14
 msgid "guest"
 msgstr "gjest"
 
-#: .\ntnui\apps\events\models\guest.py:15
+#: .\apps\events\models\guest.py:15
 msgid "guests"
 msgstr "gjester"
 
-#: .\ntnui\apps\events\models\restriction.py:12
+#: .\apps\events\models\restriction.py:12
 msgid "restrictions"
 msgstr "restriksjoner"
 
-#: .\ntnui\apps\events\models\sub_event.py:18
-#: .\ntnui\apps\events\models\sub_event.py:124
+#: .\apps\events\models\sub_event.py:18 .\apps\events\models\sub_event.py:124
 msgid "sub-event"
 msgstr "underarrangement"
 
-#: .\ntnui\apps\events\models\sub_event.py:19
+#: .\apps\events\models\sub_event.py:19
 msgid "sub-events"
 msgstr "underdelarrangement"
 
-#: .\ntnui\apps\events\models\tag.py:11
+#: .\apps\events\models\tag.py:11
 msgid "tag"
 msgstr "stikkord"
 
-#: .\ntnui\apps\events\views.py:52
+#: .\apps\events\views.py:53
 msgid "New category successfully created!"
 msgstr "Ny kategori opprettet!"
 
-#: .\ntnui\apps\events\views.py:106
+#: .\apps\events\views.py:108
 msgid "New sub-event successfully created!"
 msgstr "Nytt underarrangement opprettet!"
 
-#: .\ntnui\apps\events\views.py:623
+#: .\apps\events\views.py:631
 msgid "Event must have a name"
 msgstr "Arrangementet må ha et navn"
 
-#: .\ntnui\apps\forms\forms.py:37
+#: .\apps\forms\forms.py:37
 msgid "Group does not exist"
 msgstr "Gruppe eksisterer ikke"
 
-#: .\ntnui\apps\forms\forms.py:50
+#: .\apps\forms\forms.py:50
 msgid "{} does not belong to {}"
 msgstr "{} hører ikke til {}"
 
-#: .\ntnui\apps\forms\forms.py:53
+#: .\apps\forms\forms.py:53
 msgid "{} not found"
 msgstr "{} ikke funnet"
 
-#: .\ntnui\apps\forms\forms.py:55
+#: .\apps\forms\forms.py:55
 msgid "This email does not exist in the database"
 msgstr "Denne e-posten finnes ikke i databasen"
 
-#: .\ntnui\apps\forms\forms.py:71
+#: .\apps\forms\forms.py:71
 msgid "The president email field is empty"
 msgstr "Presidentens e-postfelt er tomt"
 
-#: .\ntnui\apps\forms\forms.py:83
+#: .\apps\forms\forms.py:83
 msgid "The vice president email field is empty"
 msgstr "Visepresidentens e-postfelt er tomt"
 
-#: .\ntnui\apps\forms\forms.py:94
+#: .\apps\forms\forms.py:94
 msgid "The cashier email field is empty"
 msgstr "Kassererens e-postfelt er tomt"
 
-#: .\ntnui\settings\common.py:156
+#: .\settings\common.py:156
 msgid "English"
 msgstr "Engelsk"
 
-#: .\ntnui\settings\common.py:157
+#: .\settings\common.py:157
 msgid "Norwegian (bokmal)"
 msgstr "Norsk (bokmål)"
 
-#: .\ntnui\templates\base.html:41
+#: .\templates\base.html:41
 msgid "Main Board"
 msgstr "Hovedstyre"
 
-#: .\ntnui\templates\base.html:48
+#: .\templates\base.html:48
 msgid "Groups"
 msgstr "Grupper"
 
-#: .\ntnui\templates\base.html:55
+#: .\templates\base.html:55
 msgid "Events"
 msgstr "Arrangement"
 
-#: .\ntnui\templates\base.html:67
+#: .\templates\base.html:67
 msgid "Account"
 msgstr "Konto"
 
-#: .\ntnui\templates\events\create_new_event.html:7
+#: .\templates\events\create_new_event.html:7
 msgid "Create events"
 msgstr "Opprett arrangement"
 
-#: .\ntnui\templates\events\create_new_event.html:20
-#: .\ntnui\templates\events\create_new_event.html:111
-#: .\ntnui\templates\events\edit_event_page.html:43
-#: .\ntnui\templates\events\edit_event_page.html:134
-#: .\ntnui\templates\events\event_details.html:81
+#: .\templates\events\create_new_event.html:20
+#: .\templates\events\create_new_event.html:111
+#: .\templates\events\edit_event_page.html:134
+#: .\templates\events\event_details.html:81
 msgid "Please fill in the fields bellow"
 msgstr "Vennligst fyll ut feltene under"
 
-#: .\ntnui\templates\events\create_new_event.html:29
-#: .\ntnui\templates\events\create_new_event.html:119
-#: .\ntnui\templates\events\create_new_event.html:147
-#: .\ntnui\templates\events\edit_event_page.html:52
-#: .\ntnui\templates\events\edit_event_page.html:142
-#: .\ntnui\templates\events\edit_event_page.html:198
+#: .\templates\events\create_new_event.html:29
+#: .\templates\events\create_new_event.html:119
+#: .\templates\events\create_new_event.html:147
+#: .\templates\events\edit_event_page.html:52
+#: .\templates\events\edit_event_page.html:142
+#: .\templates\events\edit_event_page.html:198
 msgid "Name norwegian"
 msgstr "Navn norsk"
 
-#: .\ntnui\templates\events\create_new_event.html:34
-#: .\ntnui\templates\events\create_new_event.html:123
-#: .\ntnui\templates\events\create_new_event.html:152
-#: .\ntnui\templates\events\edit_event_page.html:57
-#: .\ntnui\templates\events\edit_event_page.html:146
-#: .\ntnui\templates\events\edit_event_page.html:203
+#: .\templates\events\create_new_event.html:34
+#: .\templates\events\create_new_event.html:123
+#: .\templates\events\create_new_event.html:152
+#: .\templates\events\edit_event_page.html:57
+#: .\templates\events\edit_event_page.html:146
+#: .\templates\events\edit_event_page.html:203
 msgid "Name english"
 msgstr "Navn engelsk"
 
-#: .\ntnui\templates\events\create_new_event.html:41
-#: .\ntnui\templates\events\create_new_event.html:188
-#: .\ntnui\templates\events\edit_event_page.html:64
-#: .\ntnui\templates\events\edit_event_page.html:244
-#: .\ntnui\templates\events\event_details.html:287
+#: .\templates\events\create_new_event.html:41
+#: .\templates\events\create_new_event.html:188
+#: .\templates\events\edit_event_page.html:64
+#: .\templates\events\edit_event_page.html:244
+#: .\templates\events\event_details.html:287
 msgid "From date"
 msgstr "Fra dato"
 
-#: .\ntnui\templates\events\create_new_event.html:46
-#: .\ntnui\templates\events\create_new_event.html:193
-#: .\ntnui\templates\events\edit_event_page.html:69
-#: .\ntnui\templates\events\edit_event_page.html:249
-#: .\ntnui\templates\events\event_details.html:293
+#: .\templates\events\create_new_event.html:46
+#: .\templates\events\create_new_event.html:193
+#: .\templates\events\edit_event_page.html:69
+#: .\templates\events\edit_event_page.html:249
+#: .\templates\events\event_details.html:293
 msgid "To date"
 msgstr "Til dato"
 
-#: .\ntnui\templates\events\create_new_event.html:59
-#: .\ntnui\templates\events\create_new_event.html:232
-#: .\ntnui\templates\events\edit_event_page.html:82
-#: .\ntnui\templates\events\edit_event_page.html:288
+#: .\templates\events\create_new_event.html:59
+#: .\templates\events\create_new_event.html:232
+#: .\templates\events\edit_event_page.html:82
+#: .\templates\events\edit_event_page.html:288
 msgid "Extra options"
 msgstr "Tilleggsvalg"
 
-#: .\ntnui\templates\events\create_new_event.html:67
-#: .\ntnui\templates\events\edit_event_page.html:90
-#: .\ntnui\templates\events\event_details.html:147
-#: .\ntnui\templates\events\event_details.html:385
+#: .\templates\events\create_new_event.html:67
+#: .\templates\events\edit_event_page.html:90
+#: .\templates\events\event_details.html:147
+#: .\templates\events\event_details.html:385
 msgid "Price"
 msgstr "Pris"
 
-#: .\ntnui\templates\events\create_new_event.html:71
-#: .\ntnui\templates\events\create_new_event.html:246
-#: .\ntnui\templates\events\edit_event_page.html:94
-#: .\ntnui\templates\events\edit_event_page.html:302
+#: .\templates\events\create_new_event.html:71
+#: .\templates\events\create_new_event.html:246
+#: .\templates\events\edit_event_page.html:94
+#: .\templates\events\edit_event_page.html:302
 msgid "Maximum number of participants"
 msgstr "Maksimalt antall deltagere"
 
-#: .\ntnui\templates\events\create_new_event.html:75
-#: .\ntnui\templates\events\create_new_event.html:270
-#: .\ntnui\templates\events\edit_event_page.html:98
-#: .\ntnui\templates\events\edit_event_page.html:326
-#: .\ntnui\templates\events\event_details.html:193
-#: .\ntnui\templates\events\event_details.html:377
+#: .\templates\events\create_new_event.html:75
+#: .\templates\events\create_new_event.html:270
+#: .\templates\events\edit_event_page.html:98
+#: .\templates\events\edit_event_page.html:326
+#: .\templates\events\event_details.html:193
+#: .\templates\events\event_details.html:377
 msgid "Registration end date"
 msgstr "Siste registreringsdato"
 
-#: .\ntnui\templates\events\create_new_event.html:80
-#: .\ntnui\templates\events\create_new_event.html:258
-#: .\ntnui\templates\events\edit_event_page.html:103
-#: .\ntnui\templates\events\edit_event_page.html:314
+#: .\templates\events\create_new_event.html:80
+#: .\templates\events\create_new_event.html:258
+#: .\templates\events\edit_event_page.html:103
+#: .\templates\events\edit_event_page.html:314
 msgid "Email text norwegian"
 msgstr "E-posttekst norsk"
 
-#: .\ntnui\templates\events\create_new_event.html:86
-#: .\ntnui\templates\events\create_new_event.html:263
-#: .\ntnui\templates\events\edit_event_page.html:109
-#: .\ntnui\templates\events\edit_event_page.html:319
+#: .\templates\events\create_new_event.html:86
+#: .\templates\events\create_new_event.html:263
+#: .\templates\events\edit_event_page.html:109
+#: .\templates\events\edit_event_page.html:319
 msgid "Email text english"
 msgstr "E-posttekst engelsk"
 
-#: .\ntnui\templates\events\create_new_event.html:97
-#: .\ntnui\templates\events\create_new_event.html:131
-#: .\ntnui\templates\events\edit_event_page.html:29
-#: .\ntnui\templates\events\edit_event_page.html:120
-#: .\ntnui\templates\events\edit_event_page.html:154
-#: .\ntnui\templates\events\event_details.html:65
-#: .\ntnui\templates\events\event_details.html:113
+#: .\templates\events\create_new_event.html:97
+#: .\templates\events\create_new_event.html:131
+#: .\templates\events\edit_event_page.html:29
+#: .\templates\events\edit_event_page.html:120
+#: .\templates\events\edit_event_page.html:154
+#: .\templates\events\event_details.html:65
+#: .\templates\events\event_details.html:113
 msgid "Close"
 msgstr "Lukk"
 
-#: .\ntnui\templates\events\create_new_event.html:99
-#: .\ntnui\templates\events\create_new_event.html:292
-#: .\ntnui\templates\events\edit_event_page.html:122
-#: .\ntnui\templates\events\edit_event_page.html:348
-msgid "Create sub-event"
+#: .\templates\events\create_new_event.html:99
+msgid "Create a sub-event"
 msgstr "Opprett underarrangement"
 
-#: .\ntnui\templates\events\create_new_event.html:133
-#: .\ntnui\templates\events\create_new_event.html:297
-#: .\ntnui\templates\events\edit_event_page.html:156
-#: .\ntnui\templates\events\edit_event_page.html:353
-msgid "Create category"
+#: .\templates\events\create_new_event.html:133
+#: .\templates\events\create_new_event.html:297
+#: .\templates\events\edit_event_page.html:156
+#: .\templates\events\edit_event_page.html:353
+msgid "Create new category"
 msgstr "Opprett kategori"
 
-#: .\ntnui\templates\events\create_new_event.html:142
+#: .\templates\events\create_new_event.html:142
 msgid "Create new event:"
 msgstr "Opprett nytt arrangement:"
 
-#: .\ntnui\templates\events\create_new_event.html:144
-#: .\ntnui\templates\events\edit_event_page.html:195
+#: .\templates\events\create_new_event.html:144
 msgid "Basic info"
 msgstr "Grunnleggende info"
 
-#: .\ntnui\templates\events\create_new_event.html:160
-#: .\ntnui\templates\events\edit_event_page.html:211
+#: .\templates\events\create_new_event.html:160
+#: .\templates\events\edit_event_page.html:211
 msgid "Description norwegian"
 msgstr "Beskrivelse norsk"
 
-#: .\ntnui\templates\events\create_new_event.html:166
-#: .\ntnui\templates\events\edit_event_page.html:217
+#: .\templates\events\create_new_event.html:166
+#: .\templates\events\edit_event_page.html:217
 msgid "Description english"
 msgstr "Beskrivelse engelsk"
 
-#: .\ntnui\templates\events\create_new_event.html:173
-#: .\ntnui\templates\events\edit_event_page.html:224
-#: .\ntnui\templates\events\event_details.html:135
+#: .\templates\events\create_new_event.html:173
+#: .\templates\events\edit_event_page.html:224
+#: .\templates\events\event_details.html:135
 msgid "Host"
 msgstr "Vert"
 
-#: .\ntnui\templates\events\create_new_event.html:181
-#: .\ntnui\templates\events\edit_event_page.html:237
+#: .\templates\events\create_new_event.html:181
+#: .\templates\events\edit_event_page.html:237
 msgid "Place"
 msgstr "Sted"
 
-#: .\ntnui\templates\events\create_new_event.html:199
-#: .\ntnui\templates\events\edit_event_page.html:255
+#: .\templates\events\create_new_event.html:199
+#: .\templates\events\edit_event_page.html:255
 msgid "Extra info"
 msgstr "Tilleggsinformasjon"
 
-#: .\ntnui\templates\events\create_new_event.html:211
-#: .\ntnui\templates\events\edit_event_page.html:267
+#: .\templates\events\create_new_event.html:211
+#: .\templates\events\edit_event_page.html:267
 msgid "Cover photo"
 msgstr "Forsidebilde"
 
-#: .\ntnui\templates\events\create_new_event.html:239
-#: .\ntnui\templates\events\edit_event_page.html:295
+#: .\templates\events\create_new_event.html:239
+#: .\templates\events\edit_event_page.html:295
 msgid "Warning"
 msgstr "Advarsel"
 
-#: .\ntnui\templates\events\create_new_event.html:241
-#: .\ntnui\templates\events\edit_event_page.html:297
-msgid "Extra options have no effect if sub-events are created"
+#: .\templates\events\create_new_event.html:241
+#: .\templates\events\edit_event_page.html:297
+#, fuzzy
+#| msgid "Extra options have no effect if sub-events are created"
+msgid "Extra options have no effect if sub-events are created."
 msgstr "Tillegsfelt har ingen effekt hvis underarrangement opprettes"
 
-#: .\ntnui\templates\events\create_new_event.html:251
-#: .\ntnui\templates\events\edit_event_page.html:307
+#: .\templates\events\create_new_event.html:251
+#: .\templates\events\edit_event_page.html:307
 msgid "Price in NOK"
 msgstr "Pris i NOK"
 
-#: .\ntnui\templates\events\create_new_event.html:286
-#: .\ntnui\templates\events\edit_event_page.html:342
+#: .\templates\events\create_new_event.html:286
+#: .\templates\events\edit_event_page.html:342
 msgid "Sub-event(s)"
 msgstr "Underarrangement"
 
-#: .\ntnui\templates\events\create_new_event.html:306
-#: .\ntnui\templates\events\edit_event_page.html:362
+#: .\templates\events\create_new_event.html:292
+#: .\templates\events\edit_event_page.html:122
+#: .\templates\events\edit_event_page.html:348
+msgid "Create new sub-event"
+msgstr "Opprett underarrangement"
+
+#: .\templates\events\create_new_event.html:306
+#: .\templates\events\edit_event_page.html:362
 msgid "Create a category or a sub-event to get started!"
 msgstr "Opprett en kategori eller et underarrangement for å starte!"
 
-#: .\ntnui\templates\events\create_new_event.html:318
-#: .\ntnui\templates\events\events_attending_page.html:76
-#: .\ntnui\templates\events\events_main_page.html:77
-msgid "Create event"
+#: .\templates\events\create_new_event.html:318
+msgid "Create an event"
 msgstr "Opprett arrangement"
 
-#: .\ntnui\templates\events\edit_event_page.html:8
+#: .\templates\events\edit_event_page.html:8
+#: .\templates\events\edit_event_page.html:182
+#: .\templates\events\event_attendees_page.html:30
+#: .\templates\events\event_details.html:32
 msgid "Edit event"
 msgstr "Endre arrangement"
 
-#: .\ntnui\templates\events\edit_event_page.html:22
-msgid "Are you sure you wannt to delete the event?"
+#: .\templates\events\edit_event_page.html:22
+msgid "Are you sure you want to delete the event?"
 msgstr "Er du sikker på at du vil slette arrangementet?"
 
-#: .\ntnui\templates\events\edit_event_page.html:31
-#: .\ntnui\templates\events\event_details.html:67
+#: .\templates\events\edit_event_page.html:31
+#: .\templates\events\event_details.html:67
 msgid "Yes"
 msgstr "Ja"
 
-#: .\ntnui\templates\events\edit_event_page.html:374
-msgid "Save event"
-msgstr "Lagre arrangement"
+#: .\templates\events\edit_event_page.html:43
+msgid "Please fill in the fields bellow."
+msgstr "Vennligst fyll ut feltene under"
 
-#: .\ntnui\templates\events\edit_event_page.html:376
-msgid "Delete event"
-msgstr "Slett arrangement"
+#: .\templates\events\edit_event_page.html:170
+#: .\templates\events\event_attendees_page.html:18
+#: .\templates\events\event_details.html:20
+msgid "Event"
+msgstr "Arrangement"
 
-#: .\ntnui\templates\events\event_attendees_page.html:50
+#: .\templates\events\edit_event_page.html:176
+#: .\templates\events\event_attendees_page.html:24
+#: .\templates\events\event_attendees_page.html:50
+#: .\templates\events\event_details.html:26
 msgid "Attendees"
 msgstr "Deltagere"
 
-#: .\ntnui\templates\events\event_details.html:58
+#: .\templates\events\edit_event_page.html:195
+msgid "Basic information"
+msgstr "Grunnleggende info"
+
+#: .\templates\events\edit_event_page.html:374
+msgid "Save event"
+msgstr "Lagre arrangement"
+
+#: .\templates\events\edit_event_page.html:376
+msgid "Delete event"
+msgstr "Slett arrangement"
+
+#: .\templates\events\event_details.html:58
 msgid "Are you sure?"
 msgstr "Er du sikker?"
 
-#: .\ntnui\templates\events\event_details.html:89
+#: .\templates\events\event_details.html:89
 msgid "Email address"
 msgstr "E-postadresse"
 
-#: .\ntnui\templates\events\event_details.html:94
+#: .\templates\events\event_details.html:94
 msgid "First name"
 msgstr "Fornavn"
 
-#: .\ntnui\templates\events\event_details.html:99
+#: .\templates\events\event_details.html:99
 msgid "Last name"
 msgstr "Etternavn"
 
-#: .\ntnui\templates\events\event_details.html:104
+#: .\templates\events\event_details.html:104
 msgid "Phone"
 msgstr "Telefon"
 
-#: .\ntnui\templates\events\event_details.html:115
-#: .\ntnui\templates\events\event_details.html:249
-#: .\ntnui\templates\events\event_details.html:347
-msgid "Attend event"
+#: .\templates\events\event_details.html:115
+#: .\templates\events\event_details.html:249
+#: .\templates\events\event_details.html:347
+msgid "Attend the event"
 msgstr "Delta på arrangement"
 
-#: .\ntnui\templates\events\event_details.html:131
+#: .\templates\events\event_details.html:131
 msgid "Location"
 msgstr "Lokasjon"
 
-#: .\ntnui\templates\events\event_details.html:139
+#: .\templates\events\event_details.html:139
 msgid "Start date"
 msgstr "Start dato"
 
-#: .\ntnui\templates\events\event_details.html:143
+#: .\templates\events\event_details.html:143
 msgid "End date"
 msgstr "Slutt dato"
 
-#: .\ntnui\templates\events\event_details.html:183
-#: .\ntnui\templates\events\event_details.html:364
+#: .\templates\events\event_details.html:183
+#: .\templates\events\event_details.html:364
 msgid "Number of participants"
 msgstr "Antall deltagere"
 
-#: .\ntnui\templates\events\event_details.html:207
-#: .\ntnui\templates\events\event_details.html:305
-#: .\ntnui\templates\events\remove_attendance.html:31
-msgid "Unattend from event"
+#: .\templates\events\event_details.html:207
+#: .\templates\events\event_details.html:305
+#: .\templates\events\remove_attendance.html:30
+msgid "Unattend from the event"
 msgstr "Meld meg av arrangement"
 
-#: .\ntnui\templates\events\event_details.html:220
-msgid "Remove me from wait list"
-msgstr "Fjern meg fra venteliste"
+#: .\templates\events\event_details.html:220
+#: .\templates\events\event_details.html:318
+msgid "Remove me from the waiting list"
+msgstr "Fjern meg fra ventelisten"
 
-#: .\ntnui\templates\events\event_details.html:231
-#: .\ntnui\templates\events\event_details.html:329
+#: .\templates\events\event_details.html:231
+#: .\templates\events\event_details.html:329
 msgid "Put me on the waiting list"
 msgstr "Sett meg på ventelisten"
 
-#: .\ntnui\templates\events\event_details.html:246
-#: .\ntnui\templates\events\event_details.html:344
+#: .\templates\events\event_details.html:246
+#: .\templates\events\event_details.html:344
 msgid "Pay using card"
 msgstr "Betal med kort"
 
-#: .\ntnui\templates\events\event_details.html:258
-#: .\ntnui\templates\events\event_details.html:356
+#: .\templates\events\event_details.html:258
+#: .\templates\events\event_details.html:356
 msgid "Registration has ended"
 msgstr "Registrering har sluttet"
 
-#: .\ntnui\templates\events\event_details.html:318
-msgid "Remove me from the wait list"
-msgstr "Fjern meg fra ventelisten"
-
-#: .\ntnui\templates\events\events_attending_page.html:17
-#: .\ntnui\templates\events\events_main_page.html:17
+#: .\templates\events\events_attending_page.html:17
+#: .\templates\events\events_main_page.html:17
 msgid "Search"
 msgstr "Søk"
 
-#: .\ntnui\templates\events\events_attending_page.html:22
-#: .\ntnui\templates\events\events_main_page.html:22
+#: .\templates\events\events_attending_page.html:22
+#: .\templates\events\events_main_page.html:22
 msgid "Sort by"
 msgstr "Sorter etter"
 
-#: .\ntnui\templates\events\events_attending_page.html:25
-#: .\ntnui\templates\events\events_main_page.html:25
+#: .\templates\events\events_attending_page.html:25
+#: .\templates\events\events_main_page.html:25
 msgid "Start date (ascending)"
 msgstr "Startdato (stigende)"
 
-#: .\ntnui\templates\events\events_attending_page.html:26
-#: .\ntnui\templates\events\events_main_page.html:26
+#: .\templates\events\events_attending_page.html:26
+#: .\templates\events\events_main_page.html:26
 msgid "Start date (descending)"
 msgstr "Startdato (synkende)"
 
-#: .\ntnui\templates\events\events_attending_page.html:27
-#: .\ntnui\templates\events\events_main_page.html:27
+#: .\templates\events\events_attending_page.html:27
+#: .\templates\events\events_main_page.html:27
 msgid "Name"
 msgstr "Navn"
 
-#: .\ntnui\templates\events\events_attending_page.html:28
-#: .\ntnui\templates\events\events_main_page.html:28
+#: .\templates\events\events_attending_page.html:28
+#: .\templates\events\events_main_page.html:28
 msgid "Description"
 msgstr "Beskrivelse"
 
-#: .\ntnui\templates\events\events_attending_page.html:38
-#: .\ntnui\templates\events\events_main_page.html:38
+#: .\templates\events\events_attending_page.html:38
+#: .\templates\events\events_main_page.html:38
 msgid "Hosted by"
 msgstr "Arrangert av"
 
-#: .\ntnui\templates\events\events_attending_page.html:72
-#: .\ntnui\templates\events\events_main_page.html:72
+#: .\templates\events\events_attending_page.html:72
+#: .\templates\events\events_main_page.html:72
 msgid "My options"
 msgstr "Mine valg"
 
-#: .\ntnui\templates\events\events_attending_page.html:82
+#: .\templates\events\events_attending_page.html:76
+#: .\templates\events\events_main_page.html:77
+msgid "Create new event"
+msgstr "Opprett nytt arrangement:"
+
+#: .\templates\events\events_attending_page.html:82
 msgid "All events"
 msgstr "Alle arrangement"
 
-#: .\ntnui\templates\events\events_attending_page.html:92
-#: .\ntnui\templates\events\events_main_page.html:92
+#: .\templates\events\events_attending_page.html:92
+#: .\templates\events\events_main_page.html:92
 msgid "Load more events"
 msgstr "Last flere arrangement"
 
-#: .\ntnui\templates\events\events_main_page.html:82
+#: .\templates\events\events_main_page.html:82
 msgid "Attending events"
 msgstr "Deltar på arrangement"
+
+#~ msgid "Remove me from wait list"
+#~ msgstr "Fjern meg fra venteliste"
 
 #~ msgid "could not create description"
 #~ msgstr "kunne ikke opprette beskrivelse"

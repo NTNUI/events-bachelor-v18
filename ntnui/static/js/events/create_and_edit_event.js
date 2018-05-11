@@ -8,7 +8,7 @@ let categories = [];
 let idCounterSubEvent = 0;
 
 // category id counter, set to 1 as 0 is the default category
-let idCounterCategory = 1;
+let idCounterCategory = 0;
 
 // used for security, required by django in order to accept the request
 let csrftoken;
@@ -113,6 +113,7 @@ $(() => {
     })
 
     $("#delete-event-button-modal").click(deleteEvent)
+
 });
 
 /**
@@ -159,7 +160,6 @@ async function getEventFromServer() {
                 return subEvent
             }))
         }
-
         setInVisualContent()
 
     } catch
@@ -299,14 +299,15 @@ let validateAndCreateCategory = (e) => {
             editContainer = null;
             $('#submit-category-form').text(gettext("Create category"))
         } else {
+            // Increment the id counter
+            idCounterCategory++;
+
             // set the category id
             category.id = idCounterCategory;
 
             // Show the new category
             showCategory(category)
 
-            // Increment the id counter
-            idCounterCategory++;
 
             // Push the new category
             categories.push(category)
@@ -387,6 +388,7 @@ async function createCategories(eventID) {
         category.event = eventID
         try {
             let url = URL_CATEGORY_CREATE
+            let id = category.id
             if (category.serverID) {
                 category.id = category.serverID
                 url = URL_CATEGORY_EDIT
@@ -396,12 +398,14 @@ async function createCategories(eventID) {
                 url: url,
                 data: category
             })
-            category.serverID = data.id;
-            return category
-
+            if (data) {
+                category.serverID = data.id;
+                category.id = id;
+                return category
+            }
         } catch (error) {
             //show error alert
-            printMessage('error', data.responseJSON.message)
+            printMessage('error', error.responseJSON.message)
             return category
         }
     }))
@@ -434,7 +438,7 @@ async function createSubEvents(eventID) {
             return subEvent
         } catch (error) {
             //show error alert
-            console.log(error)
+            console.error(error)
         }
     }))
     if (subEventsCreated) {
@@ -481,7 +485,7 @@ async function deleteCategoryFromServer(categoryID) {
         })
 
     } catch (error) {
-        console.log(error)
+        console.error(error)
         //show error alert
         printMessage('error', error)
     }
@@ -603,8 +607,19 @@ function showSubEvent(subEvent, fromServer) {
     // If the event allready exists, place it in the right container
     if (fromServer) {
         // Find the category
-        const category = categories.filter((category) => category.serverID === subEvent.category_id)
+        const category = categories.filter((category) => category.serverID == subEvent.category_id)
+        if(category.length) {
+            subEvent.category = category[0].id;
+        }else {
+            subEvent.category = 0;
+        }
 
+        subEvents = subEvents.map( (subEventMap) => {
+            if(subEventMap.id === subEvent.id) {
+                return subEvent;
+            }
+            return subEventMap
+        })
         // Use te category id to find the container, if the category dose not exist place it in the default container
         if (category.length) {
             const id = category[0].id
@@ -645,7 +660,6 @@ function showSubEvent(subEvent, fromServer) {
 let editSubEvent = (e) => {
     const event = e || window.event
 
-    console.log("here")
 
     // Set the edit container
     editContainer = $(event.target).closest(".subEvent-element")
