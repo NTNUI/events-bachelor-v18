@@ -60,7 +60,6 @@ def get_filtered_events(request, attending):
         events = get_filtered_on_search_events(search, False)
         events = get_filtered_events_on_host(filter_host, events)
         events = get_sorted_events(sort_by, events)
-
         return events
 
     else:
@@ -163,22 +162,18 @@ def get_sorted_events(sort_by_criterion, events):
     sort_by_criteria = ['start_date', 'end_date', 'name']
 
     # Checks that sort_by_criteria has a valid value.
-    if sort_by_criterion is not None:
+    if sort_by_criterion is not None and ((sort_by_criterion or sort_by_criterion[1:]) in sort_by_criteria):
+        # Checks if the sorting is ascending or descending.
+        sort_type = ''
+        if sort_by_criterion[0] == '-':
+            sort_type = '-'
+            sort_by_criterion = sort_by_criterion[1:]
 
-        if (sort_by_criterion or sort_by_criterion[1:]) in sort_by_criteria:
-
-            # Checks if the sorting is ascending or descending.
-            sort_type = ''
-            if sort_by_criterion[0] == '-':
-                sort_type = '-'
-                sort_by_criterion = sort_by_criterion[1:]
-
-            # if the sort by is not in the event table we need to find the filed by merging
-            if sort_by_criterion == 'name':
-                sort_by_criterion = sort_type + 'eventdescription__name'
-
-            # Returns the list of events, sorted by the criterion.
-            return events.order_by(sort_by_criterion, 'start_date')
+        # if the sort by is not in the event table we need to find the filed by merging
+        if sort_by_criterion == 'name':
+            sort_by_criterion = sort_type + 'eventdescription__name'
+        # Returns the list of events, sorted by the criterion.
+        return events.order_by(sort_by_criterion, 'start_date')
     else:
         # The sort_by_criterion does not match any of the sort_by_criteria.
         # Returns the list of events, sorted by the events' start_date.
