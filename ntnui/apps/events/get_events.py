@@ -14,10 +14,14 @@ from .views import (get_json)
 
 
 def get_events_request(request):
+    """ Gets the events which match the search, filtering, and sorting. """
+
     return get_events(request, False)
 
 
 def get_attending_events_request(request):
+    """ Gets the events which the user is signed up for and matches the search, filtering, and sorting. """
+
     return get_events(request, True)
 
 
@@ -41,11 +45,7 @@ def get_events(request, attending):
     events = get_events_json(p.page(page))
 
     # Return the JSON also containing the page number and page count.
-    return JsonResponse({
-        'events': events,
-        'page_number': page,
-        'page_count': p.num_pages}
-    )
+    return JsonResponse({'events': events, 'page_number': page, 'page_count': p.num_pages})
 
 
 def get_filtered_events(request, attending):
