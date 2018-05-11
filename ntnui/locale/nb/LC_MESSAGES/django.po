@@ -187,7 +187,7 @@ msgstr "epost-adresse tekst"
 #: .\ntnui\apps\events\models\event.py:220
 #: .\ntnui\apps\events\models\event.py:237
 #: .\ntnui\apps\events\models\event.py:254
-#: .\ntnui\apps\events\models\event.py:271
+
 #: .\ntnui\apps\events\models\sub_event.py:177
 #: .\ntnui\apps\events\models\sub_event.py:194
 #: .\ntnui\apps\events\models\sub_event.py:211
@@ -195,7 +195,6 @@ msgstr "epost-adresse tekst"
 msgid "registration time"
 msgstr "påmeldingstidspunkt"
 
-#: .\ntnui\apps\events\models\event.py:222
 #: .\ntnui\apps\events\models\event.py:239
 #: .\ntnui\apps\events\models\event.py:256
 #: .\ntnui\apps\events\models\event.py:273
@@ -365,7 +364,7 @@ msgstr "Navn engelsk"
 #: .\ntnui\templates\events\create_new_event.html:41
 #: .\ntnui\templates\events\create_new_event.html:188
 msgid "From date"
-msgstr "Til dato"
+msgstr "Fradato"
 
 #: .\ntnui\templates\events\create_new_event.html:46
 #: .\ntnui\templates\events\create_new_event.html:193
