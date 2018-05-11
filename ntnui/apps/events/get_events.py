@@ -95,7 +95,6 @@ def get_filtered_events(request, attending):
                         if event not in attending_events:
                             attending_events.append(event)
             else:
-
                 if event.is_user_enrolled(request.user):
                     attending_events.append(event)
 
@@ -106,8 +105,7 @@ def get_filtered_on_search_events(search, attending):
     """ Filters all events on the given search. """
 
     if not attending:
-
-        # Checks if the search have a value.
+        # Checks if the search has a value.
         if search is not None and search != '':
 
             # Search for the word in the event's name and descriptions.
@@ -120,10 +118,8 @@ def get_filtered_on_search_events(search, attending):
             return Event.objects.filter(eventdescription__language=translation.get_language())
 
     else:
-
         # Checks if the search have a value.
         if search is not None and search != '':
-
             # Search for the word in the event's name and descriptions.
             return Event.objects.filter(
                 Q(end_date__gte=datetime.now()) & Q(eventdescription__language=translation.get_language()) &
@@ -169,7 +165,7 @@ def get_sorted_events(sort_by_criterion, events):
             sort_type = '-'
             sort_by_criterion = sort_by_criterion[1:]
 
-        # if the sort by is not in the event table we need to find the filed by merging
+        # if the sort by is not in the event table we need to find the field by merging
         if sort_by_criterion == 'name':
             sort_by_criterion = sort_type + 'eventdescription__name'
         # Returns the list of events, sorted by the criterion.
