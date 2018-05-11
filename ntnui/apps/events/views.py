@@ -523,9 +523,13 @@ def edit_subevent(request):
             return get_json(400, "Edit subevent failed")
 
 
+def get_sub_events(event):
+    return SubEvent.objects.filter(category__in=Category.objects.filter(event=event))
+
+
 def get_event_attendees_page(request, id):
     event = Event.objects.get(id=int(id))
-    if not len(event.get_sub_events()) > 0:
+    if not len(get_sub_events(event)) > 0:
         subevents_exist = False
         eventregistrations = EventRegistration.objects.filter(event=event)
 
