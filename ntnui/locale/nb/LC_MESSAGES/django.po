@@ -513,7 +513,7 @@ msgstr "Pris"
 #: .\ntnui\templates\events\edit_event_page.html:94
 #: .\ntnui\templates\events\edit_event_page.html:302
 msgid "Maximum number of participants"
-msgstr "Maks antall deltagere"
+msgstr "Antall deltagere"
 
 #: .\ntnui\templates\events\create_new_event.html:75
 #: .\ntnui\templates\events\create_new_event.html:270
