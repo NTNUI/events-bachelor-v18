@@ -28,7 +28,7 @@ else:
 ALLOWED_HOSTS = [
     'beta.ntnui.no',
     'localhost',
-    '192.168.1.190'
+    '10.22.72.17'
 ]
 
 ##### APP CONFIGURATION #####

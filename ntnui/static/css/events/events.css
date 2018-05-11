@@ -308,6 +308,7 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     #main {
         display: flex;
         justify-content: center;
+        flex-wrap: wrap;
     }
 
     .create-event {
