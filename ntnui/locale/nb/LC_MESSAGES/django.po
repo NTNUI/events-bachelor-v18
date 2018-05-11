@@ -513,7 +513,7 @@ msgstr "Pris"
 #: .\ntnui\templates\events\edit_event_page.html:94
 #: .\ntnui\templates\events\edit_event_page.html:302
 msgid "Maximum number of participants"
-msgstr "Antall deltagere"
+msgstr "Maksimalt antall deltagere"
 
 #: .\ntnui\templates\events\create_new_event.html:75
 #: .\ntnui\templates\events\create_new_event.html:270
@@ -699,7 +699,7 @@ msgstr "Slutt dato"
 #: .\ntnui\templates\events\event_details.html:183
 #: .\ntnui\templates\events\event_details.html:364
 msgid "Number of participants"
-msgstr "Maks antall deltagere"
+msgstr "Antall deltagere"
 
 #: .\ntnui\templates\events\event_details.html:207
 #: .\ntnui\templates\events\event_details.html:305
