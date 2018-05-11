@@ -143,11 +143,9 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
 .card-element {
     background-color: white;
     display: flex;
-
 }
 
 .card-element-container {
-
 }
 
 .card-body-container {
@@ -156,7 +154,6 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
 }
 
 .card-name {
-
     text-align: center;
     margin-top: 2%;
     text-transform: uppercase;
@@ -338,7 +335,6 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     .button-container-my-options {
         display: flex;
         flex-wrap: wrap;
-
     }
 
     .my-options-button {
