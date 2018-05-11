@@ -165,12 +165,6 @@ class Event(CommonEvent):
     def is_guest_on_waiting_list(self, guest):
         return EventGuestWaitingList.objects.filter(attendee=guest, event=self).exists()
 
-    # Finds the subEvents associated with the event
-    def get_sub_events(self):
-        from events.models.sub_event import SubEvent
-        from events.models.category import Category
-        return SubEvent.objects.filter(category__in=Category.objects.filter(event=self))
-
     def __str__(self):
         return self.name()
 
