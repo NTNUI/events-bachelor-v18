@@ -168,7 +168,7 @@ def verify_sign_up(request, event_has_open_spots):
 
         # Checks if the user is a User object.
         if not isinstance(user, User):
-            return event, None, False, False, get_json(400, _('The attendee is not a user.'))
+            return event, None, False, False, get_json(400, _('The attendee is not a member.'))
 
         # Checks if the user attends the event already.
         elif event.is_user_enrolled(user):
