@@ -11,30 +11,25 @@
     <div class="alert-message-container">
     </div>
 
-
-    <!--<div style="position: absolute; background-color: black; opacity: .9; width:100%; height:100%; Z-index:1000; display:flex; justify-content: center; align-items: center;">
-        <div class="loader"></div>
-    </div> -->
-
-    <div id="container">
+    <div class="container">
         <div class="header-container">
             {% if can_edit_and_delete_event %}
                 <div class="top-menu" style="margin-bottom: 2rem;">
                     <ul>
                         <li>
-                            <a class="active-item"> Event </a>
+                            <a class="active-item"> {% trans 'Event' %} </a>
                         </li>
                         <li>
                             <div class="vert-divider"></div>
                         </li>
                         <li>
-                            <a href="{% url 'event_attendees' event.id number_of_subevents %}">Attendees</a>
+                            <a href="{% url 'event_attendees' event.id %}">{% trans 'Attendees' %}</a>
                         </li>
                         <li>
                             <div class="vert-divider"></div>
                         </li>
                         <li>
-                            <a href="{% url 'edit_event_page' event.id %}"> Edit event </a>
+                            <a href="{% url 'edit_event_page' event.id %}"> {% trans 'Edit event' %} </a>
                         </li>
 
                     </ul>
@@ -65,12 +60,10 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div id="modal-content" style="padding:1rem;display:none;">
-                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
                                 data-dismiss="modal">{% trans 'Close' %}</button>
-                        <button type="button" id="remove-attend-event-button" class="btn btn-danger"
+                        <button type="button" id="remove-attend-event-button-modal" class="btn btn-danger"
                                 data-dismiss="modal">{% trans 'Yes' %}</button>
                     </div>
                 </div>
@@ -90,25 +83,25 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="container">
-                            <form id="guest-data-form" onsubmit="return attendEventGuest()">
+                        <div class="modal-body">
+                            <form id="guest-data-form"> {% csrf_token %}
                                 <div class="form-group">
-                                    <label>Email address</label>
+                                    <label>{% trans 'Email address' %}</label>
                                     <input id="input-email" name="email" type="email" class="form-control"
                                            placeholder="name@example.com" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>First name </label>
+                                    <label>{% trans 'First name' %} </label>
                                     <input id="first-name" name="first_name" type="text" class="form-control"
                                            placeholder="Ola" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Last name</label>
+                                    <label>{% trans 'Last name' %}</label>
                                     <input id="last-name" name="last_name" type="text" class="form-control"
                                            placeholder="Nordmann" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Phone</label>
+                                    <label>{% trans 'Phone' %}</label>
                                     <input id="phone" name="phone" type="number" class="form-control"
                                            placeholder="+47 555 55 555" required>
                                 </div>
@@ -119,21 +112,21 @@
                             <button type="button" class="btn btn-secondary"
                                     data-dismiss="modal">{% trans 'Close' %}</button>
                             <button type="submit" form="guest-data-form" class="btn btn-success">
-                                {% trans 'Attend event' %}</button>
+                                {% trans 'Attend the event' %}</button>
                         </div>
                     </div>
                 </div>
             </div>
         {% endif %}
 
-        <div id="content-container">
-
-            <div id="event-info-container">
-
-                <div id="labels-infos">
-
-                    <div id="event-labels">
-
+        <div id="content-container" {% if sub_event_list %} style="margin-top:1rem;"{% endif %}>
+            <div {% if not sub_event_list %} class="event-description-container" {% else %}
+                                             class="event-right-container" {% endif %} >
+                {{ event.description }}
+            </div>
+            <div class="event-left-container">
+                <div class="list-container">
+                    <div class="event-labels">
                         <div class="label">
                             {% trans 'Location' %}
                         </div>
@@ -154,11 +147,9 @@
                                 {% trans 'Price' %}
                             </div>
                         {% endif %}
-
                     </div>
 
-                    <div id="event-infos">
-
+                    <div class="list-info-container">
                         <div class="info">
                             {{ event.place }}
                         </div>
@@ -184,45 +175,94 @@
                         {% endif %}
                     </div>
                 </div>
+            </div>
 
-                {% if not sub_event_list %}
-                    <div id="event-sign-up">
-                        {% if event.attends %}
-                            <button type="button"
-                                    id="attend-event-button"
-                                    class="btn btn-danger"
-                                    value="-{{ event.id }}"
-                                    data-toggle="modal"
-                                    data-target="#eventModal">
-                                {% trans 'Unattend from event' %}
-                            </button>
-                        {% else %}
-                            <button id="attend-event-button"
-                                    type="button"
-                                    value="{{ event.id }}"
-                                    name="mybtn"
-                                    class="btn btn-success">
-                                {% if event.payment_required %}
-                                    {% trans 'Pay using card' %}
-                                    {#                                    <div class="button-div">#}
-                                    {#                                        <img src="{% static 'img/credit-card.svg' %}"/>#}
-                                    {#                                        &nbsp;{% trans 'Pay using card' %}#}
-                                    {#                                    </div>#}
-                                {% else %}
-                                    {% trans 'Attend event' %}
-                                    </button>
-                                {% endif %}
+            {% if not sub_event_list %}
+                <div class="event-right-container">
+                    <div style="display:block;">
+                        {% trans 'Number of participants' %}
+                        <b id="attendance">
+                            {% if event.attendance_cap != "" and event.attendance_cap is not none %}
+                                {{ event.number_of_participants }}/{{ event.attendance_cap }}
+                            {% else %}
+                                {{ event.number_of_participants }}
+                            {% endif %}
+                        </b>
+                        </br>
+                        {% if event.registration_end_date %}
+                            {% trans 'Registration end date' %} <b>{{ event.registration_end_date }}</b>
                         {% endif %}
                     </div>
-                {% endif %}
-            </div>
+                    {% if not event.is_registration_ended %}
+                        <div style="margin-top:1rem;">
+                            {% if event.attends %}
+                                <button type="button"
+                                        id="attend-event-button"
+                                        class="btn btn-danger"
+                                        data-state="unattend"
+                                        value="{{ event.id }}"
+                                        data-toggle="modal"
+                                        data-target="#eventModal">
+                                    <div class="button-title-container">
+                                        {% trans 'Unattend from the event' %}
+                                    </div>
+                                </button>
+                            {% else %}
+                                {% if event.waiting_list %}
+                                    {% if event.is_user_on_waiting_list %}
+                                        <button id="attend-event-button"
+                                                type="button"
+                                                value="{{ event.id }}"
+                                                name="mybtn"
+                                                data-state="on-waiting-list"
+                                                class="btn btn-secondary">
+                                            <div class="button-title-container">
+                                                {% trans 'Remove me from the waiting list' %}
+                                            </div>
+                                        </button>
+                                    {% else %}
+                                        <button id="attend-event-button"
+                                                type="button"
+                                                value="{{ event.id }}"
+                                                name="mybtn"
+                                                data-state="wait-list"
+                                                class="btn btn-info">
+                                            <div class="button-title-container">
+                                                {% trans 'Put me on the waiting list' %}
+                                            </div>
+                                        </button>
+                                    {% endif %}
+                                {% else %}
+                                    <button id="attend-event-button"
+                                            type="button"
+                                            value="{{ event.id }}"
+                                            name="mybtn"
+                                            data-state="attend"
+                                            class="btn btn-success">
+                                        <div class="button-title-container">
+                                            {% if event.payment_required %}
+                                                <div class="button-div">
+                                                    <img src="{% static 'img/credit-card.svg' %}"/>
+                                                    &nbsp;{% trans 'Pay using card' %}
+                                                </div>
+                                            {% else %}
+                                                {% trans 'Attend the event' %}
+                                            {% endif %}
+                                        </div>
+                                    </button>
+                                {% endif %}
+                            {% endif %}
+                        </div>
 
-            <div id="event-description">
-                {{ event.description }}
-            </div>
+                    {% else %}
+                        <b>{% trans 'Registration has ended' %}!</b>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
 
-        <div style="margin-bottom: 5rem;">
+
+        <div>
             {% for category, sub_events in sub_event_list %}
                 <div class="category-card">
                     <div id="collapce-{{ category }}" class="collapse-header card-header"
@@ -233,31 +273,121 @@
                         </h5>
                     </div>
                     <div id="{{ forloop.counter }}-container" class="collapse show">
-                        <div class="card">
+                        <div>
                             {% for sub_event in sub_events %}
-                                <div class="card">
-                                    <div class="sub-event-container card-body">
-                                        <div class="sub-event-item">
-                                            <div>{{ sub_event.name }}</div>
+                                <div class="card" style="margin: .1rem">
+                                    <div class="card-body sub-event-main-container" style="background-color: white">
+                                        <div class="sub-event-title-container">
+                                            <h5>{{ sub_event.name }}</h5>
                                         </div>
-                                        <div class="sub-event-item">
-                                            <!--<div>{{ sub_event.start_date }} </br>
-                                                        {{ sub_event.end_date }}
-                                                </div> -->
-                                        </div>
-                                        <div class="sub-event-item">
-                                            {% if sub_event.attends %}
-                                                <button type="button" class="join-subevent-button btn btn-danger"
-                                                        value="-{{ sub_event.id }}">
-                                                    Unattend from event
-                                                </button>
-                                            {% else %}
-                                                <button class="join-subevent-button btn btn-success "
-                                                        type="button"
-                                                        value="{{ sub_event.id }}" name="mybtn">
-                                                    {% trans 'Attend event' %}
-                                                </button>
-                                            {% endif %}
+                                        <div class="sub-event-container">
+                                            <div class="sub-event-row-container">
+                                                <div class="sub-event-col">
+                                                    <div>
+                                                        {% trans 'From date' %} <br>
+                                                        <b>{{ sub_event.start_date }}</b>
+                                                    </div>
+                                                </div>
+                                                <div class="sub-event-col">
+                                                    <div>
+                                                        {% trans 'To date' %} <br>
+                                                        <b>{{ sub_event.end_date }}</b>
+                                                    </div>
+                                                </div>
+                                                <div class="sub-event-col">
+                                                    {% if not sub_event.is_registration_ended %}
+                                                        {% if sub_event.attends %}
+                                                            <button type="button"
+                                                                    class="btn btn-danger join-subevent-button"
+                                                                    data-state="unattend"
+                                                                    value="{{ sub_event.id }}">
+                                                                <div class="button-title-container ">
+                                                                    {% trans 'Unattend from the event' %}
+                                                                </div>
+                                                            </button>
+                                                        {% else %}
+                                                            {% if sub_event.waiting_list %}
+                                                                {% if sub_event.is_user_on_waiting_list %}
+                                                                    <button
+                                                                            type="button"
+                                                                            value="{{ sub_event.id }}"
+                                                                            name="mybtn"
+                                                                            data-state="on-waiting-list"
+                                                                            class="btn btn-secondary join-subevent-button">
+                                                                        <div class="button-title-container">
+                                                                            {% trans 'Remove me from the waiting list' %}
+                                                                        </div>
+                                                                    </button>
+                                                                {% else %}
+                                                                    <button
+                                                                            type="button"
+                                                                            value="{{ sub_event.id }}"
+                                                                            name="mybtn"
+                                                                            data-state="wait-list"
+                                                                            class="btn btn-info join-subevent-button">
+                                                                        <div class="button-title-container">
+                                                                            {% trans 'Put me on the waiting list' %}
+                                                                        </div>
+                                                                    </button>
+                                                                {% endif %}
+                                                            {% else %}
+                                                                <button
+                                                                        type="button"
+                                                                        value="{{ sub_event.id }}"
+                                                                        name="mybtn"
+                                                                        data-state="attend"
+                                                                        class="btn btn-success join-subevent-button">
+                                                                    <div class="button-title-container">
+                                                                        {% if sub_event.payment_required %}
+                                                                            <div class="button-div">
+                                                                                <img src="{% static 'img/credit-card.svg' %}"/>
+                                                                                &nbsp;{% trans 'Pay using card' %}
+                                                                            </div>
+                                                                        {% else %}
+                                                                            {% trans 'Attend the event' %}
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </button>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% else %}
+
+                                                        <button class="btn btn-secondary join-subevent-button"
+                                                                disabled>{% trans 'Registration has ended' %}</button>
+
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="sub-event-row-container border-container">
+                                                <div class="sub-event-col">
+                                                    <div>
+                                                        {% trans 'Number of participants' %} <br>
+                                                        <b class="attendance">
+                                                            {% if sub_event.attendance_cap != "" and sub_event.attendance_cap is not none %}
+                                                                {{ sub_event.number_of_participants }}/{{ sub_event.attendance_cap }}
+                                                            {% else %}
+                                                                {{ sub_event.number_of_participants }}
+                                                            {% endif %}
+                                                        </b>
+                                                    </div>
+                                                </div>
+                                                <div class="sub-event-col">
+                                                    <div>
+                                                        {% if sub_event.registration_end_date %}
+                                                            {% trans 'Registration end date' %} <br>
+                                                            <b>{{ sub_event.registration_end_date }}</b>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="sub-event-col">
+                                                    {% if sub_event.price %}
+                                                        <div>
+                                                            {% trans 'Price' %} <br>
+                                                            <b class="price">{{ sub_event.price }},-</b>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -268,8 +398,6 @@
             {% endfor %}
         </div>
     </div>
-
-
 
 
 {% endblock %}

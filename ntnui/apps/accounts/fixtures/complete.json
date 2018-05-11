@@ -265,10 +265,50 @@
   },
   {
     "model": "sessions.session",
+    "pk": "547toco6ks073cqmjfcoglh457l609wf",
+    "fields": {
+      "session_data": "Y2I2ODRiZWQ2MGY1ZGVhNmYyNGM1NGVmYTIxOWNjMzg3MjM5YTZmYjp7Il9hdXRoX3VzZXJfaWQiOiIyNiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiOTI3ZjFiZDQ5OGRhYTEyZTAwNzVmYjRmOGFiOGQyZTRkNTE1ZmY1MSJ9",
+      "expire_date": "2018-05-25T08:53:57.855Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "9q5ki2rz3rdtrlv304cdv33jh5rf5ef3",
+    "fields": {
+      "session_data": "Y2I2ODRiZWQ2MGY1ZGVhNmYyNGM1NGVmYTIxOWNjMzg3MjM5YTZmYjp7Il9hdXRoX3VzZXJfaWQiOiIyNiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiOTI3ZjFiZDQ5OGRhYTEyZTAwNzVmYjRmOGFiOGQyZTRkNTE1ZmY1MSJ9",
+      "expire_date": "2018-05-15T22:36:29.812Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "b6dkaafctst23y2jq1o7al4jykr92q7u",
+    "fields": {
+      "session_data": "YmVjNTVmNzZjY2Q1OWFjYzI3MDJkNTk5ZjgzZGUxN2Y4MTY2NGExNDp7Il9hdXRoX3VzZXJfaWQiOiIyOSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiMjE2ZWE3YzE2YTYxY2UwMGY1MzNlZDE3ZTFkNGE1ZjYxZWEyMDg0MiJ9",
+      "expire_date": "2018-05-16T13:15:52.950Z"
+    }
+  },
+  {
+    "model": "sessions.session",
     "pk": "qtxf3ci4b538ln1kbvaotkgywpaqww4q",
     "fields": {
       "session_data": "Y2I2ODRiZWQ2MGY1ZGVhNmYyNGM1NGVmYTIxOWNjMzg3MjM5YTZmYjp7Il9hdXRoX3VzZXJfaWQiOiIyNiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiOTI3ZjFiZDQ5OGRhYTEyZTAwNzVmYjRmOGFiOGQyZTRkNTE1ZmY1MSJ9",
       "expire_date": "2018-05-10T09:46:00.546Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "qzqdlaek3h40ai1l2kv8hsfcf1n29wjy",
+    "fields": {
+      "session_data": "Y2I2ODRiZWQ2MGY1ZGVhNmYyNGM1NGVmYTIxOWNjMzg3MjM5YTZmYjp7Il9hdXRoX3VzZXJfaWQiOiIyNiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiOTI3ZjFiZDQ5OGRhYTEyZTAwNzVmYjRmOGFiOGQyZTRkNTE1ZmY1MSJ9",
+      "expire_date": "2018-05-25T08:47:46.475Z"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "slpl9r7y33mmgihd8m3kaa6fikb7ot3x",
+    "fields": {
+      "session_data": "Y2I2ODRiZWQ2MGY1ZGVhNmYyNGM1NGVmYTIxOWNjMzg3MjM5YTZmYjp7Il9hdXRoX3VzZXJfaWQiOiIyNiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiOTI3ZjFiZDQ5OGRhYTEyZTAwNzVmYjRmOGFiOGQyZTRkNTE1ZmY1MSJ9",
+      "expire_date": "2018-05-25T08:49:08.781Z"
     }
   },
   {
@@ -292,6 +332,46 @@
     "pk": 2,
     "fields": {
       "name": "opptak"
+    }
+  },
+  {
+    "model": "events.guest",
+    "pk": 1,
+    "fields": {
+      "email": "ntnui.events@ntnui.no",
+      "first_name": "Ola",
+      "last_name": "Nordmann",
+      "phone_number": 56454654
+    }
+  },
+  {
+    "model": "events.guest",
+    "pk": 2,
+    "fields": {
+      "email": "ntnui.events@gmail.no",
+      "first_name": "Ola",
+      "last_name": "Nordmann",
+      "phone_number": 56454654
+    }
+  },
+  {
+    "model": "events.guest",
+    "pk": 3,
+    "fields": {
+      "email": "ntnui.events@gmail.com",
+      "first_name": "Ola",
+      "last_name": "Nordmann",
+      "phone_number": 56454654
+    }
+  },
+  {
+    "model": "events.guest",
+    "pk": 4,
+    "fields": {
+      "email": "paalcg@gmail.com",
+      "first_name": "P\u00e5l",
+      "last_name": "Iversen",
+      "phone_number": 98638315
     }
   },
   {
@@ -322,40 +402,18 @@
       "start_date": "2018-06-14T11:42:54Z",
       "end_date": "2018-06-16T11:42:56Z",
       "registration_end_date": null,
+      "price": 0,
+      "attendance_cap": null,
       "place": "Trondehim",
       "restriction": 1,
-      "attendance_cap": null,
-      "priority": false,
-      "price": 0,
       "is_host_ntnui": false,
-      "cover_photo": "cover_photo/events/NM-Volleyball/alarm-clock-icon.png",
+      "priority": false,
+      "cover_photo": "cover_photo/events/NM-Volleyball/ntnui-volleyball.png",
       "tags": [
         1
       ],
       "sports_groups": [
         1
-      ]
-    }
-  },
-  {
-    "model": "events.event",
-    "pk": 2,
-    "fields": {
-      "start_date": "2018-07-09T11:59:18Z",
-      "end_date": "2018-09-08T11:59:41Z",
-      "registration_end_date": null,
-      "place": "Trondehim",
-      "restriction": 1,
-      "attendance_cap": null,
-      "priority": false,
-      "price": 0,
-      "is_host_ntnui": false,
-      "cover_photo": "cover_photo/events/NM-Friidrett/alarm-clock-icon.png",
-      "tags": [
-        1
-      ],
-      "sports_groups": [
-        2
       ]
     }
   },
@@ -363,16 +421,16 @@
     "model": "events.event",
     "pk": 3,
     "fields": {
-      "start_date": "2018-06-01T12:23:14Z",
-      "end_date": "2018-06-02T12:23:26Z",
+      "start_date": "2018-06-12T12:23:14Z",
+      "end_date": "2018-06-12T12:23:26Z",
       "registration_end_date": null,
+      "price": 0,
+      "attendance_cap": null,
       "place": "Gl\u00f8shaugen",
       "restriction": 1,
-      "attendance_cap": null,
-      "priority": false,
-      "price": 0,
       "is_host_ntnui": true,
-      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "priority": false,
+      "cover_photo": "cover_photo/events/Generalforsamling/ntnui-volleyball_kEuV2ze.png",
       "tags": [],
       "sports_groups": []
     }
@@ -381,16 +439,16 @@
     "model": "events.event",
     "pk": 4,
     "fields": {
-      "start_date": "2018-05-17T12:31:10Z",
-      "end_date": "2018-05-17T12:31:17Z",
+      "start_date": "2018-05-17T06:00:00Z",
+      "end_date": "2018-05-17T18:00:00Z",
       "registration_end_date": null,
+      "price": 0,
+      "attendance_cap": null,
       "place": "Trondehim sentrum",
       "restriction": 1,
-      "attendance_cap": null,
-      "priority": false,
-      "price": 0,
       "is_host_ntnui": true,
-      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "priority": false,
+      "cover_photo": "cover_photo/events/17.-Mai/ntnui-volleyball.png",
       "tags": [],
       "sports_groups": []
     }
@@ -399,16 +457,16 @@
     "model": "events.event",
     "pk": 5,
     "fields": {
-      "start_date": "2018-05-01T12:34:21Z",
-      "end_date": "2018-05-01T12:34:33Z",
+      "start_date": "2018-06-12T12:34:21Z",
+      "end_date": "2018-06-12T18:00:00Z",
       "registration_end_date": null,
+      "price": 0,
+      "attendance_cap": null,
       "place": "Idrettsbygget",
       "restriction": 1,
-      "attendance_cap": null,
-      "priority": false,
-      "price": 0,
       "is_host_ntnui": false,
-      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "priority": false,
+      "cover_photo": "cover_photo/events/Trening/ntnui-volleyball_Ehsqn0M.png",
       "tags": [],
       "sports_groups": [
         4
@@ -419,15 +477,15 @@
     "model": "events.event",
     "pk": 6,
     "fields": {
-      "start_date": "2018-05-11T13:52:47Z",
-      "end_date": "2018-05-13T13:52:49Z",
+      "start_date": "2018-06-12T13:52:47Z",
+      "end_date": "2018-06-12T18:00:00Z",
       "registration_end_date": null,
+      "price": 0,
+      "attendance_cap": null,
       "place": "Oslo",
       "restriction": 1,
-      "attendance_cap": null,
-      "priority": false,
-      "price": 0,
       "is_host_ntnui": false,
+      "priority": false,
       "cover_photo": "cover_photo/ntnui-volleyball.png",
       "tags": [],
       "sports_groups": [
@@ -443,13 +501,13 @@
       "start_date": "2018-06-21T14:00:00Z",
       "end_date": "2018-06-21T18:00:00Z",
       "registration_end_date": null,
+      "price": 0,
+      "attendance_cap": null,
       "place": "Trondehim",
       "restriction": 1,
-      "attendance_cap": null,
-      "priority": false,
-      "price": 0,
       "is_host_ntnui": false,
-      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "priority": false,
+      "cover_photo": "cover_photo/events/Trening/ntnui-volleyball_cXMQpMZ.png",
       "tags": [],
       "sports_groups": [
         1
@@ -460,16 +518,16 @@
     "model": "events.event",
     "pk": 8,
     "fields": {
-      "start_date": "2018-05-10T06:00:00Z",
-      "end_date": "2018-05-10T12:00:00Z",
-      "registration_end_date": null,
+      "start_date": "2018-05-28T06:00:00Z",
+      "end_date": "2018-05-29T12:00:00Z",
+      "registration_end_date": "2018-05-25T00:00:00Z",
+      "price": 50,
+      "attendance_cap": null,
       "place": "Trondehim",
       "restriction": 1,
-      "attendance_cap": null,
-      "priority": false,
-      "price": 0,
       "is_host_ntnui": false,
-      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "priority": false,
+      "cover_photo": "cover_photo/events/Oppgradering/ntnui-volleyball.png",
       "tags": [],
       "sports_groups": [
         3
@@ -483,13 +541,13 @@
       "start_date": "2018-06-13T14:08:24Z",
       "end_date": "2018-06-13T14:08:35Z",
       "registration_end_date": null,
+      "price": 0,
+      "attendance_cap": null,
       "place": "Trondehim",
       "restriction": 1,
-      "attendance_cap": null,
-      "priority": false,
-      "price": 0,
       "is_host_ntnui": false,
-      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "priority": false,
+      "cover_photo": "cover_photo/events/Trening/ntnui-volleyball_HE6XiVs.png",
       "tags": [],
       "sports_groups": [
         2
@@ -500,21 +558,21 @@
     "model": "events.event",
     "pk": 10,
     "fields": {
-      "start_date": "2018-05-01T14:10:00Z",
-      "end_date": "2018-05-01T14:10:06Z",
+      "start_date": "2018-08-01T14:00:00Z",
+      "end_date": "2018-08-01T18:00:00Z",
       "registration_end_date": null,
+      "price": 0,
+      "attendance_cap": null,
       "place": "Trondehim",
       "restriction": 1,
-      "attendance_cap": null,
+      "is_host_ntnui": true,
       "priority": false,
-      "price": 0,
-      "is_host_ntnui": false,
-      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "cover_photo": "cover_photo/events/Opptak/ntnui-volleyball.png",
       "tags": [
         2
       ],
       "sports_groups": [
-        4
+        5
       ]
     }
   },
@@ -525,16 +583,76 @@
       "start_date": "2018-06-06T14:15:47Z",
       "end_date": "2018-06-06T14:16:04Z",
       "registration_end_date": null,
+      "price": 0,
+      "attendance_cap": null,
       "place": "Trondehim",
       "restriction": 1,
-      "attendance_cap": null,
-      "priority": false,
-      "price": 100,
       "is_host_ntnui": false,
-      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "priority": false,
+      "cover_photo": "cover_photo/events/Trening/ntnui-volleyball.png",
       "tags": [],
       "sports_groups": [
         4
+      ]
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 12,
+    "fields": {
+      "start_date": "2018-06-01T00:00:00Z",
+      "end_date": "2018-06-30T00:00:00Z",
+      "registration_end_date": null,
+      "price": 0,
+      "attendance_cap": null,
+      "place": "Telenor Arena",
+      "restriction": 1,
+      "is_host_ntnui": true,
+      "priority": false,
+      "cover_photo": "cover_photo/events/NM-i-friidrett/lagbilde.png",
+      "tags": [],
+      "sports_groups": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 13,
+    "fields": {
+      "start_date": "2018-06-15T12:12:00Z",
+      "end_date": "2018-06-15T13:13:00Z",
+      "registration_end_date": null,
+      "price": 150,
+      "attendance_cap": 40,
+      "place": "Telenor Arena",
+      "restriction": 1,
+      "is_host_ntnui": false,
+      "priority": false,
+      "cover_photo": "cover_photo/events/ntnui-volleyball.png",
+      "tags": [],
+      "sports_groups": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 16,
+    "fields": {
+      "start_date": "2018-08-04T08:00:00Z",
+      "end_date": "2018-08-05T16:00:00Z",
+      "registration_end_date": null,
+      "price": 0,
+      "attendance_cap": 50,
+      "place": "Vassfjellet",
+      "restriction": 1,
+      "is_host_ntnui": true,
+      "priority": false,
+      "cover_photo": "cover_photo/events/ntnui-volleyball.png",
+      "tags": [],
+      "sports_groups": [
+        5
       ]
     }
   },
@@ -543,10 +661,10 @@
     "pk": 1,
     "fields": {
       "name": "NM Volleyball",
-      "description_text": "Kom \u00e5 se p\u00e5 norges beste spillere",
-      "custom_email_text": null,
       "language": "nb",
-      "event": 1
+      "event": 1,
+      "description_text": "Kom \u00e5 se p\u00e5 norges beste spillere",
+      "custom_email_text": null
     }
   },
   {
@@ -554,32 +672,10 @@
     "pk": 2,
     "fields": {
       "name": "NM Volley ball",
+      "language": "en",
+      "event": 1,
       "description_text": "Come see norways best players",
-      "custom_email_text": null,
-      "language": "en",
-      "event": 1
-    }
-  },
-  {
-    "model": "events.eventdescription",
-    "pk": 3,
-    "fields": {
-      "name": "NM Friidrett",
-      "description_text": "Kom \u00e5 se p\u00e5 de beste av de beste",
-      "custom_email_text": null,
-      "language": "nb",
-      "event": 2
-    }
-  },
-  {
-    "model": "events.eventdescription",
-    "pk": 4,
-    "fields": {
-      "name": "NM Athletics",
-      "description_text": "Come watch the best of the best",
-      "custom_email_text": null,
-      "language": "en",
-      "event": 2
+      "custom_email_text": null
     }
   },
   {
@@ -587,10 +683,10 @@
     "pk": 5,
     "fields": {
       "name": "Generalforsamling",
-      "description_text": "Hu og hei!  Hovedstyeret \u00f8nsker med dette \u00e5 innkalle alle NTNUI sine medlemmer til generalforsamling.",
-      "custom_email_text": null,
       "language": "nb",
-      "event": 3
+      "event": 3,
+      "description_text": "Hu og hei!  Hovedstyeret \u00f8nsker med dette \u00e5 innkalle alle NTNUI sine medlemmer til generalforsamling.",
+      "custom_email_text": null
     }
   },
   {
@@ -598,10 +694,10 @@
     "pk": 6,
     "fields": {
       "name": "General assembly",
-      "description_text": "Hu and Hei! The main boad would like to welcome all NTNUI memebers to join the most important event of the year",
-      "custom_email_text": null,
       "language": "en",
-      "event": 3
+      "event": 3,
+      "description_text": "Hu and Hei! The main boad would like to welcome all NTNUI memebers to join the most important event of the year",
+      "custom_email_text": null
     }
   },
   {
@@ -609,10 +705,10 @@
     "pk": 7,
     "fields": {
       "name": "17. Mai",
-      "description_text": "Ha en fin 17. mai med oss i NTNUI",
-      "custom_email_text": null,
       "language": "nb",
-      "event": 4
+      "event": 4,
+      "description_text": "Bli med \u00e5 feire selveste nasjonaldagen med Norges beste idrettsforening.",
+      "custom_email_text": null
     }
   },
   {
@@ -620,10 +716,10 @@
     "pk": 8,
     "fields": {
       "name": "17. May",
-      "description_text": "Come and enjoy the norwegian national day with NTNUI",
-      "custom_email_text": null,
       "language": "en",
-      "event": 4
+      "event": 4,
+      "description_text": "Come and enjoy the norwegian national day with NTNUI",
+      "custom_email_text": null
     }
   },
   {
@@ -631,10 +727,10 @@
     "pk": 9,
     "fields": {
       "name": "Trening",
-      "description_text": "En lang fin dag med trening",
-      "custom_email_text": null,
       "language": "nb",
-      "event": 5
+      "event": 5,
+      "description_text": "En lang fin dag med trening",
+      "custom_email_text": null
     }
   },
   {
@@ -642,10 +738,10 @@
     "pk": 10,
     "fields": {
       "name": "Sosial Kveld",
-      "description_text": "Bli med p\u00e5 en hyggelig sosial med oss i friidrett  og koiene.",
-      "custom_email_text": null,
       "language": "nb",
-      "event": 6
+      "event": 6,
+      "description_text": "Bli med p\u00e5 en hyggelig sosial med oss i friidrett  og koiene.",
+      "custom_email_text": null
     }
   },
   {
@@ -653,10 +749,10 @@
     "pk": 11,
     "fields": {
       "name": "Social Evening",
-      "description_text": "Join us for a nice night",
-      "custom_email_text": null,
       "language": "en",
-      "event": 6
+      "event": 6,
+      "description_text": "Join us for a nice night",
+      "custom_email_text": null
     }
   },
   {
@@ -664,10 +760,10 @@
     "pk": 12,
     "fields": {
       "name": "Trening",
-      "description_text": "Vi liker \u00e5 trene",
-      "custom_email_text": null,
       "language": "nb",
-      "event": 7
+      "event": 7,
+      "description_text": "Vi liker \u00e5 trene",
+      "custom_email_text": null
     }
   },
   {
@@ -675,10 +771,10 @@
     "pk": 13,
     "fields": {
       "name": "Exercise",
-      "description_text": "We like to exercise",
-      "custom_email_text": null,
       "language": "en",
-      "event": 7
+      "event": 7,
+      "description_text": "We like to exercise",
+      "custom_email_text": null
     }
   },
   {
@@ -686,10 +782,10 @@
     "pk": 14,
     "fields": {
       "name": "exercise",
-      "description_text": "exercise ftw",
-      "custom_email_text": null,
       "language": "en",
-      "event": 5
+      "event": 5,
+      "description_text": "exercise ftw",
+      "custom_email_text": null
     }
   },
   {
@@ -697,10 +793,10 @@
     "pk": 15,
     "fields": {
       "name": "Oppgradering",
-      "description_text": "N\u00e5 har vi hatt koiene st\u00e5ende slik de er ganske lenge, og vi f\u00f8ler det er p\u00e5 tide \u00e5 oppgradere de til suitter!",
-      "custom_email_text": null,
       "language": "nb",
-      "event": 8
+      "event": 8,
+      "description_text": "N\u00e5 har vi hatt koiene st\u00e5ende slik de er ganske lenge, og vi f\u00f8ler det er p\u00e5 tide \u00e5 oppgradere de til suitter!",
+      "custom_email_text": null
     }
   },
   {
@@ -708,10 +804,10 @@
     "pk": 16,
     "fields": {
       "name": "Upgrade",
-      "description_text": "Now, the kois have been standing as is for a while, so we feel it's time for an upgrade to suits!",
-      "custom_email_text": null,
       "language": "en",
-      "event": 8
+      "event": 8,
+      "description_text": "Now, the kois have been standing as is for a while, so we feel it's time for an upgrade to suits!",
+      "custom_email_text": null
     }
   },
   {
@@ -719,10 +815,10 @@
     "pk": 17,
     "fields": {
       "name": "Trening",
-      "description_text": "trening er g\u00f8y",
-      "custom_email_text": null,
       "language": "nb",
-      "event": 9
+      "event": 9,
+      "description_text": "trening er g\u00f8y",
+      "custom_email_text": null
     }
   },
   {
@@ -730,10 +826,10 @@
     "pk": 18,
     "fields": {
       "name": "exercise",
-      "description_text": "exercise is fun",
-      "custom_email_text": null,
       "language": "en",
-      "event": 9
+      "event": 9,
+      "description_text": "exercise is fun",
+      "custom_email_text": null
     }
   },
   {
@@ -741,10 +837,10 @@
     "pk": 19,
     "fields": {
       "name": "Opptak",
-      "description_text": "Vil du v\u00e6re med i den beste NTNUI gruppa?",
-      "custom_email_text": null,
       "language": "nb",
-      "event": 10
+      "event": 10,
+      "description_text": "Vil du v\u00e6re med i den beste NTNUI gruppa?",
+      "custom_email_text": "None"
     }
   },
   {
@@ -752,10 +848,10 @@
     "pk": 20,
     "fields": {
       "name": "Admission",
-      "description_text": "Admission for the best NTNUI group",
-      "custom_email_text": null,
       "language": "en",
-      "event": 10
+      "event": 10,
+      "description_text": "Admission for the best NTNUI group",
+      "custom_email_text": "None"
     }
   },
   {
@@ -763,10 +859,10 @@
     "pk": 21,
     "fields": {
       "name": "Trening",
-      "description_text": "Masse trening",
-      "custom_email_text": null,
       "language": "nb",
-      "event": 11
+      "event": 11,
+      "description_text": "Er du klar for den tyngste trenings\u00f8kten du noen gang har v\u00e6rt med p\u00e5?",
+      "custom_email_text": null
     }
   },
   {
@@ -774,10 +870,407 @@
     "pk": 22,
     "fields": {
       "name": "Exercise",
-      "description_text": "a whole lot of exercise",
-      "custom_email_text": null,
       "language": "en",
-      "event": 11
+      "event": 11,
+      "description_text": "Are you ready for the hardest exercies of your life time",
+      "custom_email_text": null
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 23,
+    "fields": {
+      "name": "NM i friidrett",
+      "language": "nb",
+      "event": 12,
+      "description_text": "Velkommen til NM i friidrett      ",
+      "custom_email_text": "None"
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 24,
+    "fields": {
+      "name": "Norwegian championship in athletics",
+      "language": "en",
+      "event": 12,
+      "description_text": "Welcome to the Norwegian championship in athletics",
+      "custom_email_text": ""
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 25,
+    "fields": {
+      "name": "NTNUI-mesterskap i Lengdehopp",
+      "language": "nb",
+      "event": 13,
+      "description_text": "Velkommen til lengdehopp. Finalekravet er p\u00e5 7.5 meter for menn og 6.5 for kvinner.",
+      "custom_email_text": null
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 26,
+    "fields": {
+      "name": "Long jump",
+      "language": "en",
+      "event": 13,
+      "description_text": "Welcome to NM in long jump. The requirement to reach the final is 7.5 meters for men and 6.5 for women.",
+      "custom_email_text": ""
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 31,
+    "fields": {
+      "name": "Sykkelritt",
+      "language": "nb",
+      "event": 16,
+      "description_text": "Kom \u00e5 konkurrer i Norges t\u00f8ffeste sykeltritt   ",
+      "custom_email_text": "None"
+    }
+  },
+  {
+    "model": "events.eventdescription",
+    "pk": 32,
+    "fields": {
+      "name": "Cycling championship",
+      "language": "en",
+      "event": 16,
+      "description_text": "Come and compete, in the  coolest cycling competion in Norway.",
+      "custom_email_text": "None"
+    }
+  },
+  {
+    "model": "events.eventguestregistration",
+    "pk": 1,
+    "fields": {
+      "registration_time": "2018-05-02T17:32:34.681Z",
+      "payment_id": null,
+      "token": null,
+      "event": 10,
+      "attendee": 1
+    }
+  },
+  {
+    "model": "events.eventguestregistration",
+    "pk": 2,
+    "fields": {
+      "registration_time": "2018-05-02T17:36:15.657Z",
+      "payment_id": null,
+      "token": null,
+      "event": 10,
+      "attendee": 2
+    }
+  },
+  {
+    "model": "events.eventguestregistration",
+    "pk": 3,
+    "fields": {
+      "registration_time": "2018-05-02T17:36:47.598Z",
+      "payment_id": null,
+      "token": null,
+      "event": 10,
+      "attendee": 3
+    }
+  },
+  {
+    "model": "events.category",
+    "pk": 1,
+    "fields": {
+      "event": 12
+    }
+  },
+  {
+    "model": "events.category",
+    "pk": 6,
+    "fields": {
+      "event": 16
+    }
+  },
+  {
+    "model": "events.category",
+    "pk": 7,
+    "fields": {
+      "event": 16
+    }
+  },
+  {
+    "model": "events.category",
+    "pk": 8,
+    "fields": {
+      "event": 12
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 1,
+    "fields": {
+      "name": "Ikke kategorisert",
+      "language": "nb",
+      "category": 1
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 2,
+    "fields": {
+      "name": "Non categorized",
+      "language": "en",
+      "category": 1
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 11,
+    "fields": {
+      "name": "Terreng",
+      "language": "nb",
+      "category": 6
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 12,
+    "fields": {
+      "name": "Terain",
+      "language": "en",
+      "category": 6
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 13,
+    "fields": {
+      "name": "Landevei",
+      "language": "nb",
+      "category": 7
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 14,
+    "fields": {
+      "name": "Cycling",
+      "language": "en",
+      "category": 7
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 15,
+    "fields": {
+      "name": "Sprint",
+      "language": "nb",
+      "category": 8
+    }
+  },
+  {
+    "model": "events.categorydescription",
+    "pk": 16,
+    "fields": {
+      "name": "Sprint",
+      "language": "en",
+      "category": 8
+    }
+  },
+  {
+    "model": "events.subevent",
+    "pk": 1,
+    "fields": {
+      "start_date": "2018-06-15T12:12:00Z",
+      "end_date": "2018-06-15T13:13:00Z",
+      "registration_end_date": null,
+      "price": 300,
+      "attendance_cap": 15,
+      "category": 1,
+      "tags": []
+    }
+  },
+  {
+    "model": "events.subevent",
+    "pk": 3,
+    "fields": {
+      "start_date": "2018-06-16T12:12:00Z",
+      "end_date": "2018-06-16T13:13:00Z",
+      "registration_end_date": "2018-05-17T20:00:00Z",
+      "price": 0,
+      "attendance_cap": 1,
+      "category": 8,
+      "tags": []
+    }
+  },
+  {
+    "model": "events.subevent",
+    "pk": 4,
+    "fields": {
+      "start_date": "2018-06-18T12:12:00Z",
+      "end_date": "2018-06-18T13:13:00Z",
+      "registration_end_date": null,
+      "price": 100,
+      "attendance_cap": 20,
+      "category": 1,
+      "tags": []
+    }
+  },
+  {
+    "model": "events.subevent",
+    "pk": 11,
+    "fields": {
+      "start_date": "2018-06-04T08:00:00Z",
+      "end_date": "2018-06-04T15:00:00Z",
+      "registration_end_date": "2018-06-01T14:00:00Z",
+      "price": 0,
+      "attendance_cap": 20,
+      "category": 7,
+      "tags": []
+    }
+  },
+  {
+    "model": "events.subevent",
+    "pk": 13,
+    "fields": {
+      "start_date": "2018-08-05T08:00:00Z",
+      "end_date": "2018-08-05T14:00:00Z",
+      "registration_end_date": "2018-08-01T12:00:00Z",
+      "price": 150,
+      "attendance_cap": 10,
+      "category": 6,
+      "tags": []
+    }
+  },
+  {
+    "model": "events.subevent",
+    "pk": 14,
+    "fields": {
+      "start_date": "2018-06-02T04:03:00Z",
+      "end_date": "2018-06-03T04:03:00Z",
+      "registration_end_date": "2018-05-16T20:00:00Z",
+      "price": 0,
+      "attendance_cap": null,
+      "category": 8,
+      "tags": []
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 1,
+    "fields": {
+      "name": "Lengdehopp",
+      "language": "nb",
+      "custom_email_text": null,
+      "sub_event": 1
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 2,
+    "fields": {
+      "name": "Long jump",
+      "language": "en",
+      "custom_email_text": null,
+      "sub_event": 1
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 3,
+    "fields": {
+      "name": "100 meter sprint",
+      "language": "nb",
+      "custom_email_text": null,
+      "sub_event": 3
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 4,
+    "fields": {
+      "name": "100 meter sprint",
+      "language": "en",
+      "custom_email_text": null,
+      "sub_event": 3
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 7,
+    "fields": {
+      "name": "Stavsprang",
+      "language": "nb",
+      "custom_email_text": null,
+      "sub_event": 4
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 8,
+    "fields": {
+      "name": "Pole Vault",
+      "language": "en",
+      "custom_email_text": null,
+      "sub_event": 4
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 21,
+    "fields": {
+      "name": "Landeveissykling 10km",
+      "language": "nb",
+      "custom_email_text": "Du er p\u00e5meldt!",
+      "sub_event": 11
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 22,
+    "fields": {
+      "name": "Road cycling",
+      "language": "en",
+      "custom_email_text": "You are welcome!",
+      "sub_event": 11
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 25,
+    "fields": {
+      "name": "Terrengssykkling",
+      "language": "nb",
+      "custom_email_text": "Velkommen!",
+      "sub_event": 13
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 26,
+    "fields": {
+      "name": "Terain cycling",
+      "language": "en",
+      "custom_email_text": "Your inn!",
+      "sub_event": 13
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 27,
+    "fields": {
+      "name": "200 meter sprint",
+      "language": "nb",
+      "custom_email_text": null,
+      "sub_event": 14
+    }
+  },
+  {
+    "model": "events.subeventdescription",
+    "pk": 28,
+    "fields": {
+      "name": "200 meters sprint",
+      "language": "en",
+      "custom_email_text": null,
+      "sub_event": 14
     }
   },
   {
@@ -830,6 +1323,19 @@
       "thumbnail": "thumbnail/ntnui2.svg",
       "cover_photo": "cover_photo/ntnui-volleyball.png",
       "active_board": 4
+    }
+  },
+  {
+    "model": "groups.sportsgroup",
+    "pk": 5,
+    "fields": {
+      "name": "NTNUI Sykling",
+      "slug": "sykling",
+      "description": "Vi liker \u00e5 sykle",
+      "public": false,
+      "thumbnail": "thumbnail/ntnui2.svg",
+      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "active_board": 5
     }
   },
   {
@@ -2094,7 +2600,7 @@
     "pk": 26,
     "fields": {
       "password": "pbkdf2_sha256$36000$4IZiNMlL0OcT$Gn9UV02ocOEqvFoHMKTsWXOtMbKkEZjN5YRWBcGIVzE=",
-      "last_login": "2018-04-26T09:46:00Z",
+      "last_login": "2018-05-11T08:53:57.845Z",
       "is_superuser": true,
       "customer_number": "2",
       "email": "pci.pci@mail.com",
@@ -2120,6 +2626,44 @@
       "first_name": "Dag",
       "last_name": "Krist",
       "date_joined": "2018-03-23T18:16:26.879Z",
+      "is_active": true,
+      "phone": "",
+      "is_staff": true,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 28,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$OditlYFCQFLd$kVhP27suvuwL/sRP4kzbqzddStvZ713+9xYj18RYT74=",
+      "last_login": "2018-05-02T13:15:28.928Z",
+      "is_superuser": true,
+      "customer_number": "3",
+      "email": "ntnui.events@gmail.com",
+      "first_name": "Bruker",
+      "last_name": "",
+      "date_joined": "2018-05-02T08:33:14.332Z",
+      "is_active": true,
+      "phone": "",
+      "is_staff": true,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 29,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$xoszef6dqEuu$FP6oX8gdXkMb5BfHpqV9ETLcOaxqk/8wsb1VKsKlnpw=",
+      "last_login": "2018-05-02T13:15:52.938Z",
+      "is_superuser": true,
+      "customer_number": "1000",
+      "email": "styremedlem@ntnui.no",
+      "first_name": "Styremedlem",
+      "last_name": "",
+      "date_joined": "2018-05-02T08:34:47.196Z",
       "is_active": true,
       "phone": "",
       "is_staff": true,
@@ -2512,6 +3056,192 @@
     }
   },
   {
+    "model": "hs.mainboardmembership",
+    "pk": 2,
+    "fields": {
+      "person": 26,
+      "board": 1,
+      "date_joined": "2018-05-04",
+      "role": "fd"
+    }
+  },
+  {
+    "model": "events.eventregistration",
+    "pk": 4,
+    "fields": {
+      "registration_time": "2018-05-02T11:14:04.125Z",
+      "payment_id": null,
+      "token": null,
+      "event": 4,
+      "attendee": 28
+    }
+  },
+  {
+    "model": "events.eventregistration",
+    "pk": 7,
+    "fields": {
+      "registration_time": "2018-05-02T14:55:52.732Z",
+      "payment_id": null,
+      "token": null,
+      "event": 3,
+      "attendee": 28
+    }
+  },
+  {
+    "model": "events.eventregistration",
+    "pk": 8,
+    "fields": {
+      "registration_time": "2018-05-02T15:14:10.811Z",
+      "payment_id": "ch_1CNKmaGmVFnR5VhgYq30Mdg2",
+      "token": null,
+      "event": 13,
+      "attendee": 28
+    }
+  },
+  {
+    "model": "events.eventregistration",
+    "pk": 41,
+    "fields": {
+      "registration_time": "2018-05-11T12:17:17Z",
+      "payment_id": null,
+      "token": null,
+      "event": 13,
+      "attendee": 10
+    }
+  },
+  {
+    "model": "events.eventregistration",
+    "pk": 42,
+    "fields": {
+      "registration_time": "2018-05-11T12:17:19Z",
+      "payment_id": null,
+      "token": null,
+      "event": 13,
+      "attendee": 13
+    }
+  },
+  {
+    "model": "events.eventregistration",
+    "pk": 43,
+    "fields": {
+      "registration_time": "2018-05-11T12:19:09Z",
+      "payment_id": null,
+      "token": null,
+      "event": 11,
+      "attendee": 1
+    }
+  },
+  {
+    "model": "events.eventregistration",
+    "pk": 44,
+    "fields": {
+      "registration_time": "2018-05-11T12:19:16Z",
+      "payment_id": null,
+      "token": null,
+      "event": 11,
+      "attendee": 11
+    }
+  },
+  {
+    "model": "events.subeventregistration",
+    "pk": 59,
+    "fields": {
+      "registration_time": "2018-05-11T09:01:23Z",
+      "payment_id": null,
+      "token": null,
+      "sub_event": 3,
+      "attendee": 11
+    }
+  },
+  {
+    "model": "events.subeventregistration",
+    "pk": 63,
+    "fields": {
+      "registration_time": "2018-05-11T12:43:13Z",
+      "payment_id": null,
+      "token": null,
+      "sub_event": 1,
+      "attendee": 11
+    }
+  },
+  {
+    "model": "events.subeventregistration",
+    "pk": 64,
+    "fields": {
+      "registration_time": "2018-05-11T12:43:16Z",
+      "payment_id": null,
+      "token": null,
+      "sub_event": 1,
+      "attendee": 16
+    }
+  },
+  {
+    "model": "events.subeventregistration",
+    "pk": 65,
+    "fields": {
+      "registration_time": "2018-05-11T12:43:17Z",
+      "payment_id": null,
+      "token": null,
+      "sub_event": 1,
+      "attendee": 25
+    }
+  },
+  {
+    "model": "events.subeventregistration",
+    "pk": 66,
+    "fields": {
+      "registration_time": "2018-05-11T12:43:20Z",
+      "payment_id": null,
+      "token": null,
+      "sub_event": 1,
+      "attendee": 14
+    }
+  },
+  {
+    "model": "events.subeventregistration",
+    "pk": 67,
+    "fields": {
+      "registration_time": "2018-05-11T12:43:50Z",
+      "payment_id": null,
+      "token": null,
+      "sub_event": 4,
+      "attendee": 1
+    }
+  },
+  {
+    "model": "events.subeventregistration",
+    "pk": 68,
+    "fields": {
+      "registration_time": "2018-05-11T12:43:52Z",
+      "payment_id": null,
+      "token": null,
+      "sub_event": 4,
+      "attendee": 19
+    }
+  },
+  {
+    "model": "events.subeventregistration",
+    "pk": 69,
+    "fields": {
+      "registration_time": "2018-05-11T12:43:54Z",
+      "payment_id": null,
+      "token": null,
+      "sub_event": 4,
+      "attendee": 24
+    }
+  },
+  {
+    "model": "events.subeventregistration",
+    "pk": 70,
+    "fields": {
+      "registration_time": "2018-05-11T14:45:05.464Z",
+      "payment_id": null,
+      "token": "3c7cec6a-8966-4864-b9c6-e700e90b5486",
+      "sub_event": 14,
+      "attendee": 26
+    }
+  },
+  {
     "model": "groups.board",
     "pk": 1,
     "fields": {
@@ -2527,7 +3257,7 @@
     "fields": {
       "president": 14,
       "vice_president": 15,
-      "cashier": 1,
+      "cashier": 26,
       "sports_group": 2
     }
   },
@@ -2549,6 +3279,16 @@
       "vice_president": 23,
       "cashier": 18,
       "sports_group": 4
+    }
+  },
+  {
+    "model": "groups.board",
+    "pk": 5,
+    "fields": {
+      "president": 29,
+      "vice_president": 17,
+      "cashier": 26,
+      "sports_group": 5
     }
   },
   {
@@ -2751,7 +3491,7 @@
       "group": 2,
       "date_joined": "2017-10-05",
       "paid": false,
-      "role": "member",
+      "role": "cashier",
       "comment": ""
     }
   },
@@ -2763,7 +3503,7 @@
       "group": 2,
       "date_joined": "2017-10-12",
       "paid": false,
-      "role": "member",
+      "role": "vice_president",
       "comment": ""
     }
   },
@@ -2775,7 +3515,7 @@
       "group": 2,
       "date_joined": "2017-10-12",
       "paid": false,
-      "role": "member",
+      "role": "president",
       "comment": ""
     }
   },
@@ -2892,6 +3632,799 @@
       "object_repr": "P\u00e5l Christian ",
       "action_flag": 2,
       "change_message": "[{\"changed\": {\"fields\": [\"customer_number\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+      "action_time": "2018-05-01T22:40:15.233Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "11",
+      "object_repr": "Trening",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+      "action_time": "2018-05-01T22:40:33.313Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "10",
+      "object_repr": "Opptak",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+      "action_time": "2018-05-01T22:40:48.484Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "9",
+      "object_repr": "Trening",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+      "action_time": "2018-05-01T22:41:07.590Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "8",
+      "object_repr": "Oppgradering",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+      "action_time": "2018-05-01T22:41:25.387Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "7",
+      "object_repr": "Trening",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+      "action_time": "2018-05-01T22:41:43.226Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "5",
+      "object_repr": "Trening",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+      "action_time": "2018-05-01T22:42:03.628Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "5",
+      "object_repr": "Trening",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+      "action_time": "2018-05-01T22:42:22.474Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "3",
+      "object_repr": "Generalforsamling",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 10,
+    "fields": {
+      "action_time": "2018-05-01T22:42:44.701Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "4",
+      "object_repr": "17. Mai",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 11,
+    "fields": {
+      "action_time": "2018-05-01T22:43:02.661Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "3",
+      "object_repr": "Generalforsamling",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 12,
+    "fields": {
+      "action_time": "2018-05-01T22:43:22.365Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "2",
+      "object_repr": "NM Friidrett",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 13,
+    "fields": {
+      "action_time": "2018-05-01T22:43:38.414Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "1",
+      "object_repr": "NM Volleyball",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 14,
+    "fields": {
+      "action_time": "2018-05-02T08:33:59.450Z",
+      "user": 26,
+      "content_type": 6,
+      "object_id": "28",
+      "object_repr": "Bruker ",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"last_login\", \"customer_number\", \"first_name\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 15,
+    "fields": {
+      "action_time": "2018-05-02T08:35:56.379Z",
+      "user": 26,
+      "content_type": 6,
+      "object_id": "29",
+      "object_repr": "Styremedlem ",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"customer_number\", \"first_name\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 16,
+    "fields": {
+      "action_time": "2018-05-02T08:37:19.384Z",
+      "user": 26,
+      "content_type": 6,
+      "object_id": "29",
+      "object_repr": "Styremedlem ",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"email\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 17,
+    "fields": {
+      "action_time": "2018-05-02T08:38:47.840Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "2",
+      "object_repr": "NM Friidrett",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"start_date\", \"end_date\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 18,
+    "fields": {
+      "action_time": "2018-05-02T08:39:39.153Z",
+      "user": 26,
+      "content_type": 31,
+      "object_id": "2",
+      "object_repr": "NTNUI Friidrett",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"name\": \"board\", \"object\": \"Board of NTNUI Friidrett: Phyllis Vance - Stanley Hudson - P\\u00e5l Christian \", \"fields\": [\"cashier\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 19,
+    "fields": {
+      "action_time": "2018-05-02T08:59:15.603Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "6",
+      "object_repr": "Sosial Kveld",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"start_date\", \"end_date\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 20,
+    "fields": {
+      "action_time": "2018-05-02T09:00:37.363Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "5",
+      "object_repr": "Trening",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"start_date\", \"end_date\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 21,
+    "fields": {
+      "action_time": "2018-05-02T09:02:19.270Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "13",
+      "object_repr": "Lengdehopp",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"restriction\"]}}, {\"changed\": {\"name\": \"description\", \"object\": \"Lengdehopp\", \"fields\": [\"name\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 22,
+    "fields": {
+      "action_time": "2018-05-02T09:03:27.084Z",
+      "user": 26,
+      "content_type": 31,
+      "object_id": "5",
+      "object_repr": "NTNUI Sykling",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"board\", \"object\": \"Board of NTNUI Sykling: Styremedlem  - Toby Flenderson - P\\u00e5l Christian \"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 23,
+    "fields": {
+      "action_time": "2018-05-02T09:03:38.489Z",
+      "user": 26,
+      "content_type": 31,
+      "object_id": "5",
+      "object_repr": "NTNUI Sykling",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"active_board\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 24,
+    "fields": {
+      "action_time": "2018-05-02T09:05:49.175Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "13",
+      "object_repr": "Lengdehopp",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"name\": \"description\", \"object\": \"Lengdehopp\", \"fields\": [\"description_text\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 25,
+    "fields": {
+      "action_time": "2018-05-02T09:24:12.025Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "13",
+      "object_repr": "NTNUI-mesterskap i Lengdehopp",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"name\": \"description\", \"object\": \"NTNUI-mesterskap i Lengdehopp\", \"fields\": [\"name\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 26,
+    "fields": {
+      "action_time": "2018-05-02T12:24:38.201Z",
+      "user": 28,
+      "content_type": 12,
+      "object_id": "13",
+      "object_repr": "NTNUI-mesterskap i Lengdehopp",
+      "action_flag": 2,
+      "change_message": "[{\"deleted\": {\"name\": \"attendee, user\", \"object\": \"Long jump - ntnui.events@gmail.com\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 27,
+    "fields": {
+      "action_time": "2018-05-02T12:26:07.221Z",
+      "user": 28,
+      "content_type": 12,
+      "object_id": "14",
+      "object_repr": "Klubbmesterskap Sykling",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 28,
+    "fields": {
+      "action_time": "2018-05-02T12:53:13.168Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "15",
+      "object_repr": "Konkurranse sykkel",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 29,
+    "fields": {
+      "action_time": "2018-05-02T12:55:47.511Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "3",
+      "object_repr": "Generalforsamling",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"start_date\", \"end_date\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 30,
+    "fields": {
+      "action_time": "2018-05-02T12:56:15.674Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "13",
+      "object_repr": "NTNUI-mesterskap i Lengdehopp",
+      "action_flag": 2,
+      "change_message": "[{\"deleted\": {\"name\": \"attendee, user\", \"object\": \"Long jump - ntnui.events@gmail.com\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 31,
+    "fields": {
+      "action_time": "2018-05-02T12:57:02.811Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "3",
+      "object_repr": "Generalforsamling",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"start_date\", \"end_date\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 32,
+    "fields": {
+      "action_time": "2018-05-02T15:42:59.223Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "17",
+      "object_repr": "test",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"registration_end_date\", \"restriction\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 33,
+    "fields": {
+      "action_time": "2018-05-04T08:57:26.425Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "12",
+      "object_repr": "NM i friidrett",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"restriction\", \"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 34,
+    "fields": {
+      "action_time": "2018-05-04T09:00:37.567Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "12",
+      "object_repr": "NM i friidrett",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 35,
+    "fields": {
+      "action_time": "2018-05-04T09:03:05.317Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "12",
+      "object_repr": "NM i friidrett",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 36,
+    "fields": {
+      "action_time": "2018-05-04T11:14:05.352Z",
+      "user": 26,
+      "content_type": 8,
+      "object_id": "1",
+      "object_repr": "Main Board",
+      "action_flag": 2,
+      "change_message": "[{\"added\": {\"name\": \"main board membership\", \"object\": \"MainBoardMembership object\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 37,
+    "fields": {
+      "action_time": "2018-05-04T12:27:47.454Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "17",
+      "object_repr": "test",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"name\": \"description\", \"object\": \"test\", \"fields\": [\"description_text\"]}}, {\"deleted\": {\"name\": \"attendee, user\", \"object\": \"test - pci.pci@mail.com\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 38,
+    "fields": {
+      "action_time": "2018-05-09T10:32:53.120Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "17",
+      "object_repr": "test",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"price\", \"attendance_cap\"]}}, {\"added\": {\"name\": \"attendee, user\", \"object\": \"test - frankela@steinberg.org\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 39,
+    "fields": {
+      "action_time": "2018-05-09T16:42:29.853Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "10",
+      "object_repr": "Opptak",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"registration_end_date\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 40,
+    "fields": {
+      "action_time": "2018-05-09T17:14:59.441Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "10",
+      "object_repr": "Opptak",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"registration_end_date\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 41,
+    "fields": {
+      "action_time": "2018-05-09T18:50:32.428Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "8",
+      "object_repr": "Oppgradering",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"registration_end_date\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 42,
+    "fields": {
+      "action_time": "2018-05-09T18:58:13.302Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "17",
+      "object_repr": "test",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"registration_end_date\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 43,
+    "fields": {
+      "action_time": "2018-05-09T19:02:12.938Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "17",
+      "object_repr": "test",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"registration_end_date\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 44,
+    "fields": {
+      "action_time": "2018-05-09T19:06:26.639Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "17",
+      "object_repr": "test",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"registration_end_date\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 45,
+    "fields": {
+      "action_time": "2018-05-11T09:01:28.887Z",
+      "user": 26,
+      "content_type": 20,
+      "object_id": "3",
+      "object_repr": "100 meter sprint",
+      "action_flag": 2,
+      "change_message": "[{\"added\": {\"name\": \"attendee, user\", \"object\": \"100 meter sprint - frankela@steinberg.org\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 46,
+    "fields": {
+      "action_time": "2018-05-11T12:10:58.093Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "18",
+      "object_repr": "Test",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 47,
+    "fields": {
+      "action_time": "2018-05-11T12:10:58.105Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "17",
+      "object_repr": "test",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 48,
+    "fields": {
+      "action_time": "2018-05-11T12:16:12.337Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "16",
+      "object_repr": "Sykkelritt",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"attendance_cap\", \"restriction\"]}}, {\"changed\": {\"name\": \"description\", \"object\": \"Sykkelritt\", \"fields\": [\"description_text\"]}}, {\"changed\": {\"name\": \"description\", \"object\": \"Cycling championship\", \"fields\": [\"description_text\"]}}, {\"added\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - super@admin.com\"}}, {\"added\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - todd.packer@online.com\"}}, {\"added\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - jameshalpert@gmail.com\"}}, {\"added\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - michael.scott@dundermifflin.com\"}}, {\"added\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - mynameiscreed@bratton.com\"}}, {\"added\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - phyllis@vancerefrigiration.com\"}}, {\"added\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - stanley.hudson@dundermifflin.com\"}}, {\"added\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - dwight.k.schrute@schrutefarms.net\"}}, {\"added\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - andrew.bernard@cornell.edu\"}}, {\"added\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - ola.nordmann@gmail.com\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 49,
+    "fields": {
+      "action_time": "2018-05-11T12:17:22.359Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "13",
+      "object_repr": "NTNUI-mesterskap i Lengdehopp",
+      "action_flag": 2,
+      "change_message": "[{\"added\": {\"name\": \"attendee, user\", \"object\": \"Long jump - jameshalpert@gmail.com\"}}, {\"added\": {\"name\": \"attendee, user\", \"object\": \"Long jump - mynameiscreed@bratton.com\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 50,
+    "fields": {
+      "action_time": "2018-05-11T12:19:23.086Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "11",
+      "object_repr": "Trening",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"price\"]}}, {\"changed\": {\"name\": \"description\", \"object\": \"Trening\", \"fields\": [\"description_text\"]}}, {\"changed\": {\"name\": \"description\", \"object\": \"Exercise\", \"fields\": [\"description_text\"]}}, {\"added\": {\"name\": \"attendee, user\", \"object\": \"Exercise - super@admin.com\"}}, {\"added\": {\"name\": \"attendee, user\", \"object\": \"Exercise - frankela@steinberg.org\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 51,
+    "fields": {
+      "action_time": "2018-05-11T12:20:37.129Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "16",
+      "object_repr": "Sykkelritt",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"price\"]}}, {\"deleted\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - super@admin.com\"}}, {\"deleted\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - todd.packer@online.com\"}}, {\"deleted\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - jameshalpert@gmail.com\"}}, {\"deleted\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - michael.scott@dundermifflin.com\"}}, {\"deleted\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - mynameiscreed@bratton.com\"}}, {\"deleted\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - phyllis@vancerefrigiration.com\"}}, {\"deleted\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - stanley.hudson@dundermifflin.com\"}}, {\"deleted\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - dwight.k.schrute@schrutefarms.net\"}}, {\"deleted\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - andrew.bernard@cornell.edu\"}}, {\"deleted\": {\"name\": \"waiting list, user\", \"object\": \"Cycling championship - ola.nordmann@gmail.com\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 52,
+    "fields": {
+      "action_time": "2018-05-11T12:25:53.593Z",
+      "user": 26,
+      "content_type": 20,
+      "object_id": "11",
+      "object_repr": "Landeveissykling 10km",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"name\": \"description\", \"object\": \"Landeveissykling 10km\", \"fields\": [\"custom_email_text\"]}}, {\"changed\": {\"name\": \"description\", \"object\": \"Road cycling\", \"fields\": [\"name\", \"custom_email_text\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 53,
+    "fields": {
+      "action_time": "2018-05-11T12:27:36.345Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "10",
+      "object_repr": "Opptak",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"registration_end_date\", \"price\", \"attendance_cap\", \"sports_groups\"]}}, {\"deleted\": {\"name\": \"attendee, user\", \"object\": \"Admission - pci.pci@mail.com\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 54,
+    "fields": {
+      "action_time": "2018-05-11T12:29:20.761Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "10",
+      "object_repr": "Opptak",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"start_date\", \"end_date\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 55,
+    "fields": {
+      "action_time": "2018-05-11T12:30:45.946Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "8",
+      "object_repr": "Oppgradering",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"start_date\", \"end_date\", \"registration_end_date\", \"price\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 56,
+    "fields": {
+      "action_time": "2018-05-11T12:32:22.546Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "4",
+      "object_repr": "17. Mai",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"start_date\", \"end_date\"]}}, {\"changed\": {\"name\": \"description\", \"object\": \"17. Mai\", \"fields\": [\"description_text\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 57,
+    "fields": {
+      "action_time": "2018-05-11T12:34:48.402Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "12",
+      "object_repr": "NM i friidrett",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"start_date\", \"end_date\"]}}, {\"changed\": {\"name\": \"description\", \"object\": \"NM i friidrett\", \"fields\": [\"description_text\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 58,
+    "fields": {
+      "action_time": "2018-05-11T12:38:54.943Z",
+      "user": 26,
+      "content_type": 20,
+      "object_id": "3",
+      "object_repr": "100 meter sprint",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"category\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 59,
+    "fields": {
+      "action_time": "2018-05-11T12:39:06.353Z",
+      "user": 26,
+      "content_type": 20,
+      "object_id": "14",
+      "object_repr": "200 meter sprint",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"category\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 60,
+    "fields": {
+      "action_time": "2018-05-11T12:43:38.187Z",
+      "user": 26,
+      "content_type": 20,
+      "object_id": "1",
+      "object_repr": "Lengdehopp",
+      "action_flag": 2,
+      "change_message": "[{\"added\": {\"name\": \"attendee, user\", \"object\": \"Long jump - frankela@steinberg.org\"}}, {\"added\": {\"name\": \"attendee, user\", \"object\": \"Long jump - dwight.k.schrute@schrutefarms.net\"}}, {\"added\": {\"name\": \"attendee, user\", \"object\": \"Long jump - ola.nordmann@gmail.com\"}}, {\"added\": {\"name\": \"attendee, user\", \"object\": \"Long jump - phyllis@vancerefrigiration.com\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 61,
+    "fields": {
+      "action_time": "2018-05-11T12:44:02.605Z",
+      "user": 26,
+      "content_type": 20,
+      "object_id": "4",
+      "object_repr": "Stavsprang",
+      "action_flag": 2,
+      "change_message": "[{\"added\": {\"name\": \"attendee, user\", \"object\": \"Pole Vault - super@admin.com\"}}, {\"added\": {\"name\": \"attendee, user\", \"object\": \"Pole Vault - ryan.the.fireguy@hotmail.com\"}}, {\"added\": {\"name\": \"attendee, user\", \"object\": \"Pole Vault - meredith.palmer@dundermifflin.com\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 62,
+    "fields": {
+      "action_time": "2018-05-11T12:44:44.704Z",
+      "user": 26,
+      "content_type": 20,
+      "object_id": "4",
+      "object_repr": "Stavsprang",
+      "action_flag": 2,
+      "change_message": "[{\"deleted\": {\"name\": \"attendee, user\", \"object\": \"Pole Vault - pci.pci@mail.com\"}}]"
     }
   }
 ]

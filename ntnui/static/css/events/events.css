@@ -1,7 +1,10 @@
+/* Main CSS page, used for all event pages */
+
+/* Define NTNUI colors */
 * {
-  --NTNUI-green: #008000;
-  --NTNUI-red: #FB0000;
-  --NTNUI-yellow: #FFFF00;
+    --NTNUI-green: #008000;
+    --NTNUI-red: #FB0000;
+    --NTNUI-yellow: #FFFF00;
 }
 
 .event-main-page-container {
@@ -17,23 +20,27 @@
 #main {
     grid-column: 2;
 }
+
 .card-container {
-    padding:0;
+    padding: 0;
 }
+
 #accordion {
     grid-row: 1;
     grid-column: 1;
     margin-left: 10%;
     margin-right: 10%;
-    width:80%;
+    width: 80%;
 }
 
 #headingOne {
     background-color: white;
 }
-.checkbox-label  {
-    padding-left:1rem;
+
+.checkbox-label {
+    padding-left: 1rem;
 }
+
 .create-event {
     grid-column: 3;
     grid-row: 1;
@@ -78,7 +85,6 @@ filter-element-height {
     margin: 0.5rem;
 }
 
-
 .form-control-select {
     height: 2rem;
     border: 1px solid lightgrey;
@@ -86,31 +92,31 @@ filter-element-height {
 }
 
 .btn-success {
-  background-color: var(--NTNUI-green) !important;
+    background-color: var(--NTNUI-green) !important;
 }
 
 #search {
     /*max-width: 20rem;*/
-    calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+calc(.25 rem - 1 px) calc(.25 rem - 1 px) 0 0;
     margin-left: 10%;
     margin-right: 10%;
 }
 
 #search {
-    calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+calc(.25 rem - 1 px) calc(.25 rem - 1 px) 0 0;
     margin-left: 10%;
     margin-right: 10%;
 }
 
 #to-date {
-    calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+calc(.25 rem - 1 px) calc(.25 rem - 1 px) 0 0;
     margin-left: 10%;
     margin-right: 10%;
     width: 100%;
 }
 
 #from-date {
-    calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+calc(.25 rem - 1 px) calc(.25 rem - 1 px) 0 0;
     margin-left: 10%;
     margin-right: 10%;
     width: 100%;
@@ -120,34 +126,34 @@ filter-element-height {
     width: 100%;
 }
 
-label.custom-control.custom-checkbox:checked + label::before {
+label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     margin-top: 1%;
     margin-left: 2%;
 }
 
 .custom-checkbox input[type="checkbox"]:checked + label::before {
-  background-color: #5cb85c;
-  border-color: #5cb85c;
+    background-color: #5cb85c;
+    border-color: #5cb85c;
 }
 
 .checkbox-success input[type="checkbox"]:checked + label::after {
-  color: #000;
+    color: #000;
 }
+
 .card-element {
     background-color: white;
-    display:flex;
-
+    display: flex;
 }
+
 .card-element-container {
-
 }
+
 .card-body-container {
-    padding:0rem;
-    margin:0rem;
+    padding: 0rem;
+    margin: 0rem;
 }
 
 .card-name {
-
     text-align: center;
     margin-top: 2%;
     text-transform: uppercase;
@@ -212,17 +218,19 @@ label.custom-control.custom-checkbox:checked + label::before {
 }
 
 .header-container {
-    margin-top:2rem;
-    width:100%;
+    margin-top: 2rem;
+    width: 100%;
 }
+
 .active-item {
     border-bottom: 4px solid #007D32;
 }
-#container {
-    width: 50%;
-    max-width:80rem;
-}
 
+.container {
+    width: 60%;
+    min-width: 941px;
+    max-width: 80rem;
+}
 
 #header {
     z-index: 100;
@@ -242,9 +250,10 @@ label.custom-control.custom-checkbox:checked + label::before {
 
 .img-container {
     width: 100%;
-    max-height:30rem;
+    max-height: 30rem;
     overflow: hidden;
 }
+
 .title-container {
     width: 100%;
 }
@@ -257,35 +266,80 @@ label.custom-control.custom-checkbox:checked + label::before {
 
 .my-options-button {
     width: 15rem;
+    text-align: left;
 }
 
 .loader {
-    border: 16px solid lightgrey; /* Light grey */
-    border-top: 16px solid green; /* Blue */
+    border: .1rem solid #00AA00;
+    border-top: .1rem solid white;
     border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
+    width: .7rem;
+    height: .7rem;
+    animation: spin 1.5s linear infinite;
+    margin: 0.1rem;
+    box-sizing: initial;
+}
+
+#attend-event-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 991px) {
 
-    .filter-element .form-control-select  #search .create-event #main .buttons {
+    .filter-element .form-control-select #search .create-event #main .buttons {
         width: 100%;
         max-width: 100%;
     }
 
-    .create-event {
-        margin-left: 0;
+    #main {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
     }
 
+    .create-event {
+        display: flex;
+        flex-wrap:wrap;
+        justify-content: flex-start;
+        margin: .1rem;
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-top:1rem;
+        margin-bottom: 1rem;
+    }
+
+    #event-container {
+        width: 80%;
+    }
 
     .event-main-page-container {
         display: block;
     }
+
+    .container {
+        width: 95%;
+        min-width: 0;
+    }
+
+    .button-container-my-options {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .my-options-button {
+        margin: .5rem;
+    }
+
 }

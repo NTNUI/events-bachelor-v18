@@ -1,10 +1,16 @@
 from django.contrib import admin
-from events.models.tag import Tag
+
+from events.models.category import Category, CategoryDescription
+from events.models.event import (Event, EventDescription,
+                                 EventGuestRegistration, EventGuestWaitingList,
+                                 EventRegistration, EventWaitingList)
 from events.models.guest import Guest
 from events.models.restriction import Restriction
-from events.models.category import Category, CategoryDescription
-from events.models.event import Event, EventDescription, EventRegistration, EventGuestRegistration, EventWaitingList, EventGuestWaitingList
-from events.models.sub_event import SubEvent, SubEventDescription, SubEventRegistration, SubEventGuestRegistration, SubEventWaitingList, SubEventGuestWaitingList
+from events.models.sub_event import (SubEvent, SubEventDescription,
+                                     SubEventGuestRegistration,
+                                     SubEventGuestWaitingList,
+                                     SubEventRegistration, SubEventWaitingList)
+from events.models.tag import Tag
 
 
 class CategoryDescriptionInline(admin.TabularInline):

@@ -1,75 +1,97 @@
+from datetime import datetime
+
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
 from django.utils import translation
-from datetime import datetime
-from events.models.event import Event
+from django.utils.translation import gettext as _
+
 from events.models.category import Category
+from events.models.event import Event
 from events.models.sub_event import SubEvent
+
+from .views import (get_json)
+
+
+def get_events_request(request):
+    """ Gets the events which match the search, filtering, and sorting. """
+
+    return get_events(request, False)
+
+
+def get_attending_events_request(request):
+    """ Gets the events which the user is signed up for and matches the search, filtering, and sorting. """
+
+    return get_events(request, True)
 
 
 def get_events(request, attending):
-    """Returnes a set of events filter after the parms in the request"""
-    if request.method == "GET":
-        # gets the page from the request, or returns one if page is not given as a parm in the url
-        page = request.GET.get('page', 1)
+    """ Returns a set of events based on the requested sorting and filtering. """
 
-        if not attending:
-            events = get_filtered_events(request, False)
-        else:
-            events = get_filtered_events(request, True)
-        # paginate the events, with 10 elements on every page
-        p = Paginator(events, 10)
+    # Checks if the request is GET.
+    if not request.method == "GET":
+        return get_json(404, _('Request must be GET.'))
 
-        # Get json from the paginated events
-        events = get_events_json(p.page(page))
+    # Gets the page from the request.
+    # Gets 1, if the page is not given as a param in the url.
+    page = request.GET.get('page', 1)
 
-        # Return the json also containing the page number and page count
-        return JsonResponse({
-            'events': events,
-            'page_number': page,
-            'page_count': p.num_pages}
-        )
+    events = get_filtered_events(request, attending)
 
-    # if not get return 404
-    return JsonResponse({
-        'message': 'must be get'
-    }, status=404)
+    # Paginate the events, with 10 elements on every page.
+    p = Paginator(events, 10)
+
+    # Get JSON from the paginated events
+    events = get_events_json(p.page(page))
+
+    # Return the JSON also containing the page number and page count.
+    return JsonResponse({'events': events, 'page_number': page, 'page_count': p.num_pages})
 
 
 def get_filtered_events(request, attending):
-    """Returnes all the events that fits the order_by, search and filter_by"""
-    # Get filters from parms
+    """Returns all the events that fits the sort_by, search and filter_by"""
+
+    # Get filters from params.
     sort_by = request.GET.get('sort-by', "")
     search = request.GET.get('search', "")
     filter_host = request.GET.get('filter-host', "")
 
     if not attending:
         events = get_filtered_on_search_events(search, False)
-        events = get_filtered_on_host_events(filter_host, events)
+        events = get_filtered_events_on_host(filter_host, events)
         events = get_sorted_events(sort_by, events)
-
         return events
 
     else:
         events = get_filtered_on_search_events(search, True)
-        events = get_filtered_on_host_events(filter_host, events)
+        events = get_filtered_events_on_host(filter_host, events)
         events = get_sorted_events(sort_by, events)
 
-        attending_events=[]
+        attending_events = []
+
+        # For each event.
         for event in events:
+
+            # Checks if the event has categories.
             if Category.objects.filter(event=event).exists():
-                subevent_list=[]
-                categories = Category.objects.filter(event=event)
-                # for every category do:
+                sub_event_list = []
+                categories = Category.objects.get(event=event)
+
+                # Gets all the categories sub-events.
                 for i in range(len(categories)):
-                    # get all the sub-events for that category
                     sub_events = SubEvent.objects.filter(category=categories[i])
-                    # add the category and map each sub_event to a dic
-                    for subevent in sub_events:
-                        subevent_list.append(subevent)
-                for subevent in subevent_list:
-                    if subevent.is_user_enrolled(request.user):
+
+                    # Adds all the category's sub-events to the sub_event_list.
+                    for sub_event in sub_events:
+                        sub_event_list.append(sub_event)
+
+                # For each sub-event.
+                for sub_event in sub_event_list:
+
+                    # Checks if the user attends the sub-event.
+                    if sub_event.is_user_enrolled(request.user):
+
+                        # Adds the event to the list of events which the user attends, if the user attends a sub-event.
                         if event not in attending_events:
                             attending_events.append(event)
             else:
@@ -80,11 +102,13 @@ def get_filtered_events(request, attending):
 
 
 def get_filtered_on_search_events(search, attending):
-    if not attending:
-        # Checks if search have a value
-        if search is not None and search != '':
-            # serach for the word in descriptions and name
+    """ Filters all events on the given search. """
 
+    if not attending:
+        # Checks if the search has a value.
+        if search is not None and search != '':
+
+            # Search for the word in the event's name and descriptions.
             return Event.objects.filter(Q(eventdescription__language=translation.get_language()) &
                                         (Q(eventdescription__name__icontains=search) |
                                          Q(eventdescription__description_text__icontains=search) |
@@ -94,59 +118,71 @@ def get_filtered_on_search_events(search, attending):
             return Event.objects.filter(eventdescription__language=translation.get_language())
 
     else:
-        today = datetime.now()
-        # Checks if search have a value
+        # Checks if the search has a value.
         if search is not None and search != '':
-            # serach for the word in descriptions and name
-
-            return Event.objects.filter(Q(end_date__gte=today) & Q(eventdescription__language=translation.get_language()) &
-                                        (Q(eventdescription__name__icontains=search) |
-                                         Q(eventdescription__description_text__icontains=search) |
-                                         Q(tags__name__icontains=search)))
+            # Search for the word in the event's name and descriptions.
+            return Event.objects.filter(
+                Q(end_date__gte=datetime.now()) & Q(eventdescription__language=translation.get_language()) &
+                (Q(eventdescription__name__icontains=search) | Q(eventdescription__description_text__icontains=search) |
+                 Q(tags__name__icontains=search)))
         else:
-            # if not search return all event objects
-            return Event.objects.filter(Q(end_date__gte=today) & Q(eventdescription__language=translation.get_language()))
+            # Returns all events when no search is specified.
+            return Event.objects.filter(
+                Q(end_date__gte=datetime.now()) & Q(eventdescription__language=translation.get_language()))
 
 
-def get_filtered_on_host_events(filter_host, events):
-    if filter_host == "":
+def get_filtered_events_on_host(hosts, events):
+    """ Gets a list of events and filters it on the list of hosts. """
+
+    # Returns the list of events without filtering, as no hosts are specified.
+    if hosts == "":
         return events
-    host_list = filter_host.split("-")
+
+    # Gets the list of hosts.
+    host_list = hosts.split("-")
+
+    # NTNUI is one of the hosts which gets filtered on.
+    # Returns the list of events filtered on NTNUI and the sports groups in host_list.
     if 'NTNUI' in host_list:
         host_list.remove('NTNUI')
         return events.filter(Q(sports_groups__in=host_list) | Q(is_host_ntnui=True))
-    return events.filter(sports_groups__in=host_list)
-
-
-def get_sorted_events(sort_by, events):
-    # Allowed order_by
-    allowed_sort_by = ['name', 'description', 'start_date', 'end_date']
-    # checks that order_by have a value and that it is in the allowed_order_by
-    if sort_by is not None and (sort_by in allowed_sort_by or sort_by[1:] in allowed_sort_by):
-        # checks the first character
-        type = ''
-        if sort_by[0] == '-':
-            type = '-'
-            sort_by = sort_by[1:]
-
-        # if the sort by is not in the event table we need to find the filed by merging
-        if sort_by == 'name':
-            sort_by = type + 'eventdescription__name'
-        elif sort_by == 'description':
-            sort_by = type + 'eventdescription__description_text'
-
-        # return the result
-        return events.order_by(sort_by, 'priority', 'start_date')
     else:
-        # return the result
-        return events.order_by('-priority', 'start_date')
+        # Returns the list of events filtered on the hosts.
+        return events.filter(sports_groups__in=host_list)
+
+
+def get_sorted_events(sort_by_criterion, events):
+    """ Gets a list of events and sorts it by the given criterion. """
+
+    # Criteria the events can be sorted by.
+    sort_by_criteria = ['start_date', 'end_date', 'name']
+
+    # Checks that sort_by_criteria has a valid value.
+    if sort_by_criterion is not None and ((sort_by_criterion or sort_by_criterion[1:]) in sort_by_criteria):
+        # Checks if the sorting is ascending or descending.
+        sort_type = ''
+        if sort_by_criterion[0] == '-':
+            sort_type = '-'
+            sort_by_criterion = sort_by_criterion[1:]
+
+        # if the sort by is not in the event table we need to find the field by merging
+        if sort_by_criterion == 'name':
+            sort_by_criterion = sort_type + 'eventdescription__name'
+        # Returns the list of events, sorted by the criterion.
+        return events.order_by(sort_by_criterion, 'start_date')
+    else:
+        # The sort_by_criterion does not match any of the sort_by_criteria.
+        # Returns the list of events, sorted by the events' start_date.
+        return events.order_by('start_date')
 
 
 def get_events_json(events):
-    """Returnes list of dic of event"""
-    return_events = []
+    """ Creates a list of dictionaries containing the events' information. """
+
+    event_list = []
+
     for event in events:
-        return_events.append({
+        event_list.append({
             'id': event.id,
             'name': event.name(),
             'place': event.place,
@@ -157,4 +193,5 @@ def get_events_json(events):
             'host': event.get_host(),
             'cover_photo': str(event.cover_photo)
         })
-    return return_events
+
+    return event_list

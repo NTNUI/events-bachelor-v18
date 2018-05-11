@@ -140,7 +140,7 @@ h1 {
     justify-content: flex-end;
     flex-wrap: wrap;
     align-items: center;
-    width: 25rem;
+    width: 28rem;
     max-width: 100%;
 }
 
@@ -192,7 +192,6 @@ h1 {
     margin-bottom: 2rem;
 }
 
-
 /*
     Used to make the page responsive
  */
@@ -208,6 +207,17 @@ h1 {
     .event-collapse-header {
         height: auto;
         min-height: 4rem;
+    }
+
+}
+
+@media only screen and (max-width: 550px) {
+    .sub-event-header-button-container{
+        display:block;
+        float:left;
+    }
+    .create-sub-event{
+        justify-content: flex-start;
     }
 
 }

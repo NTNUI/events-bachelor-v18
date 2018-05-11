@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/events/event_details.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/events/events.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <div class="alert-message-container">
+    </div>
+
+    <div id="container">
+
+        <div id="content-container">
+
+            <div id="event-info-container">
+
+                <div id="event-sign-up">
+
+                    <button type="button"
+                            id="unattend-event-by-token-button"
+                            class="btn btn-danger"
+                            data-state="unattend"
+                            value="{{ event.id }}"
+                            data-toggle="modal"
+                            data-target="#eventModal">
+                        <div class="button-title-container">
+                            {% trans 'Unattend from the event' %}
+                        </div>
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+    <script type="text/javascript" src="{% static 'js/events/event_details.js' %}"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+{% endblock %}

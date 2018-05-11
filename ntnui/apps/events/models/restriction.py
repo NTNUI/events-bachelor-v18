@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Restriction(models.Model):
-    """Restrictions makes it possible to create events for specific groups of users."""
+    """ Created to make it possible to restrict events and sub-events for specific groups of users. """
 
     name = models.CharField(_('name'), max_length=50)
 
