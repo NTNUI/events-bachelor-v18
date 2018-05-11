@@ -38,6 +38,7 @@ def get_main_page(request):
 
 
 def create_category_request(request):
+    """Creates a new category with the provided data"""
     if request.POST:
         name_nb = request.POST.get("name_nb")
         name_en = request.POST.get("name_en")
@@ -54,6 +55,7 @@ def create_category_request(request):
 
 
 def create_sub_event_request(request):
+    """Creates a new event with the provided data"""
     if request.POST:
         print(request.POST)
         name_nb = request.POST.get("name_nb")
@@ -108,6 +110,7 @@ def create_sub_event_request(request):
 
 
 def get_remove_attendance_page(request, token):
+    """Returnes the remove attend page"""
     return render(request, 'events/remove_attendance.html')
 
 
@@ -139,6 +142,7 @@ def get_sub_event_dict(sub_event, user):
 
 
 def get_event_details(request, id):
+    """Returnes details about a given event"""
     sub_event_list = []
     # get the event from db
     event = Event.objects.get(id=int(id))
@@ -282,7 +286,6 @@ def get_delete_event(request, id):
 
 def delete_category_request(request):
     category = Category.objects.get(id=int(request.POST.get('id')))
-
     return delete_category(category)
 
 
