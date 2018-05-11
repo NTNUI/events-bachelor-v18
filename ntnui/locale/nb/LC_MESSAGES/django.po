@@ -454,7 +454,7 @@ msgstr "Navn engelsk"
 #: .\templates\events\edit_event_page.html:244
 #: .\templates\events\event_details.html:287
 msgid "From date"
-msgstr "Fradato"
+msgstr "Fra dato"
 
 #: .\templates\events\create_new_event.html:46
 #: .\templates\events\create_new_event.html:193

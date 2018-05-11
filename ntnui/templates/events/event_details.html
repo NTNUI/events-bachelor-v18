@@ -358,15 +358,13 @@
                                                     {% endif %}
                                                 </div>
                                             </div>
-                                            <div class="sub-event-row-container"
-                                                 style="border-top: 1px dashed green;">
+                                            <div class="sub-event-row-container border-container">
                                                 <div class="sub-event-col">
                                                     <div>
                                                         {% trans 'Number of participants' %} <br>
                                                         <b class="attendance">
                                                             {% if sub_event.attendance_cap != "" and sub_event.attendance_cap is not none %}
-                                                                {{ sub_event.number_of_participants }}/
-                                                                {{ sub_event.attendance_cap }}
+                                                                {{ sub_event.number_of_participants }}/{{ sub_event.attendance_cap }}
                                                             {% else %}
                                                                 {{ sub_event.number_of_participants }}
                                                             {% endif %}
