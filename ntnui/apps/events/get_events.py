@@ -118,7 +118,7 @@ def get_filtered_on_search_events(search, attending):
             return Event.objects.filter(eventdescription__language=translation.get_language())
 
     else:
-        # Checks if the search have a value.
+        # Checks if the search has a value.
         if search is not None and search != '':
             # Search for the word in the event's name and descriptions.
             return Event.objects.filter(
