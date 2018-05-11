@@ -105,7 +105,96 @@ $(() => {
         }
 
     });
+
+
+    /**
+     * Sends a attend event request to the server
+     */
+    $("#attend-event-button").click((e) => {
+        e.preventDefault()
+        const button = getButton(e);
+        if (!$(button).prop('disabled')) {
+            if (isGuestUser) {
+                showGuestModal();
+            } else {
+                findStateEvent(button)
+            }
+        }
+    })
+
+    /**
+     * Sends a attend subevet request
+     */
+    $(".join-subevent-button").click((e) => {
+        const button = getButton(e)
+
+        if (!$(button).prop('disabled')) {
+            let subEvent = subEvents.filter((event) => event.id == parseInt(button.value))
+            subEventIndex = subEvents.indexOf(subEvent[0])
+
+            if (isGuestUser) {
+                guestSubEventButton = button;
+                guestSubEventObject = subEvent[0]
+                showGuestModal();
+            } else {
+                findStateSubEvent(button, subEvent[0])
+            }
+        }
+    })
+
+
+    /**
+     * onClick for the remove button on the delete modal
+     */
+    $("#remove-attend-event-button-modal").click(() => {
+        switch (modalType) {
+            case ModalTypes.UNATTEND_EVENT:
+                removeAttendEvent($("#attend-event-button")[0])
+                break;
+            case ModalTypes.UNATTEND_SUB_EVENT:
+                const button = getSubEventButton(subEvents[subEventIndex])
+                $(button).prop("disabled", true).addClass("disabled");
+                removeAttendEvent(button, subEvents[subEventIndex])
+                break;
+        }
+    })
+
+    /**
+     * On Click for the guest modal
+     */
+    $("#guest-data-form").on('submit', async (e) => {
+        e.preventDefault();
+        // Get all values from the modal
+        firstName = $("#first-name").val();
+        lastName = $("#last-name").val();
+        phone = $("#phone").val();
+        email = $("#input-email").val();
+
+        if (guestSubEventObject) {
+            findStateSubEvent(guestSubEventButton, guestSubEventObject)
+            guestSubEventObject = null;
+            guestSubEventButton = null;
+        } else {
+            findStateEvent($("#attend-event-button"))
+        }
+        hideGuestModal()
+    })
 })
+
+/**
+ * Returnes the button maching the subEvent id
+ * @param subEvent
+ */
+function getSubEventButton(subEvent) {
+    let button;
+    $(".join-subevent-button").each((e, element) => {
+        if (parseInt(element.value) === subEvent.id) {
+            button = element;
+            return false
+        }
+    })
+    return button;
+}
 
 /**
  * Finds the state for a given string
@@ -124,80 +213,6 @@ function getState(type) {
     }
 }
 
-/**
- * Sends a attend event request to the server
- */
-$("#attend-event-button").click((e) => {
-    e.preventDefault()
-    const button = getButton(e);
-    if (!$(button).prop('disabled')) {
-        if (isGuestUser) {
-            showGuestModal();
-        } else {
-            findStateEvent(button)
-        }
-    }
-})
-
-/**
- * Sends a attend subevet request
- */
-$(".join-subevent-button").click((e) => {
-    const button = getButton(e)
-
-    if (!$(button).prop('disabled')) {
-        let subEvent = subEvents.filter((event) => event.id == parseInt(button.value))
-        subEventIndex = subEvents.indexOf(subEvent[0])
-
-        if (isGuestUser) {
-            guestSubEventButton = button;
-            guestSubEventObject = subEvent[0]
-            showGuestModal();
-        } else {
-            findStateSubEvent(button, subEvent[0])
-        }
-    }
-})
-
-/**
- * onClick for the remove button on the delete modal
- */
-$("#remove-attend-event-button-modal").click(() => {
-    switch (modalType) {
-        case ModalTypes.UNATTEND_EVENT:
-            removeAttendEvent($("#attend-event-button")[0])
-            break;
-        case ModalTypes.UNATTEND_SUB_EVENT:
-            $(".join-subevent-button").each((e, element) => {
-                if (element.value == subEvents[subEventIndex].id) {
-                    $(element).prop("disabled", true).addClass("disabled");
-                    removeAttendEvent(element, subEvents[subEventIndex])
-                }
-            })
-            break;
-    }
-})
-
-/**
- * On Click for the guest modal
- */
-$("#guest-data-form").on('submit', async (e) => {
-    e.preventDefault();
-    // Get all values from the modal
-    firstName = $("#first-name").val();
-    lastName = $("#last-name").val();
-    phone = $("#phone").val();
-    email = $("#input-email").val();
-
-    if (guestSubEventObject) {
-        findStateSubEvent(guestSubEventButton, guestSubEventObject)
-        guestSubEventObject = null;
-        guestSubEventButton = null;
-    } else {
-        findStateEvent($("#attend-event-button"))
-    }
-    hideGuestModal()
-})
 
 /**
  * Uses the state of the subEvent to figure out what action to perform
@@ -207,8 +222,8 @@ $("#guest-data-form").on('submit', async (e) => {
 function findStateSubEvent(button, subEvent) {
     switch (subEvent.state) {
         case States.ATTEND:
-            $(button).prop("disabled", true).addClass("disabled");
             if (!$(button).closest(".sub-event-container").find(".price").length) {
+                $(button).prop("disabled", true).addClass("disabled");
                 attendEvent(button, subEvent)
             } else {
                 attendPayedEvent(button, subEvent)
@@ -240,8 +255,8 @@ function findStateEvent(button) {
             $("#deleteModal").modal("show");
             break;
         case States.ATTEND:
-            $(button).prop("disabled", true).addClass("disabled");
-            if (hasNoPrice) {
+            if (hasNoPrice)
+                {$(button).prop("disabled", true).addClass("disabled");
                 attendEvent(button)
             } else {
                 attendPayedEvent(button)
@@ -317,9 +332,15 @@ async function processStripeToken(token) {
     let subEvent = paymentSubEvent
     if (paymentSubEvent) {
         data.sub_event_id = subEvent.id;
+        let button = getSubEventButton(subEvent)
+        setButtonLoader(button)
+        $(button).prop("disabled", true).addClass("disabled");
     }
     else {
         data.event_id = eventID;
+        let button = $("#attend-event-button")[0]
+        setButtonLoader(button)
+        $(button).prop("disabled", true).addClass("disabled");
     }
     paymentSubEvent = null;
     if (isGuestUser) {
@@ -332,12 +353,11 @@ async function processStripeToken(token) {
     let result = await sendAjax(data, '/ajax/events/attend-payment-event')
     if (result) {
         if (subEvent) {
-            $(".join-subevent-button").each((e, button) => {
-                if (parseInt(button.value) === subEvent.id) {
-                    updateButton(button, gettext('Unattend'), States.UNATTEND, subEvent)
-                }
-            })
+            subEvent.state = States.UNATTEND;
+            updateButton(getSubEventButton(subEvent), gettext('Unattend'), States.UNATTEND, subEvent)
+            subEvents = subEvents.map( listSubEvent => listSubEvent.id === subEvent.id ? subEvent : listSubEvent)
         } else {
+            state = States.UNATTEND
             updateButton($("#attend-event-button")[0], gettext('Unattend'), States.UNATTEND)
         }
         printMessage(MsgType.SUCCESS, result.message)
@@ -407,7 +427,6 @@ function setButtonLoader(button, color) {
 async function attendPayedEvent(button, subEvent) {
     const URL = !subEvent ? ('/ajax/events/' + eventID) : ('/ajax/events/sub-event/' + subEvent.id)
     paymentButton = button;
-    setButtonLoader(button)
     const event = await sendAjax({id: (subEvent ? subEvent.id : eventID)}, URL, 'POST', button)
     if (event) {
         let user = {}
@@ -453,11 +472,13 @@ async function attendEvent(button, subEvent) {
         response = await sendAjax(context, '/ajax/events/attend-event', 'POST', button);
     }
     if (response) {
+        let participantText = response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : "")
         updateButton(button, gettext('Unattend'), States.UNATTEND, subEvent)
         if (subEvent) {
+            updateParticipantTextSubEvent(getSubEventButton(subEvent), participantText)
             subEvents[subEvents.indexOf(subEvent)].state = States.UNATTEND
         } else {
-            $("#attendance").html(response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : ""))
+            $("#attendance").html(participantText)
             state = States.UNATTEND
         }
         printMessage(MsgType.SUCCESS, response.message);
@@ -485,11 +506,13 @@ async function attendWaitingList(button, subEvent) {
         response = await sendAjax(context, '/ajax/events/waiting-list', 'POST', button);
     }
     if (response) {
+        let participantText = response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : "")
         updateButton(button, gettext('Remove me from the wait list'), States.ON_WAITING_LIST, subEvent)
         if (subEvent) {
+            updateParticipantTextSubEvent(getSubEventButton(subEvent), participantText)
             subEvents[subEvents.indexOf(subEvent)].state = States.ON_WAITING_LIST
         } else {
-            $("#attendance").html(response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : ""))
+            $("#attendance").html(participantText)
             state = States.ON_WAITING_LIST
         }
         printMessage(MsgType.SUCCESS, response.message);
@@ -523,20 +546,25 @@ async function removeAttendEvent(button, subEvent) {
         response = await sendAjax(context, '/ajax/events/unattend-event', 'POST', button)
     }
     if (response) {
+        let participantText = response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : "")
         if (parseInt(response.number_of_participants) >= parseInt(response.attendance_cap)) {
+
             updateButton(button, gettext('Put me on the wait list'), States.WAIT_LIST, subEvent)
+
             if (subEvent) {
+                updateParticipantTextSubEvent(getSubEventButton(subEvent), participantText)
                 subEvents[subEvents.indexOf(subEvent)].state = States.WAIT_LIST
             } else {
-                $("#attendance").html(response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : ""))
+                $("#attendance").html(participantText)
                 state = States.WAIT_LIST
             }
         } else {
             updateButton(button, gettext('Attend event'), States.ATTEND, subEvent)
             if (subEvent) {
+                updateParticipantTextSubEvent(getSubEventButton(subEvent), participantText)
                 subEvents[subEvents.indexOf(subEvent)].state = States.ATTEND
             } else {
-                $("#attendance").html(response.number_of_participants + (response.attendance_cap ? ("/" + response.attendance_cap) : ""))
+                $("#attendance").html(participantText)
                 state = States.ATTEND
             }
             printMessage(MsgType.SUCCESS, response.message)
@@ -548,6 +576,11 @@ async function removeAttendEvent(button, subEvent) {
 window.addEventListener('popstate', function () {
     handler.close();
 });
+
+
+function updateParticipantTextSubEvent(button, text) {
+    $(button).closest(".sub-event-container").find(".attendance").html(text)
+}
 
 
 // from django website https://docs.djangoproject.com/en/2.0/ref/csrf/
