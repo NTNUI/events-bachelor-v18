@@ -115,9 +115,15 @@ $(() => {
         const button = getButton(e);
         if (!$(button).prop('disabled')) {
             if (isGuestUser) {
-                showGuestModal();
+                if (state === States.UNATTEND || state === States.ON_WAITING_LIST) {
+                    attendEventBasedOnState(button)
+                } else {
+                    showGuestModal();
+                }
+
+
             } else {
-                findStateEvent(button)
+                attendEventBasedOnState(button)
             }
         }
     })
@@ -135,9 +141,16 @@ $(() => {
             if (isGuestUser) {
                 guestSubEventButton = button;
                 guestSubEventObject = subEvent[0]
-                showGuestModal();
+                console.log(guestSubEventObject.state)
+                if (guestSubEventObject.state === States.UNATTEND || guestSubEventObject.state === States.ON_WAITING_LIST) {
+                    attendSubEventBasedOnState(guestSubEventButton, guestSubEventObject)
+                    guestSubEventObject = null;
+                    guestSubEventButton = null;
+                } else {
+                    showGuestModal();
+                }
             } else {
-                findStateSubEvent(button, subEvent[0])
+                attendSubEventBasedOnState(button, subEvent[0])
             }
         }
     })
@@ -171,11 +184,11 @@ $(() => {
         email = $("#input-email").val();
 
         if (guestSubEventObject) {
-            findStateSubEvent(guestSubEventButton, guestSubEventObject)
+            attendSubEventBasedOnState(guestSubEventButton, guestSubEventObject)
             guestSubEventObject = null;
             guestSubEventButton = null;
         } else {
-            findStateEvent($("#attend-event-button"))
+            attendEventBasedOnState($("#attend-event-button")[0])
         }
         hideGuestModal()
     })
@@ -219,7 +232,7 @@ function getState(type) {
  * @param button
  * @param subEvent
  */
-function findStateSubEvent(button, subEvent) {
+function attendSubEventBasedOnState(button, subEvent) {
     switch (subEvent.state) {
         case States.ATTEND:
             if (!$(button).closest(".sub-event-container").find(".price").length) {
@@ -248,15 +261,15 @@ function findStateSubEvent(button, subEvent) {
  * Uses the state of the vent button to figure out what action to perform
  * @param button
  */
-function findStateEvent(button) {
+function attendEventBasedOnState(button) {
     switch (state) {
         case States.UNATTEND:
             modalType = ModalTypes.UNATTEND_EVENT
             $("#deleteModal").modal("show");
             break;
         case States.ATTEND:
-            if (hasNoPrice)
-                {$(button).prop("disabled", true).addClass("disabled");
+            if (hasNoPrice) {
+                $(button).prop("disabled", true).addClass("disabled");
                 attendEvent(button)
             } else {
                 attendPayedEvent(button)
@@ -352,11 +365,14 @@ async function processStripeToken(token) {
 
     let result = await sendAjax(data, '/ajax/events/attend-payment-event')
     if (result) {
+        let participantText = result.number_of_participants + (result.attendance_cap ? ("/" + result.attendance_cap) : "")
         if (subEvent) {
+            updateParticipantTextSubEvent(getSubEventButton(subEvent), participantText)
             subEvent.state = States.UNATTEND;
             updateButton(getSubEventButton(subEvent), gettext('Unattend'), States.UNATTEND, subEvent)
-            subEvents = subEvents.map( listSubEvent => listSubEvent.id === subEvent.id ? subEvent : listSubEvent)
+            subEvents = subEvents.map(listSubEvent => listSubEvent.id === subEvent.id ? subEvent : listSubEvent)
         } else {
+            $("#attendance").html(participantText)
             state = States.UNATTEND
             updateButton($("#attend-event-button")[0], gettext('Unattend'), States.UNATTEND)
         }
