@@ -193,7 +193,7 @@ def get_event_attendees_page(request, event_id):
         context = {
             'sub_events_exist': sub_events_exist,
             'event': event,
-            'sub_events_attendees_and_name_list': sub_events_attendees_and_names_list,
+            'sub_events_attendees_and_names_list': sub_events_attendees_and_names_list,
         }
 
     return render(request, 'events/event_attendees_page.html', context)
@@ -374,7 +374,7 @@ def get_event(request, event_id):
     })
 
 
-def get_sub_event(sub_event_id):
+def get_sub_event(request, sub_event_id):
     """ Creates a dictionary of a given sub-event. """
 
     # Checks that the sub-event exists.
