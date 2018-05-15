@@ -113,11 +113,11 @@ def attend_event(request, event, attendee, payment_id):
 
     # The attendee given is neither a user nor a guest.
     else:
-        return get_json(400, _('Only users and guests can attend.'))
+        return get_json(400, _('Only users and guests can attend events.'))
 
     # Sends an email confirming the event sign-up.
     attendance_mail(request, event, attendee, token)
-    return JsonResponse({'message': _("Signed up for the event!"),
+    return JsonResponse({'message': _('Signed up for the event!'),
                          'number_of_participants': len(event.get_attendee_list()),
                          'attendance_cap': event.attendance_cap}, status=201)
 
@@ -138,7 +138,7 @@ def waiting_list_event(request, event, attendee, payment_id):
 
     # The attendee given is neither a user nor a guest.
     else:
-        return get_json(400, _('Only users and guests can attend.'))
+        return get_json(400, _('Only users and guests can attend events.'))
 
     # Sends an email confirming the waiting list sign-up,
     waiting_list_mail(request, event, attendee,  token)
@@ -164,7 +164,7 @@ def verify_sign_up(request, event_has_open_spots):
     elif sub_event_id:
         event = get_sub_event_by_id(sub_event_id)
     else:
-        return None, None, False, False, get_json(400, _("Can't find the event ID."))
+        return None, None, False, False, get_json(400, _('Cannot find the event ID.'))
 
     # The attendee is a user.
     if request.user.is_authenticated():
@@ -276,10 +276,10 @@ def charge_card(data, event, attendee):
     except stripe.error.AuthenticationError:
         return None, False, get_json(400, _("Authentication with Stripe's API failed."))
     except stripe.error.APIConnectionError:
-        return None, False, get_json(400, _("Network communication with Stripe failed."))
+        return None, False, get_json(400, _('Network communication with Stripe failed.'))
     except stripe.error.StripeError:
         return None, False, \
-               get_json(400, _("Something went wrong, try again later or contact the host if the problem persists."))
+               get_json(400, _('Something went wrong, try again later or contact the host if the problem persists.'))
 
     # Payment accepted.
     return payment.id, True, None
@@ -305,9 +305,9 @@ def validate_guest_data(data):
     except ValidationError as error:
         return get_json(404, error.message)
     except Event.DoesNotExist:
-        return get_json(404, _("Event doesn't exist."))
+        return get_json(404, _('Event does not exist.'))
     except SubEvent.DoesNotExist:
-        return get_json(404, _("Sub-event doesn't exist."))
+        return get_json(404, _('Sub-event does not exist.'))
 
     # The input is valid.
     return None
@@ -328,7 +328,7 @@ def get_or_create_guest(data):
             email=email, first_name=first_name, last_name=last_name, phone_number=phone)
     # Catch exceptions.
     except Guest.ValidationError:
-        return None, False, get_json(400, _("Invalid input, cannot create guest."))
+        return None, False, get_json(400, _('Invalid input, cannot create guest.'))
     except Guest.MulitpleObjectsReturned:
         return None, False, get_json(400, _('There exists multiple identical guests.'))
 
@@ -399,7 +399,7 @@ def remove_attendance_request(request):
                 attendance.delete()
                 waiting_list_next_attend(request, event)
                 remove_attendance_email(event, user)
-                return JsonResponse({'message': _("Signed off the event!"),
+                return JsonResponse({'message': _('Signed off the event!'),
                                      'number_of_participants': len(event.get_attendee_list()),
                                      'attendance_cap': event.attendance_cap}, status=201)
         else:
@@ -411,7 +411,7 @@ def remove_attendance_request(request):
                 attendance.delete()
                 waiting_list_next_attend(request, event)
                 remove_attendance_email(event, user)
-                return JsonResponse({'message': _("Signed off the event!"),
+                return JsonResponse({'message': _('Signed off the event!'),
                                      'number_of_participants': len(event.get_attendee_list()),
                                      'attendance_cap': event.attendance_cap}, status=201)
 
@@ -496,7 +496,7 @@ def remove_attendance_by_token_request(request, token):
             return get_json(201, _('Signed off the event!'))
 
         # Can't sign off payment events.
-        return get_json(400, _("Can't sign off payment events, contact the host for refunding."))
+        return get_json(400, _(' sign off payment events, contact the host for refunding.'))
 
     # Multiple registrations matched the search.
     else:
@@ -520,7 +520,7 @@ def verify_sign_off(request):
     elif sub_event_id:
         event = get_sub_event_by_id(sub_event_id)
     else:
-        return None, None, False, False, get_json(400, _("Can't find the event ID."))
+        return None, None, False, False, get_json(400, _('Cannot find the event ID.'))
 
     # Checks that the user is logged in.
     if request.user.is_authenticated():
@@ -540,7 +540,7 @@ def verify_sign_off(request):
         else:
             return event, user, False, False, get_json(400, _('You are not signed up for this event.'))
 
-    # The user have to log-in to remove the attendance.
+    # The user have to log in to remove the attendance.
     else:
         return event, None, False, False, get_json(400, _('Please log in to sign off the event.'))
 

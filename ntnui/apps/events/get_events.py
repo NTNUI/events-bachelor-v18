@@ -94,14 +94,14 @@ def get_filtered_on_search_events(search, attending):
 
     # Checks if the search has a value and does the search on the events' name, description and tags.
     if search:
-        events = Event.objects.filter(Q(event_description__language=translation.get_language()) &
-                                      (Q(event_description__name__icontains=search) |
-                                       Q(event_description__description_text__icontains=search) |
+        events = Event.objects.filter(Q(eventdescription__language=translation.get_language()) &
+                                      (Q(eventdescription__name__icontains=search) |
+                                       Q(eventdescription__description_text__icontains=search) |
                                        Q(tags__name__icontains=search)))
 
     # Gets all events, as no search is given.
     else:
-        events = Event.objects.filter(event_description__language=translation.get_language())
+        events = Event.objects.filter(eventdescription__language=translation.get_language())
 
     # Returns all events given by the search.
     if not attending:
@@ -137,18 +137,18 @@ def get_sorted_events(sort_by_criterion, events):
 
     # Criteria the events can be sorted by.
     sort_by_criteria = ['start_date', 'end_date', 'name']
-
+    print(sort_by_criteria, sort_by_criterion)
     # Checks that sort_by_criteria has a valid value.
-    if sort_by_criterion is not None and ((sort_by_criterion or sort_by_criterion[1:]) in sort_by_criteria):
+    if sort_by_criterion and (sort_by_criterion in sort_by_criteria or sort_by_criterion[1:] in sort_by_criteria):
         # Checks if the sorting is ascending or descending.
         sort_type = ''
-        if sort_by_criterion[0] == '-':
+        if sort_by_criterion == '-name' :
             sort_type = '-'
             sort_by_criterion = sort_by_criterion[1:]
 
         # If the sort by is not in the event table we need to find the field by merging.
         if sort_by_criterion == 'name':
-            sort_by_criterion = sort_type + 'event_description__name'
+            sort_by_criterion = sort_type + 'eventdescription__name'
         # Returns the list of events, sorted by the criterion.
         return events.order_by(sort_by_criterion, 'start_date')
     else:
