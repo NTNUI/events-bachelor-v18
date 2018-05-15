@@ -72,7 +72,6 @@ def get_filtered_events(request, attending):
         attending_events = []
 
         for event in events:
-
             # Adds the event to attending_events if the user attends it.
             if event.is_user_enrolled(request.user):
                 attending_events.append(event)
@@ -168,6 +167,7 @@ def get_events_json(events):
             'id': event.id,
             'name': event.name(),
             'place': event.place,
+            'price': event.price,
             'description': event.description(),
             'start_date': event.start_date,
             'end_date': event.end_date,
