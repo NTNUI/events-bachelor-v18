@@ -315,7 +315,8 @@ def get_groups_user_can_create_events_for(user):
     return return_list
 
 
-def get_event(event_id):
+def get_event(request, event_id):
+    print(event_id)
     """ Creates a dictionary of a given event. """
 
     # Checks that the event exists.
