@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-23 12:52+0100\n"
+"POT-Creation-Date: 2018-05-11 12:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,50 +17,88 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: .\ntnui\static\js\events\create_and_edit_event.js:189
+#: .\ntnui\static\js\events\event_details.js:298
+msgid "Your request could not be processed"
+msgstr "Din forespørsel kunne ikke prosesseres"
 
-#: .\ntnui\static\js\events\create_new_event.js:54
-#: .\ntnui\static\js\events\create_new_event.js:67
-msgid "Invalid input!"
-msgstr "Ugyldig input"
+#: .\ntnui\static\js\events\create_and_edit_event.js:260
+#: .\ntnui\static\js\events\create_and_edit_event.js:300
+msgid "Create category"
+msgstr "Opprett kategori"
 
-#: .\ntnui\static\js\events\create_new_event.js:88
-#: .\ntnui\static\js\events\create_new_event.js:115
+#: .\ntnui\static\js\events\create_and_edit_event.js:261
+#: .\ntnui\static\js\events\create_and_edit_event.js:357
+msgid "Create sub-event"
+msgstr "Opprett underarrangement"
+
+#: .\ntnui\static\js\events\create_and_edit_event.js:539
+msgid "invalid input"
+msgstr "ugyldig tilførsel"
+
+#: .\ntnui\static\js\events\create_and_edit_event.js:581
 msgid "Invalid date!"
-msgstr "Ugyldig dato"
+msgstr "Ugyldig dato!"
 
-#: .\ntnui\static\js\events\create_new_event.js:94
+#: .\ntnui\static\js\events\create_and_edit_event.js:588
 msgid "Start date is not before end date!"
 msgstr "Startdato er ikke før sluttdato!"
 
-#: .\ntnui\static\js\events\create_new_event.js:122
+#: .\ntnui\static\js\events\create_and_edit_event.js:588
 msgid "End date is not after start date!"
 msgstr "Sluttdato er ikke etter startdato!"
 
-#: .\ntnui\static\js\events\create_new_event.js:136
-#: .\ntnui\static\js\events\create_new_event.js:149
-msgid "Empty field!"
-msgstr "Tomt felt!"
+#: .\ntnui\static\js\events\create_and_edit_event.js:664
+#: .\ntnui\static\js\events\create_and_edit_event.js:788
+msgid "Save"
+msgstr "Lagre"
 
-#: .\ntnui\static\js\events\event_details.js:50
-msgid "Do not attend event"
-msgstr "Meld meg av"
+#: .\ntnui\static\js\events\create_and_edit_event.js:797
+msgid "Create a category or a sub-event to get started"
+msgstr "Opprett en kategori eller et underarrangement for å starte"
 
-#: .\ntnui\static\js\events\event_details.js:74
-msgid "Attend event"
-msgstr "Meld meg på"
-
-#: .\ntnui\static\js\events\event_main.js:128
+#: .\ntnui\static\js\events\event_attending.js:126
+#: .\ntnui\static\js\events\event_main_page.js:126
 msgid "No more events to display!"
 msgstr "Ingen flere arrangement å vise!"
 
-#: .\ntnui\static\js\events\event_main.js:153
+#: .\ntnui\static\js\events\event_attending.js:151
+#: .\ntnui\static\js\events\event_main_page.js:151
 msgid "Place"
 msgstr "Sted"
 
-#: .\ntnui\static\js\events\event_main.js:154
+#: .\ntnui\static\js\events\event_attending.js:152
+#: .\ntnui\static\js\events\event_main_page.js:152
 msgid "Date"
 msgstr "Dato"
 
-#: .\ntnui\static\js\events\event_main.js:155
+#: .\ntnui\static\js\events\event_attending.js:153
+#: .\ntnui\static\js\events\event_main_page.js:153
 msgid "Hosted by "
 msgstr "Arrangert av "
+
+#: .\ntnui\static\js\events\event_details.js:357
+#: .\ntnui\static\js\events\event_details.js:361
+#: .\ntnui\static\js\events\event_details.js:476
+msgid "Unattend"
+msgstr "Meld av"
+
+#: .\ntnui\static\js\events\event_details.js:510
+msgid "Remove me from the wait list"
+msgstr "Fjern meg fra ventelisten"
+
+#: .\ntnui\static\js\events\event_details.js:552
+msgid "Put me on the wait list"
+msgstr "Sett meg på ventelisten"
+
+#: .\ntnui\static\js\events\event_details.js:562
+msgid "Attend event"
+msgstr "Delta på arrangement"
+
+#: .\ntnui\static\js\events\event_details.js:616
+msgid "Error"
+msgstr "Feil"
+
+#: .\ntnui\static\js\events\event_details.js:620
+msgid "Success"
+msgstr "Suksess"

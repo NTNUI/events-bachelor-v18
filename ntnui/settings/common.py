@@ -2,6 +2,9 @@ import os
 import sys
 from django.utils.translation import ugettext_lazy as _
 
+
+PRODUCTION = False
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
@@ -11,11 +14,22 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 # TODO: Fix this before deployment - See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 SECRET_KEY = 'cpivc$!*6-)c(u4k+bw-+cv*j1omilwt)#@#dezn6jb%m)j$y+'
+STRIPE_SECRET_KEY = 'None given'
+STRIPE_PUBLIC_KEY = 'pk_test_TagT9jGDj7CN9NOQfTnueTxz'
+
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if PRODUCTION:
+    DEBUG = False
+else:
+    DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'beta.ntnui.no',
+    'localhost',
+    '10.22.72.17'
+]
 
 ##### APP CONFIGURATION #####
 DJANGO_APPS = [
@@ -161,11 +175,22 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
 
 ##### END STATIC FILE CONFIGURATION #####
 
+
+
+##### MAILGUN SETTINGS #####
+
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'postmaster@mg.ntnui.no'
+EMAIL_HOST_PASSWORD = os.environ.get('MAILGUN_PASSWORD')
+EMAIL_USE_TLS = True
+
+
 ##### LOGIN CONFIGURATION #####
 LOGIN_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'login'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # USER settings
 DUMMY_USER_EMAIL = 'todd.packer@online.com'
@@ -185,3 +210,12 @@ NOSE_ARGS = [
     '--nologcapture',
  ]
 ##### END TEST CONFIGURATION #####
+
+##### SET STRIPE KEYS #####
+if PRODUCTION and os.environ.get('STRIPE_SECRET_KEY_LIVE'):
+    STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY_LIVE')
+    STRIPE_PUBLIC_KEY = 'pk_live_SegObZmdoJnJQBGx0RQpCJcd'
+elif os.environ.get('STRIPE_SECRET_KEY_TEST'):
+    STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY_TEST')
+
+

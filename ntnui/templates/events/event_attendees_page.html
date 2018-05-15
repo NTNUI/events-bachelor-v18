@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/events/events.css' %}"/>
+{% endblock %}
+
+{% block title %}NTNUI - Event attendees{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="header-container" style="margin-bottom:2rem;">
+            <div class="top-menu" style="margin-bottom: 2rem;">
+                <ul>
+                    <li>
+                        <a href="{% url 'event_details' event.id %}">{% trans 'Event' %}</a>
+                    </li>
+                    <li>
+                        <div class="vert-divider"></div>
+                    </li>
+                    <li>
+                        <a class="active-item">{% trans 'Attendees' %}</a>
+                    </li>
+                    <li>
+                        <div class="vert-divider"></div>
+                    </li>
+                    <li>
+                        <a href="{% url 'edit_event_page' event.id %}">{% trans 'Edit event' %}</a>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="img-container">
+                <img id="image-centered" src=" /static/{{ event.cover_photo }}" alt="Event Image"/>
+            </div>
+            <div class="title-container">
+                <div style="width: 100%; display: flex; justify-content: center;">
+                    <div id="header">
+                        {{ event.name }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="border:none; margin:0.5rem;">
+            <div class="card-body ">
+                <b>{% trans 'Attendees' %}</b>
+            </div>
+        </div>
+        {% if not subeventsexist %}
+            <div class="col-12">
+                <div class="list-group">
+                    <ul class="list-group">
+                        {% for full_name in attendees_list %}
+                            <li class="list-group-item">{{ full_name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+        {% if sub_events_exist %}
+            {% for list, subeventname in sub_events_attendees_and_names_list %}
+                <div class="col-12">
+                    <ul class="list-group">
+                        <li class="list-group-item"><b>{{ subeventname }}</b></li>
+                        {% for full_name in list %}
+                            <li class="list-group-item">{{ full_name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+    <script type="text/javascript" src="{% static 'js/events/event_details.js' %}"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+{% endblock %}

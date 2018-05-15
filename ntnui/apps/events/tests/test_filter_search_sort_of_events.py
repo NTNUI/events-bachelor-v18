@@ -1,12 +1,10 @@
 from datetime import datetime
 
 from accounts.models import User
-from django.test import Client
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
-from groups.models import SportsGroup
-
 from events.models import Event, EventDescription
+from groups.models import SportsGroup
 
 
 class TestFilterSearchSortEvents(TestCase):

@@ -2,113 +2,328 @@
 {% load i18n %}
 {% load static %}
 {% block stylesheet %}
-
-  <link rel="stylesheet" href="{% static 'css/create_new_event.css' %}">
+    <link rel="stylesheet" href="{% static 'css/events/create_and_edit_event.css' %}">
 {% endblock %}
-    {% block title %}NTNUI - Create events{% endblock %}
+{% block title %} NTNUI - {% trans 'Create events' %} {% endblock %}
 
-    {% block content %}
+{% block content %}
+    <!-- Used to show alerts -->
+    <div class="alert-message-container">
+    </div>
 
-        <h1>{% trans 'Create new event:' %}</h1>
-        <form id="create-event-form" >{% csrf_token %}
-            <div class="container-fluid" id="cont1">
-            <div class="col-sm">
-            <div class="form-group row">
-              <label class="col-2 col-form-label">{% trans 'Name norwegian' %}</label>
-              <div class="col-10">
-                <input class="form-control" onblur="return validateName_no()" pattern="^[a-zA-ZæøåÆØÅ\-\s]*$" type="text" name="name_no" required>
-                <div id="name-no-alerter" class="alert alert-danger collapse" role="alert">
-                    <p id="name_no_message"></p>
+    <!-- SubEventModal -->
+    <div id="subEvent-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="subEvent"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans 'Please fill in the fields bellow' %}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-              </div>
+                <div class="container">
+                    <form id="subEvent-data-form">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>{% trans 'Name norwegian' %}</label>
+                                <input name="name_nb" type="text" class="form-input-create-subEvent form-control"
+                                       required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>{% trans 'Name english' %}</label>
+                                <input name="name_en" type="text" class="form-input-create-subEvent form-control"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>{% trans 'From date' %}</label>
+                                <input name="start_date" type="datetime-local"
+                                       class="start-date form-input-create-subEvent form-control" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label>{% trans 'To date' %}</label>
+                                <input name="end_date" type="datetime-local"
+                                       class="end-date form-input-create-subEvent form-control" required>
+                            </div>
+                        </div>
 
-            </div>
-            <div class="form-group row">
-              <label class="col-2 col-form-label">{% trans 'Name english' %}</label>
-              <div class="col-10">
-                <input class="form-control" onblur="return validateName_en()" pattern="^[a-zA-Z\-\s]*$" type="text" name="name_en" required>
-                <div id="name-en-alerter" class="alert alert-danger collapse" role="alert">
-                    <p id="name_en_message"></p>
+                        <!-- options tab -->
+                        <div style="margin-top: 1rem" class="card">
+                            <div class="card-header collapse-header" data-toggle="collapse" data-target="#options"
+                                 aria-expanded="true" aria-controls="options">
+                                <div class="collapse-header-title">
+                                    <img src="{% static 'img/chevron-bottom.svg' %}" alt="arrow">
+                                    <h5 style="margin-left:.2rem;" class="mb-0">
+                                        {% trans 'Extra options' %}
+                                    </h5>
+                                </div>
+                            </div>
+                            <div id="options" class="collapse hide" aria-labelledby="subEvent-options"
+                                 data-parent="#options">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label>{% trans 'Price' %}</label>
+                                        <input name="price" type="number" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>{% trans 'Maximum number of participants' %}</label>
+                                        <input name="attendance_cap" type="number" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>{% trans 'Registration end date' %}</label>
+                                        <input name="registration_end_date" type="datetime-local"
+                                               class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>{% trans 'Email text norwegian' %}</label>
+                                        <textarea name="email_nb" type="text"
+                                                  class="form-input-create-subEvent form-control"
+                                        ></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>{% trans 'Email text english' %}</label>
+                                        <textarea name="email_en" type="text"
+                                                  class="form-input-create-subEvent form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-              </div>
-            </div>
-
-            <div class="form-group row">
-              <label class="col-2 col-form-label">{% trans 'Description norwegian' %}</label>
-              <div class="col-10">
-                  <textarea class="form-control" type="textArea" onblur="return validateDescription_text_no()" name="description_text_no" required></textarea>
-                  <div id="description-no-alerter" class="alert alert-danger collapse" role="alert">
-                      <p id="description_no_message"></p>
-                  </div>
-              </div>
-
-            </div>
-            <div class="form-group row">
-              <label class="col-2 col-form-label">{% trans 'Description english' %}</label>
-              <div class="col-10">
-                  <textarea class="form-control" type="textArea" onblur="return validateDescription_text_en()" name="description_text_en" required></textarea>
-              <div id="description-en-alerter" class="alert alert-danger collapse" role="alert">
-                  <p id="description_en_message"></p>
-              </div>
-              </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close-modal"
+                            data-dismiss="modal">{% trans 'Close' %}</button>
+                    <button id="submit-sub-event-form" type="submit" form="subEvent-data-form" class="btn btn-success">
+                        {% trans 'Create a sub-event' %}</button>
                 </div>
-
-
-
             </div>
-            </div>
-        <div class="container-fluid" id="cont2">
-            <div class="col-sm">
-                              <div class="form-group row">
-                <label class="col-2 col-form-label">{% trans 'Host' %}</label>
-                  <div class="col-10">
-                    <select class="form-control" name="host" required>
-                        {% for group in groups %}
-                            <option value="{{ group.id }}">{{ group.name }}</option>
-                        {% endfor %}
-                    </select>
-                  </div>
-              </div>
-            <div class="form-group row">
-              <label class="col-2 col-form-label">{% trans 'Start date:' %}</label>
-              <div class="col-10">
-                   <input class="form-control" type="datetime-local" onblur="return validateStart_date()" name="start_date" required>
-                    <div id="start-date-alerter" class="alert alert-danger collapse" role="alert">
-                        <p id="start_date_message"></p>
-                    </div>
-              </div>
-
-            </div>
-            <div class="form-group row">
-              <label class="col-2 col-form-label">{% trans 'To date:' %}</label>
-              <div class="col-10">
-                   <input class="form-control" type="datetime-local" onblur="return validateEnd_date()" name="end_date" required>
-                    <div id="end-date-alerter" class="alert alert-danger collapse" role="alert">
-                        <p id="end_date_message"></p>
-                    </div>
-              </div>
-
-            </div>
-            <div class="form-group row">
-              <label class="form-check-label">
-                <input name="priority" type="checkbox" value="True">
-                {% trans 'Priority' %}
-              </label>
-            </div>
-
-
-             </div>
-            </div>
-        <div class="alert-message-container">
-
         </div>
-            <button id="create-event-button" type="button" class="btn btn-success">{% trans 'Create event' %}</button>
-        </form>
+    </div>
 
-    {% endblock %}
+    <!-- Category modal -->
+    <div id="category-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="category"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{% trans 'Please fill in the fields bellow' %}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="category-data-form">
+                        <div class="form-row form-group">
+                            <label>{% trans 'Name norwegian' %}</label>
+                            <input name="name_nb" type="text" class="form-input-create-category form-control" required>
+                        </div>
+                        <div class="form-row form-group ">
+                            <label>{% trans 'Name english' %}</label>
+                            <input name="name_en" type="text" class="form-input-create-category form-control" required>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close-modal"
+                            data-dismiss="modal">{% trans 'Close' %}</button>
+                    <button id="submit-category-form" type="submit" form="category-data-form" class="btn btn-success">
+                        {% trans 'Create new category' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Main form -->
+
+    <h1 style="text-align: center">{% trans 'Create new event:' %}</h1>
+    <form id="create-event-form" style="width:80%; max-width:1000px;">{% csrf_token %}
+    <h4 style="margin-top: 0" class="sub-titles">{% trans 'Basic info' %}:</h4>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>{% trans 'Name norwegian' %}</label>
+                <input class="form-input-create-event form-control" pattern="^[a-zA-ZæøåÆØÅ\-\s]*$"
+                       type="text" name="name_no" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label>{% trans 'Name english' %}</label>
+                <input class="form-input-create-event form-control" pattern="^[a-zA-Z\-\s]*$"
+                       type="text" name="name_en" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>{% trans 'Description norwegian' %}</label>
+                <textarea class="form-input-create-event form-control" type="textArea"
+                          name="description_text_no" required></textarea>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label>{% trans 'Description english' %}</label>
+                <textarea class="form-input-create-event form-control" type="textArea"
+                          name="description_text_en" required></textarea>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>{% trans 'Host' %}</label>
+                <select class="form-control" name="host" required>
+                    {% for group in groups %}
+                        <option value="{{ group.id }}">{{ group.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label>{% trans 'Place' %}</label>
+                <input class="form-input-create-event form-control" type="input"
+                       name="place" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>{% trans 'From date' %}</label>
+                <input class="start-date form-input-create-event form-control" type="datetime-local"
+                       name="start_date" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label>{% trans 'To date' %}</label>
+                <input class="end-date form-input-create-event form-control" type="datetime-local"
+                       name="end_date" required>
+            </div>
+        </div>
+
+        <h4 class="sub-titles">{% trans 'Extra info' %}:</h4>
+        <div class="card">
+
+
+            <!--Cover photo tab TO BE IMPLEMENTED
+            <div class="collapse-header event-collapse-header card-header " data-toggle="collapse"
+                 data-target="#cover-photo-event"
+                 aria-expanded="false" aria-controls="options">
+                <div class="collapse-header-title">
+                    <img src="{% static 'img/chevron-bottom.svg' %}"
+                         alt="arrow">
+                    <h5 style="margin-left:.2rem;" class="mb-0">
+                        {% trans 'Cover photo' %}
+                    </h5>
+                </div>
+            </div>
+            <div id="cover-photo-event" class="collapse hide" aria-labelledby="ExtraOptions">
+                <div class="card-body">
+                    <div class="form-group">
+                        <input class="form-input-create-event form-control" type="file"
+                               name="cover_photo">
+                    </div>
+                </div>
+            </div>
+            -->
+            <!--Extra options -->
+            <div class="collapse-header event-collapse-header card-header " data-toggle="collapse"
+                 data-target="#options-event"
+                 aria-expanded="false" aria-controls="options">
+                <div class="collapse-header-title">
+                    <img src="{% static 'img/chevron-bottom.svg' %}"
+                         alt="arrow">
+                    <h5 style="margin-left:.2rem;" class="mb-0">
+                        {% trans 'Extra options' %}
+                    </h5>
+                </div>
+            </div>
+            <div id="options-event" class="collapse hide" aria-labelledby="ExtraOptions">
+                <div class="alert alert-warning">
+                    <strong>
+                        {% trans 'Warning' %}:
+                    </strong>
+                    {% trans 'Extra options have no effect if sub-events are created.' %}
+                </div>
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>{% trans 'Maximum number of participants' %}</label>
+                            <input class="form-input-create-event form-control" type="number"
+                                   name="attendance_cap">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>{% trans 'Price in NOK' %}</label>
+                            <input class="form-input-create-event form-control" type="number"
+                                   name="price">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>{% trans 'Email text norwegian' %}</label>
+                            <textarea class="form-input-create-event form-control" type="textArea"
+                                      name="email_text_no"></textarea>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>{% trans 'Email text english' %}</label>
+                            <textarea class="form-input-create-event form-control" type="textArea"
+                                      name="email_text_en"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>{% trans 'Registration end date' %}</label>
+                            <input class="form-control" type="datetime-local"
+                                   name="registration_end_date">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!--Sub-events -->
+            <div class="collapse-header event-collapse-header card-header" data-toggle="collapse"
+                 data-target="#subEvent-collapse"
+                 aria-expanded="false" aria-controls="subEventCollapse">
+                <div class="collapse-header-title">
+                    <img src="{% static 'img/chevron-bottom.svg' %}" alt="arrow">
+                    <h5 style="margin-left:.2rem;">
+                        {% trans 'Sub-event(s)' %}
+                    </h5>
+                </div>
+                <div class="sub-event-header-button-container">
+                    <div id="add-subEvent-button" class="create-sub-event">
+                        <img src="{% static 'img/plus.svg' %}" alt="plus-sign"/>
+                        <label> {% trans 'Create new sub-event' %}</label>
+
+                    </div>
+                    <div id="add-category-button" class="create-sub-event">
+                        <img src="{% static 'img/plus.svg' %}" alt="plus-sign"/>
+                        <label> {% trans 'Create new category' %}</label>
+                    </div>
+                </div>
+            </div>
+            <div id="subEvent-collapse" class="collapse hide" aria-labelledby="subEventCollapse">
+                <div class="card" style="xmin-height:2rem;">
+                    <div id="subEvents" class="drag-container" data-id="0" ondrop="drop(event)"
+                         ondragover="allowDrop(event)">
+                        <p class="placeholder-container-text">
+                            {% trans 'Create a category or a sub-event to get started!' %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- create from button-->
+        <div class="form-group row">
+            <div id="create-event-button-container">
+                <button id="create-event-button" type="button" style="margin:0;"
+                        class="btn btn-success">{% trans 'Create an event' %}</button>
+            </div>
+        </div>
+
+    </form>
+{% endblock %}
 
 
 {% block script %}
     <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
-    <script type="text/javascript" src="{% static 'js/events/create_new_event.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/events/create_and_edit_event.js' %}"></script>
 {% endblock %}

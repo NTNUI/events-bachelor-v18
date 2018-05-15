@@ -2,11 +2,11 @@ from datetime import date
 
 from accounts.models import User
 from django.test import TestCase
-from events.models import Event, EventDescription, CategoryDescription, Category, SubEvent, SubEventDescription
-from groups.models import SportsGroup, Board, Membership
-from hs.models import MainBoard, MainBoardMembership
-
 from events import views
+from events.models import (Category, CategoryDescription, Event,
+                           EventDescription, SubEvent, SubEventDescription)
+from groups.models import Board, Membership, SportsGroup
+from hs.models import MainBoard, MainBoardMembership
 
 
 class TestViewMethods(TestCase):

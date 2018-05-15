@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block stylesheet %}
+    <link rel="stylesheet" href="{% static 'css/events/events.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <div class="alert-message-container">
+    </div>
+
+    <div id="container">
+        <h3>{% trans 'Unattend event' %}</h3>
+        <p>{% trans 'Are you sure you wanna unattend this event' %}</p>
+
+        <button type="button"
+                id="unattend-event-by-token-button"
+                class="btn btn-danger"
+                value="{{ token }}"
+                style="display: flex">
+            <div class="button-title-container">
+                {% trans 'Unattend from the event' %}
+            </div>
+        </button>
+
+
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+    <script type="text/javascript" src="{% static 'js/events/guest_unattend.js' %}"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+{% endblock %}

@@ -1,73 +1,120 @@
-from datetime import datetime
-
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import JsonResponse
+from django.forms import model_to_dict
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.utils import translation
 from django.utils.translation import gettext as _
+from events.models.category import Category, CategoryDescription
+from events.models.event import (Event, EventDescription,
+                                 EventGuestRegistration, EventGuestWaitingList,
+                                 EventRegistration, EventWaitingList)
+from events.models.sub_event import (SubEvent, SubEventDescription,
+                                     SubEventGuestRegistration,
+                                     SubEventGuestWaitingList,
+                                     SubEventRegistration, SubEventWaitingList)
 from groups.models import Board, SportsGroup
 from hs.models import MainBoardMembership
 
-from . import create_event, get_events
-from events.models import Event, EventRegistration, Category, SubEvent, SubEventRegistration
+
+def get_remove_attendance_page(request, token):
+    """ Renders the remove attendance page. """
+
+    return render(request, 'events/remove_attendance.html', {'token': token})
 
 
-def get_main_page(request):
-    """Returns the main page for events"""
+def get_delete_event_page(request):
+    """ Renders the event main page after deleting an event. """
 
-    # Used to find out if the create-event button shall be rendered or not
-    if request.user.is_authenticated():
-        can_create_event = user_can_create_event(request.user)
+    return get_events_main_page(request)
+
+
+def get_events_main_page(request):
+    """ Renders the events' main page. """
+
+    # Checks if the user is eligible to create events.
+    if request.user.is_authenticated:
+        can_create_event = can_user_create_event(request.user)
     else:
         can_create_event = False
 
-    # Get groups that are hosting events
+    # Get groups that are hosting events.
     groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
 
-    return render(request, 'events/events_main_page.html', {
-        'can_create_event': can_create_event,
-        'groups': groups,
-    })
+    return render(request, 'events/events_main_page.html', {'can_create_event': can_create_event,
+                                                            'groups': groups})
 
 
-def get_sub_event_dic(item, request):
-    # Checks if the user is signed in.
+@login_required
+def get_create_event_page(request):
+    """ Renders the page where events are created. """
+
+    # Checks if a user can create an event.
+    groups = get_groups_user_can_create_events_for(request.user)
+    
+    return render(request, 'events/create_new_event.html', {'groups': groups})
+
+  
+def get_remove_attendance_page(request, token):
+    """Returnes the remove attend page"""
+    return render(request, 'events/remove_attendance.html', {'token': token})
+
+
+def get_attending_events_page(request):
+    """ Renders the page with the events which the user attends. """
+
+    # Used to find out if the create-event button shall be rendered or not
     if request.user.is_authenticated:
-        attends = item.attends(request.user)
+        can_create_event = can_user_create_event(request.user)
     else:
-        # Returns false if not
-        attends = False
+        can_create_event = False
 
-    return {
-        'start_date': item.start_date,
-        'end_date': item.end_date,
-        'attends': attends,
-        'name': str(item),
-        'id': item.id
-    }
+    # Get groups that are hosting events.
+    groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
+
+    return render(request, 'events/events_attending_page.html', {'can_create_event': can_create_event,
+                                                                 'groups': groups})
 
 
-def get_event_details(request, id):
+def get_event_details_page(request, event_id):
+    """ Renders the event detail page for a given event. """
+
     sub_event_list = []
-    # get the event from db
-    event = Event.objects.get(id=int(id))
-    # check that the event got one or more categories
+    event = get_event_by_id(event_id)
+
+    # Checks if the event has categories.
     if Category.objects.filter(event=event).exists():
         categories = Category.objects.filter(event=event)
-        # for every category do:
-        for i in range(len(categories)):
-            # get all the sub-events for that category
-            sub_event = SubEvent.objects.filter(category=categories[i])
-            # add the category and map each sub_event to a dic
-            sub_event_list.append((categories[i], list(map(lambda item: get_sub_event_dic(item, request), sub_event))))
 
-    # Checks if the user is sign in.
+        # Gets all the category's sub-events.
+        # Adds the category and maps each of the category's sub-events to a dictionary.
+        for category in categories:
+            sub_events = SubEvent.objects.filter(category=category)
+            sub_event_list.append(
+                (category, list(map(lambda sub_event: get_sub_event_dict(sub_event, request.user), sub_events))))
+
     if request.user.is_authenticated:
-        attends = event.attends(request.user)
-    else:
-        # Returns false if not
-        attends = False
 
+        # Checks if the user attends the event or is on its waiting list, and if the user is eligible to create events.
+        attends = event.is_user_enrolled(request.user)
+        can_create_event = can_user_create_event(request.user)
+        is_user_on_waiting_list = event.is_user_on_waiting_list(request.user)
+
+        # Checks if the user can edit and delete the event.
+        if user_can_edit_and_delete_event(event, request.user):
+            can_edit_and_delete_event = True
+        else:
+            can_edit_and_delete_event = False
+
+    # Sets the values for users who are not logged in and guests.
+    else:
+        attends = False
+        is_user_on_waiting_list = False
+        can_create_event = False
+        can_edit_and_delete_event = False
+
+    # Creates a dictionary for the event.
     event = {
         'name': event.name(),
         'description': event.description(),
@@ -76,168 +123,346 @@ def get_event_details(request, id):
         'cover_photo': event.cover_photo,
         'attends': attends,
         'id': event.id,
+        'waiting_list': event.is_attendance_cap_exceeded(),
+        'is_user_on_waiting_list': is_user_on_waiting_list,
+        'number_of_participants': len(event.get_attendee_list()),
+        'attendance_cap': event.attendance_cap,
+        'is_registration_ended': event.is_registration_ended(),
+        'price': event.price,
+        'registration_end_date': event.registration_end_date,
+        'payment_required': event.is_payment_event(),
         'host': event.get_host(),
-        'place': event.place
+        'place': event.place,
+        'language': translation.get_language
     }
 
+    # Creates a dictionary for the page requested.
     context = {
         "event": event,
-        "sub_event_list": sub_event_list
+        "is_authenticated": request.user.is_authenticated,
+        "sub_event_list": sub_event_list,
+        'number_of_sub_events': len(sub_event_list),
+        'can_create_event': can_create_event,
+        'can_edit_and_delete_event': can_edit_and_delete_event,
+        "STRIPE_KEY": settings.STRIPE_PUBLIC_KEY
     }
 
     return render(request, 'events/event_details.html', context)
 
 
-def get_events_request(request):
-    return get_events.get_events(request)
+def get_event_attendees_page(request, event_id):
+    """ Renders the page where the attendees for the event or the event's sub-events are shown."""
+
+    # Gets the event.
+    event = get_event_by_id(event_id)
+
+    # Checks if the event has sub-events.
+    if not len(get_sub_events(event)) > 0:
+
+        # The event does not have sub-events.
+        sub_events_exist = False
+
+        # Gets the event's attendees.
+        attendees = []
+        for attendee in event.get_attendee_list():
+            attendees.append(str(attendee.attendee) + '- ' + attendee.attendee.email)
+
+        context = {
+            'sub_events_exist': sub_events_exist,
+            'event': event,
+            'attendees_list': attendees,
+        }
+
+    else:
+        # The event has sub-events.
+        sub_events_exist = True
+
+        # Gets the event's sub-events.
+        sub_events = get_sub_events(event)
+
+        # Gets the attendees from each sub-event.
+        sub_events_attendees_and_names_list = []
+        for sub_event in sub_events:
+            attendees = []
+            for attendee in sub_event.get_attendee_list():
+                attendees.append(str(attendee.attendee) + '- ' + attendee.attendee.email)
+
+            # Adds the list of attendees together with the sub-event's name.
+            sub_events_attendees_and_names_list.append((attendees, sub_event.name()))
+
+        context = {
+            'sub_events_exist': sub_events_exist,
+            'event': event,
+            'sub_events_attendees_and_names_list': sub_events_attendees_and_names_list,
+        }
+
+    return render(request, 'events/event_attendees_page.html', context)
 
 
-@login_required
-def create_event_request(request):
-    """Creates a new event with the given data"""
-    return create_event.create_event(request)
+def get_edit_event_page(request, event_id):
+    """ Renders the edit event page for a given event. """
 
+    # Gets the event.
+    event = get_event_by_id(event_id)
 
-@login_required
-def get_create_event_page(request):
-    """Returns the page where events are created"""
-
-    # Checks if a user can create an event
+    # Gets the event's data.
+    price = event.price
+    attendance_cap = event.attendance_cap
     groups = get_groups_user_can_create_events_for(request.user)
+    event_description_no = EventDescription.objects.get(event=event, language='nb')
+    event_description_en = EventDescription.objects.get(event=event, language='en')
 
-    return render(request, 'events/create_new_event.html', {'groups': groups})
+    # Converts dates to a format that can be put as value in inputtype datetimelocal html form.
+    event_start_date = event.start_date
+    event_end_date = event.end_date
+    start_date = '{:%Y-%m-%dT%H:%M}'.format(event_start_date)
+    end_date = '{:%Y-%m-%dT%H:%M}'.format(event_end_date)
+
+    # Checks if the event has a registration_end_date, and converts it if it exists.
+    registration_end_date = ""
+    if event.registration_end_date != "" and event.registration_end_date is not None:
+        registration_end_date = '{:%Y-%m-%dT%H:%M}'.format(event.registration_end_date)
+
+    # Creates a dictionary for the event.
+    event = {
+        'name_no': event_description_no.name,
+        'name_en': event_description_en.name,
+        'description_text_no': event_description_no.description_text,
+        'description_text_en': event_description_en.description_text,
+        'email_text_no': event_description_no.custom_email_text,
+        'email_text_en': event_description_en.custom_email_text,
+
+        'start_date': start_date,
+        'end_date': end_date,
+        'id': event.id,
+        'attendance_cap': attendance_cap,
+        'registration_end_date': registration_end_date,
+        'price': price,
+        'host': event.get_host(),
+        'place': event.place,
+        'groups': groups
+    }
+
+    context = {
+        "event": event,
+    }
+
+    return render(request, 'events/edit_event_page.html', context)
 
 
-def user_can_create_event(user):
-    """Checks to see if a user can create event of any kind"""
+""" Help functions for the functions explicitly in this file. """
 
-    # User is in MainBoard
-    if user_is_in_mainboard(user):
+
+def can_user_create_event(user):
+    """ Checks if the user can create events. """
+
+    # Checks if the user is a member of the main board.
+    if is_user_in_main_board(user):
         return True
 
-    # Checks if the user is in any active board
+    # Checks if the user is in a member of any active boards.
     for board in (Board.objects.filter(Q(president=user) | Q(vice_president=user) | Q(cashier=user))):
-        # Checks that the board is active
+
+        # Checks that the board which the user is a member of is active.
         if SportsGroup.objects.filter(active_board=board).exists():
             return True
+
+    # The user is not eligible to create events.
+    return False
+
+
+def user_can_edit_and_delete_event(event, user):
+    """ Checks if the user can edit and delete a given event. """
+
+    # Checks if the user is in NTNUI's main board.
+    if is_user_in_main_board(user):
+        return True
+
+    # Gets the event's hosts.
+    event_hosts = []
+    for group in event.sports_groups.all():
+        event_hosts.append(group)
+
+    # Checks if the user is in a board which is eligible to edit and delete the event.
+    user_boards = get_groups_user_can_create_events_for(user)
+    for board in user_boards:
+        if board in event_hosts:
+            return True
+
+    # The user is not eligible to edit and delete the event.
     return False
 
 
 def get_groups_user_can_create_events_for(user):
-    """Finds the groups a user can create events for"""
+    """ Gets a user, and checks which groups the user is eligible to create events for. """
 
     # Create an empty return list
     return_list = []
 
     # Adds NTNUI if member of hs
-    if user_is_in_mainboard(user):
+    if is_user_in_main_board(user):
         return_list.append({'id': "NTNUI", 'name': 'NTNUI'})
 
     # Finds all the groups were the user is in the board
-    for board in Board.objects.filter(president=user) | \
-            Board.objects.filter(vice_president=user) | \
-            Board.objects.filter(cashier=user):
+    for board in (Board.objects.filter(president=user) | Board.objects.filter(vice_president=user) |
+                  Board.objects.filter(cashier=user)):
 
         # Checks that the board is active
         for group in SportsGroup.objects.filter(active_board=board):
             return_list.append(group)
 
+    # List with the groups which the user can create events for.
     return return_list
 
 
-def user_is_in_mainboard(user):
-    """Checks if a given user is in mainboard"""
-    return MainBoardMembership.objects.filter(person_id=user).exists()
+def get_event(request, event_id):
+    print(event_id)
+    """ Creates a dictionary of a given event. """
+
+    # Checks that the event exists.
+    if not Event.objects.filter(id=int(event_id)).exists():
+        return get_json(400, "Event with id: " + event_id + " does not exist.")
+
+    # Gets the event.
+    event = get_event_by_id(event_id)
+
+    # Checks if the event got categories.
+    categories_list = []
+    if Category.objects.filter(event=event).exists():
+        categories = Category.objects.filter(event=event).values()
+
+        # Get the each category's descriptions and sub-events.
+        for i in range(len(categories)):
+            categories[i]['sub-events'] = list(SubEvent.objects.filter(category__id=categories[i]['id']).values())
+            categories[i]['descriptions'] = list(
+                CategoryDescription.objects.filter(category__id=categories[i]['id']).values())
+
+            # Transform each sub-event's to the right format.
+            for j in range(len(categories[i]['sub-events'])):
+
+                # Adds sub-event to the category's list of sub-events.
+                sub_event = categories[i]['sub-events'][j]
+
+                # Fixes the start-date's and end-date's format.
+                sub_event['start_date'] = '{:%Y-%m-%dT%H:%M}'.format(sub_event['start_date'])
+                sub_event['end_date'] = '{:%Y-%m-%dT%H:%M}'.format(sub_event['end_date'])
+
+                # Adds the sub-event's descriptions.
+                sub_event['descriptions'] = list(
+                    SubEventDescription.objects.filter(sub_event__id=sub_event['id']).values())
+
+                # Adds the registration_end_date and fixes its format.
+                if sub_event['registration_end_date'] is not None and sub_event['registration_end_date'] != "":
+                    sub_event['registration_end_date'] = '{:%Y-%m-%dT%H:%M}'.format(sub_event['registration_end_date'])
+
+            # Adds the category to the list of categories.
+            categories_list.append(categories[i])
+
+    # Returns the event as a dictionary.
+    return JsonResponse({
+        'id': event.id,
+        'name': event.name(),
+        'place': event.place,
+        'descriptions': list(EventDescription.objects.filter(event=event).values()),
+        'start_date': event.start_date,
+        'end_date': event.end_date,
+        'priority': event.priority,
+        'price': event.price,
+        'host': event.get_host(),
+        'cover_photo': str(event.cover_photo),
+        'categories': list(categories_list),
+    })
 
 
-def user_is_in_board(board, user):
-    """Checks if a given user is in board"""
-    return board.president == user or board.vice_president == user or board.cashier == user
+def get_sub_event(request, sub_event_id):
+    """ Creates a dictionary of a given sub-event. """
+
+    # Checks that the sub-event exists.
+    if SubEvent.objects.filter(id=int(sub_event_id)).exists():
+
+        # Creates dictionary for the sub-event.
+        sub_event = SubEvent.objects.get(id=int(sub_event_id))
+        sub_event_dict = model_to_dict(sub_event)
+        sub_event_dict["name"] = sub_event.name()
+        sub_event_dict["host"] = sub_event.get_host()
+
+        # Returns the created dictionary.
+        return JsonResponse(sub_event_dict)
+
+    # No sub-event matches the given sub-event ID.
+    return get_json(400, "Sub-event with id: " + sub_event_id + " does not exist.")
 
 
-def event_has_description_and_name(description, name):
-    """Checks that a description is not empyt"""
-    if description is None or description.replace(' ', '') == "":
-        return False, 'Event must have description'
-    elif name is None or name.replace(' ', '') == "":
-        return False, _('Event must have a name')
-    return True, None
+def get_sub_event_dict(sub_event, user):
+    """ Creates a dictionary for a sub-event, including whether the attends the sub-event user."""
+
+    # Checks if the user attends the sub-event, or is on its waiting list.
+    if user.is_authenticated:
+        attends = sub_event.is_user_enrolled(user)
+        is_user_on_waiting_list = sub_event.is_user_on_waiting_list(user)
+    else:
+        # User is not logged in.
+        attends = False
+        is_user_on_waiting_list = False
+
+    # Returns the created dictionary for the sub-event.
+    return {
+        'start_date': sub_event.start_date,
+        'end_date': sub_event.end_date,
+        'attends': attends,
+        'waiting_list': sub_event.is_attendance_cap_exceeded(),
+        'is_user_on_waiting_list': is_user_on_waiting_list,
+        'number_of_participants': len(sub_event.get_attendee_list()),
+        'attendance_cap': sub_event.attendance_cap,
+        'is_registration_ended': sub_event.is_registration_ended(),
+        'registration_end_date': sub_event.registration_end_date,
+        'name': str(sub_event),
+        'price': sub_event.price,
+        'payment_required': sub_event.is_payment_event(),
+        'id': sub_event.id
+    }
+
+
+""" Functions which is used in multiple files. """
 
 
 def get_json(code, message):
-    """Returnes json with the given format"""
-    return JsonResponse({
-        'message': message},
-        status=code)
+    """ Returns JSON with the given format. """
+
+    return JsonResponse({'message': message}, status=code)
 
 
-@login_required
-def add_attendance_to_event(request):
-    """Adds attendance to the given event for the given user"""
-    if request.POST:
-        id = request.POST.get('id')
-        event = Event.objects.get(id=int(id))
-        if event.attendance_cap is None or event.attendance_cap > event.get_attendees().count():
-            # Checks that the user is not already attending
-            if not EventRegistration.objects.filter(event=event, attendee=request.user).exists():
-                try:
-                    # Try to create a entry
-                    EventRegistration.objects.create(event=event, attendee=request.user, registration_time=datetime.now())
-                    return get_json(201, 'You are now attending this event')
-                except:
-                    return get_json(400, 'Could not add you to this event')
-            return get_json(400, 'You are already attending this event')
-        return get_json(400, 'Event has reached its maximum number of participants')
-    return get_json(400, 'Request must be post')
+def get_event_by_id(event_id):
+    """ Gets the event which the event ID is associated with. """
+
+    try:
+        return Event.objects.get(id=event_id)
+    except Event.DoesNotExist:
+        return get_json(404, _("Event doesn't exist."))
 
 
-@login_required
-def remove_attendance_from_event(request):
-    """Remove the user from attending the given event """
-    if request.POST:
-        try:
-            id = request.POST.get('id')
-            if EventRegistration.objects.filter(event__id=int(id), attendee=request.user).exists():
-                registration = EventRegistration.objects.get(event__id=int(id), attendee=request.user)
-                registration.delete()
-                return get_json(201, 'Success')
-            return get_json(400, 'Attendance dose not exists')
-        except:
-            return get_json(400, 'Could not remove attendence')
-    return get_json(400, 'request is not post')
+def get_sub_event_by_id(sub_event_id):
+    """ Gets the sub-event which the sub-event ID is associated with. """
+
+    try:
+        return SubEvent.objects.get(id=sub_event_id)
+    except SubEvent.DoesNotExist:
+        return get_json(404, _("Sub-event doesn't exist."))
 
 
-@login_required
-def add_attendance_from_subevent(request):
-    """Add a user to the given sub-event"""
-    if request.POST:
-        id = request.POST.get('id')
-        sub_event = SubEvent.objects.get(id=int(id))
+def get_sub_events(event):
+    """ Gets a given event's sub-events. """
 
-        if sub_event.attendance_cap is None or sub_event.attendance_cap > SubEventRegistration.objects.filter(sub_event=sub_event).count():
-            # Checks that the user is not already attending
-            if not SubEventRegistration.objects.filter(sub_event=sub_event, attendee=request.user).exists():
-                try:
-                    SubEventRegistration.objects.create(sub_event=sub_event, attendee=request.user, registration_time=datetime.now())
-                    return get_json(201, 'Success')
-                except:
-                    return get_json(400, 'Could not join event')
-            return get_json(400, 'You are already attending this event')
-        return get_json(400, 'Event has reached its maximum number of participants')
-    return get_json(400, 'request is not post')
+    return SubEvent.objects.filter(category__in=Category.objects.filter(event=event))
 
 
-@login_required
-def remove_attendance_from_subevent(request):
-    """Removes the given user from the given sub-event"""
-    if request.POST:
-        try:
-            id = request.POST.get('id')
-            if SubEventRegistration.objects.filter(sub_event__id=int(id), attendee=request.user).exists():
-                registration = SubEventRegistration.objects.get(sub_event__id=int(id), attendee=request.user)
-                registration.delete()
-                return get_json(201, 'Success')
-            return get_json(400, 'Attendance dose not exists')
-        except:
-            return get_json(400, 'Could not remove attendence')
-    return get_json(400, 'request is not post')
+def is_user_in_main_board(user):
+    """ Checks if the user is a member of the main board. """
+
+    return MainBoardMembership.objects.filter(person_id=user).exists()
+
+
+def is_user_in_board(board, user):
+    """ Checks if the user is a member of the board. """
+
+    return board.president == user or board.vice_president == user or board.cashier == user

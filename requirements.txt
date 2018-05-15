@@ -7,6 +7,7 @@ requests==2.18.4
 django-environ==0.4.4
 pillow==4.3.0
 dj-database-url==0.4.2
+stripe==1.79.1 
 
 # Test Coverage tools
 coverage >= 4.4.1
