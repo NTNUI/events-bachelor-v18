@@ -8,5 +8,4 @@ geckodriver.log
 *.db
 *.pyc
 cover/
-ntnui/static/cover_photo/
 .vscode
