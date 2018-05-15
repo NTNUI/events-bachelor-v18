@@ -75,7 +75,7 @@ def get_filtered_events(request, attending):
             # Checks if the event has categories.
             if Category.objects.filter(event=event).exists():
                 sub_event_list = []
-                categories = Category.objects.get(event=event)
+                categories = Category.objects.filter(event=event)
 
                 # Gets all the categories sub-events.
                 for i in range(len(categories)):
@@ -186,6 +186,7 @@ def get_events_json(events):
             'id': event.id,
             'name': event.name(),
             'place': event.place,
+            'price': event.price,
             'description': event.description(),
             'start_date': event.start_date,
             'end_date': event.end_date,
