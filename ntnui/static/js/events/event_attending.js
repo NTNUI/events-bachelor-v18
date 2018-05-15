@@ -138,10 +138,10 @@ function displayEvent(event) {
 
 
     $("#event-container").append(
-        '<a href="/events/' + event.id + '/' + event.name.replace(/\s+/g, '-').toLowerCase() + '" class="card" style="margin: .1rem">' +
+        '<a href="/events/' + event.id + '/' + event.name.replace(/\s+/g, '-').toLowerCase() + '" class="card" style="margin: .3rem">' +
+        '   <div class="card-header" style="background-color: white"> <h5>' + event.name + '</h5> </div>' +
         '    <div class="card-body sub-event-main-container" style="background-color: white">' +
         '        <div class="sub-event-title-container">' +
-        '            <h5>' + event.name + '</h5>' +
                     '<div class="card-img-container">' +
                         '<img style="height:100%;width:auto;" src="/static/' + event.cover_photo + '">' +
                     '</div>' +
