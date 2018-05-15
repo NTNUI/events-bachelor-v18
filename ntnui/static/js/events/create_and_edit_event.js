@@ -35,7 +35,7 @@ const URL_CATEGORY_EDIT = "/ajax/events/edit-category"
 // On document ready
 $(() => {
 
-    // If this is a event that is going to be eddited, get the event id
+    // If this is a event that is going to be eddited, sub-event/ the event id
     eventID = $('#event-id').val()
     if (eventID) {
         getEventFromServer();

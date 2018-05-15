@@ -1,10 +1,9 @@
 from datetime import date
 from unittest.mock import MagicMock, Mock, patch
 
+from accounts.models import User
 from django.test import TestCase
 from django.utils import translation
-
-from accounts.models import User
 from events.models import (Category, CategoryDescription, Event,
                            EventDescription, EventRegistration, Restriction,
                            SubEvent, SubEventDescription, SubEventRegistration,
