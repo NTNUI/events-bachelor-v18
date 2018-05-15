@@ -312,6 +312,14 @@
     }
   },
   {
+    "model": "sessions.session",
+    "pk": "wvjt094o0bb7y8yyvxv7bwqifcoptpzj",
+    "fields": {
+      "session_data": "Y2I2ODRiZWQ2MGY1ZGVhNmYyNGM1NGVmYTIxOWNjMzg3MjM5YTZmYjp7Il9hdXRoX3VzZXJfaWQiOiIyNiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiOTI3ZjFiZDQ5OGRhYTEyZTAwNzVmYjRmOGFiOGQyZTRkNTE1ZmY1MSJ9",
+      "expire_date": "2018-05-29T15:17:58.436Z"
+    }
+  },
+  {
     "model": "hs.mainboard",
     "pk": 1,
     "fields": {
@@ -404,7 +412,7 @@
       "registration_end_date": null,
       "price": 0,
       "attendance_cap": null,
-      "place": "Trondehim",
+      "place": "Trondheim",
       "restriction": 1,
       "is_host_ntnui": false,
       "priority": false,
@@ -430,7 +438,7 @@
       "restriction": 1,
       "is_host_ntnui": true,
       "priority": false,
-      "cover_photo": "cover_photo/events/Generalforsamling/ntnui-volleyball_kEuV2ze.png",
+      "cover_photo": "cover_photo/events/Generalforsamling/bilde_oh97tDB.jpg",
       "tags": [],
       "sports_groups": []
     }
@@ -444,11 +452,11 @@
       "registration_end_date": null,
       "price": 0,
       "attendance_cap": null,
-      "place": "Trondehim sentrum",
+      "place": "Trondheim sentrum",
       "restriction": 1,
       "is_host_ntnui": true,
       "priority": false,
-      "cover_photo": "cover_photo/events/17.-Mai/ntnui-volleyball.png",
+      "cover_photo": "cover_photo/events/17.-Mai/17_mai.jpg",
       "tags": [],
       "sports_groups": []
     }
@@ -466,7 +474,7 @@
       "restriction": 1,
       "is_host_ntnui": false,
       "priority": false,
-      "cover_photo": "cover_photo/events/Trening/ntnui-volleyball_Ehsqn0M.png",
+      "cover_photo": "cover_photo/events/Trening/sit.jpg",
       "tags": [],
       "sports_groups": [
         4
@@ -486,7 +494,7 @@
       "restriction": 1,
       "is_host_ntnui": false,
       "priority": false,
-      "cover_photo": "cover_photo/ntnui-volleyball.png",
+      "cover_photo": "cover_photo/events/Sosial-Kveld/sos.jpg",
       "tags": [],
       "sports_groups": [
         2,
@@ -503,11 +511,11 @@
       "registration_end_date": null,
       "price": 0,
       "attendance_cap": null,
-      "place": "Trondehim",
+      "place": "Trondheim",
       "restriction": 1,
       "is_host_ntnui": false,
       "priority": false,
-      "cover_photo": "cover_photo/events/Trening/ntnui-volleyball_cXMQpMZ.png",
+      "cover_photo": "cover_photo/events/Trening/bilde1.jpg",
       "tags": [],
       "sports_groups": [
         1
@@ -523,11 +531,11 @@
       "registration_end_date": "2018-05-25T00:00:00Z",
       "price": 50,
       "attendance_cap": null,
-      "place": "Trondehim",
+      "place": "Trondheim",
       "restriction": 1,
       "is_host_ntnui": false,
       "priority": false,
-      "cover_photo": "cover_photo/events/Oppgradering/ntnui-volleyball.png",
+      "cover_photo": "cover_photo/events/Oppgradering/koie.jpg",
       "tags": [],
       "sports_groups": [
         3
@@ -543,11 +551,11 @@
       "registration_end_date": null,
       "price": 0,
       "attendance_cap": null,
-      "place": "Trondehim",
+      "place": "Trondheim",
       "restriction": 1,
       "is_host_ntnui": false,
       "priority": false,
-      "cover_photo": "cover_photo/events/Trening/ntnui-volleyball_HE6XiVs.png",
+      "cover_photo": "cover_photo/events/Trening/sit4.jpg",
       "tags": [],
       "sports_groups": [
         2
@@ -563,11 +571,11 @@
       "registration_end_date": null,
       "price": 0,
       "attendance_cap": null,
-      "place": "Trondehim",
+      "place": "Trondheim",
       "restriction": 1,
       "is_host_ntnui": true,
       "priority": false,
-      "cover_photo": "cover_photo/events/Opptak/ntnui-volleyball.png",
+      "cover_photo": "cover_photo/events/Opptak/lagbilde.png",
       "tags": [
         2
       ],
@@ -585,11 +593,11 @@
       "registration_end_date": null,
       "price": 0,
       "attendance_cap": null,
-      "place": "Trondehim",
+      "place": "Trondheim",
       "restriction": 1,
       "is_host_ntnui": false,
       "priority": false,
-      "cover_photo": "cover_photo/events/Trening/ntnui-volleyball.png",
+      "cover_photo": "cover_photo/events/Trening/bilde2.JPG",
       "tags": [],
       "sports_groups": [
         4
@@ -609,7 +617,7 @@
       "restriction": 1,
       "is_host_ntnui": true,
       "priority": false,
-      "cover_photo": "cover_photo/events/NM-i-friidrett/lagbilde.png",
+      "cover_photo": "cover_photo/events/NM-i-friidrett/friidrett2_gW72TRi.jpg",
       "tags": [],
       "sports_groups": [
         2
@@ -629,7 +637,7 @@
       "restriction": 1,
       "is_host_ntnui": false,
       "priority": false,
-      "cover_photo": "cover_photo/events/ntnui-volleyball.png",
+      "cover_photo": "cover_photo/events/NTNUI-mesterskap-i-Lengdehopp/friidrett.jpg",
       "tags": [],
       "sports_groups": [
         2
@@ -647,9 +655,9 @@
       "attendance_cap": 50,
       "place": "Vassfjellet",
       "restriction": 1,
-      "is_host_ntnui": true,
+      "is_host_ntnui": false,
       "priority": false,
-      "cover_photo": "cover_photo/events/ntnui-volleyball.png",
+      "cover_photo": "cover_photo/events/Sykkelritt/sykkel.jpg",
       "tags": [],
       "sports_groups": [
         5
@@ -883,7 +891,7 @@
       "name": "NM i friidrett",
       "language": "nb",
       "event": 12,
-      "description_text": "Velkommen til NM i friidrett      ",
+      "description_text": "Velkommen til NM i friidrett",
       "custom_email_text": "None"
     }
   },
@@ -927,7 +935,7 @@
       "name": "Sykkelritt",
       "language": "nb",
       "event": 16,
-      "description_text": "Kom \u00e5 konkurrer i Norges t\u00f8ffeste sykeltritt   ",
+      "description_text": "Kom \u00e5 konkurrer i Norges t\u00f8ffeste sykeltritt",
       "custom_email_text": "None"
     }
   },
@@ -2600,7 +2608,7 @@
     "pk": 26,
     "fields": {
       "password": "pbkdf2_sha256$36000$4IZiNMlL0OcT$Gn9UV02ocOEqvFoHMKTsWXOtMbKkEZjN5YRWBcGIVzE=",
-      "last_login": "2018-05-11T08:53:57.845Z",
+      "last_login": "2018-05-15T15:17:58.425Z",
       "is_superuser": true,
       "customer_number": "2",
       "email": "pci.pci@mail.com",
@@ -4425,6 +4433,227 @@
       "object_repr": "Stavsprang",
       "action_flag": 2,
       "change_message": "[{\"deleted\": {\"name\": \"attendee, user\", \"object\": \"Pole Vault - pci.pci@mail.com\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 63,
+    "fields": {
+      "action_time": "2018-05-15T15:19:47.481Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "16",
+      "object_repr": "Sykkelritt",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}, {\"changed\": {\"name\": \"description\", \"object\": \"Sykkelritt\", \"fields\": [\"description_text\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 64,
+    "fields": {
+      "action_time": "2018-05-15T15:19:58.247Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "13",
+      "object_repr": "NTNUI-mesterskap i Lengdehopp",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 65,
+    "fields": {
+      "action_time": "2018-05-15T15:20:10.115Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "12",
+      "object_repr": "NM i friidrett",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}, {\"changed\": {\"name\": \"description\", \"object\": \"NM i friidrett\", \"fields\": [\"description_text\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 66,
+    "fields": {
+      "action_time": "2018-05-15T15:20:20.461Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "11",
+      "object_repr": "Trening",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 67,
+    "fields": {
+      "action_time": "2018-05-15T15:20:34.411Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "10",
+      "object_repr": "Opptak",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 68,
+    "fields": {
+      "action_time": "2018-05-15T15:21:40.390Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "9",
+      "object_repr": "Trening",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 69,
+    "fields": {
+      "action_time": "2018-05-15T15:21:52.108Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "8",
+      "object_repr": "Oppgradering",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 70,
+    "fields": {
+      "action_time": "2018-05-15T15:22:18.319Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "6",
+      "object_repr": "Sosial Kveld",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 71,
+    "fields": {
+      "action_time": "2018-05-15T15:22:28.685Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "3",
+      "object_repr": "Generalforsamling",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 72,
+    "fields": {
+      "action_time": "2018-05-15T15:22:39.802Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "3",
+      "object_repr": "Generalforsamling",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 73,
+    "fields": {
+      "action_time": "2018-05-15T15:23:44.450Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "4",
+      "object_repr": "17. Mai",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 74,
+    "fields": {
+      "action_time": "2018-05-15T15:24:19.674Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "3",
+      "object_repr": "Generalforsamling",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 75,
+    "fields": {
+      "action_time": "2018-05-15T15:24:52.185Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "5",
+      "object_repr": "Trening",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 76,
+    "fields": {
+      "action_time": "2018-05-15T15:25:26.752Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "7",
+      "object_repr": "Trening",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 77,
+    "fields": {
+      "action_time": "2018-05-15T15:27:34.178Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "12",
+      "object_repr": "NM i friidrett",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 78,
+    "fields": {
+      "action_time": "2018-05-15T15:28:33.858Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "12",
+      "object_repr": "NM i friidrett",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 79,
+    "fields": {
+      "action_time": "2018-05-15T15:29:06.469Z",
+      "user": 26,
+      "content_type": 12,
+      "object_id": "12",
+      "object_repr": "NM i friidrett",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"cover_photo\"]}}]"
     }
   }
 ]

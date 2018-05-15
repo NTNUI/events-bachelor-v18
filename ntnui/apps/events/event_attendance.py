@@ -466,8 +466,9 @@ def remove_attendance_by_token_request(request, token):
     # One registration matched the search.
     elif len(search_results) == 1:
 
-        registration = search_results[0]
+        registration = search_results[0].first()
         attendee = registration.attendee
+        payment_id = registration.payment_id
 
         # Checks if the user or guest were signed up for an event or sub-event.
         if isinstance(registration, EventRegistration) or isinstance(registration, EventGuestRegistration):
@@ -487,13 +488,14 @@ def remove_attendance_by_token_request(request, token):
 
         # Deletes the registration if it's related to an event or sub-event, which are free to attend.
         # Moves the next person on the waiting list into the list of attendees.
-        if not registration.payment_id:
+        if not payment_id:
             registration.delete()
             if event or waiting_list:
                 remove_attendance_email(event, attendee)
+                
                 if event:
                     waiting_list_next_attend(request, event)
-            return get_json(201, _('Signed off the event!'))
+            return get_json(200, _('Signed off the event!'))
 
         # Can't sign off payment events.
         return get_json(400, _(' sign off payment events, contact the host for refunding.'))

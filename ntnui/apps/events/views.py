@@ -52,8 +52,13 @@ def get_create_event_page(request):
 
     # Checks if a user can create an event.
     groups = get_groups_user_can_create_events_for(request.user)
-
+    
     return render(request, 'events/create_new_event.html', {'groups': groups})
+
+  
+def get_remove_attendance_page(request, token):
+    """Returnes the remove attend page"""
+    return render(request, 'events/remove_attendance.html', {'token': token})
 
 
 def get_attending_events_page(request):
