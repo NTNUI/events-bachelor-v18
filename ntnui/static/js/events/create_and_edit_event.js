@@ -608,14 +608,14 @@ function showSubEvent(subEvent, fromServer) {
     if (fromServer) {
         // Find the category
         const category = categories.filter((category) => category.serverID == subEvent.category_id)
-        if(category.length) {
+        if (category.length) {
             subEvent.category = category[0].id;
-        }else {
+        } else {
             subEvent.category = 0;
         }
 
-        subEvents = subEvents.map( (subEventMap) => {
-            if(subEventMap.id === subEvent.id) {
+        subEvents = subEvents.map((subEventMap) => {
+            if (subEventMap.id === subEvent.id) {
                 return subEvent;
             }
             return subEventMap
