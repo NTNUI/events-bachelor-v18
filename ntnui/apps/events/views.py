@@ -111,7 +111,7 @@ def create_sub_event_request(request):
 
 def get_remove_attendance_page(request, token):
     """Returnes the remove attend page"""
-    return render(request, 'events/remove_attendance.html')
+    return render(request, 'events/remove_attendance.html', {'token': token})
 
 
 def get_sub_event_dict(sub_event, user):

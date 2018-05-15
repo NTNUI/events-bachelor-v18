@@ -141,7 +141,6 @@ $(() => {
             if (isGuestUser) {
                 guestSubEventButton = button;
                 guestSubEventObject = subEvent[0]
-                console.log(guestSubEventObject.state)
                 if (guestSubEventObject.state === States.UNATTEND || guestSubEventObject.state === States.ON_WAITING_LIST) {
                     attendSubEventBasedOnState(guestSubEventButton, guestSubEventObject)
                     guestSubEventObject = null;
