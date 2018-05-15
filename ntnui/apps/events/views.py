@@ -165,7 +165,7 @@ def get_event_attendees_page(request, event_id):
         # Gets the event's attendees.
         attendees = []
         for attendee in event.get_attendee_list():
-            attendees.append(str(attendee.attendee) + '-' + attendee.attendee.email)
+            attendees.append(str(attendee.attendee) + '- ' + attendee.attendee.email)
 
         context = {
             'sub_events_exist': sub_events_exist,
@@ -185,7 +185,7 @@ def get_event_attendees_page(request, event_id):
         for sub_event in sub_events:
             attendees = []
             for attendee in sub_event.get_attendee_list():
-                attendees.append(str(attendee))
+                attendees.append(str(attendee.attendee) + '- ' + attendee.attendee.email)
 
             # Adds the list of attendees together with the sub-event's name.
             sub_events_attendees_and_names_list.append((attendees, sub_event.name()))
