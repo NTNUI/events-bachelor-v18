@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 
 import stripe
+from accounts.models import User
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
@@ -9,8 +10,6 @@ from django.core.validators import validate_email, validate_integer
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
-
-from accounts.models import User
 from events.models.event import (Event, EventGuestRegistration,
                                  EventGuestWaitingList, EventRegistration,
                                  EventWaitingList)
@@ -19,8 +18,8 @@ from events.models.sub_event import (SubEvent, SubEventGuestRegistration,
                                      SubEventGuestWaitingList,
                                      SubEventRegistration, SubEventWaitingList)
 
-from .views import get_json
-
+from .views import (get_event_by_id, get_json, get_sub_event_by_id,
+                    get_sub_events)
 
 """ User and guest sign-up for events and sub-events. """
 
@@ -37,11 +36,18 @@ def attend_event_request(request):
             delete_guest(attendee)
         return error_response
 
+    has_sub_events, error_response = event_has_sub_events(event)
+
+    # Checks that the attendee does not attempt to sign up for an event which has sub-events.
+    if has_sub_events:
+        return error_response
+
     # Checks that the event is free to attend.
-    if event.is_payment_event():
+    elif event.is_payment_event():
         return get_json(400, 'The event requires payment to attend.')
 
-    return attend_event(request, event, attendee, None)
+    else:
+        return attend_event(request, event, attendee, None)
 
 
 def attend_payment_event_request(request):
@@ -239,6 +245,15 @@ def verify_sign_up(request, event_has_open_spots):
                     return event, guest, guest_created, False, get_json(400, _('The event still has open spots.'))
 
 
+def event_has_sub_events(event):
+    """ Denies sign up to events which has sub-events. """
+
+    if isinstance(event, Event):
+        if len(get_sub_events(event)) > 0:
+            return True, get_json(400, _('Cannot sign up for an event which has sub-events.'))
+    return False, None
+
+
 def charge_card(data, event, attendee):
     """ Charges the attendee's card. """
 
@@ -248,7 +263,7 @@ def charge_card(data, event, attendee):
     email = data.get('stripeEmail')
     token = data.get('stripeToken')
     stripe.api_key = settings.STRIPE_SECRET_KEY
-    print(amount, description, email, token)
+
     # Creates a payment with Stripe.
     try:
         payment = stripe.Charge.create(
@@ -313,7 +328,7 @@ def get_or_create_guest(data):
             email=email, first_name=first_name, last_name=last_name, phone_number=phone)
     # Catch exceptions.
     except Guest.ValidationError:
-        return None, False, get_json(400, _("Invalid input, can't create guest."))
+        return None, False, get_json(400, _("Invalid input, cannot create guest."))
     except Guest.MulitpleObjectsReturned:
         return None, False, get_json(400, _('There exists multiple identical guests.'))
 
@@ -454,7 +469,7 @@ def remove_attendance_by_token_request(request, token):
         registration = search_results[0]
         attendee = registration.attendee
 
-        # Checks if the user or guest was signed up for an event or sub-event (not waiting list).
+        # Checks if the user or guest were signed up for an event or sub-event.
         if isinstance(registration, EventRegistration) or isinstance(registration, EventGuestRegistration):
             event = registration.event
         elif isinstance(registration, SubEventRegistration) or isinstance(registration, SubEventGuestRegistration):
@@ -462,13 +477,22 @@ def remove_attendance_by_token_request(request, token):
         else:
             event = None
 
+        # Checks if the user or guest were signed up for an event's or sub-event's waiting list.
+        if isinstance(registration, EventWaitingList) or isinstance(registration, EventGuestWaitingList):
+            waiting_list = registration.event
+        elif isinstance(registration, SubEventWaitingList) or isinstance(registration, SubEventGuestWaitingList):
+            waiting_list = registration.sub_event
+        else:
+            waiting_list = None
+
         # Deletes the registration if it's related to an event or sub-event, which are free to attend.
         # Moves the next person on the waiting list into the list of attendees.
         if not registration.payment_id:
             registration.delete()
-            if event:
-                waiting_list_next_attend(request, event)
+            if event or waiting_list:
                 remove_attendance_email(event, attendee)
+                if event:
+                    waiting_list_next_attend(request, event)
             return get_json(201, _('Signed off the event!'))
 
         # Can't sign off payment events.
@@ -595,21 +619,3 @@ def create_mail_header(event, attendee):
 
     # Returns the sender and receiver of the email and the email's subject.
     return sender, receiver, subject
-
-
-def get_event_by_id(event_id):
-    """Gets the event which the event ID is associated with."""
-
-    try:
-        return Event.objects.get(id=event_id)
-    except Event.DoesNotExist:
-        return get_json(404, _("Event doesn't exist."))
-
-
-def get_sub_event_by_id(sub_event_id):
-    """Gets the sub-event which the sub-event ID is associated with."""
-
-    try:
-        return SubEvent.objects.get(id=sub_event_id)
-    except SubEvent.DoesNotExist:
-        return get_json(404, _("Sub-event doesn't exist."))
