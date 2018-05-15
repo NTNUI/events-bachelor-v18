@@ -3,11 +3,10 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
-
 from events.models.event import Event, EventDescription
 from groups.models import SportsGroup
 
-from .views import (get_json, is_user_in_board, is_user_in_main_board)
+from .views import get_json, is_user_in_board, is_user_in_main_board
 
 
 @login_required

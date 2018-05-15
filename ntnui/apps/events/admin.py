@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from events.models.category import Category, CategoryDescription
 from events.models.event import (Event, EventDescription,
                                  EventGuestRegistration, EventGuestWaitingList,

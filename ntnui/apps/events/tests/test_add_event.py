@@ -1,9 +1,8 @@
 from datetime import date
 
+from accounts.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
-
-from accounts.models import User
 from events import create_event
 from events.models import Event, EventDescription
 from groups.models import Board, Membership, SportsGroup

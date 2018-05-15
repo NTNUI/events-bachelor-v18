@@ -1,8 +1,7 @@
 from datetime import date
 
-from django.test import TestCase
-
 from accounts.models import User
+from django.test import TestCase
 from events import views
 from events.models import (Category, CategoryDescription, Event,
                            EventDescription, SubEvent, SubEventDescription)
