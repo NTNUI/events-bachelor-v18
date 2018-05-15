@@ -12,7 +12,7 @@ $(() => {
         if (!$(button).prop('disabled')) {
             $(button).prop("disabled", true).addClass("disabled");
             setButtonLoader(button, '#AA0000')
-            const response = await sendAjax({}, ("/events/remove-attendance/" + button.value), 'GET', button)
+            response = await sendAjax({}, ("/ajax/events/unattend-event_by_token/" + button.value ), 'GET', button)
             if(response) {
                 $("#container").html("<i>" + gettext("You will now be redirected to the main event page") + "</i")
                 printMessage(MsgType.SUCCESS, response.message)

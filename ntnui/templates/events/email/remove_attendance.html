@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +8,7 @@
 </head>
 <body>
 
-    <H3>You are now signed off {{ event.name }}!</H3> <br>
+    <H3>{% trans 'You are now signed off' %} {{ event.name }}!</H3> <br>
 
 </body>
 </html>
