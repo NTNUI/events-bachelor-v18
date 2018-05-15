@@ -138,24 +138,46 @@ function displayEvent(event) {
 
 
     $("#event-container").append(
-        '<a href="/events/' + event.id + '/' + event.name.replace(/\s+/g, '-').toLowerCase() + '"><div class="card-body card-body-container">' +
-        '<div class=" card bg-light mb-3" >' +
-            '<div class="card-element card-header"> <h5>' +
-                event.name +
-            "</h5> </div>" +
-            '<div class="card-element card-body">' +
-            '<div class="card-element-container">' +
-                '<h6 class="card-title">' +
-                     event.description.substr(0, 100) + (event.description.length > 100 ? '...' : '') +
-                    ' </h6>' +
-                    '<b>' + gettext('Place') + ': ' + '</b>' + event.place + '</br>' +
-                    '<b>' + gettext('Date') +': ' + '</b> ' + printeble_date +
-                '</br> <p> <b> ' + gettext('Hosted by ') + ': ' + '</b> ' +
-                    hosts +
-                "</p>" +
-                "</div>" +
-            "</div>" +
-        "</div></a>"
+        '<a href="/events/' + event.id + '/' + event.name.replace(/\s+/g, '-').toLowerCase() + '" class="card" style="margin: .1rem">' +
+        '    <div class="card-body sub-event-main-container" style="background-color: white">' +
+        '        <div class="sub-event-title-container">' +
+        '            <h5>' + event.name + '</h5>' +
+                    '<div class="card-img-container">' +
+                        '<img style="height:100%;width:auto;" src="/static/' + event.cover_photo + '">' +
+                    '</div>' +
+        '        </div>' +
+        '        <div class="sub-event-container">' +
+        '            <div class="sub-event-row-container">' +
+        '                <div class="sub-event-col">' +
+        '                    <div>' +
+        '                        '+ gettext('Start date') + '<br>' +
+        '                        <b>'+ event.start_date.toString().substr(0, 10) + '</b>' +
+        '                    </div>' +
+        '                </div>' +
+        '                <div class="sub-event-col">' +
+        '                    <div>' +
+        '                        '+ gettext('End date') + '<br>' +
+        '                        <b>' +  event.end_date.toString().substr(0, 10) + '</b>' +
+        '                    </div>' +
+        '                </div>' +
+        '            </div>' +
+        '            <div class="sub-event-row-container border-container">' +
+        '                <div class="sub-event-col">' +
+        '                    <div>' +
+        '                        '+ gettext('Place') + '<br>' +
+        '                        <b>' +  event.place + '</b>' +
+        '                    </div>' +
+        '                </div>' +
+        '                <div class="sub-event-col">' +
+        '                    <div>' +
+        '                        '+ gettext('Price') + '<br>' +
+        '                        <b>' +  event.price + ',-</b>' +
+        '                    </div>' +
+        '                </div>' +
+        '            </div>' +
+        '        </div>' +
+        '    </div>' +
+        '</div></a>'
     );
 }
 
