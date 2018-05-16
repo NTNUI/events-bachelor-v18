@@ -386,14 +386,7 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     height: 3rem;
     border: 1px solid #dfdfdf;
     box-sizing: border-box;
-    width: 100%;
-}
-
-.top-menu {
-    background: white;
-    height: 3rem;
-    border: 1px solid #dfdfdf;
-    box-sizing: border-box;
+    width: 60%;
 }
 
 .top-menu ul {
@@ -403,7 +396,7 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     list-style-type: none;
     height: 100%;
     width: 100%;
-    margin: 0;
+    margin: auto;
     padding: 0;
 }
 
@@ -424,6 +417,12 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     color: #007D32;
     border-bottom: 4px solid #007D32;
     opacity: 0.8;
+}
+
+.vert-divider {
+    width: 1px;
+    height: 1.5rem;
+    background-color: #979797;
 }
 
 .header-container {
@@ -523,6 +522,9 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
         max-width: 100%;
     }
 
+    .top-menu {
+        width: 80%;
+    }
     #main {
         display: flex;
         justify-content: center;

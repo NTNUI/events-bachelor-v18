@@ -182,9 +182,13 @@ h1 {
     align-content: center;
     justify-content: center;
 }
+
+#create-event-form{
+    margin-top: 25px;
+}
 .placeholder-container-text {
     text-align: center;
-    padding:2rem;"
+    padding:2rem;
 }
 
 .sub-titles {
@@ -222,6 +226,66 @@ h1 {
 
 }
 
+
+
+.top-menu {
+    background: white;
+    height: 3rem;
+    border: 1px solid #dfdfdf;
+    box-sizing: border-box;
+    width: 80%;
+}
+
+.top-menu ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    list-style-type: none;
+    height: 100%;
+    width: 100%;
+    margin: auto;
+    padding: 0;
+}
+
+.top-menu ul li:nth-child(2n-1) {
+    flex-grow: 1;
+}
+
+.top-menu a {
+    flex-grow: 1;
+    height: 52px;
+    display: block;
+    padding-top: 14px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.top-menu a:hover {
+    color: #007D32;
+    border-bottom: 4px solid #007D32;
+    opacity: 0.8;
+}
+
+.vert-divider {
+    width: 1px;
+    height: 1.5rem;
+    background-color: #979797;
+}
+
+@media only screen and (min-width: 1250px){
+    .top-menu {
+        width: 1000px;
+    }
+}
+
+.header-container {
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.active-item {
+    border-bottom: 4px solid #007D32;
+}
 
 
 
