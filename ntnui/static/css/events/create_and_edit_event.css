@@ -183,16 +183,13 @@ h1 {
     justify-content: center;
 }
 
-#create-event-form{
-    margin-top: 25px;
-}
 .placeholder-container-text {
     text-align: center;
     padding:2rem;
 }
 
 .sub-titles {
-    margin-top:2rem;
+    margin-top:1rem;
     margin-bottom: 2rem;
 }
 
@@ -228,7 +225,7 @@ h1 {
 
 
 
-.top-menu {
+.tab-menu {
     background: white;
     height: 3rem;
     border: 1px solid #dfdfdf;
@@ -236,7 +233,7 @@ h1 {
     width: 80%;
 }
 
-.top-menu ul {
+.tab-menu ul {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -247,11 +244,11 @@ h1 {
     padding: 0;
 }
 
-.top-menu ul li:nth-child(2n-1) {
+.tab-menu ul li:nth-child(2n-1) {
     flex-grow: 1;
 }
 
-.top-menu a {
+.tab-menu a {
     flex-grow: 1;
     height: 52px;
     display: block;
@@ -260,7 +257,7 @@ h1 {
     text-align: center;
 }
 
-.top-menu a:hover {
+.tab-menu a:hover {
     color: #007D32;
     border-bottom: 4px solid #007D32;
     opacity: 0.8;
@@ -273,7 +270,7 @@ h1 {
 }
 
 @media only screen and (min-width: 1250px){
-    .top-menu {
+    .tab-menu {
         width: 1000px;
     }
 }
