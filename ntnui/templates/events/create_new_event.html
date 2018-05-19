@@ -7,6 +7,29 @@
 {% block title %} NTNUI - {% trans 'Create events' %} {% endblock %}
 
 {% block content %}
+
+        {% if user.is_authenticated %}
+            <div class="tab-menu">
+            <ul>
+                <li><a href="{% url 'get_main_page' %}">{% trans 'Events' %}</a></li>
+                <li>
+                    <div class="vert-divider"></div>
+                </li>
+                <li><a href="{% url 'attending_events_page' %}">{% trans 'My upcoming events' %}</a></li>
+                 {% if can_create_event %}
+                     <li>
+                         <div class="vert-divider"></div>
+                     </li>
+                     <li>
+                         <a href="{% url 'create_event_page' %}" class="active-item">
+                             {% trans 'Create event' %}
+                         </a>
+                     </li>
+                 {% endif %}
+            </ul>
+        </div>
+     {% endif %}
+
     <!-- Used to show alerts -->
     <div class="alert-message-container">
     </div>
@@ -139,7 +162,6 @@
 
     <!-- Main form -->
 
-    <h1 style="text-align: center">{% trans 'Create new event:' %}</h1>
     <form id="create-event-form" style="width:80%; max-width:1000px;">{% csrf_token %}
     <h4 style="margin-top: 0" class="sub-titles">{% trans 'Basic info' %}:</h4>
         <div class="form-row">

@@ -136,7 +136,7 @@ def get_sorted_events(sort_by_criterion, events):
 
     # Criteria the events can be sorted by.
     sort_by_criteria = ['start_date', 'end_date', 'name']
-    print(sort_by_criteria, sort_by_criterion)
+
     # Checks that sort_by_criteria has a valid value.
     if sort_by_criterion and (sort_by_criterion in sort_by_criteria or sort_by_criterion[1:] in sort_by_criteria):
         # Checks if the sorting is ascending or descending.

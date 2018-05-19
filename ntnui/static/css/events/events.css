@@ -389,11 +389,12 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     width: 100%;
 }
 
-.top-menu {
+.tab-menu {
     background: white;
     height: 3rem;
     border: 1px solid #dfdfdf;
     box-sizing: border-box;
+    width: 60%;
 }
 
 .top-menu ul {
@@ -403,11 +404,26 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     list-style-type: none;
     height: 100%;
     width: 100%;
-    margin: 0;
+    margin: auto;
+    padding: 0;
+}
+
+.tab-menu ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    list-style-type: none;
+    height: 100%;
+    width: 100%;
+    margin: auto;
     padding: 0;
 }
 
 .top-menu ul li:nth-child(2n-1) {
+    flex-grow: 1;
+}
+
+.tab-menu ul li:nth-child(2n-1) {
     flex-grow: 1;
 }
 
@@ -420,10 +436,32 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     text-align: center;
 }
 
+.tab-menu a {
+    flex-grow: 1;
+    height: 52px;
+    display: block;
+    padding-top: 14px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
 .top-menu a:hover {
     color: #007D32;
     border-bottom: 4px solid #007D32;
     opacity: 0.8;
+}
+
+.tab-menu a:hover {
+    color: #007D32;
+    border-bottom: 4px solid #007D32;
+    opacity: 0.8;
+}
+
+
+.vert-divider {
+    width: 1px;
+    height: 1.5rem;
+    background-color: #979797;
 }
 
 .header-container {
@@ -523,6 +561,9 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
         max-width: 100%;
     }
 
+    .tab-menu {
+        width: 80%;
+    }
     #main {
         display: flex;
         justify-content: center;

@@ -8,6 +8,29 @@
 {% block title %}NTNUI - Events{% endblock %}
 
 {% block content %}
+
+    {% if user.is_authenticated %}
+        <div class="top-menu">
+            <ul>
+                <li><a href="{% url 'get_main_page' %}">{% trans 'Events' %}</a></li>
+                <li>
+                    <div class="vert-divider"></div>
+                </li>
+                <li><a href="{% url 'attending_events_page' %}" class="active-item">{% trans 'My upcoming events' %}</a></li>
+                 {% if can_create_event %}
+                     <li>
+                         <div class="vert-divider"></div>
+                     </li>
+                     <li>
+                         <a href="{% url 'create_event_page' %}">
+                             {% trans 'Create event' %}
+                         </a>
+                     </li>
+                 {% endif %}
+            </ul>
+        </div>
+     {% endif %}
+
     <div class="event-main-page-container">
         <div>
             <div id="search" class="filter-element input-group">
@@ -67,23 +90,6 @@
             </div>
         </div>
 
-        <div class="create-event">
-
-            <h3>{% trans 'My options' %}</h3>
-                {% if can_create_event %}
-                <div>
-                    <a id="go-to-create-event" href="{% url 'create_event_page' %}">
-                        <button type="button" class="buttons btn btn-success my-options-button">{% trans 'Create new event' %}</button>
-                    </a>
-                </div>
-                {% endif %}
-                <div>
-                    <a id="go-to-main-page" href="{% url 'get_main_page' %}">
-                        <button type="button" class="buttons btn btn-success my-options-button">{% trans 'All events' %}</button>
-                    </a>
-                </div>
-
-        </div>
         <div id="main">
             <div id="event-container">
             </div>
