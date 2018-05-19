@@ -81,7 +81,7 @@
                                         <input type="checkbox" name="group" value="{{ group.id }}"
                                                class="host-checkbox custom-control-input">
                                         <span class="custom-control-indicator"></span>
-                                        <span class="custom-control-description">{{ group.name }}</span>
+                                        <span class="custom-control-description">{{ group.name|slice:'6:' }}</span>
                                     </label><br>
                                 </div>
                             {% endfor %}

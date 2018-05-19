@@ -198,8 +198,9 @@ h1 {
 }
 
 .sub-titles {
-    margin-top:1rem;
-    margin-bottom: 1rem;
+    margin: 1rem 0 1rem 0;
+    padding: 0;
+    color: black !important;
 }
 
 /*
@@ -234,6 +235,11 @@ h1 {
     }
     .create-sub-event{
         justify-content: flex-start;
+    }
+
+    .sub-titles {
+        font-size: 18px !important;
+        font-weight: 700;
     }
 
 }
