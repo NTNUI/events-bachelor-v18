@@ -34,7 +34,7 @@ docker-compose up web
 docker-compose run web python manage.py makemigrations
 ```
 
-#### To applay the migratations use:
+#### To apply the migratations use:
 
 ```
 docker-compose run web python manage.py migrate
