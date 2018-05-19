@@ -139,7 +139,7 @@ function displayEvent(event) {
 
     $("#event-container").append(
         '<a href="/events/' + event.id + '/' + event.name.replace(/\s+/g, '-').toLowerCase() + '" class="card" style="margin: .3rem">' +
-        '   <div class="card-header" style="background-color: white"> <h5>' + event.name + '</h5> </div>' +
+        '   <div class="card-header" style="background-color: white"> <h4>' + event.name + '</h4> </div>' +
         '    <div class="card-body sub-event-main-container" style="background-color: white">' +
         '        <div class="sub-event-title-container">' +
                     '<div class="card-img-container">' +
@@ -148,13 +148,13 @@ function displayEvent(event) {
         '        </div>' +
         '        <div class="sub-event-container">' +
         '            <div class="sub-event-row-container">' +
-        '                <div class="sub-event-col">' +
+        '                <div class="sub-event-col start-date">' +
         '                    <div>' +
         '                        '+ gettext('Start date') + '<br>' +
         '                        <b>'+ event.start_date.toString().substr(0, 10) + '</b>' +
         '                    </div>' +
         '                </div>' +
-        '                <div class="sub-event-col">' +
+        '                <div class="sub-event-col end-date">' +
         '                    <div>' +
         '                        '+ gettext('End date') + '<br>' +
         '                        <b>' +  event.end_date.toString().substr(0, 10) + '</b>' +
@@ -162,13 +162,13 @@ function displayEvent(event) {
         '                </div>' +
         '            </div>' +
         '            <div class="sub-event-row-container border-container">' +
-        '                <div class="sub-event-col">' +
+        '                <div class="sub-event-col place">' +
         '                    <div>' +
         '                        '+ gettext('Place') + '<br>' +
         '                        <b>' +  event.place + '</b>' +
         '                    </div>' +
         '                </div>' +
-        '                <div class="sub-event-col">' +
+        '                <div class="sub-event-col price">' +
         '                    <div>' +
         '                        '+ gettext('Price') + '<br>' +
         '                        <b>' +  event.price + ',-</b>' +

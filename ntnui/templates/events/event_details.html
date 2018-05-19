@@ -203,7 +203,7 @@
                                         data-toggle="modal"
                                         data-target="#eventModal">
                                     <div class="button-title-container">
-                                        {% trans 'Unattend from the event' %}
+                                        {% trans 'Sign off event' %}
                                     </div>
                                 </button>
                             {% else %}
@@ -277,10 +277,10 @@
                                 <div class="card" style="margin: .1rem">
                                     <div class="card-body sub-event-main-container" style="background-color: white">
                                         <div class="sub-event-title-container">
-                                            <h5>{{ sub_event.name }}</h5>
+                                            <h4>{{ sub_event.name }}</h4>
                                         </div>
                                         <div class="sub-event-container">
-                                            <div class="sub-event-row-container">
+                                            <div class="sub-event-row-container number-1">
                                                 <div class="sub-event-col">
                                                     <div>
                                                         {% trans 'From date' %} <br>
@@ -301,7 +301,7 @@
                                                                     data-state="unattend"
                                                                     value="{{ sub_event.id }}">
                                                                 <div class="button-title-container ">
-                                                                    {% trans 'Unattend from the event' %}
+                                                                    {% trans 'Sign off event' %}
                                                                 </div>
                                                             </button>
                                                         {% else %}
@@ -357,7 +357,7 @@
                                                     {% endif %}
                                                 </div>
                                             </div>
-                                            <div class="sub-event-row-container border-container">
+                                            <div class="sub-event-row-container border-container number-2">
                                                 <div class="sub-event-col">
                                                     <div>
                                                         {% trans 'Number of participants' %} <br>

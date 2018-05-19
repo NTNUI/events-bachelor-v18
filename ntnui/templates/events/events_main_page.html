@@ -29,7 +29,9 @@
      {% endif %}
 
     <div class="event-main-page-container">
-        <div>
+        <button type="button" data-toggle="collapse" data-target=".search-filter-sort-container" class="collapse-filters btn btn-warning">Search, filter, and sort.</button>
+
+        <div class="search-filter-sort-container">
             <div id="search" class="filter-element input-group">
                 <span class="input-group-addon" id="basic-addon1">
                     <img src="{% static 'img/serach.svg' %}" alt="groups icon" style="max-height:1rem;"/>
@@ -42,15 +44,15 @@
                         {% trans 'Sort by' %}
                     </span>
                 <select id="sorted-list" class="form-control-select">
-                    <option value="start_date">{% trans 'Start date (ascending)' %}</option>
-                    <option value="-start_date">{% trans 'Start date (descending)' %}</option>
-                    <option value="name">{% trans 'Name (ascending)' %}</option>
-                    <option value="-name">{% trans 'Name (descending)' %}</option>
+                    <option value="start_date">{% trans 'Start date' %} &uarr;</option>
+                    <option value="-start_date">{% trans 'Start date' %} &darr;</option>
+                    <option value="name">{% trans 'Name' %} &uarr;</option>
+                    <option value="-name">{% trans 'Name' %} &darr;</option>
                 </select>
             </div>
             <div id="accordion" role="tablist" aria-multiselectable="true">
 
-                <div class="card">
+                <div class="card host-filter">
                     <div class="card-header" role="tab" id="headingOne" aria-controls="collapseOne"
                          data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true">
                         <h5 class="mb-0">
@@ -77,7 +79,7 @@
                                         <input type="checkbox" name="group" value="{{ group.id }}"
                                                class="host-checkbox custom-control-input">
                                         <span class="custom-control-indicator"></span>
-                                        <span class="custom-control-description">{{ group.name }}</span>
+                                        <span class="custom-control-description">{{ group.name|slice:'6:' }}</span>
                                     </label><br>
                                 </div>
                             {% endfor %}
@@ -90,7 +92,7 @@
         <div id="main">
             <div id="event-container">
             </div>
-            <div style="display:flex;justify-content: center; margin-top:1rem;">
+            <div class="load-more-button" style="display:flex;justify-content: center; margin-top:1rem;">
                 <button type="button" id="load-more"
                         class="buttons btn btn-success">{% trans 'Load more events' %}</button>
             </div>
