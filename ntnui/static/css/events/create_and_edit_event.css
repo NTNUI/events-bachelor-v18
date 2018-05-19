@@ -190,7 +190,7 @@ h1 {
 
 .sub-titles {
     margin-top:1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 
 /*
@@ -231,6 +231,7 @@ h1 {
     border: 1px solid #dfdfdf;
     box-sizing: border-box;
     width: 80%;
+    margin-top: 2rem;
 }
 
 .tab-menu ul {
