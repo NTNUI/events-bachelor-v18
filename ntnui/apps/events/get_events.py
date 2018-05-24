@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.utils import translation
 from django.utils.translation import gettext as _
+
 from events.models.event import Event
 
 from .views import get_json, get_sub_events

@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.utils.translation import gettext as _
+
 from events.models.category import Category, CategoryDescription
 from events.models.event import (Event, EventDescription,
                                  EventGuestRegistration, EventGuestWaitingList,
@@ -13,6 +14,7 @@ from events.models.sub_event import (SubEvent, SubEventDescription,
 from .views import get_json
 
 
+@login_required
 def create_category_request(request):
     """ Creates a new category with the provided data. """
 
@@ -41,6 +43,7 @@ def create_category_request(request):
         return get_json(400, 'Creating category failed.')
 
 
+@login_required
 def edit_category_request(request):
     """ Edits an existing category with the provided data. """
 
@@ -75,6 +78,7 @@ def edit_category_request(request):
         return get_json(400, 'Editing category failed.')
 
 
+@login_required
 def delete_category_request(request):
     """ Deletes a given category. """
 
@@ -82,6 +86,7 @@ def delete_category_request(request):
     return delete_category(category)
 
 
+@login_required
 def delete_category(category):
     """ Help-function for deleting a category. """
 
@@ -110,6 +115,7 @@ def delete_category(category):
         return get_json(400, "Could not delete category")
 
 
+@login_required
 def create_sub_event_request(request):
     """ Creates a new event with the provided data. """
 
@@ -160,8 +166,8 @@ def create_sub_event_request(request):
             category = Category.objects.get(id=category_id)
 
         # Validates the input for the sub-event.
-        sub_event = SubEvent.objects.create(start_date=request.POST.get('start_date'),
-                                            end_date=request.POST.get('end_date'''),
+        sub_event = SubEvent.objects.create(start_date=request.POST.get('start_date') + '+0000',
+                                            end_date=request.POST.get('end_date''') + '+0000',
                                             price=price,
                                             registration_end_date=registration_end_date,
                                             attendance_cap=attendance_cap,
@@ -182,6 +188,7 @@ def create_sub_event_request(request):
         return get_json(400, 'Editing sub-event failed.')
 
 
+@login_required
 def edit_sub_event_request(request):
     """ Edits an existing sub-event with the provided data. """
 
@@ -215,8 +222,8 @@ def edit_sub_event_request(request):
                 categorydescription__name='Ikke kategorisert', event__id=int(data['event']))[0]
 
         # Sets the start and end date.
-        sub_event.start_date = start_date
-        sub_event.end_date = end_date
+        sub_event.start_date = start_date + '+0000'
+        sub_event.end_date = end_date + '+0000'
 
         # Sets the registration_end_date to None if it is not set, otherwise to the given value.
         if not registration_end_date:
@@ -268,6 +275,7 @@ def edit_sub_event_request(request):
         return get_json(400, 'Edit sub-event failed.')
 
 
+@login_required
 def delete_sub_event_request(request):
     """ Deletes a given sub-event. """
 
@@ -275,6 +283,7 @@ def delete_sub_event_request(request):
     return delete_sub_event(sub_event)
 
 
+@login_required
 def delete_sub_event(sub_event):
     """ Help-function for deleting a sub-event. """
 
@@ -326,12 +335,6 @@ def delete_sub_event(sub_event):
 def edit_event_request(request):
     """ Edits a given event. """
 
-    return edit_event(request)
-
-
-def edit_event(request):
-    """ Help-function for editing an event. """
-
     if not request.POST:
         return get_json(400, 'Request must be POST.')
 
@@ -358,8 +361,8 @@ def edit_event(request):
         event.end_date = end_date
 
         # Sets the start and end date.
-        event.start_date = start_date
-        event.end_date = end_date
+        event.start_date = start_date + '+0000'
+        event.end_date = end_date + '+0000'
 
         # Sets the registration_end_date to None if it is not set, otherwise to the given value.
         if not registration_end_date:
@@ -419,6 +422,7 @@ def edit_event(request):
         return get_json(400, "Deleting event failed.")
 
 
+@login_required
 def delete_event_request(event_id):
     """ Deletes a given event and all its related objects. """
 

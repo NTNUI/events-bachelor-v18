@@ -1,16 +1,20 @@
 from datetime import datetime
 
-from accounts.models import User
+import pytz
 from django.test import Client, TestCase
 from django.urls import reverse
-from events.models import Event, EventDescription
+
+from accounts.models import User
+from events.models.event import (Event, EventDescription,
+                                 EventGuestRegistration, EventGuestWaitingList,
+                                 EventRegistration, EventWaitingList)
 from groups.models import SportsGroup
 
 
 class TestFilterSearchSortEvents(TestCase):
     def setUp(self):
         
-        self.date = datetime.today()
+        self.date = datetime.now(pytz.utc)
         # Format code to match format from json
         self.date_string = self.date.isoformat()[0:-3] +"Z"
 

@@ -1,7 +1,8 @@
-from accounts.models import User
 from django.db import models
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
+
+from accounts.models import User
 from events.models.abstract_classes import (CommonDescription, CommonEvent,
                                             CommonRegistration)
 from events.models.category import Category
@@ -90,11 +91,11 @@ class SubEvent(CommonEvent):
 
     # Deletes an sub-event registration for a user.
     def user_attendance_delete(self, user):
-        SubEventRegistration.objects.get(event=self, attendee=user).delete()
+        SubEventRegistration.objects.get(sub_event=self, attendee=user).delete()
 
     # Deletes a user from an sub-event's waiting list.
-    def user_waiting_list_delete(self, user, payment_id):
-        SubEventWaitingList.objects.get(event=self, attendee=user, payment_id=payment_id).delete()
+    def user_waiting_list_delete(self, user):
+        SubEventWaitingList.objects.get(sub_event=self, attendee=user).delete()
 
     # Checks if a user attends the sub-event.
     def is_user_enrolled(self, user):

@@ -1,20 +1,25 @@
-from datetime import date
+from datetime import date, datetime, timedelta
 
-from accounts.models import User
+import pytz
 from django.test import Client, TestCase
 from django.urls import reverse
+
+from accounts.models import User
 from events import create_event
-from events.models import Event, EventDescription
+from events.models.event import (Event, EventDescription,
+                                 EventGuestRegistration, EventGuestWaitingList,
+                                 EventRegistration, EventWaitingList)
 from groups.models import Board, Membership, SportsGroup
 from hs.models import MainBoard, MainBoardMembership
 
 
-class Event_add(TestCase):
+class CreateEvent(TestCase):
 
     def setUp(self):
         # Create dummy user
         self.user = User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V')
-        self.boardpresident = User.objects.create_user(email='boardpresident@test.com', password='12345', customer_number='20')
+        self.boardpresident = User.objects.create_user(
+            email='boardpresident@test.com', password='12345', customer_number='20')
 
         self.boardvice = User.objects.create_user(email='boardvice@test.com', password='23456', customer_number='21')
         self.boardcashier = User.objects.create_user(email='boardcashier@test.com', password='34567',
@@ -33,12 +38,10 @@ class Event_add(TestCase):
         self.boardpresident_swimminggroup = Membership.objects.create(person=self.boardpresident,
                                                                       group=self.swimminggroup)
         # Create a new event with NTNUI as host
-        self.event = Event.objects.create(start_date=date.today(), end_date=date.today(),
-                                          priority=True, is_host_ntnui=True)
+        self.event = Event.objects.create(start_date=datetime.now(pytz.utc),
+                                          end_date=datetime.now(pytz.utc) + timedelta(days=2), is_host_ntnui=True)
 
         self.description = 123
-
-
 
         # add norwegian and english description to the name and the description
         EventDescription.objects.create(name='Norsk', description_text='Norsk beskrivelse', language='nb',
@@ -56,9 +59,8 @@ class Event_add(TestCase):
                                                     'name_no': 'norsk navn',
                                                     'description_text_en': '',
                                                     'description_text_no': 'norsk beskrivelse',
-                                                    'start_date': date.today(),
-                                                    'end_date': date.today(),
-                                                    'priority': 'false',
+                                                    'start_date': datetime.now(pytz.utc),
+                                                    'end_date': datetime.now(pytz.utc) + timedelta(days=2),
                                                     'host': 'NTNUI'
                                                     }, follow=True)
 
@@ -72,11 +74,10 @@ class Event_add(TestCase):
         # login
         c.login(email='testuser@test.com', password='4epape?Huf+V')
 
-        response = c.post(reverse('create_event'), {'start_date': date.today(),
-                                                    'end_date': date.today(),
+        response = c.post(reverse('create_event'), {'start_date': datetime.now(pytz.utc),
+                                                    'end_date': datetime.now(pytz.utc) + timedelta(days=2),
                                                     'place': '',
                                                     'restriction': '0',
-                                                    'priority': 'false',
                                                     'hosted by NTNUI': 'true',
                                                     'name_en': 'engelsk navn',
                                                     'name_no': 'norsk navn',
@@ -93,11 +94,10 @@ class Event_add(TestCase):
         c = Client()
         c.login(email='boardpresident@test.com', password='12345')
 
-        response = c.post(reverse('create_event'), {'start_date': date.today(),
-                                                    'end_date': date.today(),
+        response = c.post(reverse('create_event'), {'start_date': datetime.now(pytz.utc),
+                                                    'end_date': datetime.now(pytz.utc) + timedelta(days=2),
                                                     'place': '',
                                                     'restriction': '0',
-                                                    'priority': 'false',
                                                     'hosted by NTNUI': 'false',
                                                     'name_en': 'engelsk navn',
                                                     'name_no': 'norsk navn',
@@ -113,11 +113,10 @@ class Event_add(TestCase):
         c = Client()
         c.login(email='boardpresident@test.com', password='12345')
 
-        response = c.post(reverse('create_event'), {'start_date': date.today(),
-                                                    'end_date': date.today(),
+        response = c.post(reverse('create_event'), {'start_date': datetime.now(pytz.utc),
+                                                    'end_date': datetime.now(pytz.utc) + timedelta(days=2),
                                                     'place': '',
                                                     'restriction': '0',
-                                                    'priority': 'false',
                                                     'hosted by NTNUI': 'false',
                                                     'name_en': 'engelsk navn',
                                                     'name_no': 'norsk navn',
@@ -135,11 +134,10 @@ class Event_add(TestCase):
         c = Client()
         c.login(email='testuser@test.com', password='4epape?Huf+V')
 
-        response = c.post(reverse('create_event'), {'start_date': date.today(),
-                                                    'end_date': date.today(),
+        response = c.post(reverse('create_event'), {'start_date': datetime.now(pytz.utc),
+                                                    'end_date': datetime.now(pytz.utc) + timedelta(days=2),
                                                     'place': '',
                                                     'restriction': '0',
-                                                    'priority': 'false',
                                                     'hosted by NTNUI': 'true',
                                                     'name_en': 'engelsk navn',
                                                     'name_no': 'norsk navn',
@@ -148,17 +146,14 @@ class Event_add(TestCase):
                                                     'description_text_en': 'engelsk beskrivelse',
                                                     'description_text_no': 'norsk beskrivelse',
                                                     }, follow=True)
-
-
         return self.assertEqual(response.status_code, 201)
 
     def test_create_event_for_group_fails(self):
         c = Client()
-        response = c.post(reverse('create_event'), {'start_date': date.today(),
-                                                    'end_date': date.today(),
+        response = c.post(reverse('create_event'), {'start_date': datetime.now(pytz.utc),
+                                                    'end_date': datetime.now(pytz.utc) + timedelta(days=2),
                                                     'place': '',
                                                     'restriction': '0',
-                                                    'priority': 'false',
                                                     'hosted by NTNUI': 'true',
                                                     'name_en': 'engelsk navn',
                                                     'name_no': 'norsk navn',
@@ -168,9 +163,5 @@ class Event_add(TestCase):
                                                     'description_text_no': 'norsk beskrivelse',
                                                     }, follow=True)
 
-        return self.assertEqual(create_event.create_event_for_group(response.wsgi_request, response.get('priority'),
-                                 response.get('hosted by NTNUI')), (False, None))
-
-    #def test_create_description_for_event_fails(self):
-
-    #    return self.assertEqual(create_event.create_description_for_event(self.event, self.description, 1, 'nb'), False)
+        return self.assertEqual(create_event.create_event_for_group(response.wsgi_request,
+                                                                    response.get('hosted by NTNUI')), (False, None))

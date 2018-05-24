@@ -3,6 +3,7 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
+
 from events.models.event import Event, EventDescription
 from groups.models import SportsGroup
 
@@ -136,9 +137,11 @@ def create_event_for_group(data, is_host_ntnui):
 
     try:
         # Creates the event.
-        event = Event.objects.create(
-            start_date=data.get('start_date'), end_date=data.get('end_date'), place=data.get('place'), price=price,
-            registration_end_date=registration_end_date,  is_host_ntnui=is_host_ntnui, attendance_cap=attendance_cap)
+        event = Event.objects.create(start_date=data.get('start_date') + '+0000',
+                                     end_date=data.get('end_date') + '+0000',
+                                     place=data.get('place'), price=price,
+                                     registration_end_date=registration_end_date,
+                                     is_host_ntnui=is_host_ntnui, attendance_cap=attendance_cap)
 
         # Sets the event's host, if the host is not NTNUI.
         if not is_host_ntnui:

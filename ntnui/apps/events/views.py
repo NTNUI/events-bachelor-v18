@@ -2,10 +2,11 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.forms import model_to_dict
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import translation
 from django.utils.translation import gettext as _
+
 from events.models.category import Category, CategoryDescription
 from events.models.event import (Event, EventDescription,
                                  EventGuestRegistration, EventGuestWaitingList,
@@ -208,7 +209,7 @@ def get_edit_event_page(request, event_id):
     event_description_no = EventDescription.objects.get(event=event, language='nb')
     event_description_en = EventDescription.objects.get(event=event, language='en')
 
-    # Converts dates to a format that can be put as value in inputtype datetimelocal html form.
+    # Converts dates to a format that can be put as value in input type 'datetime local' html form.
     event_start_date = event.start_date
     event_end_date = event.end_date
     start_date = '{:%Y-%m-%dT%H:%M}'.format(event_start_date)
@@ -312,7 +313,6 @@ def get_groups_user_can_create_events_for(user):
 
 
 def get_event(request, event_id):
-    print(event_id)
     """ Creates a dictionary of a given event. """
 
     # Checks that the event exists.

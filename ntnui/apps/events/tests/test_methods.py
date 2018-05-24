@@ -1,12 +1,20 @@
-from datetime import date
+from datetime import datetime, timedelta
+
+import pytz
+from django.test import TestCase
 
 from accounts.models import User
-from django.test import TestCase
-from events import views
-from events.models import (Category, CategoryDescription, Event,
-                           EventDescription, SubEvent, SubEventDescription)
-from groups.models import Board, Membership, SportsGroup
-from hs.models import MainBoard, MainBoardMembership
+from events.models.category import Category, CategoryDescription
+from events.models.event import (Event, EventDescription,
+                                 EventGuestRegistration, EventGuestWaitingList,
+                                 EventRegistration, EventWaitingList)
+from events.models.sub_event import (SubEvent, SubEventDescription,
+                                     SubEventGuestRegistration,
+                                     SubEventGuestWaitingList,
+                                     SubEventRegistration, SubEventWaitingList)
+from events.views import get_json, is_user_in_board, is_user_in_main_board
+from groups.models import (Board, MainBoard, MainBoardMembership, Membership,
+                           SportsGroup)
 
 
 class TestViewMethods(TestCase):
@@ -14,7 +22,8 @@ class TestViewMethods(TestCase):
         self.user = User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V', customer_number=1)
         self.user2 = User.objects.create_user(email='testuser1@test.com', password='4epape?Huf+V')
         # Create a new event with NTNUI as host
-        self.event = Event.objects.create(start_date=date.today(), end_date=date.today(),
+        self.event = Event.objects.create(start_date=datetime.now(pytz.utc),
+                                          end_date=datetime.now(pytz.utc) + timedelta(days=2),
                                           priority=True, is_host_ntnui=True)
 
         # add norwegian and english description to the name and the description
@@ -51,8 +60,8 @@ class TestViewMethods(TestCase):
         MainBoardMembership.objects.create(person=self.user, role="president", board=hs)
 
         # Create a second event with a group
-        event = Event.objects.create(start_date=date.today(), end_date=date.today(),
-                                     priority=True)
+        event = Event.objects.create(start_date=datetime.now(pytz.utc),
+                                     end_date=datetime.now(pytz.utc) + timedelta(days=2))
         # Add a sports group
         event.sports_groups.add(SportsGroup.objects.create(name='Test Group', description='this is a test group'))
 
@@ -63,7 +72,7 @@ class TestViewMethods(TestCase):
 
     def test_user_is_in_mainboard(self):
         # Checks user that is in main board
-        self.assertEquals(views.user_is_in_mainboard(self.user), True)
+        self.assertEquals(is_user_in_board(self.user), True)
 
         # Checks user is not in main board
-        self.assertEquals(views.user_is_in_mainboard(self.user2), False)
+        self.assertEquals(is_user_in_main_board(self.user2), False)

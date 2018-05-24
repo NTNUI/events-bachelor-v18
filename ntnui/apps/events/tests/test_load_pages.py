@@ -1,10 +1,18 @@
-from datetime import date
+from datetime import datetime, timedelta
 
-from accounts.models import User
+import pytz
 from django.test import Client, TestCase
 from django.urls import reverse
-from events.models import (Category, CategoryDescription, Event,
-                           EventDescription, SubEvent, SubEventDescription)
+
+from accounts.models import User
+from events.models.category import Category, CategoryDescription
+from events.models.event import (Event, EventDescription,
+                                 EventGuestRegistration, EventGuestWaitingList,
+                                 EventRegistration, EventWaitingList)
+from events.models.sub_event import (SubEvent, SubEventDescription,
+                                     SubEventGuestRegistration,
+                                     SubEventGuestWaitingList,
+                                     SubEventRegistration, SubEventWaitingList)
 from groups.models import Board, Membership, SportsGroup
 from hs.models import MainBoard, MainBoardMembership
 
@@ -14,7 +22,8 @@ class TestLoadEvents(TestCase):
         self.user = User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V', customer_number=1)
 
         # Create a new event with NTNUI as host
-        self.event = Event.objects.create(start_date=date.today(), end_date=date.today(),
+        self.event = Event.objects.create(start_date=datetime.now(pytz.utc),
+                                          end_date=datetime.now(pytz.utc) + timedelta(days=2),
                                           priority=True, is_host_ntnui=True)
 
         # add norwegian and english description to the name and the description
@@ -28,7 +37,9 @@ class TestLoadEvents(TestCase):
         CategoryDescription.objects.create(name="test", category=category, language='nb')
 
         # Create a new event with NTNUI as host
-        sub_event = SubEvent.objects.create(start_date=date.today(), end_date=date.today(), category=category)
+        sub_event = SubEvent.objects.create(start_date=datetime.now(pytz.utc),
+                                            end_date=datetime.now(pytz.utc) + timedelta(days=2),
+                                            category=category)
 
         # add norwegian and english description to the name and the description
         SubEventDescription.objects.create(name='Norsk', language='nb', sub_event=sub_event)
@@ -51,7 +62,8 @@ class TestLoadEvents(TestCase):
         MainBoardMembership.objects.create(person=self.user, role="president", board=hs)
 
         # Create a second event with a group
-        event = Event.objects.create(start_date=date.today(), end_date=date.today(),
+        event = Event.objects.create(start_date=datetime.now(pytz.utc),
+                                     end_date=datetime.now(pytz.utc) + timedelta(days=2),
                                      priority=True)
         # Add a sports group
         event.sports_groups.add(SportsGroup.objects.create(name='Test Group', description='this is a test group'))
