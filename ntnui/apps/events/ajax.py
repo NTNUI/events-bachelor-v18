@@ -6,12 +6,12 @@ from .event_attendance import (attend_event_request,
                                remove_attendance_by_token_request,
                                remove_attendance_request,
                                waiting_list_event_request)
-from .get_events import get_attending_events_request, get_events_request
+from .get_events import (get_attending_events_request, get_events_request)
 from .manage_events import (create_category_request, create_sub_event_request,
                             delete_category_request, delete_event_request,
                             delete_sub_event_request, edit_category_request,
                             edit_event_request, edit_sub_event_request)
-from .views import get_event, get_sub_event
+from .views import (get_event, get_sub_event)
 
 urlpatterns = [
     url(r'^add-event$', create_event_request, name='create_event'),

@@ -43,8 +43,8 @@ def get_events_main_page(request):
     # Get groups that are hosting events.
     groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
 
-    return render(request, 'events/events_main_page.html', {'can_create_event': can_create_event,
-                                                            'groups': groups})
+    return render(request, 'events/events_main_page.html', {'can_create_event': can_create_event, 'groups': groups,
+                                                            'template': 'event_main_page'})
 
 
 @login_required
@@ -70,8 +70,8 @@ def get_attending_events_page(request):
     # Get groups that are hosting events.
     groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
 
-    return render(request, 'events/events_attending_page.html', {'can_create_event': can_create_event,
-                                                                 'groups': groups})
+    return render(request, 'events/events_main_page.html', {'can_create_event': can_create_event, 'groups': groups,
+                                                            'template': 'event_attending_page'})
 
 
 def get_event_details_page(request, event_id):

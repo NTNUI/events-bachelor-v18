@@ -18,7 +18,7 @@ from groups.models import SportsGroup
 """ Tests the SubEvent model's functions. """
 
 
-class TestEventModel(TestCase):
+class TestSubEventModel(TestCase):
 
     def setUp(self):
         self.event = Event.objects.create(
@@ -316,7 +316,7 @@ class TestEventModel(TestCase):
 """
 
 
-class TestEventRegistrationModels(TestCase):
+class TestSubEventRegistrationModels(TestCase):
 
     def setUp(self):
         self.user = User.objects.create(email='username@domain.com', password='password')

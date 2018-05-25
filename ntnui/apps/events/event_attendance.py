@@ -251,7 +251,7 @@ def event_has_sub_events(event):
     """ Denies sign up to events which has sub-events. """
 
     if isinstance(event, Event):
-        if len(get_sub_events(event)) > 0:
+        if get_sub_events(event).exists():
             return True, get_json(400, _('Cannot sign up for an event which has sub-events.'))
     return False, None
 
