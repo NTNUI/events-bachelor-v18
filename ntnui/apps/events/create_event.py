@@ -19,8 +19,10 @@ def create_event_request(request):
         return get_json(400, _('Request must be POST.'))
 
     # Gets the user and the POST request's data.
+
     data = request.POST
     user = request.user
+    print(data)
 
     # Checks that the required fields for an event is valid.
     error_message = validate_event_data(data)
@@ -57,18 +59,6 @@ def validate_event_data(data):
     # Checks that the event has an English name and description text.
     if not (english_name or english_description):
         return 'English name and description is required.'
-
-    # Checks that the event has an valid start and end date.
-    if start_date and end_date:
-        # Start date set later than end date.
-        if datetime.strptime(start_date, '%Y-%m-%dT%M:%H') >= datetime.strptime(end_date, '%Y-%m-%dT%M:%H'):
-            return 'Starting date cannot be later than end date.'
-        # Start date set in the past.
-        elif datetime.now() >= datetime.strptime(start_date, '%Y-%m-%dT%M:%H'):
-            return 'Starting date cannot be in the past.'
-    else:
-        # The event is lacking start date and/or end date.
-        return 'Start date and end date is required.'
 
     # Checks that the event has a location.
     if not location:
@@ -120,18 +110,17 @@ def create_event(data, user):
 def create_event_for_group(data, is_host_ntnui):
     """ Creates a new event hosted by a sports group. """
 
+    print(data)
     # Sets the event's price to 0 if it is not set.
-    price = data.get('price')
-    if price == "":
-        price = 0
+    price = data.get('price', 0)
 
     # Sets the event's attendance cap to None if it is not set.
-    attendance_cap = data.get('attendance_cap')
+    attendance_cap = data.get('attendance_cap', None)
     if attendance_cap == "":
         attendance_cap = None
 
     # Sets the event's registration end date to None if it is not set.
-    registration_end_date = data.get('registration_end_date')
+    registration_end_date = data.get('registration_end_date', None)
     if registration_end_date == "":
         registration_end_date = None
 

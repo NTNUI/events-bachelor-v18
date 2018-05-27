@@ -38,8 +38,8 @@ class CreateEvent(TestCase):
         self.boardpresident_swimminggroup = Membership.objects.create(person=self.boardpresident,
                                                                       group=self.swimminggroup)
         # Create a new event with NTNUI as host
-        self.event = Event.objects.create(start_date=datetime.now(pytz.utc),
-                                          end_date=datetime.now(pytz.utc) + timedelta(days=2), is_host_ntnui=True)
+        self.event = Event.objects.create(start_date=datetime.now(),
+                                          end_date=datetime.now() + timedelta(days=2), is_host_ntnui=True)
 
         self.description = 123
 
@@ -58,9 +58,10 @@ class CreateEvent(TestCase):
         response = c.post(reverse('create_event'), {'name_en': 'engelsk navn',
                                                     'name_no': 'norsk navn',
                                                     'description_text_en': '',
+                                                    'place': 'Trondheim',
                                                     'description_text_no': 'norsk beskrivelse',
-                                                    'start_date': datetime.now(pytz.utc),
-                                                    'end_date': datetime.now(pytz.utc) + timedelta(days=2),
+                                                    'start_date': datetime.now(),
+                                                    'end_date': datetime.now() + timedelta(days=2),
                                                     'host': 'NTNUI'
                                                     }, follow=True)
 
@@ -74,59 +75,61 @@ class CreateEvent(TestCase):
         # login
         c.login(email='testuser@test.com', password='4epape?Huf+V')
 
-        response = c.post(reverse('create_event'), {'start_date': datetime.now(pytz.utc),
-                                                    'end_date': datetime.now(pytz.utc) + timedelta(days=2),
+        response = c.post(reverse('create_event'), {'start_date': datetime.now(),
+                                                    'end_date': datetime.now() + timedelta(days=2),
                                                     'place': '',
                                                     'restriction': '0',
                                                     'hosted by NTNUI': 'true',
                                                     'name_en': 'engelsk navn',
                                                     'name_no': 'norsk navn',
                                                     'host': 'NTNUI',
+                                                    'place': 'Trondheim',
                                                     'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                     'description_text_en': 'engelsk beskrivelse',
                                                     'description_text_no': 'norsk beskrivelse',
                                                     }, follow=True)
 
-        return self.assertEqual(
-            response.status_code, 400)
+        return self.assertEqual(400, response.status_code)
 
     def test_create_event_hosted_by_boardmember(self):
         c = Client()
         c.login(email='boardpresident@test.com', password='12345')
 
-        response = c.post(reverse('create_event'), {'start_date': datetime.now(pytz.utc),
-                                                    'end_date': datetime.now(pytz.utc) + timedelta(days=2),
+        response = c.post(reverse('create_event'), {'start_date': datetime.now(),
+                                                    'end_date': datetime.now() + timedelta(days=2),
                                                     'place': '',
                                                     'restriction': '0',
                                                     'hosted by NTNUI': 'false',
                                                     'name_en': 'engelsk navn',
                                                     'name_no': 'norsk navn',
+                                                    'place': 'Trondheim',
                                                     'host': self.swimminggroup.id,
                                                     'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                     'description_text_en': 'engelsk beskrivelse',
                                                     'description_text_no': 'norsk beskrivelse',
                                                     }, follow=True)
 
-        return self.assertEqual(response.status_code, 201)
+        return self.assertEqual(201, response.status_code)
 
     def test_create_event_with_no_norwegian_description(self):
         c = Client()
         c.login(email='boardpresident@test.com', password='12345')
 
-        response = c.post(reverse('create_event'), {'start_date': datetime.now(pytz.utc),
-                                                    'end_date': datetime.now(pytz.utc) + timedelta(days=2),
+        response = c.post(reverse('create_event'), {'start_date': datetime.now(),
+                                                    'end_date': datetime.now() + timedelta(days=2),
                                                     'place': '',
                                                     'restriction': '0',
                                                     'hosted by NTNUI': 'false',
                                                     'name_en': 'engelsk navn',
                                                     'name_no': 'norsk navn',
+                                                    'place': 'Trondheim',
                                                     'host': self.swimminggroup.id,
                                                     'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                     'description_text_en': 'engelsk beskrivelse',
                                                     'description_text_no': '',
                                                     }, follow=True)
 
-        return self.assertEqual(response.status_code, 400)
+        return self.assertEqual(400, response.status_code)
 
     def test_create_event_hosted_by_NTNUI(self):
         hs = MainBoard.objects.create(name="super geir", slug="super-geir")
@@ -134,30 +137,33 @@ class CreateEvent(TestCase):
         c = Client()
         c.login(email='testuser@test.com', password='4epape?Huf+V')
 
-        response = c.post(reverse('create_event'), {'start_date': datetime.now(pytz.utc),
-                                                    'end_date': datetime.now(pytz.utc) + timedelta(days=2),
+        response = c.post(reverse('create_event'), {'start_date': datetime.now(),
+                                                    'end_date': datetime.now() + timedelta(days=2),
                                                     'place': '',
                                                     'restriction': '0',
                                                     'hosted by NTNUI': 'true',
                                                     'name_en': 'engelsk navn',
                                                     'name_no': 'norsk navn',
                                                     'host': 'NTNUI',
+                                                    'place': 'Trondheim',
                                                     'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                     'description_text_en': 'engelsk beskrivelse',
                                                     'description_text_no': 'norsk beskrivelse',
                                                     }, follow=True)
-        return self.assertEqual(response.status_code, 201)
+        print(response.content)
+        return self.assertEqual(201, response.status_code)
 
     def test_create_event_for_group_fails(self):
         c = Client()
-        response = c.post(reverse('create_event'), {'start_date': datetime.now(pytz.utc),
-                                                    'end_date': datetime.now(pytz.utc) + timedelta(days=2),
+        response = c.post(reverse('create_event'), {'start_date': datetime.now(),
+                                                    'end_date': datetime.now() + timedelta(days=2),
                                                     'place': '',
                                                     'restriction': '0',
                                                     'hosted by NTNUI': 'true',
                                                     'name_en': 'engelsk navn',
                                                     'name_no': 'norsk navn',
                                                     'host': 'NTNUI',
+                                                    'place': 'Trondheim',
                                                     'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                     'description_text_en': 'engelsk beskrivelse',
                                                     'description_text_no': 'norsk beskrivelse',

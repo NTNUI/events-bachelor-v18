@@ -41,7 +41,6 @@ class TestEventAttendanceView(TestCase):
 
         # assert
         self.assertEqual(result[0], True)
-        self.assertEqual(result[1], '')
 
     def test_event_has_sub_events_no_sub_event(self):
 

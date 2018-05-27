@@ -24,13 +24,6 @@ def get_remove_attendance_page(request, token):
 
     return render(request, 'events/remove_attendance.html', {'token': token})
 
-
-def get_delete_event_page(request):
-    """ Renders the event main page after deleting an event. """
-
-    return get_events_main_page(request)
-
-
 def get_events_main_page(request):
     """ Renders the events' main page. """
 
