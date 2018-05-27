@@ -15,7 +15,7 @@ from events.models.category import Category, CategoryDescription
 from events.models.sub_event import SubEventDescription, SubEvent
 
 
-class TestCategory(TestCase):
+class TestManageEvents(TestCase):
 
     def setUp(self):
         # Create dummy user
