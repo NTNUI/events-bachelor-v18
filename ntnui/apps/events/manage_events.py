@@ -78,7 +78,6 @@ def edit_category_request(request):
         return get_json(400, 'Editing category failed.')
 
 
-@login_required
 def delete_category_request(request):
     """ Deletes a given category. """
 
@@ -86,7 +85,6 @@ def delete_category_request(request):
     return delete_category(category)
 
 
-@login_required
 def delete_category(category):
     """ Help-function for deleting a category. """
 
@@ -144,6 +142,8 @@ def create_sub_event_request(request):
         registration_end_date = request.POST.get('registration_end_date')
         if not registration_end_date:
             registration_end_date = None
+        else:
+            registration_end_date = registration_end_date + '+0000'
 
         category_id = request.POST.get('category', '')
 
@@ -167,7 +167,7 @@ def create_sub_event_request(request):
 
         # Validates the input for the sub-event.
         sub_event = SubEvent.objects.create(start_date=request.POST.get('start_date') + '+0000',
-                                            end_date=request.POST.get('end_date''') + '+0000',
+                                            end_date=request.POST.get('end_date') + '+0000',
                                             price=price,
                                             registration_end_date=registration_end_date,
                                             attendance_cap=attendance_cap,
@@ -229,7 +229,7 @@ def edit_sub_event_request(request):
         if not registration_end_date:
             sub_event.registration_end_date = None
         else:
-            sub_event.registration_end_date = registration_end_date
+            sub_event.registration_end_date = registration_end_date + '+0000'
 
         # Sets the attendance_cap to None if it is not set, otherwise to the given value.
         if attendance_cap == '':
@@ -275,7 +275,6 @@ def edit_sub_event_request(request):
         return get_json(400, 'Edit sub-event failed.')
 
 
-@login_required
 def delete_sub_event_request(request):
     """ Deletes a given sub-event. """
 
@@ -283,7 +282,6 @@ def delete_sub_event_request(request):
     return delete_sub_event(sub_event)
 
 
-@login_required
 def delete_sub_event(sub_event):
     """ Help-function for deleting a sub-event. """
 
@@ -368,7 +366,7 @@ def edit_event_request(request):
         if not registration_end_date:
             event.registration_end_date = None
         else:
-            event.registration_end_date = registration_end_date
+            event.registration_end_date = registration_end_date + '+0000'
 
         # Sets the attendance_cap to None if it is not set, otherwise to the given value.4
         if attendance_cap == '':
@@ -422,12 +420,12 @@ def edit_event_request(request):
         return get_json(400, "Deleting event failed.")
 
 
-@login_required
-def delete_event_request(event_id):
+def delete_event_request(request, event_id):
     """ Deletes a given event and all its related objects. """
 
     try:
         # Gets the event.
+        print(event_id)
         event = Event.objects.get(id=int(event_id))
 
         # Gets the event's descriptions.
@@ -444,7 +442,7 @@ def delete_event_request(event_id):
         if Category.objects.filter(event=event).exists():
             categories = Category.objects.filter(event=event)
 
-            # Deletes the categories.2
+            # Deletes the categories.
             for category in categories:
                 delete_category(category)
 

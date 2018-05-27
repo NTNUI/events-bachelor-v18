@@ -111,7 +111,7 @@
                             <button type="button" class="btn btn-secondary"
                                     data-dismiss="modal">{% trans 'Close' %}</button>
                             <button type="submit" form="guest-data-form" class="btn btn-success">
-                                {% trans 'Attend the event' %}</button>
+                                {% trans 'Attend event' %}</button>
                         </div>
                     </div>
                 </div>
@@ -187,7 +187,7 @@
                                 {{ event.number_of_participants }}
                             {% endif %}
                         </b>
-                        </br>
+                        <br>
                         {% if event.registration_end_date %}
                             {% trans 'Registration end date' %} <b>{{ event.registration_end_date }}</b>
                         {% endif %}
@@ -203,7 +203,7 @@
                                         data-toggle="modal"
                                         data-target="#eventModal">
                                     <div class="button-title-container">
-                                        {% trans 'Sign off the event' %}
+                                        {% trans 'Unattend' %}
                                     </div>
                                 </button>
                             {% else %}
@@ -245,7 +245,7 @@
                                                     &nbsp;{% trans 'Pay using card' %}
                                                 </div>
                                             {% else %}
-                                                {% trans 'Attend the event' %}
+                                                {% trans 'Attend event' %}
                                             {% endif %}
                                         </div>
                                     </button>
@@ -301,7 +301,7 @@
                                                                     data-state="unattend"
                                                                     value="{{ sub_event.id }}">
                                                                 <div class="button-title-container ">
-                                                                    {% trans 'Sign off the event' %}
+                                                                    {% trans 'Unattend' %}
                                                                 </div>
                                                             </button>
                                                         {% else %}
@@ -343,7 +343,7 @@
                                                                                 &nbsp;{% trans 'Pay using card' %}
                                                                             </div>
                                                                         {% else %}
-                                                                            {% trans 'Attend the event' %}
+                                                                            {% trans 'Attend event' %}
                                                                         {% endif %}
                                                                     </div>
                                                                 </button>

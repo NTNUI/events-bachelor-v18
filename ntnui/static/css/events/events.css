@@ -245,7 +245,7 @@
 
 h4{
     margin: 0;
-    padding-left: 1rem;
+    padding-left: 0.5rem;
     color: var(--NTNUI-green) !important;
 }
 
@@ -589,7 +589,7 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow:hidden;"
+    overflow:hidden;
 }
 
 .load-more-button{
@@ -734,7 +734,6 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     }
 
     #content-container {
-        width: 95%;
         flex-wrap: wrap;
         margin-top: 1rem;
     }
@@ -762,11 +761,6 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     .sub-event-title-container {
         width: 100%;
         padding: .2rem;
-    }
-
-    .sub-event-row-container {
-        padding: .1rem;
-
     }
 
     .sub-event-main-container {

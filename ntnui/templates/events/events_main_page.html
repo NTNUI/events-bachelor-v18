@@ -13,33 +13,34 @@
         <div class="tab-menu">
             <ul>
                 <li>
-                    <a {% if template == 'event_main_page' %} class="active-item" {% endif %}
-                    href="{% url 'get_main_page' %}">
+                    <a href="{% url 'get_main_page' %}" {% if template == 'event_main_page' %}
+                       class="active-item" {% endif %} >
                         {% trans 'Events' %}
                     </a>
                 </li>
                 <li>
-                  <div class="vert-divider"></div>
+                    <div class="vert-divider"></div>
                 </li>
                 <li>
                     <a {% if template == 'event_attending_page' %} class="active-item" {% endif %}
-                    href="{% url 'attending_events_page' %}">
+                                                                   href="{% url 'attending_events_page' %}">
                         {% trans 'My upcoming events' %}
                     </a>
                 </li>
-                 {% if can_create_event %}
-                     <li>
-                    <div class="vert-divider"></div>
+                {% if can_create_event %}
+                    <li>
+                        <div class="vert-divider"></div>
                     </li>
                     <li><a href="{% url 'create_event_page' %}">{% trans 'Create event' %}</a></li>
-                 {% endif %}
+                {% endif %}
             </ul>
-          </div>
         </div>
-     {% endif %}
+    {% endif %}
 
     <div class="event-main-page-container">
-        <button type="button" data-toggle="collapse" data-target=".search-filter-sort-container" class="collapse-filters btn btn-warning">Search, filter, and sort.</button>
+        <button type="button" data-toggle="collapse" data-target=".search-filter-sort-container"
+                class="collapse-filters btn btn-warning">Search, filter, and sort.
+        </button>
 
         <div class="search-filter-sort-container">
             <div id="search" class="filter-element input-group">
@@ -109,9 +110,7 @@
         </div>
 
     </div>
-    </div>
 {% endblock %}
-
 
 
 {% block script %}
