@@ -49,16 +49,12 @@ def get_create_event_page(request):
     
     return render(request, 'events/create_new_event.html', {'groups': groups, 'can_create_event': True})
 
-
 @login_required
 def get_attending_events_page(request):
     """ Renders the page with the events which the user attends. """
 
     # Used to find out if the create-event button shall be rendered or not
-    if request.user.is_authenticated:
-        can_create_event = can_user_create_event(request.user)
-    else:
-        can_create_event = False
+    can_create_event = can_user_create_event(request.user)
 
     # Get groups that are hosting events.
     groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
@@ -139,7 +135,7 @@ def get_event_details_page(request, event_id):
 
     return render(request, 'events/event_details.html', context)
 
-
+@login_required
 def get_event_attendees_page(request, event_id):
     """ Renders the page where the attendees for the event or the event's sub-events are shown."""
 
@@ -188,7 +184,7 @@ def get_event_attendees_page(request, event_id):
 
     return render(request, 'events/event_attendees_page.html', context)
 
-
+@login_required
 def get_edit_event_page(request, event_id):
     """ Renders the edit event page for a given event. """
 

@@ -9,11 +9,14 @@ from events.models.event import (Event, EventDescription,
                                  EventGuestRegistration, EventGuestWaitingList,
                                  EventRegistration, EventWaitingList)
 from groups.models import SportsGroup
+import ntnui.settings.common as common
 
+from django.utils import translation
+from unittest.mock import Mock
 
 class TestFilterSearchSortEvents(TestCase):
     def setUp(self):
-        
+
         self.date = datetime.now(pytz.utc)
         # Format code to match format from json
         self.date_string = self.date.isoformat()[0:-9] +"Z"
@@ -81,6 +84,7 @@ class TestFilterSearchSortEvents(TestCase):
         # Login client
         self.c = Client()
         self.c.login(email='testuser@test.com', password='4epape?Huf+V')
+        translation.get_language = Mock(return_value='en')
 
         # Trash collection event JSON
         self.trash_collection = {'cover_photo': 'cover_photo/events/ntnui-volleyball.png',
@@ -148,7 +152,9 @@ class TestFilterSearchSortEvents(TestCase):
 
     def test_get_default_norwegian_content(self):
         # Response for the default page
+        translation.get_language = Mock(return_value='nb')
         response = self.c.get(reverse('get_events'), HTTP_ACCEPT_LANGUAGE='nb')
+        translation.get_language = Mock(return_value='en')
 
         # Check the default norwegian response
         self.assertJSONEqual(response.content, {'events': [{'cover_photo': 'cover_photo/events/ntnui-volleyball.png',

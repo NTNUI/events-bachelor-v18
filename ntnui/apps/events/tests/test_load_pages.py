@@ -19,7 +19,9 @@ from hs.models import MainBoard, MainBoardMembership
 
 class TestLoadEvents(TestCase):
     """Used to check that the pages load, according to what kind of account is in use"""
+
     def setUp(self):
+        """Set up database"""
         self.user = User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V', customer_number=1)
 
         # Create a new event with NTNUI as host
@@ -102,8 +104,13 @@ class TestLoadEvents(TestCase):
 
     def test_loading_edit_event_page(self):
         """Checks that a user may edit events"""
-        request = self.client_signed_in.get(reverse('edit_event_page', kwargs={'event_id':1}))
+        request = self.client_signed_in.get(reverse('edit_event_page', kwargs={'event_id':self.event.id}))
         self.assertEquals(request.status_code, 200)
+
+    def test_loading_edit_event_page_guest(self):
+        """Checks that a guest may edit events"""
+        request = self.client_anonymous.get(reverse('edit_event_page', kwargs={'event_id':self.event.id}))
+        self.assertEquals(request.status_code, 302)
 
     def test_loading_remove_attendance_page_user(self):
         """Checks that a user can load the remove attendance page"""
@@ -123,23 +130,27 @@ class TestLoadEvents(TestCase):
         self.assertEquals(request.status_code, 200)
 
     def test_loading_attening_evnets_page_guest(self):
-        """Checks that the attending page loads as a guest"""
+        """Checks that the attending page dose not load as a guest"""
         request = self.client_anonymous.get(reverse('attending_events_page'))
-        self.assertEquals(request.status_code, 200)
+        self.assertIsNot(request.status_code, 200)
 
     def test_loading_event_attendees_page_user(self):
         """Checks that a user can load the page showing event attendees"""
-        request = self.client_signed_in.get(reverse('event_attendees', kwargs={'event_id':1}))
+        request = self.client_signed_in.get(reverse('event_attendees', kwargs={'event_id':self.event.id}))
         self.assertEquals(request.status_code, 200)
+
+    def test_loading_event_attendees_page_guest(self):
+        """Checks that a user can load the page showing event attendees"""
+        request = self.client_anonymous.get(reverse('event_attendees', kwargs={'event_id':self.event.id}))
+        self.assertEquals(request.status_code, 302)
 
     def test_loading_event_details_page_user(self):
         """Checks that the event details page loads for a user"""
-        request = self.client_signed_in.get('/events/' + str(self.event.id) + '/', follow=True)
+        request = self.client_signed_in.get(reverse('event_details', kwargs={'event_id':self.event.id}))
         self.assertEquals(request.status_code, 200)
 
     def test_loading_event_details_page_guest(self):
         """Checks that the event details page loads for a guest"""
-        request = self.client_anonymous.get('/events/' + str(self.event.id) + '/', follow=True)
+        request = self.client_anonymous.get(reverse('event_details', kwargs={'event_id':self.event.id}))
         self.assertEquals(request.status_code, 200)
-
 

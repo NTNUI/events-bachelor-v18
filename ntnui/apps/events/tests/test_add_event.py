@@ -65,7 +65,7 @@ class CreateEvent(TestCase):
                                                     'host': 'NTNUI'
                                                     }, follow=True)
 
-        return self.assertEqual(
+        self.assertEqual(
             create_event.event_has_description_and_name(response.get('description_text_en'), response.get('name_en')),
             (False, 'Event must have description'))
 
@@ -129,7 +129,7 @@ class CreateEvent(TestCase):
                                                     'description_text_no': '',
                                                     }, follow=True)
 
-        return self.assertEqual(400, response.status_code)
+        self.assertEqual(400, response.status_code)
 
     def test_create_event_hosted_by_NTNUI(self):
         hs = MainBoard.objects.create(name="super geir", slug="super-geir")
@@ -150,8 +150,7 @@ class CreateEvent(TestCase):
                                                     'description_text_en': 'engelsk beskrivelse',
                                                     'description_text_no': 'norsk beskrivelse',
                                                     }, follow=True)
-        print(response.content)
-        return self.assertEqual(201, response.status_code)
+        self.assertEqual(201, response.status_code)
 
     def test_create_event_for_group_fails(self):
         c = Client()
@@ -169,5 +168,4 @@ class CreateEvent(TestCase):
                                                     'description_text_no': 'norsk beskrivelse',
                                                     }, follow=True)
 
-        return self.assertEqual(create_event.create_event_for_group(response.wsgi_request,
-                                                                    response.get('hosted by NTNUI')), (False, None))
+        self.assertEqual(response, 400)
