@@ -13,7 +13,7 @@ from groups.models import Board, Membership, SportsGroup
 from hs.models import MainBoard, MainBoardMembership
 
 
-class CreateEvent(TestCase):
+class TestCreateEvent(TestCase):
 
     def setUp(self):
         # Create dummy user
@@ -50,6 +50,7 @@ class CreateEvent(TestCase):
                                         event=self.event)
 
     def test_create_event_with_no_description(self):
+        """Checks that it is not possible to create a event without description"""
         c = Client()
 
         # login
@@ -65,15 +66,13 @@ class CreateEvent(TestCase):
                                                     'host': 'NTNUI'
                                                     }, follow=True)
 
-        self.assertEqual(
-            create_event.event_has_description_and_name(response.get('description_text_en'), response.get('name_en')),
-            (False, 'Event must have description'))
+        self.assertEqual(400, response.status_code)
 
     def test_create_event_with_unauthorized_user(self):
         c = Client()
 
         # login
-        c.login(email='testuser@test.com', password='4epape?Huf+V')
+        c.login(email='boardpresident@test.com', password='12345')
 
         response = c.post(reverse('create_event'), {'start_date': datetime.now(),
                                                     'end_date': datetime.now() + timedelta(days=2),
@@ -132,6 +131,7 @@ class CreateEvent(TestCase):
         self.assertEqual(400, response.status_code)
 
     def test_create_event_hosted_by_NTNUI(self):
+        """Checks that a main board member can create a nwe event"""
         hs = MainBoard.objects.create(name="super geir", slug="super-geir")
         MainBoardMembership.objects.create(person=self.user, role="president", board=hs)
         c = Client()
@@ -153,6 +153,7 @@ class CreateEvent(TestCase):
         self.assertEqual(201, response.status_code)
 
     def test_create_event_for_group_fails(self):
+        """Checks that a guest user is redirected, and thus can not create an event"""
         c = Client()
         response = c.post(reverse('create_event'), {'start_date': datetime.now(),
                                                     'end_date': datetime.now() + timedelta(days=2),
@@ -166,6 +167,6 @@ class CreateEvent(TestCase):
                                                     'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                     'description_text_en': 'engelsk beskrivelse',
                                                     'description_text_no': 'norsk beskrivelse',
-                                                    }, follow=True)
+                                                    })
 
-        self.assertEqual(response, 400)
+        self.assertEqual(302, response.status_code)

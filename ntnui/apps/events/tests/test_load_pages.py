@@ -61,9 +61,6 @@ class TestLoadEvents(TestCase):
         # put user into mainboard
         Membership.objects.create(person=self.user, group=self.swimminggroup)
 
-        hs = MainBoard.objects.create(name="super geir", slug="super-geir")
-        MainBoardMembership.objects.create(person=self.user, role="president", board=hs)
-
         # Create a second event with a group
         event = Event.objects.create(start_date=datetime.now(pytz.utc),
                                      end_date=datetime.now(pytz.utc) + timedelta(days=2),
@@ -130,7 +127,7 @@ class TestLoadEvents(TestCase):
         self.assertEquals(request.status_code, 200)
 
     def test_loading_attening_evnets_page_guest(self):
-        """Checks that the attending page dose not load as a guest"""
+        """Checks that the attending page does not load as a guest"""
         request = self.client_anonymous.get(reverse('attending_events_page'))
         self.assertIsNot(request.status_code, 200)
 
@@ -138,6 +135,8 @@ class TestLoadEvents(TestCase):
         """Checks that a user can load the page showing event attendees"""
         request = self.client_signed_in.get(reverse('event_attendees', kwargs={'event_id':self.event.id}))
         self.assertEquals(request.status_code, 200)
+
+
 
     def test_loading_event_attendees_page_guest(self):
         """Checks that a user can load the page showing event attendees"""

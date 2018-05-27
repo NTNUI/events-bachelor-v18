@@ -22,7 +22,6 @@ def create_event_request(request):
 
     data = request.POST
     user = request.user
-    print(data)
 
     # Checks that the required fields for an event is valid.
     error_message = validate_event_data(data)
@@ -31,7 +30,6 @@ def create_event_request(request):
 
     # Creates the event.
     event, event_created, error_message = create_event(data, user)
-    print(event, event_created, error_message)
     if event_created:
         return JsonResponse({'id': event.id, 'message': _('New event successfully created!')}, status=201)
     else:
@@ -52,12 +50,13 @@ def validate_event_data(data):
     location = data.get('place')
     host = data.get('host')
 
+
     # Checks that the event has an Norwegian name and description text.
-    if not (norwegian_name or norwegian_description):
+    if not (norwegian_name and norwegian_description):
         return 'Norwegian name and description is required.'
 
     # Checks that the event has an English name and description text.
-    if not (english_name or english_description):
+    if not (english_name and english_description):
         return 'English name and description is required.'
 
     # Checks that the event has a location.
@@ -110,7 +109,6 @@ def create_event(data, user):
 def create_event_for_group(data, is_host_ntnui):
     """ Creates a new event hosted by a sports group. """
 
-    print(data)
     # Sets the event's price to 0 if it is not set.
     price = data.get('price', 0)
 

@@ -17,7 +17,7 @@ from groups.models import Board, Membership, SportsGroup
 from hs.models import MainBoard, MainBoardMembership
 
 
-class TestLoadEvents(TestCase):
+class TestAjax(TestCase):
     """Used to check that the pages load, according to what kind of account is in use"""
     def setUp(self):
         self.user = User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V', customer_number=1)
