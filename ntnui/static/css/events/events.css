@@ -1,10 +1,16 @@
-/* Main CSS page, used for all event pages */
+/*
+** This is the main css file used for all the event pages
+ */
 
 /* Define NTNUI colors */
 * {
     --NTNUI-green: #008000;
     --NTNUI-red: #FB0000;
     --NTNUI-yellow: #FFFF00;
+}
+
+.list-group {
+    margin-bottom: .5rem;
 }
 
 .error-input {
@@ -44,11 +50,11 @@
 }
 
 .event-labels {
-    margin-right: .6rem;
+    margin-right: 1.2rem;
 }
 
 .list-info-container {
-    padding-left: 10px;
+    padding-left: 1.2rem;
     flex-direction: column;
     border-left: 2px solid;
 }
@@ -57,7 +63,6 @@
     display: flex;
     flex-direction: row;
     padding: 20px 15px 15px 20px;
-    justify-content: center;
 }
 
 .event-right-container {
@@ -123,6 +128,10 @@
     color: white;
 }
 
+.card {
+    margin: 0 0 .3rem 0 !important
+}
+
 .category-card {
     width: 100%;
     margin-bottom: 1rem;
@@ -147,8 +156,16 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    width: 100%;
+    padding: 1rem 1rem 0 1rem;
+}
+
+.event-info-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
     width: 70%;
-    padding: 1rem;
+    padding: 1rem 1rem 0 1rem;
 }
 
 .sub-event-row-container {
@@ -162,7 +179,16 @@
 
 .sub-event-title-container {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 1rem;
+}
+
+.event-image-container {
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
     flex-wrap: wrap;
     width: 30%;
@@ -194,7 +220,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    width: 15rem;
+    width: 12rem;
 
 }
 
@@ -209,11 +235,32 @@
     display: flex;
     align-items: center;
     width: 30%;
-    min-width: 11rem;
+    min-width: 12rem;
+}
+
+.info-col {
+    display: flex;
+    align-items: center;
+    width: 30%;
+    min-width: 10rem;
+}
+
+h4 {
+    margin: 0;
+    padding-left: 0.5rem;
+    color: var(--NTNUI-green) !important;
+}
+
+.form-control-select {
+    font-size: 1rem !important;
 }
 
 .border-container {
-    border-top: 1px dashed green;
+    border-top: 1px solid var(--NTNUI-green);
+}
+
+.main-page-border-container {
+    border-top: 1px solid var(--NTNUI-green);
 }
 
 .event-main-page-container {
@@ -228,6 +275,7 @@
 
 #main {
     grid-column: 2;
+    justify-content: center;
 }
 
 .card-container {
@@ -283,7 +331,7 @@
     font-weight: bold;
 }
 
-filter-element-height {
+#filter-element-height {
     max-height: 2rem;
 }
 
@@ -306,9 +354,9 @@ filter-element-height {
 
 #search {
     /*max-width: 20rem;*/
-calc(.25 rem - 1 px) calc(.25 rem - 1 px) 0 0;
-    margin-left: 10%;
-    margin-right: 10%;
+calc(0) calc(.25 rem - 1 px) 0 0;
+    margin: 0 10% 0 10%;
+    font-size: .8rem !important;
 }
 
 #search {
@@ -333,6 +381,7 @@ calc(.25 rem - 1 px) calc(.25 rem - 1 px) 0 0;
 
 .form-control-select {
     width: 100%;
+    background-color: white;
 }
 
 label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
@@ -389,11 +438,14 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     width: 100%;
 }
 
-.top-menu {
+.tab-menu {
     background: white;
     height: 3rem;
     border: 1px solid #dfdfdf;
     box-sizing: border-box;
+    width: 60%;
+    margin-top: 2rem;
+
 }
 
 .top-menu ul {
@@ -403,11 +455,26 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     list-style-type: none;
     height: 100%;
     width: 100%;
-    margin: 0;
+    margin: auto;
+    padding: 0;
+}
+
+.tab-menu ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    list-style-type: none;
+    height: 100%;
+    width: 100%;
+    margin: auto;
     padding: 0;
 }
 
 .top-menu ul li:nth-child(2n-1) {
+    flex-grow: 1;
+}
+
+.tab-menu ul li:nth-child(2n-1) {
     flex-grow: 1;
 }
 
@@ -420,10 +487,31 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     text-align: center;
 }
 
+.tab-menu a {
+    flex-grow: 1;
+    height: 52px;
+    display: block;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 14px 0 0 0;
+}
+
 .top-menu a:hover {
-    color: #007D32;
+    color: var(--NTNUI-green) !important;
     border-bottom: 4px solid #007D32;
     opacity: 0.8;
+}
+
+.tab-menu a:hover {
+    color: var(--NTNUI-green) !important;
+    border-bottom: 4px solid #007D32;
+    opacity: 0.8;
+}
+
+.vert-divider {
+    width: 1px;
+    height: 1.5rem;
+    background-color: #979797;
 }
 
 .header-container {
@@ -443,11 +531,9 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
 
 #header {
     z-index: 100;
-    margin: auto;
-    margin-top: -30px;
+    margin: -30px auto 0 auto;
     text-align: center;
     padding: 0.75rem 1.25rem;
-    margin-bottom: 0;
     background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
@@ -498,15 +584,29 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
 .card-img-container {
     background-color: black;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width:15rem;
+    width: 15rem;
     max-width: 100%;
-    height:10rem;
+    height: 10rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow:hidden;"
+    overflow: hidden;
 }
 
+.load-more-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.collapse-filters {
+    display: none;
+}
+
+/**
+    Used to rotate, loading bar
+ */
 @keyframes spin {
     0% {
         transform: rotate(0deg);
@@ -516,17 +616,98 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
     }
 }
 
+/**
+    Used for screens smaller then 1070px
+ */
+@media only screen and (min-width: 1070px) and (max-width: 1120px) {
+    .form-control-select {
+        font-size: .9rem !important;
+    }
+}
+
+/**
+    Used for screens smaller then 1035px
+ */
+@media only screen and (min-width: 1035px) and (max-width: 1069px) {
+    .form-control-select {
+        font-size: .75rem !important;
+        font-weight: bold;
+    }
+}
+
+/**
+    Used for screens smaller then 922px
+ */
+@media only screen and (min-width: 992px) and (max-width: 1034px) {
+    .form-control-select {
+        font-size: .7rem !important;
+        font-weight: bold;
+    }
+}
+
+/**
+    Used for screens smaller then 991px
+ */
 @media only screen and (max-width: 991px) {
+
+    .sub-event-container {
+        width: 100%;
+    }
+
+    .event-image-container {
+        width: 100%;
+    }
+
+    .event-info-container {
+        width: 100%;
+    }
+
+    .search-filter-sort-container {
+        display: none;
+    }
 
     .filter-element .form-control-select #search .create-event #main .buttons {
         width: 100%;
         max-width: 100%;
     }
 
+    .collapse-filters {
+        display: flex;
+        margin: auto auto 1rem 10%;
+        font-weight: bold;
+    }
+
+    .host-filter {
+        margin-bottom: 2rem !important;
+    }
+
+    .start-date {
+        order: -233
+    }
+
+    end_date {
+        order: 1
+    }
+
+    .place {
+        order: 3
+    }
+
+    .price {
+        order: 4
+    }
+
+    .tab-menu {
+        width: 80%;
+    }
+
     #main {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
+        margin: auto;
+        width: 100%;
+
     }
 
     .create-event {
@@ -563,12 +744,11 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
         margin: .5rem;
     }
 
-       .category-card-container {
+    .category-card-container {
         width: 95%;
     }
 
     #content-container {
-        width: 95%;
         flex-wrap: wrap;
         margin-top: 1rem;
     }
@@ -580,8 +760,7 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
 
     #event-description {
         width: 100%;
-        margin: 0;
-        margin-bottom: 1rem;
+        margin: 0 0 1rem 0;
     }
 
     .event-right-container {
@@ -594,34 +773,89 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
 
     }
 
-    .sub-event-container {
-        width: 100%;
-        padding: .2rem;
-    }
-
     .sub-event-title-container {
         width: 100%;
         padding: .2rem;
-    }
-
-    .sub-event-row-container {
-        padding: .1rem;
     }
 
     .sub-event-main-container {
         flex-wrap: wrap;
     }
 
-
 }
 
-@media only screen and (max-width: 700px) {
+/**
+    Used for screens smaller then 750px
+ */
+@media only screen and (max-width: 750px) {
     .sub-event-container {
-        flex-wrap: wrap-reverse;
+        flex-flow: row wrap;
+    }
+
+    #header {
+        margin: -15px auto 0 auto;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    h3 {
+        font-size: 20px;
+        font-weight: 700;
     }
 
     .border-container {
         border: 0;
     }
 
+    .number-1 {
+        order: 1
+    }
+
+    .number-2 {
+        order: -1112
+    }
+
+    .sub-event-col {
+        margin-bottom: .5rem;
+        width: 100%;
+    }
+}
+
+/**
+    Used for screens smaller then 625px
+ */
+@media only screen and (max-width: 625px) {
+
+    .event-image-container {
+        flex-flow: row wrap;
+    }
+
+    .main-page-border-container {
+        border: 0;
+    }
+
+    .border-container {
+        border: 0;
+    }
+
+    .start-date {
+        order: -1
+    }
+
+    end_date {
+        order: 2
+    }
+
+    .place {
+        order: 3
+    }
+
+    .price {
+        order: 4
+    }
+
+    .info-col {
+        margin-bottom: .5rem;
+        width: 100%;
+    }
 }

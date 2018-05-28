@@ -1,8 +1,8 @@
 import uuid
 from datetime import datetime
 
+import pytz
 import stripe
-from accounts.models import User
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
@@ -10,6 +10,8 @@ from django.core.validators import validate_email, validate_integer
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.utils.translation import gettext_lazy as _
+
+from accounts.models import User
 from events.models.event import (Event, EventGuestRegistration,
                                  EventGuestWaitingList, EventRegistration,
                                  EventWaitingList)
@@ -105,11 +107,11 @@ def attend_event(request, event, attendee, payment_id):
 
     # Lets a user attend either an event or sub-event.
     if isinstance(attendee, User):
-        event.user_attend(attendee, payment_id, datetime.now(), token)
+        event.user_attend(attendee, payment_id, datetime.now(pytz.utc), token)
 
     # Lets a guest attend ether an event or a sub-event.
     elif isinstance(attendee, Guest):
-        event.guest_attend(attendee, payment_id, datetime.now(), token)
+        event.guest_attend(attendee, payment_id, datetime.now(pytz.utc), token)
 
     # The attendee given is neither a user nor a guest.
     else:
@@ -130,18 +132,18 @@ def waiting_list_event(request, event, attendee, payment_id):
 
     # Lets a user attend either an event's or a sub-event's waiting list.
     if isinstance(attendee, User):
-        event.user_attend_waiting_list(attendee, payment_id, datetime.now(), token)
+        event.user_attend_waiting_list(attendee, payment_id, datetime.now(pytz.utc), token)
 
     # Lets a guest attend either an event's or a sub-event's waiting list.
     elif isinstance(attendee, Guest):
-        event.guest_attend_waiting_list(attendee, payment_id, datetime.now(), token)
+        event.guest_attend_waiting_list(attendee, payment_id, datetime.now(pytz.utc), token)
 
     # The attendee given is neither a user nor a guest.
     else:
         return get_json(400, _('Only users and guests can attend events.'))
 
     # Sends an email confirming the waiting list sign-up,
-    waiting_list_mail(request, event, attendee,  token)
+    waiting_list_mail(request, event, attendee, token)
     return JsonResponse({'message': _("Signed up for the event's waiting list!"),
                          'number_of_participants': len(event.get_attendee_list()),
                          'attendance_cap': event.attendance_cap}, status=201)
@@ -249,7 +251,7 @@ def event_has_sub_events(event):
     """ Denies sign up to events which has sub-events. """
 
     if isinstance(event, Event):
-        if len(get_sub_events(event)) > 0:
+        if get_sub_events(event).exists():
             return True, get_json(400, _('Cannot sign up for an event which has sub-events.'))
     return False, None
 
@@ -492,7 +494,7 @@ def remove_attendance_by_token_request(request, token):
             registration.delete()
             if event or waiting_list:
                 remove_attendance_email(event, attendee)
-                
+
                 if event:
                     waiting_list_next_attend(request, event)
             return get_json(200, _('Signed off the event!'))

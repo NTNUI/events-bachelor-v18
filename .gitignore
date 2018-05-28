@@ -9,3 +9,4 @@ geckodriver.log
 *.pyc
 cover/
 .vscode
+htmlcov/

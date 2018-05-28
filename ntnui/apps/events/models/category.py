@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
+
 from events.models.abstract_classes import CommonDescription
 from events.models.event import Event
 

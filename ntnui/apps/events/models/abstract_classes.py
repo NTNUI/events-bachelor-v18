@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from events.models.tag import Tag
 
 
@@ -54,7 +55,7 @@ class CommonRegistration(models.Model):
         SubEventRegistration, SubEventGuestRegistration, SubEventWaitingList and SubEventGuestWaitingList. """
 
     registration_time = models.DateTimeField(_('registration time'))
-    payment_id = models.CharField(_('payment id'), max_length=100, blank=True, null=True)
+    payment_id = models.CharField(_('payment id'), max_length=100, blank=True,   null=True)
     token = models.CharField(_('token'), max_length=60, blank=True, null=True)
 
     class Meta:

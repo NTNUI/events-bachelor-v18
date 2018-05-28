@@ -4,7 +4,7 @@ const MsgType = {
     ERROR: "ERROR"
 }
 
-
+// On document ready
 $(() => {
     $("#unattend-event-by-token-button").click(async (e) => {
         e.preventDefault()
@@ -36,6 +36,11 @@ function getButton(e) {
 }
 
 
+/**
+ * Setts the button loader
+ * @param button
+ * @param color
+ */
 function setButtonLoader(button, color) {
     if (!$(button).find(".loader").length) {
         button.innerHTML = ('<div style="border: .1rem solid ' + color + '; border-top: .1rem solid white" class="loader"></div>')

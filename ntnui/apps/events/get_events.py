@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.utils import translation
 from django.utils.translation import gettext as _
+
 from events.models.event import Event
 
 from .views import get_json, get_sub_events
@@ -136,12 +137,12 @@ def get_sorted_events(sort_by_criterion, events):
 
     # Criteria the events can be sorted by.
     sort_by_criteria = ['start_date', 'end_date', 'name']
-    print(sort_by_criteria, sort_by_criterion)
+
     # Checks that sort_by_criteria has a valid value.
     if sort_by_criterion and (sort_by_criterion in sort_by_criteria or sort_by_criterion[1:] in sort_by_criteria):
         # Checks if the sorting is ascending or descending.
         sort_type = ''
-        if sort_by_criterion == '-name' :
+        if sort_by_criterion == '-name':
             sort_type = '-'
             sort_by_criterion = sort_by_criterion[1:]
 

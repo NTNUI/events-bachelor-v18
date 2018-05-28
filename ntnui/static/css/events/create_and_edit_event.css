@@ -1,3 +1,7 @@
+/**
+    CSS used on the create and ecit event pages
+ */
+
 input:focus:invalid {
     border: 1px solid darkred;
 }
@@ -40,6 +44,10 @@ textarea:focus:valid {
     width: 50%
 }
 
+h5 {
+    margin: 0
+}
+
 h1 {
     margin-top: 1%;
     margin-bottom: 2%;
@@ -52,7 +60,6 @@ h1 {
 .card-header-category {
     width: 100%;
     height: 4rem;
-    height: 100%;
 }
 
 .create-sub-event {
@@ -73,10 +80,6 @@ h1 {
 .create-sub-event > img {
     width: 1rem;
     margin-right: 0.5rem;
-    /*border-radius: 3rem;
-    padding:.4rem;
-    border: green solid .1rem;
-*/
 }
 
 .create-sub-event:hover > img {
@@ -151,6 +154,11 @@ h1 {
     float: left;
 }
 
+.collapse-header-title img {
+    width: 16px;
+    margin-right: 8px;
+}
+
 .button-container-right {
     float: right;
 }
@@ -182,47 +190,122 @@ h1 {
     align-content: center;
     justify-content: center;
 }
+
 .placeholder-container-text {
     text-align: center;
-    padding:2rem;"
+    padding: 2rem;
 }
 
 .sub-titles {
-    margin-top:2rem;
-    margin-bottom: 2rem;
+    margin: 1rem 0 1rem 0;
+    padding: 0;
+    color: black !important;
+}
+
+.tab-menu {
+    background: white;
+    height: 3rem;
+    border: 1px solid #dfdfdf;
+    box-sizing: border-box;
+    width: 80%;
+    margin-top: 2rem;
+}
+
+.tab-menu ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    list-style-type: none;
+    height: 100%;
+    width: 100%;
+    margin: auto;
+    padding: 0;
+}
+
+.tab-menu ul li:nth-child(2n-1) {
+    flex-grow: 1;
+}
+
+.tab-menu a {
+    flex-grow: 1;
+    height: 52px;
+    display: block;
+    padding-top: 14px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.header-container {
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.active-item {
+    border-bottom: 4px solid #007D32;
+}
+
+.tab-menu a:hover {
+    color: #007D32;
+    border-bottom: 4px solid #007D32;
+    opacity: 0.8;
+}
+
+.vert-divider {
+    width: 1px;
+    height: 1.5rem;
+    background-color: #979797;
 }
 
 /*
-    Used to make the page responsive
+    Used for screens smaller then 1250
  */
-@media only screen and (max-width: 767px) {
-    .card-header-category {
-        height: auto;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
+@media only screen and (min-width: 1250px) {
+    .tab-menu {
+        width: 1000px;
     }
+}
+
+/*
+    Used for screens smaller then 991
+ */
+@media only screen and (max-width: 991px) {
 
     .event-collapse-header {
         height: auto;
         min-height: 4rem;
     }
 
+    .sub-event-header-button-container {
+        width: 100%;
+        display: flex;
+        margin: .5rem 0 0 0;
+        float: left;
+        justify-content: flex-start !important;
+    }
+
+    .create-sub-event {
+        padding-left: 0;
+    }
+
 }
 
+/*
+    Used for screens smaller then 550px
+ */
 @media only screen and (max-width: 550px) {
-    .sub-event-header-button-container{
-        display:block;
-        float:left;
+    .sub-event-header-button-container {
+        display: block;
+        float: left;
     }
-    .create-sub-event{
+
+    .create-sub-event {
         justify-content: flex-start;
     }
 
+    .sub-titles {
+        font-size: 18px !important;
+        font-weight: 700;
+    }
+
 }
-
-
-
-
 
