@@ -24,6 +24,7 @@ def get_remove_attendance_page(request, token):
 
     return render(request, 'events/remove_attendance.html', {'token': token})
 
+
 def get_events_main_page(request):
     """ Renders the events' main page. """
 
@@ -46,8 +47,9 @@ def get_create_event_page(request):
 
     # Checks if a user can create an event.
     groups = get_groups_user_can_create_events_for(request.user)
-    
+
     return render(request, 'events/create_new_event.html', {'groups': groups, 'can_create_event': True})
+
 
 @login_required
 def get_attending_events_page(request):
@@ -135,6 +137,7 @@ def get_event_details_page(request, event_id):
 
     return render(request, 'events/event_details.html', context)
 
+
 @login_required
 def get_event_attendees_page(request, event_id):
     """ Renders the page where the attendees for the event or the event's sub-events are shown."""
@@ -183,6 +186,7 @@ def get_event_attendees_page(request, event_id):
         }
 
     return render(request, 'events/event_attendees_page.html', context)
+
 
 @login_required
 def get_edit_event_page(request, event_id):
@@ -291,7 +295,7 @@ def get_groups_user_can_create_events_for(user):
 
     # Finds all the groups were the user is in the board
     for board in (Board.objects.filter(president=user) | Board.objects.filter(vice_president=user) |
-                  Board.objects.filter(cashier=user)):
+                      Board.objects.filter(cashier=user)):
 
         # Checks that the board is active
         for group in SportsGroup.objects.filter(active_board=board):
@@ -364,7 +368,6 @@ def get_sub_event(request, sub_event_id):
 
     # Checks that the sub-event exists.
     if SubEvent.objects.filter(id=int(sub_event_id)).exists():
-
         # Creates dictionary for the sub-event.
         sub_event = SubEvent.objects.get(id=int(sub_event_id))
         sub_event_dict = model_to_dict(sub_event)

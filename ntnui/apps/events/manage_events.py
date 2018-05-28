@@ -210,7 +210,6 @@ def edit_sub_event_request(request):
     # Gets the sub-event which is edited.
     sub_event = SubEvent.objects.get(id=int(data['id']))
 
-
     # Checks if the sub-event has been given a category, otherwise sets it to 'Non categorized' category.
     if category:
         sub_event.category = Category.objects.get(id=int(category))
@@ -406,6 +405,7 @@ def edit_event_request(request):
     # Returns the event's ID and a JSON success response.
     return JsonResponse({'id': data['id'], 'message': "Edit event successful"}, status=200)
 
+
 def delete_event_request(request, event_id):
     """ Deletes a given event and all its related objects. """
 
@@ -456,5 +456,3 @@ def delete_event_request(request, event_id):
 
     # Returns a JSON success response.
     return get_json(200, "Event deleted!")
-
-

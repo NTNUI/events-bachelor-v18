@@ -142,7 +142,7 @@ def get_sorted_events(sort_by_criterion, events):
     if sort_by_criterion and (sort_by_criterion in sort_by_criteria or sort_by_criterion[1:] in sort_by_criteria):
         # Checks if the sorting is ascending or descending.
         sort_type = ''
-        if sort_by_criterion == '-name' :
+        if sort_by_criterion == '-name':
             sort_type = '-'
             sort_by_criterion = sort_by_criterion[1:]
 

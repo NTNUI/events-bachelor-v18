@@ -50,7 +50,6 @@ def validate_event_data(data):
     location = data.get('place')
     host = data.get('host')
 
-
     # Checks that the event has an Norwegian name and description text.
     if not (norwegian_name and norwegian_description):
         return 'Norwegian name and description is required.'
