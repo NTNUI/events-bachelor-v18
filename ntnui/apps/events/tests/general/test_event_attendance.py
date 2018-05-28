@@ -1,9 +1,8 @@
 from datetime import datetime, timedelta
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 import pytz
 from django.test import TestCase
-from django.utils import translation
 
 from accounts.models import User
 from events.models.category import Category
@@ -12,7 +11,6 @@ from events.models.event import (Event, EventDescription,
                                  EventRegistration, EventWaitingList)
 from events.models.guest import Guest
 from events.models.sub_event import SubEvent
-from groups.models import SportsGroup
 from events.event_attendance import (attend_event_request, event_has_sub_events,
                                      delete_guest, create_mail_header)
 

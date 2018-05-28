@@ -9,7 +9,6 @@ from events.models.event import (Event, EventDescription,
                                  EventGuestRegistration, EventGuestWaitingList,
                                  EventRegistration, EventWaitingList)
 from groups.models import SportsGroup
-import ntnui.settings.common as common
 
 from django.utils import translation
 from unittest.mock import Mock
@@ -80,8 +79,7 @@ class TestFilterSearchSortEvents(TestCase):
         # Show more text (for debugging)
         self.maxDiff = None
 
-
-        # Login client
+        # Creates a client and logs into the website.
         self.c = Client()
         self.c.login(email='testuser@test.com', password='4epape?Huf+V')
         translation.get_language = Mock(return_value='en')

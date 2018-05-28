@@ -1,171 +1,183 @@
-from datetime import date, datetime, timedelta
-
+from datetime import datetime, timedelta
 import pytz
+from accounts.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
-
-from accounts.models import User
-from events import create_event
-from events.models.event import (Event, EventDescription,
-                                 EventGuestRegistration, EventGuestWaitingList,
-                                 EventRegistration, EventWaitingList)
-from groups.models import Board, Membership, SportsGroup
+from events.models.event import (Event)
+from groups.models import Board, SportsGroup
 from hs.models import MainBoard, MainBoardMembership
 
 
 class TestCreateEvent(TestCase):
     def setUp(self):
-        # Create dummy user
+        # Create user.
         self.user = User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V')
-        self.boardpresident = User.objects.create_user(
-            email='boardpresident@test.com', password='12345', customer_number='20')
 
-        self.boardvice = User.objects.create_user(email='boardvice@test.com', password='23456', customer_number='21')
-        self.boardcashier = User.objects.create_user(email='boardcashier@test.com', password='34567',
-                                                     customer_number='22')
+        # Create the users in the swimming group board.
+        self.board_president = User.objects.create_user(email='boardpresident@test.com', password='12345',
+                                                        customer_number='20')
+        self.board_vice_president = User.objects.create_user(email='boardvice@test.com', password='23456',
+                                                             customer_number='21')
+        self.board_cashier = User.objects.create_user(email='boardcashier@test.com', password='34567',
+                                                      customer_number='22')
 
-        # create sports group/main board
-        self.swimminggroup = SportsGroup.objects.create(name='Swimming', slug='slug',
-                                                        description='Swimming events and tournaments',
-                                                        )
-        self.swimmingboard = Board.objects.create(president=self.boardpresident, vice_president=self.boardvice,
-                                                  cashier=self.boardcashier, sports_group=self.swimminggroup)
-        self.swimminggroup.active_board = self.swimmingboard
-        self.swimminggroup.save()
+        # Create the swimming group and its board.
+        self.swimming_group = SportsGroup.objects.create(name='Swimming', slug='slug',
+                                                         description='Swimming events and tournaments')
+        self.swimming_board = Board.objects.create(president=self.board_president,
+                                                   vice_president=self.board_vice_president,
+                                                   cashier=self.board_cashier,
+                                                   sports_group=self.swimming_group)
+        self.swimming_group.active_board = self.swimming_board
+        self.swimming_group.save()
 
-        # put user into mainboard
-        self.boardpresident_swimminggroup = Membership.objects.create(person=self.boardpresident,
-                                                                      group=self.swimminggroup)
         # Create a new event with NTNUI as host
-        self.event = Event.objects.create(start_date=datetime.now(),
-                                          end_date=datetime.now() + timedelta(days=2), is_host_ntnui=True)
+        self.event = Event.objects.create(start_date=datetime.now(pytz.utc),
+                                          end_date=datetime.now(pytz.utc) + timedelta(days=2), is_host_ntnui=True)
 
         self.description = 123
 
-        # add norwegian and english description to the name and the description
-        EventDescription.objects.create(name='Norsk', description_text='Norsk beskrivelse', language='nb',
-                                        event=self.event)
-        EventDescription.objects.create(name='Engelsk', description_text='Engelsk beskrivelse', language='en',
-                                        event=self.event)
+        self.c = Client()
 
     def test_create_event_with_no_description(self):
-        """Checks that it is not possible to create a event without description"""
-        c = Client()
+        """ Checks that it is not possible to create a event without description. """
 
-        # login
-        c.login(email='testuser@test.com', password='4epape?Huf+V')
+        # arrange
+        self.c.login(email='testuser@test.com', password='4epape?Huf+V')
+        response = self.c.post(reverse('create_event'), {'name_en': 'name_en',
+                                                         'name_no': 'name_no',
+                                                         'description_text_en': '',
+                                                         'place': 'Trondheim',
+                                                         'description_text_no': 'description_no',
+                                                         'start_date': datetime.now(),
+                                                         'end_date': datetime.now() + timedelta(days=2),
+                                                         'host': 'NTNUI'
+                                                         }, follow=True)
 
-        response = c.post(reverse('create_event'), {'name_en': 'engelsk navn',
-                                                    'name_no': 'norsk navn',
-                                                    'description_text_en': '',
-                                                    'place': 'Trondheim',
-                                                    'description_text_no': 'norsk beskrivelse',
-                                                    'start_date': datetime.now(),
-                                                    'end_date': datetime.now() + timedelta(days=2),
-                                                    'host': 'NTNUI'
-                                                    }, follow=True)
+        # act
+        result = response.status_code
 
-        self.assertEqual(400, response.status_code)
+        # assert
+        self.assertEqual(result, 400)
 
     def test_create_event_with_unauthorized_user(self):
-        c = Client()
+        """ Checks that an unauthorized user can not create events. """
 
-        # login
-        c.login(email='boardpresident@test.com', password='12345')
+        # arrange
+        self.c.login(email='boardpresident@test.com', password='12345')
+        response = self.c.post(reverse('create_event'), {'start_date': datetime.now(),
+                                                         'end_date': datetime.now() + timedelta(days=2),
+                                                         'place': '',
+                                                         'restriction': '0',
+                                                         'hosted by NTNUI': 'true',
+                                                         'name_en': 'name_en',
+                                                         'name_no': 'name_no',
+                                                         'host': 'NTNUI',
+                                                         'place': 'Trondheim',
+                                                         'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                                                         'description_text_en': 'description_en',
+                                                         'description_text_no': 'description_no',
+                                                         }, follow=True)
+        # act
+        result = response.status_code
 
-        response = c.post(reverse('create_event'), {'start_date': datetime.now(),
-                                                    'end_date': datetime.now() + timedelta(days=2),
-                                                    'place': '',
-                                                    'restriction': '0',
-                                                    'hosted by NTNUI': 'true',
-                                                    'name_en': 'engelsk navn',
-                                                    'name_no': 'norsk navn',
-                                                    'host': 'NTNUI',
-                                                    'place': 'Trondheim',
-                                                    'cover_photo': 'cover_photo/ntnui-volleyball.png',
-                                                    'description_text_en': 'engelsk beskrivelse',
-                                                    'description_text_no': 'norsk beskrivelse',
-                                                    }, follow=True)
+        # assert
+        return self.assertEqual(result, 400)
 
-        return self.assertEqual(400, response.status_code)
+    def test_create_event_hosted_by_board_member(self):
+        """ Checks that an even with valid input is created. """
 
-    def test_create_event_hosted_by_boardmember(self):
-        c = Client()
-        c.login(email='boardpresident@test.com', password='12345')
+        # arrange
+        self.c.login(email='boardpresident@test.com', password='12345')
+        response = self.c.post(reverse('create_event'), {'start_date': datetime.now(),
+                                                         'end_date': datetime.now() + timedelta(days=2),
+                                                         'restriction': '0',
+                                                         'hosted by NTNUI': 'false',
+                                                         'name_en': 'name_en',
+                                                         'name_no': 'name_no',
+                                                         'place': 'Trondheim',
+                                                         'host': self.swimming_group.id,
+                                                         'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                                                         'description_text_en': 'description_en',
+                                                         'description_text_no': 'description_no',
+                                                         }, follow=True)
 
-        response = c.post(reverse('create_event'), {'start_date': datetime.now(),
-                                                    'end_date': datetime.now() + timedelta(days=2),
-                                                    'place': '',
-                                                    'restriction': '0',
-                                                    'hosted by NTNUI': 'false',
-                                                    'name_en': 'engelsk navn',
-                                                    'name_no': 'norsk navn',
-                                                    'place': 'Trondheim',
-                                                    'host': self.swimminggroup.id,
-                                                    'cover_photo': 'cover_photo/ntnui-volleyball.png',
-                                                    'description_text_en': 'engelsk beskrivelse',
-                                                    'description_text_no': 'norsk beskrivelse',
-                                                    }, follow=True)
+        # act
+        result = response.status_code
 
-        return self.assertEqual(201, response.status_code)
+        # assert
+        return self.assertEqual(result, 201)
 
     def test_create_event_with_no_norwegian_description(self):
-        c = Client()
-        c.login(email='boardpresident@test.com', password='12345')
+        """ Checks that an event can not be created without a given description. """
 
-        response = c.post(reverse('create_event'), {'start_date': datetime.now(),
-                                                    'end_date': datetime.now() + timedelta(days=2),
-                                                    'place': '',
-                                                    'restriction': '0',
-                                                    'hosted by NTNUI': 'false',
-                                                    'name_en': 'engelsk navn',
-                                                    'name_no': 'norsk navn',
-                                                    'place': 'Trondheim',
-                                                    'host': self.swimminggroup.id,
-                                                    'cover_photo': 'cover_photo/ntnui-volleyball.png',
-                                                    'description_text_en': 'engelsk beskrivelse',
-                                                    'description_text_no': '',
-                                                    }, follow=True)
+        # arrange
+        self.c.login(email='boardpresident@test.com', password='12345')
+        response = self.c.post(reverse('create_event'), {'start_date': datetime.now(),
+                                                         'end_date': datetime.now() + timedelta(days=2),
+                                                         'restriction': '0',
+                                                         'hosted by NTNUI': 'false',
+                                                         'name_en': 'name_en',
+                                                         'name_no': 'name_no',
+                                                         'place': 'Trondheim',
+                                                         'host': self.swimming_group.id,
+                                                         'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                                                         'description_text_en': 'description_en',
+                                                         'description_text_no': '',
+                                                         }, follow=True)
 
-        self.assertEqual(400, response.status_code)
+        # act
+        result = response.status_code
+
+        # assert
+        self.assertEqual(result, 400)
 
     def test_create_event_hosted_by_NTNUI(self):
-        """Checks that a main board member can create a nwe event"""
-        hs = MainBoard.objects.create(name="super geir", slug="super-geir")
-        MainBoardMembership.objects.create(person=self.user, role="president", board=hs)
-        c = Client()
-        c.login(email='testuser@test.com', password='4epape?Huf+V')
+        """ Checks that a main board member can create a new event. """
 
-        response = c.post(reverse('create_event'), {'start_date': datetime.now(),
-                                                    'end_date': datetime.now() + timedelta(days=2),
-                                                    'place': '',
-                                                    'restriction': '0',
-                                                    'hosted by NTNUI': 'true',
-                                                    'name_en': 'engelsk navn',
-                                                    'name_no': 'norsk navn',
-                                                    'host': 'NTNUI',
-                                                    'place': 'Trondheim',
-                                                    'cover_photo': 'cover_photo/ntnui-volleyball.png',
-                                                    'description_text_en': 'engelsk beskrivelse',
-                                                    'description_text_no': 'norsk beskrivelse',
-                                                    }, follow=True)
-        self.assertEqual(201, response.status_code)
+        # arrange
+        main_board = MainBoard.objects.create(name="NTNUI", slug="NTNUI")
+        MainBoardMembership.objects.create(person=self.user, role="president", board=main_board)
+        self.c.login(email='testuser@test.com', password='4epape?Huf+V')
+        response = self.c.post(reverse('create_event'), {'start_date': datetime.now(),
+                                                         'end_date': datetime.now() + timedelta(days=2),
+                                                         'place': '',
+                                                         'restriction': '0',
+                                                         'hosted by NTNUI': 'true',
+                                                         'name_en': 'name_en',
+                                                         'name_no': 'name_no',
+                                                         'host': 'NTNUI',
+                                                         'place': 'Trondheim',
+                                                         'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                                                         'description_text_en': 'description_en',
+                                                         'description_text_no': 'description_no',
+                                                         }, follow=True)
+
+        # act
+        result = response.status_code
+
+        # assert
+        self.assertEqual(result, 201)
 
     def test_create_event_for_group_fails(self):
-        """Checks that a guest user is redirected, and thus can not create an event"""
-        c = Client()
-        response = c.post(reverse('create_event'), {'start_date': datetime.now(),
-                                                    'end_date': datetime.now() + timedelta(days=2),
-                                                    'place': '',
-                                                    'restriction': '0',
-                                                    'hosted by NTNUI': 'true',
-                                                    'name_en': 'engelsk navn',
-                                                    'name_no': 'norsk navn',
-                                                    'host': 'NTNUI',
-                                                    'place': 'Trondheim',
-                                                    'cover_photo': 'cover_photo/ntnui-volleyball.png',
-                                                    'description_text_en': 'engelsk beskrivelse',
-                                                    'description_text_no': 'norsk beskrivelse',
-                                                    })
+        """ Checks that a guest user is redirected, and thus can not create an event. """
 
-        self.assertEqual(302, response.status_code)
+        # arrange
+        response = self.c.post(reverse('create_event'), {'start_date': datetime.now(),
+                                                         'end_date': datetime.now() + timedelta(days=2),
+                                                         'restriction': '0',
+                                                         'hosted by NTNUI': 'true',
+                                                         'name_en': 'name_en',
+                                                         'name_no': 'name_no',
+                                                         'host': 'NTNUI',
+                                                         'place': 'Trondheim',
+                                                         'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                                                         'description_text_en': 'description_en',
+                                                         'description_text_no': 'description_no',
+                                                         })
+
+        # act
+        result = response.status_code
+
+        # assert
+        self.assertEqual(result, 302)
