@@ -23,7 +23,7 @@ let lang
 let eventID = null;
 
 // define URLS used to create and edit
-const URL_EVENT_CREATE = "/ajax/events/add-event"
+const URL_EVENT_CREATE = "/ajax/events/create-event"
 const URL_EVENT_EDIT = "/ajax/events/edit-event"
 
 const URL_SUB_EVENT_CREATE = "/ajax/events/create-sub-event"
@@ -62,8 +62,10 @@ $(() => {
         $("#category-modal").modal('show')
     });
 
+    // Finds and set the subEvent container
     const subEventContainer = $('#subEvents')
 
+    // Add listeners to delete and edit buttons
     subEventContainer.on('click', ".delete-sub-event", deleteSubEvent)
     subEventContainer.on('click', ".edit-subEvent", editSubEvent)
     subEventContainer.on('click', ".delete-category", deleteCategory)
@@ -112,6 +114,7 @@ $(() => {
         $("#deleteModal").modal("show")
     })
 
+    // Add eventlistener for delete event modal button
     $("#delete-event-button-modal").click(deleteEvent)
 
 });
@@ -146,12 +149,21 @@ async function getEventFromServer() {
 
         // filter and add the sub-events to the subevent list
         for (category of data.categories) {
+            //Add subEvents to the subEvents list
             subEvents.push.apply(subEvents, category["sub-events"].map((subEvent) => {
+
+                // Set the serverID equal to the id provided bt the sever, and set the id = to the clients id counter
                 subEvent.serverID = subEvent.id
                 subEvent.id = idCounterSubEvent;
+
+                // Increment the id counter for the subEvent
                 idCounterSubEvent++;
+
+                // Get the descriptions
                 const norwegianDescription = subEvent.descriptions.filter((description) => description.language === 'nb')[0]
                 const englishDescription = subEvent.descriptions.filter((description) => description.language === 'en')[0]
+
+                // Set subEvent data
                 subEvent.name_nb = norwegianDescription.name
                 subEvent.email_nb = norwegianDescription.custom_email_text
                 subEvent.name_en = englishDescription.name
@@ -160,6 +172,8 @@ async function getEventFromServer() {
                 return subEvent
             }))
         }
+
+        // Show the content
         setInVisualContent()
 
     } catch
@@ -170,6 +184,10 @@ async function getEventFromServer() {
 }
 
 
+/**
+ * Deletes the given event
+ * @returns {Promise.<void>}
+ */
 let deleteEvent = async () => {
     try {
         let result = await $.ajax({
@@ -191,6 +209,10 @@ let deleteEvent = async () => {
     }
 }
 
+
+/**
+ * Displays the categories and sub-events currently in categories and subEvents
+ */
 function setInVisualContent() {
     for (category of categories) {
         showCategory(category)
@@ -201,6 +223,10 @@ function setInVisualContent() {
     }
 }
 
+/**
+ * Sends request to server, in order to create event
+ * @param e
+ */
 let sendRequestToCreateEvent = (e) => {
     e.preventDefault()
 

@@ -114,10 +114,7 @@ class TestAttendEvents(TestCase):
 
     def test_attend_event_guest(self):
         """Tests the ability to attend events as a guest"""
-
         c = Client()
-
-
         #Sign up as guest  for event without sub-events
         response = c.post(reverse('attend_event'), {'event_id':self.event2.id,
                                                     'email':'test@test.no',
@@ -125,7 +122,6 @@ class TestAttendEvents(TestCase):
                                                     'last_name': 'pettersen',
                                                     'phone': '234234233'})
         self.assertEqual(201, response.status_code)
-
 
     def test_attend_sub_event(self):
         """Tests the ability to attend sub_events"""

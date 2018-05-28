@@ -136,8 +136,6 @@ class TestLoadEvents(TestCase):
         request = self.client_signed_in.get(reverse('event_attendees', kwargs={'event_id':self.event.id}))
         self.assertEquals(request.status_code, 200)
 
-
-
     def test_loading_event_attendees_page_guest(self):
         """Checks that a user can load the page showing event attendees"""
         request = self.client_anonymous.get(reverse('event_attendees', kwargs={'event_id':self.event.id}))

@@ -4,7 +4,7 @@ let pageCount;
 let searchParams = new URLSearchParams(window.location.search);
 
 
-// on document ready, send ajax request for the first page
+// on document ready
 $(() => {
 
     // Sets the search filed to the same search that is in the url
@@ -13,11 +13,14 @@ $(() => {
     // Sets the sort by filed to the same sort by that is in the url
     $("#sorted-list").val(searchParams.has("sort-by") ? searchParams.get("sort-by") : "start_date")
 
-    $("#sorted-list").val() != null && !searchParams.has("sort-by") ? history.replaceState('test', 'test', '?sort-by=' + $("#sorted-list").val() ): ""
+    // Find and set the sort state
+    $("#sorted-list").val() != null && !searchParams.has("sort-by") ?
+        history.replaceState('a', 'a', '?sort-by=' + $("#sorted-list").val() ): ""
     const hostedBy = searchParams.has("filter-host") ? searchParams.get("filter-host") : ""
     const hostedBy_list = hostedBy.split("-")
 
 
+    //Update the checkboxes
     $(".host-checkbox").each( (i, checkbox) => {
         if(hostedBy_list.includes(checkbox.value)){
             checkbox.checked = true
@@ -32,7 +35,7 @@ $(() => {
         getNextPage();
     });
 
-
+    // Sett on change listener on all filter checkboxes
     $(".host-checkbox").change( () => {
         let filterHost = []
         $(".host-checkbox").each( (i, checkbox) => {
@@ -60,6 +63,7 @@ $(() => {
         loadEvents(1)
     })
 
+    // Discover on change for the sort option
     $("#sorted-list").on('change', () => {
         // update parms
         searchParams.set('sort-by', $("#sorted-list").val())
@@ -71,6 +75,9 @@ $(() => {
     })
 });
 
+/**
+ * Loads the next page with events
+ */
 function getNextPage() {
     if (pageNr < pageCount) {
         pageNr = pageNr + 1;
@@ -78,7 +85,10 @@ function getNextPage() {
     }
 }
 
-// ajax for requesting events from server
+/**
+ * Ajax for requesting events from server
+ * @param page
+ */
 function loadEvents(page) {
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
@@ -106,7 +116,7 @@ function loadEvents(page) {
             }
         },
         error: data => {
-            console.log(data.message);
+            console.error(data.message);
         }
     });
 }
@@ -181,14 +191,24 @@ function displayEvent(event) {
     );
 }
 
-// display error if something went wrong
+/**
+ * display error if something went wrong
+ * @param msg
+ */
 function displayError(msg) {
     $("#event-container").html("<div>" + msg + "<div/>");
 }
 
+/**
+ * Hides the load more button
+ */
 function removeButton() {
     $("#load-more").hide();
 }
+
+/**
+ * Shows the load more button
+ */
 function showButton() {
     $("#load-more").show();
 }

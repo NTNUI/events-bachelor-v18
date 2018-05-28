@@ -14,7 +14,6 @@ from hs.models import MainBoard, MainBoardMembership
 
 
 class TestCreateEvent(TestCase):
-
     def setUp(self):
         # Create dummy user
         self.user = User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V')

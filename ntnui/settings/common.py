@@ -203,7 +203,6 @@ DUMMY_USER_PASSWORD = 'locoloco'
 ##### TEST CONFIGURATION #####
 # Use nose to run all tests
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
 NOSE_ARGS = [
     '--with-coverage',
     '--cover-package=groups, forms, accounts, events',

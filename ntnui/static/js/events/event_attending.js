@@ -13,11 +13,14 @@ $(() => {
     // Sets the sort by filed to the same sort by that is in the url
     $("#sorted-list").val(searchParams.has("sort-by") ? searchParams.get("sort-by") : "start_date")
 
-    $("#sorted-list").val() != null && !searchParams.has("sort-by") ? history.replaceState('test', 'test', '?sort-by=' + $("#sorted-list").val() ): ""
+
+    // Find and set the filterOptions
+    $("#sorted-list").val() != null && !searchParams.has("sort-by") ?
+        history.replaceState('a', 'a', '?sort-by=' + $("#sorted-list").val() ): ""
     const hostedBy = searchParams.has("filter-host") ? searchParams.get("filter-host") : ""
     const hostedBy_list = hostedBy.split("-")
 
-
+    // Set the checked checkboxes
     $(".host-checkbox").each( (i, checkbox) => {
         if(hostedBy_list.includes(checkbox.value)){
             checkbox.checked = true
@@ -33,6 +36,7 @@ $(() => {
     });
 
 
+    // Update the checkbox values on change
     $(".host-checkbox").change( () => {
         let filterHost = []
         $(".host-checkbox").each( (i, checkbox) => {
@@ -78,7 +82,10 @@ function getNextPage() {
     }
 }
 
-// ajax for requesting events from server
+/**
+ * Ajax for requesting events from server
+ * @param page
+ */
 function loadEvents(page) {
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
@@ -106,12 +113,16 @@ function loadEvents(page) {
             }
         },
         error: data => {
-            console.log(data.message);
+            console.error(data.message);
         }
     });
 }
 
-// for each event dispay event
+/**
+ * for each event display event
+ * @param events
+ * @param reload
+ */
 function displayEvents(events, reload) {
     if(reload) {
         $("#event-container").empty()
@@ -129,7 +140,10 @@ function displayEvents(events, reload) {
 
 }
 
-// display one event
+/**
+ * Displayes the event given by the param
+ * @param event
+ */
 function displayEvent(event) {
 
     let start_date = new Date(event.start_date)
@@ -181,14 +195,24 @@ function displayEvent(event) {
     );
 }
 
-// display error if something went wrong
+/**
+ * display error if something went wrong
+ * @param msg
+ */
 function displayError(msg) {
     $("#event-container").html("<div>" + msg + "<div/>");
 }
 
+/**
+ * Hides the load more button
+ */
 function removeButton() {
     $("#load-more").hide();
 }
+
+/**
+ * Shows the load more button
+ */
 function showButton() {
     $("#load-more").show();
 }

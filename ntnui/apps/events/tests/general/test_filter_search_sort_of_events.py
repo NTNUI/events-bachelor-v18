@@ -270,17 +270,6 @@ class TestFilterSearchSortEvents(TestCase):
                                                 'page_count': 1,
                                                 'page_number': 1})
 
-    def test_sorting_ascending_name(self):
-        # Check response for filtered by name (ascending) content
-        response = self.c.get(reverse('get_events'), {'sort-by': 'description'})
-        self.assertJSONEqual(response.content, {'events': [self.trash_collection,
-                                                           self.theatre,
-                                                           self.rock_ring_tournament,
-                                                           self.camping_in_the_woods],
-
-                                                'page_count': 1,
-                                                'page_number': 1})
-
     def test_sorting_descending_name(self):
         # Check response for filtered by name (descending) content
         response = self.c.get(reverse('get_events'), {'sort-by': '-name'})

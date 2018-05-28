@@ -14,10 +14,10 @@ from .manage_events import (create_category_request, create_sub_event_request,
 from .views import (get_event, get_sub_event)
 
 urlpatterns = [
-    url(r'^add-event$', create_event_request, name='create_event'),
-    url(r'^get-events', get_events_request, name='get_events'),
-    url(r'^(?P<event_id>\d+)$', get_event, name='get_event'),
+    url(r'^create-event$', create_event_request, name='create_event'),
     url(r'^edit-event$', edit_event_request, name='ajax_edit_event'),
+    url(r'^(?P<event_id>\d+)$', get_event, name='get_event'),
+    url(r'^get-events', get_events_request, name='get_events'),
     url(r'^delete/(?P<event_id>\d+)/$', delete_event_request, name='get_delete_event'),
 
     url(r'^create-category', create_category_request, name='create_category'),
