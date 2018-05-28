@@ -142,7 +142,9 @@ AUTHENTICATION_BACKENDS = (
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
+
+
 
 TIME_ZONE = 'UTC'
 
@@ -201,7 +203,6 @@ DUMMY_USER_PASSWORD = 'locoloco'
 ##### TEST CONFIGURATION #####
 # Use nose to run all tests
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
 NOSE_ARGS = [
     '--with-coverage',
     '--cover-package=groups, forms, accounts, events',

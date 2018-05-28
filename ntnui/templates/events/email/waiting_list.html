@@ -22,9 +22,10 @@
         <br>
         {% trans "If you cannot attend the event, please sign off the event's waiting list, using the sign-off link" %}:
         <a href="{{ request.get_host }}/events/remove-attendance/{{ token }}">
-            {{ request.get_host }}/events/remove-attendance/{{ token }}
+            http://{{ request.get_host }}/events/remove-attendance/{{ token }}
         </a>.
     </p>
 
 </body>
 </html>
+    

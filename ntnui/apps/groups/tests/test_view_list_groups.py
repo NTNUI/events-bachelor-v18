@@ -42,4 +42,4 @@ class MyGroupTest(ListGroupsLoggedInTest):
         self.assertEquals(self.response.status_code, 200)
 
     def test_group_number(self):
-        self.assertContains(self.response, '<div class="group-card-all-groups', 3)
+        self.assertContains(self.response, '<div class="group-card-all-groups', 4)

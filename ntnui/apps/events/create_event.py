@@ -3,6 +3,7 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
+
 from events.models.event import Event, EventDescription
 from groups.models import SportsGroup
 
@@ -18,6 +19,7 @@ def create_event_request(request):
         return get_json(400, _('Request must be POST.'))
 
     # Gets the user and the POST request's data.
+
     data = request.POST
     user = request.user
 
@@ -28,7 +30,6 @@ def create_event_request(request):
 
     # Creates the event.
     event, event_created, error_message = create_event(data, user)
-    print(event, event_created, error_message)
     if event_created:
         return JsonResponse({'id': event.id, 'message': _('New event successfully created!')}, status=201)
     else:
@@ -50,24 +51,12 @@ def validate_event_data(data):
     host = data.get('host')
 
     # Checks that the event has an Norwegian name and description text.
-    if not (norwegian_name or norwegian_description):
+    if not (norwegian_name and norwegian_description):
         return 'Norwegian name and description is required.'
 
     # Checks that the event has an English name and description text.
-    if not (english_name or english_description):
+    if not (english_name and english_description):
         return 'English name and description is required.'
-
-    # Checks that the event has an valid start and end date.
-    if start_date and end_date:
-        # Start date set later than end date.
-        if datetime.strptime(start_date, '%Y-%m-%dT%M:%H') >= datetime.strptime(end_date, '%Y-%m-%dT%M:%H'):
-            return 'Starting date cannot be later than end date.'
-        # Start date set in the past.
-        elif datetime.now() >= datetime.strptime(start_date, '%Y-%m-%dT%M:%H'):
-            return 'Starting date cannot be in the past.'
-    else:
-        # The event is lacking start date and/or end date.
-        return 'Start date and end date is required.'
 
     # Checks that the event has a location.
     if not location:
@@ -120,25 +109,25 @@ def create_event_for_group(data, is_host_ntnui):
     """ Creates a new event hosted by a sports group. """
 
     # Sets the event's price to 0 if it is not set.
-    price = data.get('price')
-    if price == "":
-        price = 0
+    price = data.get('price', 0)
 
     # Sets the event's attendance cap to None if it is not set.
-    attendance_cap = data.get('attendance_cap')
+    attendance_cap = data.get('attendance_cap', None)
     if attendance_cap == "":
         attendance_cap = None
 
     # Sets the event's registration end date to None if it is not set.
-    registration_end_date = data.get('registration_end_date')
+    registration_end_date = data.get('registration_end_date', None)
     if registration_end_date == "":
         registration_end_date = None
 
     try:
         # Creates the event.
-        event = Event.objects.create(
-            start_date=data.get('start_date'), end_date=data.get('end_date'), place=data.get('place'), price=price,
-            registration_end_date=registration_end_date,  is_host_ntnui=is_host_ntnui, attendance_cap=attendance_cap)
+        event = Event.objects.create(start_date=data.get('start_date') + '+0000',
+                                     end_date=data.get('end_date') + '+0000',
+                                     place=data.get('place'), price=price,
+                                     registration_end_date=registration_end_date,
+                                     is_host_ntnui=is_host_ntnui, attendance_cap=attendance_cap)
 
         # Sets the event's host, if the host is not NTNUI.
         if not is_host_ntnui:

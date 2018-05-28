@@ -1,20 +1,30 @@
-from datetime import date
+from datetime import datetime, timedelta
 
-from accounts.models import User
+import pytz
 from django.test import Client, TestCase
 from django.urls import reverse
-from events.models import (Category, CategoryDescription, Event,
-                           EventDescription, SubEvent, SubEventDescription)
+
+from accounts.models import User
+from events.models.category import Category, CategoryDescription
+from events.models.event import (Event, EventDescription,
+                                 EventGuestRegistration, EventGuestWaitingList,
+                                 EventRegistration, EventWaitingList)
+from events.models.sub_event import (SubEvent, SubEventDescription,
+                                     SubEventGuestRegistration,
+                                     SubEventGuestWaitingList,
+                                     SubEventRegistration, SubEventWaitingList)
 from groups.models import Board, Membership, SportsGroup
 from hs.models import MainBoard, MainBoardMembership
 
 
-class TestLoadEvents(TestCase):
+class TestAjax(TestCase):
+    """Used to check that the pages load, according to what kind of account is in use"""
     def setUp(self):
         self.user = User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V', customer_number=1)
 
         # Create a new event with NTNUI as host
-        self.event = Event.objects.create(start_date=date.today(), end_date=date.today(),
+        self.event = Event.objects.create(start_date=datetime.now(pytz.utc),
+                                          end_date=datetime.now(pytz.utc) + timedelta(days=2),
                                           priority=True, is_host_ntnui=True)
 
         # add norwegian and english description to the name and the description
@@ -28,7 +38,9 @@ class TestLoadEvents(TestCase):
         CategoryDescription.objects.create(name="test", category=category, language='nb')
 
         # Create a new event with NTNUI as host
-        sub_event = SubEvent.objects.create(start_date=date.today(), end_date=date.today(), category=category)
+        sub_event = SubEvent.objects.create(start_date=datetime.now(pytz.utc),
+                                            end_date=datetime.now(pytz.utc) + timedelta(days=2),
+                                            category=category)
 
         # add norwegian and english description to the name and the description
         SubEventDescription.objects.create(name='Norsk', language='nb', sub_event=sub_event)
@@ -51,7 +63,8 @@ class TestLoadEvents(TestCase):
         MainBoardMembership.objects.create(person=self.user, role="president", board=hs)
 
         # Create a second event with a group
-        event = Event.objects.create(start_date=date.today(), end_date=date.today(),
+        event = Event.objects.create(start_date=datetime.now(pytz.utc),
+                                     end_date=datetime.now(pytz.utc) + timedelta(days=2),
                                      priority=True)
         # Add a sports group
         event.sports_groups.add(SportsGroup.objects.create(name='Test Group', description='this is a test group'))
@@ -67,32 +80,34 @@ class TestLoadEvents(TestCase):
 
         self.client_anonymous = Client()
 
-    def test_loading_main_event_page_user(self):
-        """Checks that a logged in user can load the main event page"""
-        request = self.client_signed_in.get(reverse('get_main_page'))
+    def test_ajax_get_events(self):
+        """Checks that the get_event url returners events"""
+        request = self.client_signed_in.get(reverse('get_events'))
         self.assertEquals(request.status_code, 200)
 
-    def test_loading_main_event_page_guest(self):
-        """Checks that a guest can load the main event page"""
-        request = self.client_anonymous.get(reverse('get_main_page'))
+    def test_ajax_get_event(self):
+        """Checks that the server returns the given event"""
+        request = self.client_signed_in.get(reverse('get_event',
+                                                    kwargs={'event_id':'1'}))
         self.assertEquals(request.status_code, 200)
 
-    def test_loading_create_event_page_guest(self):
-        """Tests that a guest can not create a new event"""
-        request = self.client_anonymous.get(reverse('create_event_page'))
-        self.assertEquals(request.status_code, 302)
+    def test_ajax_get_event_that_does_not_exits(self):
+        """Chckecs that the server returns error if event dose not exists"""
+        request = self.client_signed_in.get(reverse('get_event',
+                                                    kwargs={'event_id':'154545'}))
+        self.assertEquals(request.status_code, 400)
 
-    def test_loading_create_event_page_user(self):
-        """Checks that a user may create a new event"""
-        request = self.client_signed_in.get(reverse('create_event_page'))
+    def test_ajax_get_sub_event(self):
+        """Checks that the server returns the given sub-event"""
+        request = self.client_signed_in.get(reverse('get_sub_event',
+                                                    kwargs={'sub_event_id':'1'}))
         self.assertEquals(request.status_code, 200)
 
-    def test_loading_event_details_page_user(self):
-        """Checks that a user may see event details"""
-        request = self.client_signed_in.get('/events/' + str(self.event.id) + '/', follow=True)
-        self.assertEquals(request.status_code, 200)
+    def test_ajax_get_sub_event_that_does_not_exits(self):
+        """Checks that the server returns error if sub-event dose not exists"""
+        request = self.client_signed_in.get(reverse('get_sub_event',
+                                                    kwargs={'sub_event_id':'154545'}))
+        self.assertEquals(request.status_code, 400)
 
-    def test_loading_event_details_page_user(self):
-        """Checks that a user may see event details"""
-        request = self.client_anonymous.get('/events/' + str(self.event.id) + '/', follow=True)
-        self.assertEquals(request.status_code, 200)
+
+

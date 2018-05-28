@@ -4,7 +4,7 @@ let pageCount;
 let searchParams = new URLSearchParams(window.location.search);
 
 
-// on document ready, send ajax request for the first page
+// on document ready
 $(() => {
 
     // Sets the search filed to the same search that is in the url
@@ -13,11 +13,14 @@ $(() => {
     // Sets the sort by filed to the same sort by that is in the url
     $("#sorted-list").val(searchParams.has("sort-by") ? searchParams.get("sort-by") : "start_date")
 
-    $("#sorted-list").val() != null && !searchParams.has("sort-by") ? history.replaceState('test', 'test', '?sort-by=' + $("#sorted-list").val() ): ""
+    // Find and set the sort state
+    $("#sorted-list").val() != null && !searchParams.has("sort-by") ?
+        history.replaceState('a', 'a', '?sort-by=' + $("#sorted-list").val() ): ""
     const hostedBy = searchParams.has("filter-host") ? searchParams.get("filter-host") : ""
     const hostedBy_list = hostedBy.split("-")
 
 
+    //Update the checkboxes
     $(".host-checkbox").each( (i, checkbox) => {
         if(hostedBy_list.includes(checkbox.value)){
             checkbox.checked = true
@@ -32,7 +35,7 @@ $(() => {
         getNextPage();
     });
 
-
+    // Sett on change listener on all filter checkboxes
     $(".host-checkbox").change( () => {
         let filterHost = []
         $(".host-checkbox").each( (i, checkbox) => {
@@ -60,6 +63,7 @@ $(() => {
         loadEvents(1)
     })
 
+    // Discover on change for the sort option
     $("#sorted-list").on('change', () => {
         // update parms
         searchParams.set('sort-by', $("#sorted-list").val())
@@ -71,6 +75,9 @@ $(() => {
     })
 });
 
+/**
+ * Loads the next page with events
+ */
 function getNextPage() {
     if (pageNr < pageCount) {
         pageNr = pageNr + 1;
@@ -78,7 +85,10 @@ function getNextPage() {
     }
 }
 
-// ajax for requesting events from server
+/**
+ * Ajax for requesting events from server
+ * @param page
+ */
 function loadEvents(page) {
     //get parms from url. if they dont exsits set em as blank
     const search = searchParams.has("search") ? searchParams.get("search") : "";
@@ -106,7 +116,7 @@ function loadEvents(page) {
             }
         },
         error: data => {
-            console.log(data.message);
+            console.error(data.message);
         }
     });
 }
@@ -139,36 +149,36 @@ function displayEvent(event) {
 
     $("#event-container").append(
         '<a href="/events/' + event.id + '/' + event.name.replace(/\s+/g, '-').toLowerCase() + '" class="card" style="margin: .3rem">' +
-        '   <div class="card-header" style="background-color: white"> <h5>' + event.name + '</h5> </div>' +
+        '   <div class="card-header" style="background-color: white"> <h4 style="padding-left: 1rem">' + event.name + '</h4> </div>' +
         '    <div class="card-body sub-event-main-container" style="background-color: white">' +
-        '        <div class="sub-event-title-container">' +
+        '        <div class="event-image-container">' +
                     '<div class="card-img-container">' +
                         '<img style="height:100%;width:auto;" src="/static/' + event.cover_photo + '">' +
                     '</div>' +
         '        </div>' +
-        '        <div class="sub-event-container">' +
+        '        <div class="event-info-container">' +
         '            <div class="sub-event-row-container">' +
-        '                <div class="sub-event-col">' +
+        '                <div class="info-col start-date">' +
         '                    <div>' +
         '                        '+ gettext('Start date') + '<br>' +
         '                        <b>'+ event.start_date.toString().substr(0, 10) + '</b>' +
         '                    </div>' +
         '                </div>' +
-        '                <div class="sub-event-col">' +
+        '                <div class="info-col end-date">' +
         '                    <div>' +
         '                        '+ gettext('End date') + '<br>' +
         '                        <b>' +  event.end_date.toString().substr(0, 10) + '</b>' +
         '                    </div>' +
         '                </div>' +
         '            </div>' +
-        '            <div class="sub-event-row-container border-container">' +
-        '                <div class="sub-event-col">' +
+        '            <div class="sub-event-row-container main-page-border-container">' +
+        '                <div class="info-col place">' +
         '                    <div>' +
         '                        '+ gettext('Place') + '<br>' +
         '                        <b>' +  event.place + '</b>' +
         '                    </div>' +
         '                </div>' +
-        '                <div class="sub-event-col">' +
+        '                <div class="info-col price">' +
         '                    <div>' +
         '                        '+ gettext('Price') + '<br>' +
         '                        <b>' +  event.price + ',-</b>' +
@@ -181,14 +191,24 @@ function displayEvent(event) {
     );
 }
 
-// display error if something went wrong
+/**
+ * display error if something went wrong
+ * @param msg
+ */
 function displayError(msg) {
     $("#event-container").html("<div>" + msg + "<div/>");
 }
 
+/**
+ * Hides the load more button
+ */
 function removeButton() {
     $("#load-more").hide();
 }
+
+/**
+ * Shows the load more button
+ */
 function showButton() {
     $("#load-more").show();
 }

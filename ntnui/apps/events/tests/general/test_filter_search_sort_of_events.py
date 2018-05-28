@@ -1,18 +1,25 @@
 from datetime import datetime
 
-from accounts.models import User
+import pytz
 from django.test import Client, TestCase
 from django.urls import reverse
-from events.models import Event, EventDescription
-from groups.models import SportsGroup
 
+from accounts.models import User
+from events.models.event import (Event, EventDescription,
+                                 EventGuestRegistration, EventGuestWaitingList,
+                                 EventRegistration, EventWaitingList)
+from groups.models import SportsGroup
+import ntnui.settings.common as common
+
+from django.utils import translation
+from unittest.mock import Mock
 
 class TestFilterSearchSortEvents(TestCase):
     def setUp(self):
-        
-        self.date = datetime.today()
+
+        self.date = datetime.now(pytz.utc)
         # Format code to match format from json
-        self.date_string = self.date.isoformat()[0:-3] +"Z"
+        self.date_string = self.date.isoformat()[0:-9] +"Z"
 
         User.objects.create_user(email='testuser@test.com', password='4epape?Huf+V')
 
@@ -77,48 +84,53 @@ class TestFilterSearchSortEvents(TestCase):
         # Login client
         self.c = Client()
         self.c.login(email='testuser@test.com', password='4epape?Huf+V')
+        translation.get_language = Mock(return_value='en')
 
         # Trash collection event JSON
-        self.trash_collection = {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+        self.trash_collection = {'cover_photo': 'cover_photo/events/ntnui-volleyball.png',
                                  'description': 'Come and pick up trash with us.',
                                  'end_date': self.date_string,
                                  'host': ['NTNUI'],
                                  'id': 1,
+                                 'price':0,
                                  'name': 'Trash collection',
                                  'place': '',
                                  'priority': True,
                                  'start_date': self.date_string}
 
         # Theatre event JSON
-        self.theatre = {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+        self.theatre = {'cover_photo': 'cover_photo/events/ntnui-volleyball.png',
                         'description': 'We are gathering you for test play to our '
                                        'theatre.',
                         'end_date': self.date_string,
                         'host': ['NTNUI'],
                         'id': 2,
+                        'price': 0,
                         'name': 'Theatre',
                         'place': '',
                         'priority': True,
                         'start_date': self.date_string}
 
         # Rock ring tournament event JSON
-        self.rock_ring_tournament = {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+        self.rock_ring_tournament = {'cover_photo': 'cover_photo/events/ntnui-volleyball.png',
                                      'description': 'We will see who is best at rocking the rock ring.',
                                      'end_date': self.date_string,
                                      'host': ['NTNUI'],
                                      'id': 3,
+                                     'price': 0,
                                      'name': 'Rock ring tournament',
                                      'place': '',
                                      'priority': True,
                                      'start_date': self.date_string}
 
         # Camping in the woods event JSON
-        self.camping_in_the_woods = {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+        self.camping_in_the_woods = {'cover_photo': 'cover_photo/events/ntnui-volleyball.png',
                                      'description': 'We will take you camping in the deep woods of '
                                                     'Norway.',
                                      'end_date': self.date_string,
                                      'host': ['Test Group'],
                                      'id': 4,
+                                     'price': 0,
                                      'name': 'Camping in the woods',
                                      'place': '',
                                      'priority': True,
@@ -140,41 +152,47 @@ class TestFilterSearchSortEvents(TestCase):
 
     def test_get_default_norwegian_content(self):
         # Response for the default page
+        translation.get_language = Mock(return_value='nb')
         response = self.c.get(reverse('get_events'), HTTP_ACCEPT_LANGUAGE='nb')
+        translation.get_language = Mock(return_value='en')
 
         # Check the default norwegian response
-        self.assertJSONEqual(response.content, {'events': [{'cover_photo': 'cover_photo/ntnui-volleyball.png',
+        self.assertJSONEqual(response.content, {'events': [{'cover_photo': 'cover_photo/events/ntnui-volleyball.png',
                                                             'description': 'Her plukker vi søppel.',
                                                             'end_date': self.date_string,
                                                             'host': ['NTNUI'],
                                                             'id': 1,
+                                                            'price': 0,
                                                             'name': 'Søppelplukking',
                                                             'place': '',
                                                             'priority': True,
                                                             'start_date': self.date_string},
-                                                           {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                                                           {'cover_photo': 'cover_photo/events/ntnui-volleyball.png',
                                                             'description': 'Vi vil prøvespille til vårt teaterlag.',
                                                             'end_date': self.date_string,
                                                             'host': ['NTNUI'],
                                                             'id': 2,
+                                                            'price': 0,
                                                             'name': 'Teater',
                                                             'place': '',
                                                             'priority': True,
                                                             'start_date': self.date_string},
-                                                           {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                                                           {'cover_photo': 'cover_photo/events/ntnui-volleyball.png',
                                                             'description': 'Her vil vi kåre årets rokkeringperson.',
                                                             'end_date': self.date_string,
                                                             'host': ['NTNUI'],
                                                             'id': 3,
+                                                            'price': 0,
                                                             'name': 'Rockeringturnering',
                                                             'place': '',
                                                             'priority': True,
                                                             'start_date': self.date_string},
-                                                           {'cover_photo': 'cover_photo/ntnui-volleyball.png',
+                                                           {'cover_photo': 'cover_photo/events/ntnui-volleyball.png',
                                                             'description': 'Vi vil gjerne ta deg med på campingtur i skogen.',
                                                             'end_date': self.date_string,
                                                             'host': ['Test Group'],
                                                             'id': 4,
+                                                            'price': 0,
                                                             'name': 'Campingtur i skogen',
                                                             'place': '',
                                                             'priority': True,
@@ -249,17 +267,6 @@ class TestFilterSearchSortEvents(TestCase):
                                                            self.rock_ring_tournament,
                                                            self.theatre,
                                                            self.trash_collection],
-                                                'page_count': 1,
-                                                'page_number': 1})
-
-    def test_sorting_ascending_name(self):
-        # Check response for filtered by name (ascending) content
-        response = self.c.get(reverse('get_events'), {'sort-by': 'description'})
-        self.assertJSONEqual(response.content, {'events': [self.trash_collection,
-                                                           self.theatre,
-                                                           self.rock_ring_tournament,
-                                                           self.camping_in_the_woods],
-
                                                 'page_count': 1,
                                                 'page_number': 1})
 

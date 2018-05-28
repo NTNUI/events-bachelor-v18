@@ -8,27 +8,35 @@
 
 {% block content %}
 
-        {% if user.is_authenticated %}
-            <div class="tab-menu">
+    {% if user.is_authenticated %}
+        <div class="tab-menu">
             <ul>
-                <li><a href="{% url 'get_main_page' %}">{% trans 'Events' %}</a></li>
+                <li>
+                    <a href="{% url 'get_main_page' %}">
+                        {% trans 'Events' %}
+                    </a>
+                </li>
                 <li>
                     <div class="vert-divider"></div>
                 </li>
-                <li><a href="{% url 'attending_events_page' %}">{% trans 'My upcoming events' %}</a></li>
-                 {% if can_create_event %}
-                     <li>
-                         <div class="vert-divider"></div>
-                     </li>
-                     <li>
-                         <a href="{% url 'create_event_page' %}" class="active-item">
-                             {% trans 'Create event' %}
-                         </a>
-                     </li>
-                 {% endif %}
+                <li>
+                    <a href="{% url 'attending_events_page' %}">
+                        {% trans 'My upcoming events' %}
+                    </a>
+                </li>
+                {% if can_create_event %}
+                    <li>
+                        <div class="vert-divider"></div>
+                    </li>
+                    <li>
+                        <a href="{% url 'create_event_page' %}" class="active-item">
+                            {% trans 'Create event' %}
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
-     {% endif %}
+    {% endif %}
 
     <!-- Used to show alerts -->
     <div class="alert-message-container">
@@ -163,7 +171,7 @@
     <!-- Main form -->
 
     <form id="create-event-form" style="width:80%; max-width:1000px;">{% csrf_token %}
-    <h4 style="margin-top: 0" class="sub-titles">{% trans 'Basic info' %}:</h4>
+        <h4 style="margin-top: 2rem" class="sub-titles">{% trans 'Basic info' %}:</h4>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label>{% trans 'Name norwegian' %}</label>
@@ -250,7 +258,7 @@
                 <div class="collapse-header-title">
                     <img src="{% static 'img/chevron-bottom.svg' %}"
                          alt="arrow">
-                    <h5 style="margin-left:.2rem;" class="mb-0">
+                    <h5 class="mb-0">
                         {% trans 'Extra options' %}
                     </h5>
                 </div>
@@ -304,7 +312,7 @@
                  aria-expanded="false" aria-controls="subEventCollapse">
                 <div class="collapse-header-title">
                     <img src="{% static 'img/chevron-bottom.svg' %}" alt="arrow">
-                    <h5 style="margin-left:.2rem;">
+                    <h5>
                         {% trans 'Sub-event(s)' %}
                     </h5>
                 </div>
