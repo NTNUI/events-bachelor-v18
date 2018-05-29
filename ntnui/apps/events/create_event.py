@@ -37,16 +37,13 @@ def create_event_request(request):
 
 
 def validate_event_data(data):
-    """ Checks that the event's start and end date is valid, and that it has
-        an English and Norwegian name and description, and its start and end date. """
+    """ Checks that the event has an English and Norwegian name and description, and its start and end date. """
 
     # Gets the required data for creating an event.
     norwegian_name = data.get('name_nb')
     norwegian_description = data.get('description_text_nb')
     english_name = data.get('name_en')
     english_description = data.get('description_text_nb')
-    start_date = data.get('start_date')
-    end_date = data.get('end_date')
     location = data.get('place')
     host = data.get('host')
 
@@ -110,6 +107,7 @@ def create_event_for_group(data, is_host_ntnui):
 
     # Sets the event's price to 0 if it is not set.
     price = data.get('price')
+
     if not price:
         price = 0
     else:
@@ -124,6 +122,8 @@ def create_event_for_group(data, is_host_ntnui):
     registration_end_date = data.get('registration_end_date', None)
     if registration_end_date == "":
         registration_end_date = None
+    else:
+        registration_end_date += '+0000'
 
     try:
         # Creates the event.
