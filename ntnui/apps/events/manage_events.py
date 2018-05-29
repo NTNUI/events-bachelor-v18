@@ -71,15 +71,15 @@ def edit_category_request(request):
             return get_json(400, 'You do not have the authority to edit the category.')
 
         # Gets the new category name in Norwegian and English.
-        category_name_no = data['name_nb']
+        category_name_nb = data['name_nb']
         category_name_en = data['name_en']
 
         # Edits the category's Norwegian and English name.
-        category_description_no = CategoryDescription.objects.get(category=category, language='nb')
+        category_description_nb = CategoryDescription.objects.get(category=category, language='nb')
         category_description_en = CategoryDescription.objects.get(category=category, language='en')
-        category_description_no.name = category_name_no
+        category_description_nb.name = category_name_nb
         category_description_en.name = category_name_en
-        category_description_no.save()
+        category_description_nb.save()
         category_description_en.save()
 
         # Returns the category's ID and a JSON success response.
@@ -243,9 +243,9 @@ def edit_sub_event_request(request):
             return get_json(400, 'You do not have the right to edit the sub-event.')
 
         # Gets the new input for the sub-event.
-        name_no = data['name_nb']
+        name_nb = data['name_nb']
         name_en = data['name_en']
-        email_text_no = data['email_nb']
+        email_text_nb = data['email_nb']
         email_text_en = data['email_en']
         start_date = data['start_date']
         end_date = data['end_date']
@@ -288,23 +288,23 @@ def edit_sub_event_request(request):
         sub_event.save()
 
         # Gets the new input for the sub-event's description.
-        sub_event_description_no = SubEventDescription.objects.get(sub_event=sub_event, language='nb')
+        sub_event_description_nb = SubEventDescription.objects.get(sub_event=sub_event, language='nb')
         sub_event_description_en = SubEventDescription.objects.get(sub_event=sub_event, language='en')
-        sub_event_description_no.name = name_no
+        sub_event_description_nb.name = name_nb
         sub_event_description_en.name = name_en
 
         # Sets the email_text to None if it is not set, otherwise to the given value.
-        if email_text_no == '':
-            sub_event_description_no.custom_email_text = None
+        if email_text_nb == '':
+            sub_event_description_nb.custom_email_text = None
         else:
-            sub_event_description_no.custom_email_text = email_text_no
+            sub_event_description_nb.custom_email_text = email_text_nb
         if email_text_en == '':
             sub_event_description_en.custom_email_text = None
         else:
             sub_event_description_en.custom_email_text = email_text_en
 
         # Saves the updated sub-event's description.
-        sub_event_description_no.save()
+        sub_event_description_nb.save()
         sub_event_description_en.save()
 
         # Returns JSON success response.
@@ -401,11 +401,11 @@ def edit_event_request(request):
             return get_json(400, 'You do not have the right to editing the event.')
 
         # Gets the new input for the event.
-        name_no = data['name_no']
+        name_nb = data['name_nb']
         name_en = data['name_en']
-        description_no = data['description_text_no']
+        description_nb = data['description_text_nb']
         description_en = data['description_text_en']
-        email_text_no = data['email_text_no']
+        email_text_nb = data['email_text_nb']
         email_text_en = data['email_text_en']
         start_date = data['start_date']
         end_date = data['end_date']
@@ -448,25 +448,25 @@ def edit_event_request(request):
         event.save()
 
         # Gets the new input for the sub-event's description.
-        event_description_no = EventDescription.objects.get(event=event, language='nb')
+        event_description_nb = EventDescription.objects.get(event=event, language='nb')
         event_description_en = EventDescription.objects.get(event=event, language='en')
-        event_description_no.name = name_no
+        event_description_nb.name = name_nb
         event_description_en.name = name_en
-        event_description_no.description_text = description_no
+        event_description_nb.description_text = description_nb
         event_description_en.description_text = description_en
 
         # Sets the email_text to None if it is not set, otherwise to the given value.
-        if not email_text_no:
-            event_description_no.custom_email_text = None
+        if not email_text_nb:
+            event_description_nb.custom_email_text = None
         else:
-            event_description_no.custom_email_text = email_text_no
+            event_description_nb.custom_email_text = email_text_nb
         if not email_text_en:
             event_description_en.custom_email_text = None
         else:
             event_description_en.custom_email_text = email_text_en
 
         # Saves the event's descriptions.
-        event_description_no.save()
+        event_description_nb.save()
         event_description_en.save()
 
         # Returns the event's ID and a JSON success response.
@@ -491,7 +491,7 @@ def delete_event_request(request, event_id):
             return get_json(400, 'You do not have the right to deleting the event.')
 
         # Gets the event's descriptions.
-        event_description_no = EventDescription.objects.get(event=event, language='nb')
+        event_description_nb = EventDescription.objects.get(event=event, language='nb')
         event_description_en = EventDescription.objects.get(event=event, language='en')
 
         # Gets the event's user and guest registrations.
@@ -529,7 +529,7 @@ def delete_event_request(request, event_id):
                 event_guest_waiting_list.delete()
 
         # Deletes the event and its descriptions.
-        event_description_no.delete()
+        event_description_nb.delete()
         event_description_en.delete()
         event.delete()
 

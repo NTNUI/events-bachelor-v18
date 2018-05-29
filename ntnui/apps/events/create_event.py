@@ -109,7 +109,11 @@ def create_event_for_group(data, is_host_ntnui):
     """ Creates a new event hosted by a sports group. """
 
     # Sets the event's price to 0 if it is not set.
-    price = data.get('price', 0)
+    price = data.get('price')
+    if not price:
+        price = 0
+    else:
+        price = price
 
     # Sets the event's attendance cap to None if it is not set.
     attendance_cap = data.get('attendance_cap', None)
