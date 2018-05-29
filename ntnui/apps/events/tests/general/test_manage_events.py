@@ -7,6 +7,7 @@ from django.urls import reverse
 from events.models.category import Category, CategoryDescription
 from events.models.event import Event, EventDescription
 from events.models.sub_event import SubEventDescription, SubEvent
+from groups.models import SportsGroup, Board
 
 
 class TestManageEvents(TestCase):
@@ -17,13 +18,24 @@ class TestManageEvents(TestCase):
 
         # Create an event.
         self.event = Event.objects.create(start_date=datetime.now(pytz.utc),
-                                          end_date=datetime.now(pytz.utc) + timedelta(days=2), is_host_ntnui=True)
+                                          end_date=datetime.now(pytz.utc) + timedelta(days=2))
 
         # Add norwegian and English name and description to the event.
         EventDescription.objects.create(name='name_nb', description_text='description_nb', language='nb',
                                         event=self.event)
         EventDescription.objects.create(name='name_en', description_text='description_en', language='en',
                                         event=self.event)
+
+        # Create a sports group and add the user to its board.
+        self.swimming_group = SportsGroup.objects.create(name='Swimming', slug='slug',
+                                                         description='Swimming events and tournaments')
+        self.swimming_board = Board.objects.create(president=self.user, vice_president=self.user,
+                                                   cashier=self.user, sports_group=self.swimming_group)
+        self.swimming_group.active_board = self.swimming_board
+        self.swimming_group.save()
+
+        # Sets the swimming_group to the event's host.
+        self.event.sports_groups.add(self.swimming_group)
 
         # Create a category for the event.
         self.category = Category.objects.create(event=self.event)
@@ -134,7 +146,7 @@ class TestManageEvents(TestCase):
                                                              'name_en': 'name_en',
                                                              'name_nb': 'name_nb',
                                                              'description_text_en': 'description_en',
-                                                             'description_text_no': 'description_nb',
+                                                             'description_text_nb': 'description_nb',
                                                              'event': self.event.id,
                                                              'category': self.category.id})
 
@@ -152,7 +164,7 @@ class TestManageEvents(TestCase):
                                                              'name_en': 'name_en',
                                                              'name_nb': 'name_nb',
                                                              'description_text_en': 'description_en',
-                                                             'description_text_no': 'description_nb',
+                                                             'description_text_nb': 'description_nb',
                                                              'event': self.event.id})
 
         # act
@@ -169,7 +181,7 @@ class TestManageEvents(TestCase):
                                                              'name_en': 'name_en',
                                                              'name_nb': 'name_nb',
                                                              'description_text_en': 'description_en',
-                                                             'description_text_no': 'description_nb',})
+                                                             'description_text_nb': 'description_nb',})
 
         # act
         result = response.status_code
@@ -184,7 +196,7 @@ class TestManageEvents(TestCase):
                                                            'name_en': 'name_en',
                                                            'name_nb': 'name_nb',
                                                            'description_text_en': 'description_en',
-                                                           'description_text_no': 'description_nb',
+                                                           'description_text_nb': 'description_nb',
                                                            'category': self.category.id,
                                                            'id': self.sub_event.id})
 
@@ -205,7 +217,7 @@ class TestManageEvents(TestCase):
                                                             'name_en': 'name_en',
                                                             'name_nb': 'name_nb',
                                                             'description_text_en': 'description_en',
-                                                            'description_text_no': 'description_nb',
+                                                            'description_text_nb': 'description_nb',
                                                             'host': 'NTNUI',
                                                             'place': 'Trondheim',
                                                             'cover_photo': 'cover_photo/ntnui-volleyball.png',
