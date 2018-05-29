@@ -26,15 +26,15 @@ def create_category_request(request):
         data = request.POST
 
         # Gets the event
-        event = Event.objects.get(id=int(data['event']))
+        event = Event.objects.get(id=int(data.get('event')))
 
         # Checks if the user has the right to alter the event.
         if not can_user_alter_event(event, request.user):
             return get_json(400, 'You do not have the authority to create the category.')
 
         # Gets the category's name in Norwegian and English.
-        name_nb = data['name_nb']
-        name_en = data['name_en']
+        name_nb = data.get('name_nb')
+        name_en = data.get('name_en')
 
         # Creates the category for the
         category = Category.objects.create(event=event)
@@ -64,15 +64,15 @@ def edit_category_request(request):
         data = request.POST
 
         # Gets the category which is edited.
-        category = Category.objects.get(id=int(data['id']))
+        category = Category.objects.get(id=int(data.get('id')))
 
         # Checks if the user has the right to alter the event.
         if not can_user_alter_event(category.event, request.user):
             return get_json(400, 'You do not have the authority to edit the category.')
 
         # Gets the new category name in Norwegian and English.
-        category_name_nb = data['name_nb']
-        category_name_en = data['name_en']
+        category_name_nb = data.get('name_nb')
+        category_name_en = data.get('name_en')
 
         # Edits the category's Norwegian and English name.
         category_description_nb = CategoryDescription.objects.get(category=category, language='nb')
@@ -83,7 +83,7 @@ def edit_category_request(request):
         category_description_en.save()
 
         # Returns the category's ID and a JSON success response.
-        return JsonResponse({'id': data['id'], 'message': 'Edit category successful!'}, status=200)
+        return JsonResponse({'id': data.get('id'), 'message': 'Edit category successful!'}, status=200)
 
     # Catch exceptions and print them.
     except Exception as e:
@@ -205,8 +205,8 @@ def create_sub_event_request(request):
         category = Category.objects.get(id=int(category_id))
 
     # Validates the input for the sub-event.
-    sub_event = SubEvent.objects.create(start_date=data['start_date'] + '+0000',
-                                        end_date=data['end_date'] + '+0000',
+    sub_event = SubEvent.objects.create(start_date=data.get('start_date') + '+0000',
+                                        end_date=data.get('end_date') + '+0000',
                                         price=price,
                                         registration_end_date=registration_end_date,
                                         attendance_cap=attendance_cap,
@@ -233,33 +233,33 @@ def edit_sub_event_request(request):
         data = request.POST
 
         # Gets the event
-        sub_event = SubEvent.objects.get(id=int(data['id']))
+        sub_event = SubEvent.objects.get(id=int(data.get('id')))
 
         # Checks if the user has the right to alter the event.
         if not can_user_alter_event(sub_event, request.user):
             return get_json(400, 'You do not have the right to edit the sub-event.')
 
         # Gets the new input for the sub-event.
-        name_nb = data['name_nb']
-        name_en = data['name_en']
-        email_text_nb = data['email_nb']
-        email_text_en = data['email_en']
-        start_date = data['start_date']
-        end_date = data['end_date']
-        registration_end_date = data['registration_end_date']
-        attendance_cap = data['attendance_cap']
-        price = data['price']
-        category = data['category']
+        name_nb = data.get('name_nb')
+        name_en = data.get('name_en')
+        email_text_nb = data.get('email_nb')
+        email_text_en = data.get('email_en')
+        start_date = data.get('start_date')
+        end_date = data.get('end_date')
+        registration_end_date = data.get('registration_end_date')
+        attendance_cap = data.get('attendance_cap')
+        price = data.get('price')
+        category = data.get('category')
 
         # Gets the sub-event which is edited.
-        sub_event = SubEvent.objects.get(id=int(data['id']))
+        sub_event = SubEvent.objects.get(id=int(data.get('id')))
 
         # Checks if the sub-event has been given a category, otherwise sets it to 'Non categorized' category.
         if category:
             sub_event.category = Category.objects.get(id=int(category))
         else:
             sub_event.category = Category.objects.filter(
-                categorydescription__name='Ikke kategorisert', event__id=int(data['event']))[0]
+                categorydescription__name='Ikke kategorisert', event__id=int(data.get('event')))[0]
 
         # Sets the start and end date.
         sub_event.start_date = start_date + '+0000'
@@ -391,25 +391,25 @@ def edit_event_request(request):
         data = request.POST
 
         # Gets the event
-        event = Event.objects.get(id=int(data['id']))
+        event = Event.objects.get(id=int(data.get('id')))
 
         # Checks if the user has the right to alter the event.
         if not can_user_alter_event(event, request.user):
             return get_json(400, 'You do not have the right to editing the event.')
 
         # Gets the new input for the event.
-        name_nb = data['name_nb']
-        name_en = data['name_en']
-        description_nb = data['description_text_nb']
-        description_en = data['description_text_en']
-        email_text_nb = data['email_text_nb']
-        email_text_en = data['email_text_en']
-        start_date = data['start_date']
-        end_date = data['end_date']
-        registration_end_date = data['registration_end_date']
-        host = data['host']
-        attendance_cap = data['attendance_cap']
-        price = data['price']
+        name_nb = data.get('name_nb')
+        name_en = data.get('name_en')
+        description_nb = data.get('description_text_nb')
+        description_en = data.get('description_text_en')
+        email_text_nb = data.get('email_text_nb')
+        email_text_en = data.get('email_text_en')
+        start_date = data.get('start_date')
+        end_date = data.get('end_date')
+        registration_end_date = data.get('registration_end_date')
+        host = data.get('host')
+        attendance_cap = data.get('attendance_cap')
+        price = data.get('price')
 
         # Sets the event's start and end date.
         event.start_date = start_date
@@ -467,7 +467,7 @@ def edit_event_request(request):
         event_description_en.save()
 
         # Returns the event's ID and a JSON success response.
-        return JsonResponse({'id': data['id'], 'message': "Edit event successful"}, status=200)
+        return JsonResponse({'id': data.get('id'), 'message': "Edit event successful"}, status=200)
 
     # Catch exceptions and print them.
     except Exception as e:
