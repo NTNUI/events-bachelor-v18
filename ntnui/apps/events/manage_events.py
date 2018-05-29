@@ -147,82 +147,79 @@ def create_sub_event_request(request):
     if not request.POST:
         return get_json(400, 'Request must be POST.')
 
-    try:
-        data = request.POST
+    data = request.POST
 
-        # Gets the event
-        event = Event.objects.get(id=int(data['event']))
+    # Gets the event
 
-        # Checks if the user has the right to alter the event.
-        if not can_user_alter_event(event, request.user):
-            return get_json(400, 'You do not have the authority to create the sub-event.')
+    if not data.get('event'):
+        return get_json(400, 'Must include event id')
 
-        # Gets the category's name and description text in Norwegian and English.
-        name_nb = data['name_nb']
-        name_en = data['name_en']
-        email_text_nb = data['email_nb']
-        email_text_en = data['email_en']
+    event = Event.objects.get(id=int(data.get('event')))
 
-        # Sets the price to 0 if it is not set.
-        price = data['price']
-        if not price:
-            price = 0
+    # Checks if the user has the right to alter the event.
+    if not can_user_alter_event(event, request.user):
+        return get_json(400, 'You do not have the authority to create the sub-event.')
+
+    # Gets the category's name and description text in Norwegian and English.
+    name_nb = data.get('name_nb')
+    name_en = data.get('name_en')
+    email_text_nb = data.get('email_nb')
+    email_text_en = data.get('email_en')
+
+    # Sets the price to 0 if it is not set.
+    price = data.get('price', 0)
+    if not price:
+        price = 0
+    else:
+        price = int(price)
+
+    # Sets the attendance_cap to None if it is not set.
+    attendance_cap = data.get('attendance_cap', None)
+    if not attendance_cap:
+        attendance_cap = None
+
+    # Sets the registration_end_date to None if it is not set.
+    registration_end_date = data.get('registration_end_date')
+    if not registration_end_date:
+        registration_end_date = None
+    else:
+        registration_end_date = registration_end_date + '+0000'
+
+    category_id = data.get('category')
+
+    # The sub-event does not have an existing category.
+    if not category_id:
+
+        # If the event does not have a 'Non categorized' category, one gets created for the sub-event.
+        if not Category.objects.filter(event=event, categorydescription__name='Non categorized').exists():
+            category = Category.objects.create(event=event)
+            CategoryDescription.objects.create(category=category, name='Ikke kategorisert', language='nb')
+            CategoryDescription.objects.create(category=category, name='Non categorized', language='en')
+
+        # Finds the existing 'Non categorized' category and uses it for the sub-event.
         else:
-            price = int(price)
+            category = Category.objects.filter(event=event, categorydescription__name='Non categorized')[0]
 
-        # Sets the attendance_cap to None if it is not set.
-        attendance_cap = data['attendance_cap']
-        if not attendance_cap:
-            attendance_cap = None
+    # Sets the sub-event's existing category.
+    else:
+        category = Category.objects.get(id=int(category_id))
 
-        # Sets the registration_end_date to None if it is not set.
-        registration_end_date = data['registration_end_date']
-        if not registration_end_date:
-            registration_end_date = None
-        else:
-            registration_end_date = registration_end_date + '+0000'
+    # Validates the input for the sub-event.
+    sub_event = SubEvent.objects.create(start_date=data['start_date'] + '+0000',
+                                        end_date=data['end_date'] + '+0000',
+                                        price=price,
+                                        registration_end_date=registration_end_date,
+                                        attendance_cap=attendance_cap,
+                                        category=category)
 
-        category_id = data['category']
+    # Validates the input for the sub-event's description.
+    SubEventDescription.objects.create(sub_event=sub_event, name=name_nb, custom_email_text=email_text_nb,
+                                       language='nb')
+    SubEventDescription.objects.create(sub_event=sub_event, name=name_en, custom_email_text=email_text_en,
+                                       language='en')
 
-        # The sub-event does not have an existing category.
-        if not category_id:
-
-            # If the event does not have a 'Non categorized' category, one gets created for the sub-event.
-            if not Category.objects.filter(event=event, categorydescription__name='Non categorized').exists():
-                category = Category.objects.create(event=event)
-                CategoryDescription.objects.create(category=category, name='Ikke kategorisert', language='nb')
-                CategoryDescription.objects.create(category=category, name='Non categorized', language='en')
-
-            # Finds the existing 'Non categorized' category and uses it for the sub-event.
-            else:
-                category = Category.objects.filter(event=event, categorydescription__name='Non categorized')[0]
-
-        # Sets the sub-event's existing category.
-        else:
-            category = Category.objects.get(id=int(category_id))
-
-        # Validates the input for the sub-event.
-        sub_event = SubEvent.objects.create(start_date=data['start_date'] + '+0000',
-                                            end_date=data['end_date'] + '+0000',
-                                            price=price,
-                                            registration_end_date=registration_end_date,
-                                            attendance_cap=attendance_cap,
-                                            category=category)
-
-        # Validates the input for the sub-event's description.
-        SubEventDescription.objects.create(sub_event=sub_event, name=name_nb, custom_email_text=email_text_nb,
-                                           language='nb')
-        SubEventDescription.objects.create(sub_event=sub_event, name=name_en, custom_email_text=email_text_en,
-                                           language='en')
-
-        # Returns the sub-event's ID and a JSON success response.
-        return JsonResponse({'id': sub_event.id, 'message': _('The sub-event is successfully created!')}, status=201)
-
-    # Catch exceptions and print them.
-    except Exception as e:
-        print(e)
-        return get_json(400, 'Creating sub-event failed.')
-
+    # Returns the sub-event's ID and a JSON success response.
+    return JsonResponse({'id': sub_event.id, 'message': _('The sub-event is successfully created!')}, status=201)
 
 @login_required
 def edit_sub_event_request(request):

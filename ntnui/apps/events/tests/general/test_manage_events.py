@@ -149,7 +149,7 @@ class TestManageEvents(TestCase):
                                                              'description_text_nb': 'description_nb',
                                                              'event': self.event.id,
                                                              'category': self.category.id})
-        print(response)
+        print(response.json())
         # act
         result = response.status_code
 
