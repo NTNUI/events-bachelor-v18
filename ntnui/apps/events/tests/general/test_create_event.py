@@ -141,7 +141,6 @@ class TestCreateEvent(TestCase):
         self.c.login(email='testuser@test.com', password='4epape?Huf+V')
         response = self.c.post(reverse('create_event'), {'start_date': datetime.now(),
                                                          'end_date': datetime.now() + timedelta(days=2),
-                                                         'place': '',
                                                          'restriction': '0',
                                                          'hosted by NTNUI': 'true',
                                                          'name_en': 'name_en',

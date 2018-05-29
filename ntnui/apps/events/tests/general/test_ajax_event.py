@@ -32,7 +32,7 @@ class TestAjax(TestCase):
         self.sub_event = SubEvent.objects.create(start_date=datetime.now(pytz.utc),
                                                  end_date=datetime.now(pytz.utc) + timedelta(days=2),
                                                  category=self.category)
-        print(self.event.id)
+
         # Creates a client and logs into the website.
         self.client_signed_in = Client()
         self.client_signed_in.login(email='testuser@test.com', password='4epape?Huf+V')
