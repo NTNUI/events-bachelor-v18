@@ -56,6 +56,10 @@ def edit_category_request(request):
 
     data = request.POST
 
+    # Checks if the category exists
+    if not Category.objects.filter(id=int(data.get('id'))).exists():
+        return get_json(400, "Category dose not exist")
+
     # Gets the category which is edited.
     category = Category.objects.get(id=int(data.get('id')))
 
