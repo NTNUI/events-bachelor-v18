@@ -295,7 +295,7 @@ def get_groups_user_can_create_events_for(user):
 
     # Finds all the groups were the user is in the board
     for board in (Board.objects.filter(president=user) | Board.objects.filter(vice_president=user) |
-                      Board.objects.filter(cashier=user)):
+                  Board.objects.filter(cashier=user)):
 
         # Checks that the board is active
         for group in SportsGroup.objects.filter(active_board=board):
