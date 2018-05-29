@@ -197,7 +197,7 @@
             <div class="form-group col-md-6">
                 <label>{% trans 'Name norwegian' %}</label>
                 <input class="form-input-create-event form-control" pattern="^[a-zA-ZæøåÆØÅ\-\s]*$"
-                       type="text" name="name_no" value="{{ event.name_no }}" required>
+                       type="text" name="name_nb" value="{{ event.name_nb }}" required>
             </div>
             <div class="form-group col-md-6">
                 <label>{% trans 'Name english' %}</label>
@@ -210,7 +210,7 @@
             <div class="form-group col-md-6">
                 <label>{% trans 'Description norwegian' %}</label>
                 <textarea class="form-input-create-event form-control" type="textArea"
-                          name="description_text_no" required>{{ event.description_text_no }} </textarea>
+                          name="description_text_nb" required>{{ event.description_text_nb }} </textarea>
             </div>
 
             <div class="form-group col-md-6">
@@ -313,7 +313,7 @@
                         <div class="form-group col-md-6">
                             <label>{% trans 'Email text norwegian' %}</label>
                             <textarea class="form-input-create-event form-control" type="textArea"
-                                      name="email_text_no">{{ event.email_text_no }}</textarea>
+                                      name="email_text_nb">{{ event.email_text_nb }}</textarea>
                         </div>
                         <div class="form-group col-md-6">
                             <label>{% trans 'Email text english' %}</label>

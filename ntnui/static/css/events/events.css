@@ -213,15 +213,13 @@
 .button-title-container {
     display: flex;
     align-items: center;
-    margin-left: .4rem;
 }
 
 .join-subevent-button {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    width: 12rem;
-
+    width: 13rem;
 }
 
 .sign-up-div {
@@ -790,6 +788,11 @@ label.custom-control.custom-checkboxcustom-checkbox:checked + label::before {
 @media only screen and (max-width: 750px) {
     .sub-event-container {
         flex-flow: row wrap;
+    }
+
+    .join-subevent-button {
+        margin-top: .5rem
+
     }
 
     #header {

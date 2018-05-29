@@ -13,10 +13,12 @@ from groups.models import SportsGroup
 from django.utils import translation
 from unittest.mock import Mock
 
-class TestFilterSearchSortEvents(TestCase):
-    def setUp(self):
 
+class TestFilterSearchSortEvents(TestCase):
+
+    def setUp(self):
         self.date = datetime.now(pytz.utc)
+
         # Format code to match format from json
         self.date_string = self.date.isoformat()[0:-9] +"Z"
 

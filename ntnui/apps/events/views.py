@@ -199,7 +199,7 @@ def get_edit_event_page(request, event_id):
     price = event.price
     attendance_cap = event.attendance_cap
     groups = get_groups_user_can_create_events_for(request.user)
-    event_description_no = EventDescription.objects.get(event=event, language='nb')
+    event_description_nb = EventDescription.objects.get(event=event, language='nb')
     event_description_en = EventDescription.objects.get(event=event, language='en')
 
     # Converts dates to a format that can be put as value in input type 'datetime local' html form.
@@ -215,13 +215,12 @@ def get_edit_event_page(request, event_id):
 
     # Creates a dictionary for the event.
     event = {
-        'name_no': event_description_no.name,
+        'name_nb': event_description_nb.name,
         'name_en': event_description_en.name,
-        'description_text_no': event_description_no.description_text,
+        'description_text_nb': event_description_nb.description_text,
         'description_text_en': event_description_en.description_text,
-        'email_text_no': event_description_no.custom_email_text,
+        'email_text_nb': event_description_nb.custom_email_text,
         'email_text_en': event_description_en.custom_email_text,
-
         'start_date': start_date,
         'end_date': end_date,
         'id': event.id,
@@ -295,7 +294,7 @@ def get_groups_user_can_create_events_for(user):
 
     # Finds all the groups were the user is in the board
     for board in (Board.objects.filter(president=user) | Board.objects.filter(vice_president=user) |
-                      Board.objects.filter(cashier=user)):
+                  Board.objects.filter(cashier=user)):
 
         # Checks that the board is active
         for group in SportsGroup.objects.filter(active_board=board):
