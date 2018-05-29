@@ -30,7 +30,7 @@ def create_category_request(request):
 
         # Checks if the user has the right to alter the event.
         if not can_user_alter_event(event, request.user):
-            return get_json(400, 'You do not have the right to create the category.')
+            return get_json(400, 'You do not have the authority to create the category.')
 
         # Gets the category's name in Norwegian and English.
         name_nb = data['name_nb']
@@ -63,19 +63,16 @@ def edit_category_request(request):
     try:
         data = request.POST
 
-        # Gets the event
-        event = Event.objects.get(id=int(data['event']))
+        # Gets the category which is edited.
+        category = Category.objects.get(id=int(data['id']))
 
         # Checks if the user has the right to alter the event.
-        if not can_user_alter_event(event, request.user):
-            return get_json(400, 'You do not have the right to edit the category.')
+        if not can_user_alter_event(category.event, request.user):
+            return get_json(400, 'You do not have the authority to edit the category.')
 
         # Gets the new category name in Norwegian and English.
         category_name_no = data['name_nb']
         category_name_en = data['name_en']
-
-        # Gets the category which is edited.
-        category = Category.objects.get(id=int(data['id']))
 
         # Edits the category's Norwegian and English name.
         category_description_no = CategoryDescription.objects.get(category=category, language='nb')
@@ -99,15 +96,12 @@ def delete_category_request(request):
     """ Deletes a given category. """
 
     try:
-        # Gets the event
-        event = Event.objects.get(id=int(request.POST.get('event')))
+        # Get the category.
+        category = Category.objects.get(id=int(request.POST['id']))
 
         # Checks if the user has the right to alter the event.
-        if not can_user_alter_event(event, request.user):
-            return get_json(400, 'You do not have the right to delete the category.')
-
-        # Get the category.
-        category = Category.objects.get(id=int(request.POST.get('id')))
+        if not can_user_alter_event(category.event, request.user):
+            return get_json(400, 'You do not have the authority to delete the category.')
 
     # Catch exceptions and print them.
     except Exception as e:
@@ -154,62 +148,62 @@ def create_sub_event_request(request):
         return get_json(400, 'Request must be POST.')
 
     try:
+        data = request.POST
+
         # Gets the event
-        event = Event.objects.get(id=int(request.POST.get('event')))
+        event = Event.objects.get(id=int(data['event']))
 
         # Checks if the user has the right to alter the event.
         if not can_user_alter_event(event, request.user):
-            return get_json(400, 'You do not have the right to create the sub-event.')
+            return get_json(400, 'You do not have the authority to create the sub-event.')
 
         # Gets the category's name and description text in Norwegian and English.
-        name_nb = request.POST.get('name_nb')
-        name_en = request.POST.get('name_en')
-        email_text_nb = request.POST.get('email_nb')
-        email_text_en = request.POST.get('email_en')
+        name_nb = data['name_nb']
+        name_en = data['name_en']
+        email_text_nb = data['email_nb']
+        email_text_en = data['email_en']
 
         # Sets the price to 0 if it is not set.
-        price = request.POST.get('price', 0)
+        price = data['price']
+        if not price:
+            price = 0
+        else:
+            price = int(price)
 
         # Sets the attendance_cap to None if it is not set.
-        attendance_cap = request.POST.get('attendance_cap')
+        attendance_cap = data['attendance_cap']
         if not attendance_cap:
             attendance_cap = None
 
         # Sets the registration_end_date to None if it is not set.
-        registration_end_date = request.POST.get('registration_end_date')
+        registration_end_date = data['registration_end_date']
         if not registration_end_date:
             registration_end_date = None
         else:
             registration_end_date = registration_end_date + '+0000'
 
-        category_id = request.POST.get('category', '')
+        category_id = data['category']
 
         # The sub-event does not have an existing category.
         if not category_id:
-            event_id = request.POST.get('event')
-
-            if not event_id:
-                return get_json(400, 'The request must contain event or category')
-
-            event_id = int(event_id)
 
             # If the event does not have a 'Non categorized' category, one gets created for the sub-event.
-            if not Category.objects.filter(event__id=event_id, categorydescription__name='Non categorized').exists():
-                category = Category.objects.create(event=Event.objects.get(id=event_id))
+            if not Category.objects.filter(event=event, categorydescription__name='Non categorized').exists():
+                category = Category.objects.create(event=event)
                 CategoryDescription.objects.create(category=category, name='Ikke kategorisert', language='nb')
                 CategoryDescription.objects.create(category=category, name='Non categorized', language='en')
 
             # Finds the existing 'Non categorized' category and uses it for the sub-event.
             else:
-                category = Category.objects.filter(event__id=event_id, categorydescription__name='Non categorized')[0]
+                category = Category.objects.filter(event=event, categorydescription__name='Non categorized')[0]
 
         # Sets the sub-event's existing category.
         else:
-            category = Category.objects.get(id=category_id)
+            category = Category.objects.get(id=int(category_id))
 
         # Validates the input for the sub-event.
-        sub_event = SubEvent.objects.create(start_date=request.POST.get('start_date') + '+0000',
-                                            end_date=request.POST.get('end_date') + '+0000',
+        sub_event = SubEvent.objects.create(start_date=data['start_date'] + '+0000',
+                                            end_date=data['end_date'] + '+0000',
                                             price=price,
                                             registration_end_date=registration_end_date,
                                             attendance_cap=attendance_cap,
@@ -242,23 +236,23 @@ def edit_sub_event_request(request):
         data = request.POST
 
         # Gets the event
-        event = Event.objects.get(id=int(data['event']))
+        sub_event = SubEvent.objects.get(id=int(data['id']))
 
         # Checks if the user has the right to alter the event.
-        if not can_user_alter_event(event, request.user):
+        if not can_user_alter_event(sub_event, request.user):
             return get_json(400, 'You do not have the right to edit the sub-event.')
 
         # Gets the new input for the sub-event.
-        name_no = data.get('name_nb', '')
-        name_en = data.get('name_en', '')
-        email_text_no = data.get('email_nb', '')
-        email_text_en = data.get('email_en', '')
-        start_date = data.get('start_date', '')
-        end_date = data.get('end_date', '')
-        registration_end_date = data.get('registration_end_date', '')
-        attendance_cap = data.get('attendance_cap', '')
-        price = data.get('price', '')
-        category = data.get('category', '')
+        name_no = data['name_nb']
+        name_en = data['name_en']
+        email_text_no = data['email_nb']
+        email_text_en = data['email_en']
+        start_date = data['start_date']
+        end_date = data['end_date']
+        registration_end_date = data['registration_end_date']
+        attendance_cap = data['attendance_cap']
+        price = data['price']
+        category = data['category']
 
         # Gets the sub-event which is edited.
         sub_event = SubEvent.objects.get(id=int(data['id']))
@@ -281,16 +275,14 @@ def edit_sub_event_request(request):
             sub_event.registration_end_date = registration_end_date + '+0000'
 
         # Sets the attendance_cap to None if it is not set, otherwise to the given value.
-        if attendance_cap == '':
+        if not attendance_cap:
             sub_event.attendance_cap = None
-        else:
-            sub_event.attendance_cap = attendance_cap
 
         # Sets the price to None if it is not set, otherwise to the given value.
-        if price == '':
+        if not price:
             sub_event.price = 0
         else:
-            sub_event.price = price
+            sub_event.price = int(price)
 
         # Saves the updated sub-event.
         sub_event.save()
@@ -324,19 +316,17 @@ def edit_sub_event_request(request):
         return get_json(400, 'Editing sub-event failed.')
 
 
+@login_required
 def delete_sub_event_request(request):
     """ Deletes a given sub-event. """
 
     try:
-        # Gets the event
-        event = Event.objects.get(id=int(request.POST.get('event')))
+        # Get the sub-event
+        sub_event = SubEvent.objects.get(id=int(request.POST['id']))
 
         # Checks if the user has the right to alter the event.
-        if not can_user_alter_event(event, request.user):
+        if not can_user_alter_event(sub_event, request.user):
             return get_json(400, 'You do not have the right to deleting the sub-event.')
-
-        # Get the sub-event
-        sub_event = SubEvent.objects.get(id=int(request.POST.get('id')))
 
     # Catch exceptions and print them.
     except Exception as e:
@@ -402,29 +392,27 @@ def edit_event_request(request):
 
     try:
         data = request.POST
-        print(request.POST.get('id'))
+
         # Gets the event
-        event = Event.objects.get(id=int(request.POST.get('id')))
-        print(event, can_user_alter_event(event, request.user))
+        event = Event.objects.get(id=int(data['id']))
+
         # Checks if the user has the right to alter the event.
         if not can_user_alter_event(event, request.user):
             return get_json(400, 'You do not have the right to editing the event.')
 
         # Gets the new input for the event.
-        name_no = data.get('name_no', "")
-        name_en = data.get('name_en', "")
-        description_no = data.get('description_text_no', "")
-        description_en = data.get('description_text_en', "")
-        email_text_no = data.get('email_text_no', "")
-        email_text_en = data.get('email_text_en', "")
-        start_date = data.get('start_date', "")
-        end_date = data.get('end_date', "")
-        registration_end_date = data.get('registration_end_date', "")
-        host = data.get('host', "")
-        attendance_cap = data.get('attendance_cap', "")
-        price = data.get('price', "")
-
-        event = Event.objects.get(id=int(data.get('id')))
+        name_no = data['name_no']
+        name_en = data['name_en']
+        description_no = data['description_text_no']
+        description_en = data['description_text_en']
+        email_text_no = data['email_text_no']
+        email_text_en = data['email_text_en']
+        start_date = data['start_date']
+        end_date = data['end_date']
+        registration_end_date = data['registration_end_date']
+        host = data['host']
+        attendance_cap = data['attendance_cap']
+        price = data['price']
 
         # Sets the event's start and end date.
         event.start_date = start_date
@@ -441,16 +429,14 @@ def edit_event_request(request):
             event.registration_end_date = registration_end_date + '+0000'
 
         # Sets the attendance_cap to None if it is not set, otherwise to the given value.4
-        if attendance_cap == '':
+        if not attendance_cap:
             event.attendance_cap = None
-        else:
-            event.attendance_cap = attendance_cap
 
         # Sets the price to None if it is not set, otherwise to the given value.
-        if price == '':
+        if not price:
             event.price = 0
         else:
-            event.price = price
+            event.price = int(price)
 
         # Sets the event's host.
         if host == 'NTNUI':
@@ -497,6 +483,7 @@ def delete_event_request(request, event_id):
     """ Deletes a given event and all its related objects. """
 
     try:
+        print(event_id, request.user)
         event = Event.objects.get(id=int(event_id))
 
         # Checks if the user has the right to alter the event.
