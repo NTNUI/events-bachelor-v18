@@ -41,10 +41,10 @@ def validate_event_data(data):
         an English and Norwegian name and description, and its start and end date. """
 
     # Gets the required data for creating an event.
-    norwegian_name = data.get('name_no')
-    norwegian_description = data.get('description_text_no')
+    norwegian_name = data.get('name_nb')
+    norwegian_description = data.get('description_text_nb')
     english_name = data.get('name_en')
-    english_description = data.get('description_text_no')
+    english_description = data.get('description_text_nb')
     start_date = data.get('start_date')
     end_date = data.get('end_date')
     location = data.get('place')
@@ -139,7 +139,7 @@ def create_event_for_group(data, is_host_ntnui):
 
         # Creates the Norwegian event description.
         create_event_description(
-            event, data.get('name_no'), data.get('description_text_no'), data.get('email_text_no'), 'nb')
+            event, data.get('name_nb'), data.get('description_text_nb'), data.get('email_text_nb'), 'nb')
 
         # Creates the English event description.
         create_event_description(
