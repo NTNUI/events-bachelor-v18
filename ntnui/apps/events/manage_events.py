@@ -11,7 +11,7 @@ from events.models.sub_event import (SubEvent, SubEventDescription,
                                      SubEventGuestWaitingList,
                                      SubEventRegistration, SubEventWaitingList)
 
-from .views import (get_json, get_groups_user_can_create_events_for)
+from .views import (get_json, can_user_alter_event)
 
 
 @login_required
@@ -200,6 +200,7 @@ def create_sub_event_request(request):
 
     # Returns the sub-event's ID and a JSON success response.
     return JsonResponse({'id': sub_event.id, 'message': _('The sub-event is successfully created!')}, status=201)
+
 
 @login_required
 def edit_sub_event_request(request):
@@ -487,22 +488,3 @@ def delete_event_request(request, event_id):
 
     # Returns a JSON success response.
     return get_json(200, "Event deleted!")
-
-
-def can_user_alter_event(event, user):
-    """ Checks if the user can create, edit and delete the event. """
-
-    # Checks which host(s) which is hosting the event.
-    hosts = set(event.get_host())
-
-    # Checks which groups the user can create, edit and delete events for.
-    groups = []
-    for sports_group in get_groups_user_can_create_events_for(user):
-        groups.append(str(sports_group))
-
-    # Checks if the user can alter the event.
-    if hosts.intersection(set(groups)):
-        return True
-
-    # The user doesn't have rights to alter the event.
-    return False
