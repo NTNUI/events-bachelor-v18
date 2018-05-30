@@ -7,6 +7,7 @@ from django.shortcuts import render
 from django.utils import translation
 from django.utils.translation import gettext as _
 
+from events.manage_events import (can_user_alter_event)
 from events.models.category import Category, CategoryDescription
 from events.models.event import (Event, EventDescription,
                                  EventGuestRegistration, EventGuestWaitingList,
@@ -52,17 +53,21 @@ def get_create_event_page(request):
 
 
 @login_required
-def get_attending_events_page(request):
+def get_attending_events_page(request, event_id):
     """ Renders the page with the events which the user attends. """
 
-    # Used to find out if the create-event button shall be rendered or not
-    can_create_event = can_user_create_event(request.user)
+    event = Event.objects.get(id=event_id)
 
-    # Get groups that are hosting events.
-    groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
+    if can_user_alter_event(event, request.user):
+        
+        # Used to find out if the create-event button shall be rendered or not
+        can_create_event = can_user_create_event(request.user)
 
-    return render(request, 'events/events_main_page.html', {'can_create_event': can_create_event, 'groups': groups,
-                                                            'template': 'event_attending_page'})
+        # Get groups that are hosting events.
+        groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
+
+        return render(request, 'events/events_main_page.html', {'can_create_event': can_create_event, 'groups': groups,
+                                                                'template': 'event_attending_page'})
 
 
 def get_event_details_page(request, event_id):
