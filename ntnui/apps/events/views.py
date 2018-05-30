@@ -7,7 +7,6 @@ from django.shortcuts import render
 from django.utils import translation
 from django.utils.translation import gettext as _
 
-from events.manage_events import (can_user_alter_event)
 from events.models.category import Category, CategoryDescription
 from events.models.event import (Event, EventDescription,
                                  EventGuestRegistration, EventGuestWaitingList,
@@ -49,25 +48,23 @@ def get_create_event_page(request):
     # Checks if a user can create an event.
     groups = get_groups_user_can_create_events_for(request.user)
 
-    return render(request, 'events/create_new_event.html', {'groups': groups, 'can_create_event': True})
-
+    if can_user_create_event(request.user):
+        return render(request, 'events/create_new_event.html', {'groups': groups, 'can_create_event': True})
+    else:
+        return get_events_main_page(request)
 
 @login_required
 def get_attending_events_page(request, event_id):
     """ Renders the page with the events which the user attends. """
 
-    event = Event.objects.get(id=event_id)
+    # Used to find out if the create-event button shall be rendered or not
+    can_create_event = can_user_create_event(request.user)
 
-    if can_user_alter_event(event, request.user):
-        
-        # Used to find out if the create-event button shall be rendered or not
-        can_create_event = can_user_create_event(request.user)
+    # Get groups that are hosting events.
+    groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
 
-        # Get groups that are hosting events.
-        groups = SportsGroup.objects.filter(event__in=Event.objects.all()).distinct()
-
-        return render(request, 'events/events_main_page.html', {'can_create_event': can_create_event, 'groups': groups,
-                                                                'template': 'event_attending_page'})
+    return render(request, 'events/events_main_page.html', {'can_create_event': can_create_event, 'groups': groups,
+                                                            'template': 'event_attending_page'})
 
 
 def get_event_details_page(request, event_id):
@@ -190,7 +187,11 @@ def get_event_attendees_page(request, event_id):
             'sub_events_attendees_and_names_list': sub_events_attendees_and_names_list,
         }
 
-    return render(request, 'events/event_attendees_page.html', context)
+    # Checks that the user have the rights to alter the event.
+    if can_user_alter_event(event, request.user):
+        return render(request, 'events/event_attendees_page.html', context)
+    else:
+        return get_events_main_page(request)
 
 
 @login_required
@@ -200,48 +201,53 @@ def get_edit_event_page(request, event_id):
     # Gets the event.
     event = get_event_by_id(event_id)
 
-    # Gets the event's data.
-    price = event.price
-    attendance_cap = event.attendance_cap
-    groups = get_groups_user_can_create_events_for(request.user)
-    event_description_nb = EventDescription.objects.get(event=event, language='nb')
-    event_description_en = EventDescription.objects.get(event=event, language='en')
+    # Checks that the user have the rights to alter the event.
+    if can_user_alter_event(event, request.user):
+        # Gets the event's data.
+        price = event.price
+        attendance_cap = event.attendance_cap
+        groups = get_groups_user_can_create_events_for(request.user)
+        event_description_nb = EventDescription.objects.get(event=event, language='nb')
+        event_description_en = EventDescription.objects.get(event=event, language='en')
 
-    # Converts dates to a format that can be put as value in input type 'datetime local' html form.
-    event_start_date = event.start_date
-    event_end_date = event.end_date
-    start_date = '{:%Y-%m-%dT%H:%M}'.format(event_start_date)
-    end_date = '{:%Y-%m-%dT%H:%M}'.format(event_end_date)
+        # Converts dates to a format that can be put as value in input type 'datetime local' html form.
+        event_start_date = event.start_date
+        event_end_date = event.end_date
+        start_date = '{:%Y-%m-%dT%H:%M}'.format(event_start_date)
+        end_date = '{:%Y-%m-%dT%H:%M}'.format(event_end_date)
 
-    # Checks if the event has a registration_end_date, and converts it if it exists.
-    registration_end_date = ""
-    if event.registration_end_date != "" and event.registration_end_date is not None:
-        registration_end_date = '{:%Y-%m-%dT%H:%M}'.format(event.registration_end_date)
+        # Checks if the event has a registration_end_date, and converts it if it exists.
+        registration_end_date = ""
+        if event.registration_end_date != "" and event.registration_end_date is not None:
+            registration_end_date = '{:%Y-%m-%dT%H:%M}'.format(event.registration_end_date)
 
-    # Creates a dictionary for the event.
-    event = {
-        'name_nb': event_description_nb.name,
-        'name_en': event_description_en.name,
-        'description_text_nb': event_description_nb.description_text,
-        'description_text_en': event_description_en.description_text,
-        'email_text_nb': event_description_nb.custom_email_text,
-        'email_text_en': event_description_en.custom_email_text,
-        'start_date': start_date,
-        'end_date': end_date,
-        'id': event.id,
-        'attendance_cap': attendance_cap,
-        'registration_end_date': registration_end_date,
-        'price': price,
-        'host': event.get_host(),
-        'place': event.place,
-        'groups': groups
-    }
+        # Creates a dictionary for the event.
+        event = {
+            'name_nb': event_description_nb.name,
+            'name_en': event_description_en.name,
+            'description_text_nb': event_description_nb.description_text,
+            'description_text_en': event_description_en.description_text,
+            'email_text_nb': event_description_nb.custom_email_text,
+            'email_text_en': event_description_en.custom_email_text,
+            'start_date': start_date,
+            'end_date': end_date,
+            'id': event.id,
+            'attendance_cap': attendance_cap,
+            'registration_end_date': registration_end_date,
+            'price': price,
+            'host': event.get_host(),
+            'place': event.place,
+            'groups': groups
+        }
 
-    context = {
-        "event": event,
-    }
+        context = {
+            "event": event,
+        }
 
-    return render(request, 'events/edit_event_page.html', context)
+        return render(request, 'events/edit_event_page.html', context)
+
+    else:
+        return get_events_main_page(request)
 
 
 """ Help functions for the functions explicitly in this file. """
@@ -458,3 +464,25 @@ def is_user_in_board(board, user):
     """ Checks if the user is a member of the board. """
 
     return board.president == user or board.vice_president == user or board.cashier == user
+
+
+def can_user_alter_event(event, user):
+    """ Checks if the user can create, edit and delete the event. """
+
+    # Checks which host(s) which is hosting the event.
+    hosts = set(event.get_host())
+
+    # Checks which groups the user can create, edit and delete events for.
+    groups = []
+    for sports_group in get_groups_user_can_create_events_for(user):
+        if type(sports_group) is dict:
+            groups.append(str(sports_group['name']))
+        else:
+            groups.append(str(sports_group))
+
+    # Checks if the user can alter the event.
+    if hosts.intersection(set(groups)):
+        return True
+
+    # The user doesn't have rights to alter the event.
+    return False
