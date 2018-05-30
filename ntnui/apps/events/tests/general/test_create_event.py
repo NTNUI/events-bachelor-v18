@@ -45,10 +45,10 @@ class TestCreateEvent(TestCase):
         # arrange
         self.c.login(email='testuser@test.com', password='4epape?Huf+V')
         response = self.c.post(reverse('create_event'), {'name_en': 'name_en',
-                                                         'name_no': 'name_no',
+                                                         'name_nb': 'name_nb',
                                                          'description_text_en': '',
                                                          'place': 'Trondheim',
-                                                         'description_text_no': 'description_no',
+                                                         'description_text_nb': 'description_nb',
                                                          'start_date': datetime.now(),
                                                          'end_date': datetime.now() + timedelta(days=2),
                                                          'host': 'NTNUI'
@@ -64,25 +64,24 @@ class TestCreateEvent(TestCase):
         """ Checks that an unauthorized user can not create events. """
 
         # arrange
-        self.c.login(email='boardpresident@test.com', password='12345')
         response = self.c.post(reverse('create_event'), {'start_date': datetime.now(),
                                                          'end_date': datetime.now() + timedelta(days=2),
                                                          'place': '',
                                                          'restriction': '0',
                                                          'hosted by NTNUI': 'true',
                                                          'name_en': 'name_en',
-                                                         'name_no': 'name_no',
+                                                         'name_nb': 'name_nb',
                                                          'host': 'NTNUI',
                                                          'place': 'Trondheim',
                                                          'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                          'description_text_en': 'description_en',
-                                                         'description_text_no': 'description_no',
-                                                         }, follow=True)
+                                                         'description_text_nb': 'description_nb',
+                                                         })
         # act
         result = response.status_code
 
         # assert
-        return self.assertEqual(result, 400)
+        return self.assertEqual(result, 302)
 
     def test_create_event_hosted_by_board_member(self):
         """ Checks that an even with valid input is created. """
@@ -94,18 +93,19 @@ class TestCreateEvent(TestCase):
                                                          'restriction': '0',
                                                          'hosted by NTNUI': 'false',
                                                          'name_en': 'name_en',
-                                                         'name_no': 'name_no',
+                                                         'name_nb': 'name_nb',
                                                          'place': 'Trondheim',
                                                          'host': self.swimming_group.id,
                                                          'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                          'description_text_en': 'description_en',
-                                                         'description_text_no': 'description_no',
+                                                         'description_text_nb': 'description_nb',
                                                          }, follow=True)
 
         # act
         result = response.status_code
 
         # assert
+        print(response.json())
         return self.assertEqual(result, 201)
 
     def test_create_event_with_no_norwegian_description(self):
@@ -118,12 +118,12 @@ class TestCreateEvent(TestCase):
                                                          'restriction': '0',
                                                          'hosted by NTNUI': 'false',
                                                          'name_en': 'name_en',
-                                                         'name_no': 'name_no',
+                                                         'name_nb': 'name_nb',
                                                          'place': 'Trondheim',
                                                          'host': self.swimming_group.id,
                                                          'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                          'description_text_en': 'description_en',
-                                                         'description_text_no': '',
+                                                         'description_text_nb': '',
                                                          }, follow=True)
 
         # act
@@ -141,16 +141,15 @@ class TestCreateEvent(TestCase):
         self.c.login(email='testuser@test.com', password='4epape?Huf+V')
         response = self.c.post(reverse('create_event'), {'start_date': datetime.now(),
                                                          'end_date': datetime.now() + timedelta(days=2),
-                                                         'place': '',
                                                          'restriction': '0',
                                                          'hosted by NTNUI': 'true',
                                                          'name_en': 'name_en',
-                                                         'name_no': 'name_no',
+                                                         'name_nb': 'name_nb',
                                                          'host': 'NTNUI',
                                                          'place': 'Trondheim',
                                                          'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                          'description_text_en': 'description_en',
-                                                         'description_text_no': 'description_no',
+                                                         'description_text_nb': 'description_nb',
                                                          }, follow=True)
 
         # act
@@ -168,12 +167,12 @@ class TestCreateEvent(TestCase):
                                                          'restriction': '0',
                                                          'hosted by NTNUI': 'true',
                                                          'name_en': 'name_en',
-                                                         'name_no': 'name_no',
+                                                         'name_nb': 'name_nb',
                                                          'host': 'NTNUI',
                                                          'place': 'Trondheim',
                                                          'cover_photo': 'cover_photo/ntnui-volleyball.png',
                                                          'description_text_en': 'description_en',
-                                                         'description_text_no': 'description_no',
+                                                         'description_text_nb': 'description_nb',
                                                          })
 
         # act
