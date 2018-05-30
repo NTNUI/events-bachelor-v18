@@ -498,7 +498,10 @@ def can_user_alter_event(event, user):
     # Checks which groups the user can create, edit and delete events for.
     groups = []
     for sports_group in get_groups_user_can_create_events_for(user):
-        groups.append(str(sports_group))
+        if type(sports_group) is dict:
+            groups.append(str(sports_group['name']))
+        else:
+            groups.append(str(sports_group))
 
     # Checks if the user can alter the event.
     if hosts.intersection(set(groups)):
