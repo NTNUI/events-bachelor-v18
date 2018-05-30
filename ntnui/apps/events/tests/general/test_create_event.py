@@ -105,7 +105,6 @@ class TestCreateEvent(TestCase):
         result = response.status_code
 
         # assert
-        print(response.json())
         return self.assertEqual(result, 201)
 
     def test_create_event_with_no_norwegian_description(self):

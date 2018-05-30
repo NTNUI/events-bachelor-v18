@@ -54,7 +54,7 @@ def get_create_event_page(request):
         return get_events_main_page(request)
 
 @login_required
-def get_attending_events_page(request, event_id):
+def get_attending_events_page(request):
     """ Renders the page with the events which the user attends. """
 
     # Used to find out if the create-event button shall be rendered or not
