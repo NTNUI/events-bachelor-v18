@@ -264,7 +264,7 @@ def user_can_edit_and_delete_event(event, user):
     """ Checks if the user can edit and delete a given event. """
 
     # Checks if the user is in NTNUI's main board.
-    if is_user_in_main_board(user):
+    if is_user_in_main_board(user) and event.is_host_ntnui:
         return True
 
     # Gets the event's hosts.

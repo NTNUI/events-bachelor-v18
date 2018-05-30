@@ -222,14 +222,13 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label>{% trans 'Host' %}</label>
-                <select class="form-control" name="host" value="{{ event.host }}" required>
+                <select class="form-control" name="host" value="{{ event.id }}" required>
                     {% for group in event.groups %}
-                        {% if group == event.host %}
+                        {% if group.name == event.host.0 %}
                             <option selected value="{{ group.id }}">{{ group.name }}</option>
                         {% else %}
                             <option value="{{ group.id }}">{{ group.name }}</option>
                         {% endif %}
-
                     {% endfor %}
                 </select>
             </div>
